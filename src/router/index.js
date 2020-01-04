@@ -79,7 +79,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '控制台', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -91,7 +91,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        meta: { title: '文档', icon: 'documentation', affix: true }
       }
     ]
   },
@@ -104,7 +104,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/guide/index'),
         name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        meta: { title: '用户引导', icon: 'guide', noCache: true }
       }
     ]
   },
@@ -136,7 +136,7 @@ export const asyncRoutes = [
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
-      title: 'Permission',
+      title: '权限管理',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -196,7 +196,7 @@ export const asyncRoutes = [
     redirect: '/example/list',
     name: 'Example',
     meta: {
-      title: 'Example',
+      title: '样例-文章/公告管理',
       icon: 'example'
     },
     children: [
@@ -204,20 +204,20 @@ export const asyncRoutes = [
         path: 'create',
         component: () => import('@/views/example/create'),
         name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        meta: { title: '发布文章', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/example/edit'),
         name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/example/list' },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/views/example/list'),
         name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        meta: { title: '文章列表', icon: 'list' }
       }
     ]
   },
@@ -230,7 +230,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/tab/index'),
         name: 'Tab',
-        meta: { title: 'Tab', icon: 'tab' }
+        meta: { title: 'Tab标签', icon: 'tab' }
       }
     ]
   },
@@ -241,7 +241,7 @@ export const asyncRoutes = [
     redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
-      title: 'Error Pages',
+      title: '错误页面',
       icon: '404'
     },
     children: [
@@ -268,7 +268,7 @@ export const asyncRoutes = [
         path: 'log',
         component: () => import('@/views/error-log/index'),
         name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
+        meta: { title: 'Bug日志', icon: 'bug' }
       }
     ]
   },
@@ -279,7 +279,7 @@ export const asyncRoutes = [
     redirect: '/excel/export-excel',
     name: 'Excel',
     meta: {
-      title: 'Excel',
+      title: 'Excel表格',
       icon: 'excel'
     },
     children: [
@@ -287,13 +287,13 @@ export const asyncRoutes = [
         path: 'export-excel',
         component: () => import('@/views/excel/export-excel'),
         name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
+        meta: { title: '导出Excel' }
       },
       {
         path: 'export-selected-excel',
         component: () => import('@/views/excel/select-excel'),
         name: 'SelectExcel',
-        meta: { title: 'Export Selected' }
+        meta: { title: '选择导出' }
       },
       {
         path: 'export-merge-header',
@@ -305,7 +305,7 @@ export const asyncRoutes = [
         path: 'upload-excel',
         component: () => import('@/views/excel/upload-excel'),
         name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
+        meta: { title: '上传Excel' }
       }
     ]
   },
@@ -316,13 +316,13 @@ export const asyncRoutes = [
     redirect: '/zip/download',
     alwaysShow: true,
     name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
+    meta: { title: 'Zip压缩包', icon: 'zip' },
     children: [
       {
         path: 'download',
         component: () => import('@/views/zip/index'),
         name: 'ExportZip',
-        meta: { title: 'Export Zip' }
+        meta: { title: '导出Zip' }
       }
     ]
   },
@@ -354,7 +354,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/theme/index'),
         name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
+        meta: { title: '主题', icon: 'theme' }
       }
     ]
   },

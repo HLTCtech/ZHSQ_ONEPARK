@@ -82,16 +82,20 @@
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
+            编辑
+            <!-- Edit -->
           </el-button>
           <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-            Publish
+            发布
+            <!-- Publish -->
           </el-button>
           <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-            Draft
+            草稿
+            <!-- Draft -->
           </el-button>
           <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(row,'deleted')">
-            Delete
+            删除
+            <!-- Delete -->
           </el-button>
         </template>
       </el-table-column>
@@ -153,10 +157,10 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
+  { key: 'CN', display_name: '中国' },
+  { key: 'US', display_name: '美国' },
+  { key: 'JP', display_name: '日本' },
+  { key: 'EU', display_name: '欧盟' }
 ]
 
 // arr to obj, such as { CN : "China", US : "USA" }

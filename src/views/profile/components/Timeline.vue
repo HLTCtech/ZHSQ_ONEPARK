@@ -17,23 +17,23 @@ export default {
     return {
       timeline: [
         {
-          timestamp: '2019/4/20',
-          title: 'Update Github template',
+          timestamp: '2019/5/20',
+          title: '*年*月*日给XXX充值***钱',
           content: 'PanJiaChen committed 2019/4/20 20:46'
         },
         {
           timestamp: '2019/4/21',
-          title: 'Update Github template',
+          title: '*年*月*日给XXX充值***钱',
           content: 'PanJiaChen committed 2019/4/21 20:46'
         },
         {
-          timestamp: '2019/4/22',
-          title: 'Build Template',
+          timestamp: '2019/3/22',
+          title: '*年*月*日给XXX充值***钱',
           content: 'PanJiaChen committed 2019/4/22 20:46'
         },
         {
-          timestamp: '2019/4/23',
-          title: 'Release New Version',
+          timestamp: '2019/2/23',
+          title: '*年*月*日给XXX充值***钱',
           content: 'PanJiaChen committed 2019/4/23 20:46'
         }
       ]
