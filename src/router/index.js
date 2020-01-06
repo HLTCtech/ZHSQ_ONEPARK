@@ -37,6 +37,7 @@ import nestedRouter from './modules/nested'
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
+ * 不论权限一直显示的侧边栏
  */
 export const constantRoutes = [
   {
@@ -127,6 +128,7 @@ export const constantRoutes = [
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
+ * 根据不同的权限动态加载出侧边栏目
  */
 export const asyncRoutes = [
   {
