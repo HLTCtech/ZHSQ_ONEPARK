@@ -41,6 +41,22 @@ import nestedRouter from './modules/nested'
  */
 export const constantRoutes = [
   {
+    // 测试添加页面样式代码，后期删除
+    path: '/test',
+    component: Layout,
+    redirect: '/test/111',
+    name: 'test',
+    meta: {
+      title: 'test',
+      icon: 'test'
+    },
+    children: [
+      { path: 'test1', component: () => import('@/views/error-page/401'), name: 'exportExcel', meta: { title: 'exportExcel' }},
+      { path: 'test2', component: () => import('@/views/error-page/401'), name: 'selectExcel', meta: { title: 'selectExcel' }},
+      { path: 'test3', component: () => import('@/views/error-page/401'), name: 'uploadExcel', meta: { title: 'uploadExcel' }}
+    ]
+  },
+  {
     path: '/redirect',
     component: Layout,
     hidden: true,

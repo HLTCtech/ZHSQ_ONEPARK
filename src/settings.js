@@ -1,3 +1,4 @@
+// 定义标题以及设置侧边栏的默认样式
 module.exports = {
   title: '华龙物业财务系统',
 
@@ -17,13 +18,13 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false,
+  sidebarLogo: true,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

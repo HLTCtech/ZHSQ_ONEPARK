@@ -3,6 +3,7 @@
  */
 
 /**
+ * 把时间的格式转换为String
  * Parse the time to string
  * @param {(Object|string|number)} time
  * @param {string} cFormat
@@ -44,6 +45,7 @@ export function parseTime(time, cFormat) {
 }
 
 /**
+ * 格式化时间
  * @param {number} time
  * @param {string} option
  * @returns {string}
@@ -87,6 +89,7 @@ export function formatTime(time, option) {
 }
 
 /**
+ * 将url的查询参数解析成字典对象
  * @param {string} url
  * @returns {Object}
  */
@@ -106,6 +109,7 @@ export function getQueryObject(url) {
 }
 
 /**
+ * 返回utf-8类型字符串的字节长度
  * @param {string} input value
  * @returns {number} output value
  */
@@ -122,6 +126,7 @@ export function byteLength(str) {
 }
 
 /**
+ * 清空数组
  * @param {Array} actual
  * @returns {Array}
  */
