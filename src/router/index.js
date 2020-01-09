@@ -37,23 +37,55 @@ import nestedRouter from './modules/nested'
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
- * 不论权限一直显示的侧边栏
+ * 不论什么权限一直显示的侧边栏
  */
 export const constantRoutes = [
   {
-    // 测试添加页面样式代码，后期删除
-    path: '/test',
+    // 所有的总账显示
+    path: '/bill_all',
     component: Layout,
-    redirect: '/test/111',
-    name: 'test',
+    redirect: '/bill_all/electric',
+    name: 'bill_all',
     meta: {
-      title: 'test',
-      icon: 'test'
+      title: '费用总览',
+      icon: 'money'
     },
     children: [
-      { path: 'test1', component: () => import('@/views/error-page/401'), name: 'exportExcel', meta: { title: 'exportExcel' }},
-      { path: 'test2', component: () => import('@/views/error-page/401'), name: 'selectExcel', meta: { title: 'selectExcel' }},
-      { path: 'test3', component: () => import('@/views/error-page/401'), name: 'uploadExcel', meta: { title: 'uploadExcel' }}
+      { path: 'electric', component: () => import('@/views/error-page/401'), name: 'electric', meta: { title: '电费' }},
+      { path: 'property', component: () => import('@/views/error-page/401'), name: 'property', meta: { title: '物业费' }},
+      { path: 'parking', component: () => import('@/views/error-page/401'), name: 'parking', meta: { title: '停车管理费' }}
+    ]
+  },
+  {
+    // 电费单项管理
+    path: '/electric',
+    component: Layout,
+    redirect: '/bill_all/electric',
+    name: 'bill_all',
+    meta: {
+      title: '电费管理',
+      icon: 'money'
+    },
+    children: [
+      { path: 'electric', component: () => import('@/views/error-page/401'), name: 'electric', meta: { title: '费用收缴' }},
+      { path: 'property', component: () => import('@/views/error-page/401'), name: 'property', meta: { title: '台账管理' }},
+      { path: 'parking', component: () => import('@/views/error-page/401'), name: 'parking', meta: { title: '电费通知单' }}
+    ]
+  },
+  {
+    // 物业费单项管理
+    path: '/',
+    component: Layout,
+    redirect: '/bill_all/electric',
+    name: 'bill_all',
+    meta: {
+      title: '电费管理',
+      icon: 'money'
+    },
+    children: [
+      { path: 'electric', component: () => import('@/views/error-page/401'), name: 'electric', meta: { title: '费用收缴' }},
+      { path: 'property', component: () => import('@/views/error-page/401'), name: 'property', meta: { title: '台账管理' }},
+      { path: 'parking', component: () => import('@/views/error-page/401'), name: 'parking', meta: { title: '电费通知单' }}
     ]
   },
   {

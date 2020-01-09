@@ -11,6 +11,21 @@
         <el-checkbox label="orange">
           orange
         </el-checkbox>
+        <el-checkbox label="orange1">
+          orange1
+        </el-checkbox>
+        <el-checkbox label="orange2">
+          orange2
+        </el-checkbox>
+        <el-checkbox label="orange3">
+          orange3
+        </el-checkbox>
+        <el-checkbox label="orange4">
+          orange4
+        </el-checkbox>
+        <el-checkbox label="orange5">
+          orange5
+        </el-checkbox>
       </el-checkbox-group>
     </div>
 
@@ -36,17 +51,27 @@ export default {
           name: 'fruit-1',
           apple: 'apple-10',
           banana: 'banana-10',
-          orange: 'orange-10'
+          orange: 'orange-10',
+          orange1: 'orange-10',
+          orange2: 'orange-10',
+          orange3: 'orange-10',
+          orange4: 'orange-10',
+          orange5: 'orange-10'
         },
         {
           name: 'fruit-2',
           apple: 'apple-20',
           banana: 'banana-20',
-          orange: 'orange-20'
+          orange: 'orange-20',
+          orange1: 'orange-10',
+          orange2: 'orange-10',
+          orange3: 'orange-10',
+          orange4: 'orange-10',
+          orange5: 'orange-10'
         }
       ],
       key: 1, // table key
-      formTheadOptions: ['apple', 'banana', 'orange'],
+      formTheadOptions: ['apple', 'banana', 'orange', 'orange1', 'orange2', 'orange3', 'orange4', 'orange5'],
       checkboxVal: defaultFormThead, // checkboxVal
       formThead: defaultFormThead // 默认表头 Default header
     }

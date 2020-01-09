@@ -12,26 +12,156 @@
       </template>
     </el-table-column>
 
-    <el-table-column width="180px" align="center" label="Date">
+    <!-- 原本为date  span内部为日期标准格式转换-->
+    <el-table-column width="180px" align="center" label="房间号">
       <template slot-scope="scope">
         <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
       </template>
     </el-table-column>
 
-    <el-table-column min-width="300px" label="Title">
+    <!-- 原本为Title  有title/type两个属性值 原本宽度定义为min-width-->
+    <el-table-column width="110px" label="业主姓名">
       <template slot-scope="{row}">
         <span>{{ row.title }}</span>
-        <el-tag>{{ row.type }}</el-tag>
+        <!-- <el-tag>{{ row.type }}</el-tag> -->
       </template>
     </el-table-column>
 
-    <el-table-column width="110px" align="center" label="Author">
+    <!-- 原本为Author -->
+    <el-table-column width="110px" align="center" label="具体信息">
       <template slot-scope="scope">
         <span>{{ scope.row.author }}</span>
       </template>
     </el-table-column>
 
-    <el-table-column width="120px" label="Importance">
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="原始读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="1月读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="1月用量">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="1月应收">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="2月读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="2月用量">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="2月应收">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="3月读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="3月用量">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="3月应收">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="4月读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="4月用量">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="4月应收">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="5月读数">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="5月用量">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 具体的收费细则 -->
+    <el-table-column width="110px" align="center" label="5月应收">
+      <template slot-scope="scope">
+        <!-- 参数中均为假变量 -->
+        <span>{{ scope.row.author }}</span>
+      </template>
+    </el-table-column>
+
+    <!-- 原本为Importance -->
+    <el-table-column width="120px" label="1月应收">
       <template slot-scope="scope">
         <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" />
       </template>
