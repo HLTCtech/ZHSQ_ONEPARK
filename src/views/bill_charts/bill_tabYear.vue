@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import tabPane from './components/TabPane'
+import tabPane from '@/views/bill_charts/bill_tabYear'
 
 export default {
   name: 'Tab',

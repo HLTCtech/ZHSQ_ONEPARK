@@ -8,7 +8,7 @@ const chartsRouter = {
   redirect: 'noRedirect',
   name: 'Charts',
   meta: {
-    title: '折线图',
+    title: '图表管理',
     icon: 'chart'
   },
   children: [
