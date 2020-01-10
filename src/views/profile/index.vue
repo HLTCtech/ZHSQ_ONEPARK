@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       user: {},
-      activeTab: 'activity'
+      activeTab: '操作记录'
     }
   },
   computed: {
