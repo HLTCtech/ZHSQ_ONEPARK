@@ -27,11 +27,11 @@ import * as filters from './filters' // global filters
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import { mockXHR } from '../mock'
-//  判断开发环境来启动mock，原本为production，改为development开发环境即可本地登录并获取到mock数据
-if (process.env.NODE_ENV === 'development') {
-  mockXHR()
-}
+// import { mockXHR } from '../mock'
+// //  判断开发环境来启动mock，原本为production，改为development开发环境即可本地登录并获取到mock数据
+// if (process.env.NODE_ENV === 'production') {
+//   mockXHR()
+// }
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size

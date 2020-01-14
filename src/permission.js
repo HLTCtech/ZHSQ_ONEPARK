@@ -8,7 +8,8 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
+// 把费用收缴接口/pay添加到白名单，不进行验证
+const whiteList = ['/login', '/auth-redirect', '/pay', '/'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
