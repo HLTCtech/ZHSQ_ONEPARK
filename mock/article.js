@@ -54,7 +54,7 @@ export default [{
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
     return {
-      code: 20000,
+      code: 200,
       data: {
         total: mockList.length,
         items: pageList
@@ -73,7 +73,7 @@ export default [{
     for (const article of List) {
       if (article.id === +id) {
         return {
-          code: 20000,
+          code: 200,
           data: article
         }
       }
@@ -86,7 +86,7 @@ export default [{
   type: 'get',
   response: _ => {
     return {
-      code: 20000,
+      code: 200,
       data: {
         pvData: [{
           key: 'PC',
@@ -115,7 +115,7 @@ export default [{
   type: 'post',
   response: _ => {
     return {
-      code: 20000,
+      code: 200,
       data: 'success'
     }
   }
@@ -126,7 +126,7 @@ export default [{
   type: 'post',
   response: _ => {
     return {
-      code: 20000,
+      code: 200,
       data: 'success'
     }
   }
