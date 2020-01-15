@@ -97,7 +97,8 @@
       </el-table-column> -->
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <!-- 分页功能实现标签 -->
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
 
     <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -148,7 +149,7 @@
 
 <script>
 import { fetchList } from '@/api/house_detail'
-// import waves from '@/directive/waves' // waves directive
+import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -168,7 +169,7 @@ import { fetchList } from '@/api/house_detail'
 export default {
   name: 'BillPay',
   // components: { Pagination },
-  // directives: { waves },
+  directives: { waves },
   // filters: {
   //   statusFilter(status) {
   //     const statusMap = {
@@ -185,28 +186,25 @@ export default {
   data() {
     return {
       list: null,
-      total: 0,
       listLoading: true,
       listQuery: {
-        page: 1,
-        limit: 20,
-        lou_num: undefined,
-        danyuan_num: undefined,
-        floor_num: undefined,
-        fangjian_num: undefined
+        lou_num: 3,
+        danyuan_num: 1,
+        floor_num: 1,
+        fangjian_num: '01'
       },
       // 定义顶部搜索框的选择字段
       lou_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
       danyuan_numOptions: ['1', '2', '3'],
       floor_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
-      fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
+      fangjian_numOptions: ['01', '02', '03', '04', '05', '06']
       // calendarTypeOptions,
       // sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       // statusOptions: ['published', 'draft', 'deleted'],
       // showReviewer: false,
-      temp: {
-        id: undefined
-      }
+      // temp: {
+      //   id: undefined
+      // }
     }
   },
   created() {
@@ -216,19 +214,24 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
+        const arr = []
+        for (const i in response.data.items) {
+          arr.push(response.data.items[i])
+        }
+        console.log(arr)
+        this.list = arr
+        // this.list = response.data.items
 
         // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        // setTimeout(() => {
+        //   this.listLoading = false
+        // }, 1.5 * 1000)
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      // this.listQuery.page = 1
       this.getList()
-    },
+    }
     // sortChange(data) {
     //   const { prop, order } = data
     //   if (prop === 'id') {
@@ -243,12 +246,12 @@ export default {
     //   }
     //   this.handleFilter()
     // },
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        type: ''
-      }
-    }
+    // resetTemp() {
+    //   this.temp = {
+    //     id: undefined,
+    //     type: ''
+    //   }
+    // }
     // formatJson(filterVal, jsonData) {
     //   return jsonData.map(v => filterVal.map(j => {
     //     if (j === 'timestamp') {
