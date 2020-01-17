@@ -2,8 +2,8 @@
   <!-- 住宅收费界面 -->
   <div class="app-container">
     <!-- <div class="filter-container"> -->
-      <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
-      <!-- <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
+    <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
+    <!-- <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-select v-model="listQuery.danyuan_num" placeholder="单元号" clearable style="width: 90px" class="filter-item">
@@ -214,12 +214,13 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        const arr = []
-        for (const i in response.data.items) {
-          arr.push(response.data.items[i])
-        }
-        console.log('arry_response---' + arr)
-        this.list = arr
+        // const arr = []
+        // for (const i in response.data.items) {
+        //   arr.push(response.data.items[i])
+        // }
+        // console.log('arry_response---' + arr)
+        // this.list = arr
+        this.list = response.data.items
         // console.log('arry_response=>this.list---' + arr)
         // this.list = response.data.items
         // console.log('data---' + response.data)
