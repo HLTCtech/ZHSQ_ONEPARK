@@ -1,9 +1,9 @@
 <template>
   <!-- 住宅收费界面 -->
   <div class="app-container">
-    <div class="filter-container">
+    <!-- <div class="filter-container"> -->
       <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
-      <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
+      <!-- <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-select v-model="listQuery.danyuan_num" placeholder="单元号" clearable style="width: 90px" class="filter-item">
@@ -18,7 +18,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-    </div>
+    </div> -->
 
     <el-table
       v-loading="listLoading"
@@ -188,10 +188,10 @@ export default {
       list: null,
       listLoading: true,
       listQuery: {
-        lou_num: 3,
-        danyuan_num: 1,
-        floor_num: 1,
-        fangjian_num: '01'
+        lou_num: undefined,
+        danyuan_num: undefined,
+        floor_num: undefined,
+        fangjian_num: undefined
       },
       // 定义顶部搜索框的选择字段
       lou_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
@@ -218,9 +218,12 @@ export default {
         for (const i in response.data.items) {
           arr.push(response.data.items[i])
         }
-        console.log(arr)
+        console.log('arry_response---' + arr)
         this.list = arr
+        // console.log('arry_response=>this.list---' + arr)
         // this.list = response.data.items
+        // console.log('data---' + response.data)
+        // console.log('imtems---' + response.data.items)
 
         // Just to simulate the time of the request
         // setTimeout(() => {
