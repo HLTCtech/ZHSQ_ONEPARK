@@ -1,9 +1,9 @@
 <template>
   <!-- 住宅收费界面 -->
   <div class="app-container">
-    <!-- <div class="filter-container"> -->
-    <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
-    <!-- <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
+    <div class="filter-container">
+      <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
+      <el-select v-model="listQuery.lou_num" placeholder="楼号" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-select v-model="listQuery.danyuan_num" placeholder="单元号" clearable style="width: 90px" class="filter-item">
@@ -18,7 +18,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-    </div> -->
+    </div>
 
     <el-table
       :data="list"
@@ -28,22 +28,22 @@
       style="width: 100%;"
     >
       <!-- id列（包含排序功能）根据prop得到id -->
-      <el-table-column label="序号" prop="id" align="center" width="80">
+      <el-table-column label="序号" prop="id" align="center" width="200">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="房号" width="110px" align="center">
+      <el-table-column label="房号" width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.houseId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="业主姓名" width="110px" align="center">
+      <el-table-column label="业主姓名" width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.houseOwner }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="姓名房号" width="110px" align="center">
+      <el-table-column label="姓名房号" width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.houseOwner_houseId }}</span>
         </template>
@@ -233,6 +233,7 @@ export default {
     },
     handleFilter() {
       // this.listQuery.page = 1
+      console.log(this.listQuery)
       this.getList()
     }
     // sortChange(data) {
