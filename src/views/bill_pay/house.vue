@@ -21,7 +21,6 @@
     </div> -->
 
     <el-table
-      v-loading="listLoading"
       :data="list"
       border
       fit
@@ -212,7 +211,7 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
+      // this.listLoading = true
       fetchList(this.listQuery).then(response => {
         // const arr = []
         // for (const i in response.data.items) {
