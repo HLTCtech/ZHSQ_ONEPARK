@@ -10,13 +10,13 @@ export function fetchList(query) {
 }
 
 // 下面为article.js中代码，暂未针对具体业务进行修改
-export function fetchArticle(id) {
-  return request({
-    url: '/house/detail',
-    method: 'get',
-    params: { id }
-  })
-}
+// export function fetchArticle(id) {
+//   return request({
+//     url: '/house/detail',
+//     method: 'get',
+//     params: { id }
+//   })
+// }
 
 // export function fetchPv(pv) {
 //   return request({

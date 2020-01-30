@@ -82,9 +82,12 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             转预存
           </el-button>
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+          <el-button type="success" size="mini" @click="handleMoney(row)">
             收费
           </el-button>
+          <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+            收费
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -92,41 +95,44 @@
     <!-- 分页功能实现标签 -->
     <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
 
+    <!-- 转预存、费用收缴---弹出的模态框定义   -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Type" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+        <el-form-item label="收费类型" prop="type">
+          <el-select v-model="temp.type" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in YuCun_TypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
+        <!-- <el-form-item label="周期" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+        </el-form-item> -->
+        <el-form-item label="房间号码" prop="title">
+          <el-input v-model="temp.houseOwner_houseId" />
         </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+        <el-form-item label="收费方式">
+          <el-select v-model="temp.status" class="filter-item" placeholder="请选择收费方式">
+            <el-option v-for="item in moneyGet_Options" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Imp">
+        <!-- <el-form-item label="Imp">
           <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+        </el-form-item> -->
+        <el-form-item label="备注">
+          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请添加备注" />
         </el-form-item>
-        <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <el-form-item label="金额">
+          <el-input v-model="temp.moneyNum_get" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="请输入具体收费金额" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
-          Cancel
+          取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          Confirm
+          提交
         </el-button>
       </div>
     </el-dialog>
-
     <!-- <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
@@ -140,17 +146,17 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/house_detail'
+import { fetchList } from '@/api/house_moneyGet'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
-// const calendarTypeOptions = [
-//   { key: 'CN', display_name: '中国' },
-//   { key: 'US', display_name: '美国' },
-//   { key: 'JP', display_name: '日本' },
-//   { key: 'EU', display_name: '欧盟' }
-// ]
+const YuCun_TypeOptions = [
+  { key: 'electric', display_name: '电费' },
+  { key: 'water', display_name: '水费' },
+  { key: 'property', display_name: '物业费' },
+  { key: 'car', display_name: '停车管理费' }
+]
 
 // arr to obj, such as { CN : "China", US : "USA" }
 // const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
@@ -191,6 +197,7 @@ export default {
       danyuan_numOptions: ['1', '2', '3'],
       floor_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
+      moneyGet_Options: ['微信', '支付宝', '现金'],
       // calendarTypeOptions,
       // sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       // statusOptions: ['published', 'draft', 'deleted'],
@@ -200,26 +207,41 @@ export default {
         id: undefined,
         importance: 1,
         remark: '',
+        moneyNum_get: '',
         timestamp: new Date(),
         title: '',
         type: '',
         status: 'published'
-      }
+      },
+      // 定义模态框显示与否
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: '转预存',
+        create: 'Create',
+        money: '费用收缴'
+      },
+      YuCun_TypeOptions
     }
   },
   created() {
     this.getList()
+    console.log('11111111111')
   },
   methods: {
     getList() {
+      debugger
+      console.log('2222222222222222')
       // this.listLoading = true
       fetchList(this.listQuery).then(response => {
+        debugger
         // const arr = []
         // for (const i in response.data.items) {
         //   arr.push(response.data.items[i])
         // }
         // console.log('arry_response---' + arr)
         // this.list = arr
+        console.log('333333333333333333')
         this.list = response.data.items
         // console.log('arry_response=>this.list---' + arr)
         // this.list = response.data.items
@@ -239,10 +261,20 @@ export default {
       this.getList()
     },
     handleUpdate(row) {
-      // 模态框函数调用
+      // 转预存模态框函数调用
       this.temp = Object.assign({}, row) // Object.assign方法将所有可枚举属性的值从一个或多个源对象复制到目标对象，返回目标对象
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
+      // this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update' // dialogStatus具体状态，并根据此变量进行不同内容的显示，暂时现将“转预存”按钮定义为update，其对应的文本在textMap定义
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleMoney(row) {
+      // 费用收缴模态框函数调用
+      this.temp = Object.assign({}, row) // Object.assign方法将所有可枚举属性的值从一个或多个源对象复制到目标对象，返回目标对象
+      // this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'money' // dialogStatus具体状态，并根据此变量进行不同内容的显示，暂时现将“转预存”按钮定义为update，其对应的文本在textMap定义
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

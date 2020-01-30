@@ -279,28 +279,28 @@ export const constantRoutes = [
           title: '导出Excel'
         }
       },
-      {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/select-excel'),
-        name: 'SelectExcel',
-        meta: {
-          title: '选择导出'
-        }
-      },
-      {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/merge-header'),
-        name: 'MergeHeader',
-        meta: {
-          title: 'Merge Header'
-        }
-      },
+      // {
+      //   path: 'export-selected-excel',
+      //   component: () => import('@/views/excel/select-excel'),
+      //   name: 'SelectExcel',
+      //   meta: {
+      //     title: '选择导出'
+      //   }
+      // },
+      // {
+      //   path: 'export-merge-header',
+      //   component: () => import('@/views/excel/merge-header'),
+      //   name: 'MergeHeader',
+      //   meta: {
+      //     title: 'Merge Header'
+      //   }
+      // },
       {
         path: 'upload-excel',
         component: () => import('@/views/excel/upload-excel'),
         name: 'UploadExcel',
         meta: {
-          title: '上传Excel'
+          title: '上传月度电表读数Excel'
         }
       }
     ]
