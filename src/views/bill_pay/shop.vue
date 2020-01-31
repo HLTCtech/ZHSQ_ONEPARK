@@ -22,7 +22,7 @@
       style="width: 100%;"
     >
       <!-- id列（包含排序功能）根据prop得到id -->
-      <el-table-column label="序号" prop="id" align="center" width="200">
+      <el-table-column label="ID" prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -45,8 +45,9 @@
 
       <el-table-column label="费用状态" width="200px" align="center">
         <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">123
-            {{ row.status }}
+          <el-tag :type="row.status | statusFilter" class="link-type" @click="handleFetchPv(row.pageviews)">
+            {{ row.shopArea }}
+            <!-- 需要显示的具体字段变量写在上方引号中 -->
           </el-tag>
         </template>
       </el-table-column>
@@ -90,8 +91,8 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 转预存、费用收缴---弹出的模态框定义   -->
-    <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
         <el-form-item label="收费类型" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="请选择">
             <el-option v-for="item in YuCun_TypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
@@ -120,9 +121,9 @@
           提交
         </el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
 
-    <!-- <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
         <el-table-column prop="pv" label="Pv" />
@@ -130,12 +131,12 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchShopList } from '@/api/shop_moneyGet'
+import { fetchShopList, fetchPreViewMoney } from '@/api/shop_moneyGet'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -175,9 +176,13 @@ export default {
     return {
       list: null,
       listLoading: true,
+      total: 0,
       listQuery: {
+        page: 1,
+        limit: 20,
         lou_num: undefined,
-        fangjian_num: undefined
+        fangjian_num: undefined,
+        sort: '+id'
       },
       // 定义顶部搜索框的选择字段
       lou_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
@@ -206,28 +211,38 @@ export default {
         create: 'Create',
         money: '费用收缴'
       },
-      YuCun_TypeOptions
+      YuCun_TypeOptions,
+      // 预存费用选择列表声明
+      pvData: [],
+      dialogPvVisible: false,
+      // 定义模态框需要选择填写的必要字段
+      rules: {
+        type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+      }
     }
   },
   created() {
     this.getList()
-    console.log('11111111111111111111111111111111111')
+    // console.log('11111111111111111111111111111111111')
   },
   methods: {
     getList() {
       // debugger
-      console.log('2222222222222222222222222222')
-      // this.listLoading = true
+      // console.log('2222222222222222222222222222')
+      this.listLoading = true
       fetchShopList(this.listQuery).then(response => {
         // debugger
-        console.log('33333333333333333333333333333333')
+        // console.log('33333333333333333333333333333333')
         this.list = response.data.items
+        this.total = response.data.total
       })
     },
     handleFilter() {
       // 搜索功能调用
-      // this.listQuery.page = 1
-      console.log(this.listQuery)
+      this.listQuery.page = 1
+      // console.log(this.listQuery)
       this.getList()
     },
     handleUpdate(row) {
@@ -249,21 +264,29 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-    }
-    // sortChange(data) {
-    //   const { prop, order } = data
-    //   if (prop === 'id') {
-    //     this.sortByID(order)
-    //   }
-    // },
-    // sortByID(order) {
-    //   if (order === 'ascending') {
-    //     this.listQuery.sort = '+id'
-    //   } else {
-    //     this.listQuery.sort = '-id'
-    //   }
-    //   this.handleFilter()
-    // },
+    },
+    handleFetchPv(pv) {
+      // 定义具体费用字段的弹出模态框
+      fetchPreViewMoney(pv).then(response => {
+        this.pvData = response.data.pvData
+        this.dialogPvVisible = true
+      })
+    },
+    sortChange(data) {
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      // 排序实现
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
     // resetTemp() {
     //   this.temp = {
     //     id: undefined,
@@ -279,14 +302,14 @@ export default {
     //     }
     //   }))
     // }
-    // getSortClass: function(key) {
-    //   const sort = this.listQuery.sort
-    //   return sort === `+${key}`
-    //     ? 'ascending'
-    //     : sort === `-${key}`
-    //       ? 'descending'
-    //       : ''
-    // }
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}`
+        ? 'ascending'
+        : sort === `-${key}`
+          ? 'descending'
+          : ''
+    }
   }
 }
 </script>

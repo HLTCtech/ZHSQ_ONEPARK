@@ -28,7 +28,7 @@
       style="width: 100%;"
     >
       <!-- id列（包含排序功能）根据prop得到id -->
-      <el-table-column label="序号" prop="id" align="center" width="200">
+      <el-table-column label="ID" prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -230,11 +230,9 @@ export default {
   },
   methods: {
     getList() {
-      debugger
       console.log('2222222222222222')
       // this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        debugger
         // const arr = []
         // for (const i in response.data.items) {
         //   arr.push(response.data.items[i])

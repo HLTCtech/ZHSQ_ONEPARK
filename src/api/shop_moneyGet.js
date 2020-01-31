@@ -18,13 +18,14 @@ export function fetchArticle(id) {
   })
 }
 
-// export function fetchPv(pv) {
-//   return request({
-//     url: '/article/pv',
-//     method: 'get',
-//     params: { pv }
-//   })
-// }
+// 具体费用详情的弹出模态框
+export function fetchPreViewMoney(pv) {
+  return request({
+    url: '/shop/pv',
+    method: 'get',
+    params: { pv }
+  })
+}
 
 // export function createArticle(data) {
 //   return request({

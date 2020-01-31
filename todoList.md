@@ -12,3 +12,8 @@
 5，house.vue中模态框部分有一个rules字段定义，house中没有返回但是complex-table中有
 6，house.vue中添加分页
 7，shop.vue两个按钮修改
+
+2020.1.31
+1，fix掉rules报错
+2，对比复杂表格中methods中函数，在shop中添加上功能
+3，针对收费模态框不同的必要字段设置rules
