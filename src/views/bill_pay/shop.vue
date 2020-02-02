@@ -47,7 +47,7 @@
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter" class="link-type" @click="handleFetchPv(row.pageviews)">
             {{ row.shopArea }}
-            <!-- 需要显示的具体字段变量写在上方引号中 -->
+            <!-- 需要显示的具体字段变量写在上方引号中、具体费用状态字段待开发-->
           </el-tag>
         </template>
       </el-table-column>
@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column label="物业费" class-name="status-col" width="100">
         <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">123
+          <el-tag :type="row.status | statusFilter" class="link-type" @click="handleFetchPv(row.pageviews)">
             {{ row.status }}
           </el-tag>
         </template>
