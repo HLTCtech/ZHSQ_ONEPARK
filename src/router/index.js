@@ -76,30 +76,107 @@ export const constantRoutes = [
     ]
   },
   {
-    // 费用收缴端口
-    path: '/pay',
+    // 住宅费用收缴端口
+    path: '/pay/house',
     component: Layout,
     // redirect: '/pay',
-    name: 'pay',
+    name: 'pay_house',
     meta: {
-      title: '费用收缴',
+      title: '费用收缴--住宅',
       icon: 'money'
     },
     children: [
       {
-        path: 'house_pay',
-        component: () => import('@/views/bill_pay/house'),
-        name: 'house',
+        path: 'electric',
+        component: () => import('@/views/bill_pay/house/electric'),
+        name: 'electric',
         meta: {
-          title: '住宅'
+          title: '电费'
         }
       },
       {
-        path: 'shop_pay',
-        component: () => import('@/views/bill_pay/shop'),
-        name: 'shop',
+        path: 'property',
+        component: () => import('@/views/bill_pay/shop'), // 测试用shop组件
+        name: 'property',
         meta: {
-          title: '商铺'
+          title: '物业费'
+        }
+      },
+      {
+        path: 'car',
+        component: () => import('@/views/bill_pay/house/car'),
+        name: 'car',
+        meta: {
+          title: '停车场管理费'
+        }
+      },
+      {
+        path: 'heat',
+        component: () => import('@/views/bill_pay/house/heat'),
+        name: 'heat',
+        meta: {
+          title: '暖气费'
+        }
+      },
+      {
+        path: 'card',
+        component: () => import('@/views/bill_pay/house/card'),
+        name: 'card',
+        meta: {
+          title: '智能卡工本费'
+        }
+      }
+    ]
+  },
+  {
+    // 商铺费用收缴端口
+    path: '/pay/shop',
+    component: Layout,
+    // redirect: '/pay',
+    name: 'pay_shop',
+    meta: {
+      title: '费用收缴--商铺',
+      icon: 'money'
+    },
+    children: [
+      {
+        path: 'electric',
+        component: () => import('@/views/bill_pay/shop/electric'),
+        name: 'electric',
+        meta: {
+          title: '电费'
+        }
+      },
+      {
+        path: 'property',
+        component: () => import('@/views/bill_pay/shop/property'),
+        name: 'property',
+        meta: {
+          title: '物业费'
+        }
+      },
+      {
+        path: 'car',
+        component: () => import('@/views/bill_pay/shop/car'),
+        name: 'car',
+        meta: {
+          title: '停车场管理费'
+        }
+      },
+      {
+        path: 'heat',
+        component: () => import('@/views/bill_pay/shop/heat'),
+        name: 'heat',
+        meta: {
+          title: '暖气费'
+        }
+      },
+      {
+        path: 'card',
+        component: () => import('@/views/bill_pay/shop/card'),
+        name: 'card',
+        meta: {
+          title: '智能卡工本费'
         }
       }
     ]

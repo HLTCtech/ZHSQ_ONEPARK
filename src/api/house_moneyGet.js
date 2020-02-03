@@ -3,7 +3,15 @@ import request from '@/utils/request'
 // 通过id（房间号）来查找具体信息
 export function fetchList(query) {
   return request({
-    url: '/house/list',
+    url: '/house/pay/electric',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchTitle(query) {
+  return request({
+    url: '/house/title_list',
     method: 'get',
     params: query
   })
