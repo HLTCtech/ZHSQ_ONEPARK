@@ -24,25 +24,36 @@
     <el-table highlight-current-row border fit :data="tableColumns" style="width: 100%">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name">
         <template slot-scope="scope">
-          <span>{{ scope.row[scope.column.property] }}</span>
+          <el-tag class="link-type" @click="handleFetchPv($event)">
+            {{ scope.row[scope.column.property] }}
+          </el-tag>
         </template>
       </el-table-column>
     </el-table>
 
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pv" label="Pv" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/house_moneyGet'
+import { fetchList, fetchPreViewMoney } from '@/api/house_moneyGet'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'BillPay',
-  components: { Pagination },
+  // components: { Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -71,7 +82,23 @@ export default {
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
       // 声明下通过api变量
       titleData: undefined,
-      tableColumns: undefined
+      tableColumns: undefined,
+      // 定义模态框显示与否
+      dialogFormVisible: false,
+      dialogStatus: '',
+      temp: {
+        // 模态框字段定义
+        id: undefined,
+        importance: 1,
+        remark: '',
+        moneyNum_get: '',
+        timestamp: new Date(),
+        title: '',
+        type: '',
+        status: 'published'
+      },
+      pvData: [],
+      dialogPvVisible: false
     }
   },
   created() {
@@ -112,6 +139,13 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleFetchPv(pv) {
+      // 定义具体费用字段的弹出模态框
+      fetchPreViewMoney(pv).then(response => {
+        this.pvData = response.data.pvData
+        this.dialogPvVisible = true
       })
     }
     // sortChange(data) {

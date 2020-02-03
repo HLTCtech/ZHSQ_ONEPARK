@@ -17,6 +17,15 @@ export function fetchTitle(query) {
   })
 }
 
+// 具体费用详情的弹出模态框
+export function fetchPreViewMoney(pv) {
+  return request({
+    url: '/shop/pv',
+    method: 'get',
+    params: { pv }
+  })
+}
+
 // 下面为article.js中代码，暂未针对具体业务进行修改
 // export function fetchArticle(id) {
 //   return request({
