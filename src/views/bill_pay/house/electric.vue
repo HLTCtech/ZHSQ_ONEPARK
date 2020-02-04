@@ -15,20 +15,32 @@
       <el-select v-model="listQuery.fangjian_num" placeholder="房间号" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <!-- 时间选择器 -->
+      <el-date-picker
+        v-model="date_picker"
+        class="filter-item"
+        type="daterange"
+        align="right"
+        unlink-panels
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :picker-options="pickerOptions"
+      />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row border fit :data="tableColumns" style="width: 100%">
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name">
         <template slot-scope="scope">
           <!-- <el-tag @click="handleFetchPv($event)">
             {{ scope.row[scope.column.property] }}
           </el-tag> -->
           <!-- <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span> -->
-          <span class="link-type" @click="handleFetchPv(scope.column.label, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
+          <span class="link-type" @click="handleFetchPv(scope.column.property, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -78,9 +90,9 @@ export default {
         fangjian_num: undefined
       },
       // 定义顶部搜索框的选择字段
-      lou_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
-      danyuan_numOptions: ['1', '2', '3'],
-      floor_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+      lou_numOptions: ['1号楼', '2号楼', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+      danyuan_numOptions: ['1单元', '2', '3'],
+      floor_numOptions: ['1楼', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
       // 声明下通过api变量
       titleData: [],
@@ -100,7 +112,36 @@ export default {
         status: 'published'
       },
       pvData: [],
-      dialogPvVisible: false
+      dialogPvVisible: false,
+      // 时间选择器返回数据
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
+      date_picker: ''
     }
   },
   created() {

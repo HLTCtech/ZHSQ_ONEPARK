@@ -14,25 +14,27 @@
       </el-button>
     </div>
 
+    <!-- 定义height=1000固定表头，后续根据适配修改 -->
     <el-table
       :data="list"
       border
+      height="1000"
       fit
       highlight-current-row
       style="width: 100%;"
     >
       <!-- id列（包含排序功能）根据prop得到id -->
-      <el-table-column label="ID" prop="id" align="center" width="80">
+      <el-table-column label="ID" fixed prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="房号" width="200px" align="center">
+      <el-table-column label="房号" fixed width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.shopId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="业主姓名" width="200px" align="center">
+      <el-table-column label="业主姓名" fixed width="200px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.shopOwner }}</span>
         </template>
