@@ -28,7 +28,7 @@
             {{ scope.row[scope.column.property] }}
           </el-tag> -->
           <!-- <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span> -->
-          <span class="link-type" @click="handleFetchPv($event.currentTarget.innerHTML)">{{ scope.row[scope.column.property] }}</span>
+          <span class="link-type" @click="handleFetchPv(scope.column.label, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -83,8 +83,8 @@ export default {
       floor_numOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
       // 声明下通过api变量
-      titleData: undefined,
-      tableColumns: undefined,
+      titleData: [],
+      tableColumns: [],
       // 定义模态框显示与否
       dialogFormVisible: false,
       dialogStatus: '',
@@ -143,11 +143,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleFetchPv(pv) {
+    handleFetchPv(pv, hosueId) {
       // 定义具体费用字段的弹出模态框
-      console.log('pv----' + pv)
-      console.log('currentTarget-----' + pv.currentTarget)
-      fetchPreViewMoney(pv).then(response => {
+      console.log(pv, hosueId)
+      //   console.log('currentTarget-----' + pv.currentTarget)
+      fetchPreViewMoney(pv, hosueId).then(response => {
         this.pvData = response.data.pvData
         this.dialogPvVisible = true
       })

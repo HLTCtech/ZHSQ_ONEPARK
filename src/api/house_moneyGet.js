@@ -18,7 +18,7 @@ export function fetchTitle(query) {
 }
 
 // 具体费用详情的弹出模态框
-export function fetchPreViewMoney(pv) {
+export function fetchPreViewMoney(pv, houseId) {
   return request({
     url: '/shop/pv',
     method: 'get',
