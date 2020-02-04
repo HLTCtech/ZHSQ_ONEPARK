@@ -27,8 +27,8 @@
           <!-- <el-tag @click="handleFetchPv($event)">
             {{ scope.row[scope.column.property] }}
           </el-tag> -->
-          <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span>
-          <span v-else>0</span>
+          <!-- <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span> -->
+          <span class="link-type" @click="handleFetchPv($event.currentTarget.innerHTML)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -145,7 +145,8 @@ export default {
     },
     handleFetchPv(pv) {
       // 定义具体费用字段的弹出模态框
-      console.log(pv)
+      console.log('pv----' + pv)
+      console.log('currentTarget-----' + pv.currentTarget)
       fetchPreViewMoney(pv).then(response => {
         this.pvData = response.data.pvData
         this.dialogPvVisible = true
