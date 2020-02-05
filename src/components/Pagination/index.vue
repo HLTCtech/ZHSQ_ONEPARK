@@ -38,9 +38,10 @@ export default {
         return [10, 20, 30, 50]
       }
     },
+    // 在layout中去掉sizes字段，取消选择每页条数功能
     layout: {
       type: String,
-      default: 'total, sizes, prev, pager, next, jumper'
+      default: 'total, prev, pager, next, jumper'
     },
     background: {
       type: Boolean,

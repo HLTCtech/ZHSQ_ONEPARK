@@ -1,28 +1,38 @@
 import request from '@/utils/request'
 
-// 通过id（房间号）来查找具体信息
-export function fetchList(query) {
+// 查询所有的住宅信息
+export function housePay_fetchListAll(query) {
   return request({
-    url: '/house/pay/electric',
+    url: '/house/pay/electric/all',
     method: 'get',
     params: query
   })
 }
 
-export function fetchTitle(query) {
+// 根据选定字段查询指定的住宅信息
+export function housePay_fetchSearch(query) {
   return request({
-    url: '/house/title_list',
+    url: '/house/pay/electric/search',
     method: 'get',
-    params: query
+    params: { query }
   })
 }
 
-// 具体费用详情的弹出模态框
-export function fetchPreViewMoney(pv, houseId) {
+// 指定房号--所有的具体费用详情的弹出模态框
+export function housePay_fetchPreView_all(houseId) {
   return request({
-    url: '/shop/pv',
+    url: '/house/pay/electric/pv/all',
     method: 'get',
-    params: { pv }
+    params: { houseId }
+  })
+}
+
+// 指定月份--具体费用详情的弹出模态框
+export function housePay_fetchPreView_single(pv, houseId) {
+  return request({
+    url: '/house/pay/electric/pv/single',
+    method: 'get',
+    params: { pv, houseId }
   })
 }
 
