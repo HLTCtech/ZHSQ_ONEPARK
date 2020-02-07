@@ -69,7 +69,7 @@
 
     <!-- 费用收缴按钮的模态框 -->
     <el-dialog :visible.sync="dialogMoneyGetFormVisible" title="费用收缴">
-      <!-- 先展示当前房间的费用状态统计 -->
+      <!-- 展示当前房间的费用状态统计 -->
       <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="houseId" label="房间号" />
         <el-table-column prop="shallPayAll" label="应收金额总计" />
@@ -101,7 +101,10 @@
       </el-table>
 
       <!-- 定义表单提交项 -->
-      <el-form ref="formPost" :model="formPost" label-width="80px">
+      <el-form ref="dataForm" :model="formPost" :data="pvData_all" label-width="80px">
+        <el-form-item label="房间号" prop="houseId">
+          <el-input v-model="formPost.houseId" disabled />
+        </el-form-item>
         <el-form-item label="缴费周期">
           <el-col :span="11">
             <el-date-picker v-model="formPost.date1" type="date" placeholder="选择日期" style="width: 100%;" />
@@ -133,7 +136,7 @@
           </el-button>
         </div> -->
         <el-form-item>
-          <el-button type="primary" @click="handleSubmitForm(formPost, houseId)">提交</el-button>
+          <el-button type="primary" @click="handleSubmitForm(formPost)">提交</el-button>
           <el-button @click="dialogMoneyGetFormVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
@@ -236,6 +239,7 @@ export default {
       },
       // 定义表单提交项具体项目
       formPost: {
+        houseId: '',
         date1: '',
         date2: '',
         moneyNum: '',
@@ -352,7 +356,7 @@ export default {
     //     this.$refs['dataForm'].clearValidate()
     //   })
       // 访问获取费用状态统计信息的接口
-      this.dialogMoneyGetCheckBoxVisible = false
+      // this.dialogMoneyGetCheckBoxVisible = false
       fetchPreViewAll(houseId).then(response => {
         this.pvData_all = response.data.pvData
       })
