@@ -26,6 +26,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         :picker-options="pickerOptions"
+        value-format="yyyy-MM-dd"
       />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -78,6 +79,7 @@
         <el-table-column prop="notPayAll" label="未缴金额总计" align="center" />
       </el-table>
       <br>
+      <!-- 具体月度读数等信息的弹出框 -->
       <el-popover placement="right" width="400" trigger="click">
         <el-table :data="pvData_details">
           <el-table-column label="日期" prop="date" align="center">
@@ -101,35 +103,54 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button slot="reference">查看月度费用详情</el-button>
+        <el-button slot="reference" type="primary">查看月度费用详情</el-button>
       </el-popover>
 
       <!-- 定义表单提交项 -->
       <el-card class="box-card">
-        <el-form ref="dataForm" :model="formPost" label-width="80px">
+        <el-form ref="dataForm" :rules="formRules" :model="formPost" label-width="80px">
           <el-form-item label="房间号" prop="houseId">
             <el-input v-model="formPost.houseId" disabled />
           </el-form-item>
-          <el-form-item label="缴费周期">
-            <el-col :span="11">
-              <el-date-picker v-model="formPost.date1" type="date" placeholder="选择日期" style="width: 100%;" />
+          <el-form-item label="缴费周期" required>
+            <!-- <el-col :span="11">
+              <el-form-item prop="date1">
+                <el-date-picker v-model="formPost.date1" type="date" placeholder="请选择日期" style="width: 100%;" />
+              </el-form-item>
             </el-col>
             <el-col class="line" :span="2">---</el-col>
             <el-col :span="11">
-              <el-date-picker v-model="formPost.date2" type="date" placeholder="选择日期" style="width: 100%;" />
-            </el-col>
+              <el-form-item prop="date2">
+                <el-date-picker v-model="formPost.date2" type="date" placeholder="请选择日期" style="width: 100%;" />
+              </el-form-item>
+            </el-col> -->
+            <el-form-item prop="dateRange">
+              <el-date-picker
+                v-model="formPost.dateRange"
+                class="filter-item"
+                type="daterange"
+                align="left"
+                unlink-panels
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+                validate-event
+                required
+              />
+            </el-form-item>
           </el-form-item>
-          <el-form-item label="缴费金额">
-            <el-input v-model="formPost.moneyNum" width="100px" />
+          <el-form-item label="缴费金额" prop="moneyNum" autocomplete="off">
+            <el-input v-model.number="formPost.moneyNum" width="100px" />
           </el-form-item>
-          <el-form-item label="缴款方式">
+          <el-form-item label="缴款方式" prop="payType" required>
             <el-radio-group v-model="formPost.payType">
               <el-radio label="支付宝" />
               <el-radio label="微信" />
               <el-radio label="现金" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="备注">
+          <el-form-item label="备注" prop="remark">
             <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
           <!-- <div slot="footer" class="dialog-footer">
@@ -141,8 +162,8 @@
           </el-button>
         </div> -->
           <el-form-item>
-            <el-button type="primary" @click="handleSubmitForm(formPost)">提交</el-button>
-            <el-button @click="dialogMoneyGetFormVisible = false">取消</el-button>
+            <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
+            <el-button @click="handleCleanDataForm()">取消</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -211,7 +232,7 @@
 </template>
 
 <script>
-import { fetchListAll, fetchSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney } from '@/api/house_moneyGet'
+import { fetchListAll, fetchSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId } from '@/api/house_moneyGet'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -246,11 +267,18 @@ export default {
       // 定义表单提交项具体项目
       formPost: {
         houseId: undefined,
-        date1: '',
-        date2: '',
+        dateRange: '',
         moneyNum: '',
         payType: '',
         remark: ''
+      },
+      // 定义表单提交项目规则
+      formRules: {
+        // date1: [{ required: true, message: '请选择时间周期起始日期', type: 'date', trigger: 'change' }],
+        // date2: [{ required: true, message: '请选择时间周期终点日期', type: 'date', trigger: 'change' }],
+        dateRange: [{ required: true, message: '请选择时间周期' }],
+        moneyNum: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
+        payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
       },
       listQuery_all: {
         page: 1
@@ -401,30 +429,50 @@ export default {
       })
     },
     handleSubmitForm(formPost) {
-      console.log('formPost-----')
-      console.log(formPost)
-      postMoney(formPost).then(response => {
-        if (response.codeStatus === 200) {
-          this.$notify({
-            title: 'Success',
-            message: '提交成功',
-            type: 'success',
-            duration: 2000
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          console.log('formPost-----')
+          console.log(formPost)
+          postMoney(formPost).then(response => {
+            if (response.codeStatus === 200) {
+              this.$notify({
+                title: 'Success',
+                message: '提交成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.dialogMoneyGetFormVisible = false
+              this.$nextTick(() => {
+                this.$refs['dataForm'].resetFields()
+              })
+              // 逻辑可能存在问题，比如id如何传到页面上
+              // 暂未测试
+              // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+              fetchSearchByHouseId(formPost.houseId).then(response => {
+                this.titleData = response.data.titles
+                this.tableColumns = response.data.items
+              })
+            } else {
+              this.$notify({
+                title: 'Failure',
+                message: '提交失败，请联系系统管理员',
+                type: 'error',
+                duration: 3000
+              })
+            }
           })
-        } else {
-          this.$notify({
-            title: 'Failure',
-            message: '提交失败，请联系系统管理员',
-            type: 'error',
-            duration: 2000
-          })
+        //   this.dialogMoneyGetFormVisible = false
+        //   this.$nextTick(() => {
+        //     this.$refs['dataForm'].resetFields()
+        //   })
         }
       })
+    },
+    handleCleanDataForm() {
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
+      })
       this.dialogMoneyGetFormVisible = false
-    //   this.$nextTick(() => {
-    //     // this.$refs['dataform'].clearValidate()
-    //     this.$refs['dataform'].resetFields()
-    //   })
     }
     // sortChange(data) {
     //   const { prop, order } = data

@@ -18,6 +18,15 @@ export function fetchSearch(query) {
   })
 }
 
+// 根据选定字段查询指定的住宅信息
+export function fetchSearchByHouseId(houseId) {
+  return request({
+    url: '/house/pay/electric/search/id',
+    method: 'get',
+    params: { houseId }
+  })
+}
+
 // 指定房号--所有的具体费用详情的弹出模态框
 export function fetchPreViewAll(houseId) {
   return request({
