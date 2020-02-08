@@ -33,17 +33,17 @@
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%">
-      <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name">
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
+      <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
           <!-- <el-tag @click="handleFetchPv($event)">
             {{ scope.row[scope.column.property] }}
           </el-tag> -->
           <!-- <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span> -->
-          <span v-if="scope.column.property=='houseId'">{{ scope.row[scope.column.property] }}</span>
+          <span v-if="scope.column.property=='houseId'" align="center">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='pay_status'" class="link-type" @click="handleFetchPv_all(scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
+          <span v-else-if="scope.column.property=='payStatus'" class="link-type" @click="handleFetchPv_all(scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
           <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
@@ -70,64 +70,69 @@
     <!-- 费用收缴按钮的模态框 -->
     <el-dialog :visible.sync="dialogMoneyGetFormVisible" title="费用收缴">
       <!-- 展示当前房间的费用状态统计 -->
-      <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="houseId" label="房间号" />
-        <el-table-column prop="shallPayAll" label="应收金额总计" />
-        <el-table-column prop="receivedPayAll" label="实收金额总计" />
-        <el-table-column prop="notPayAll" label="未缴金额总计" />
+      <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%" align="center">
+        <el-table-column prop="houseId" label="房间号" align="center" />
+        <el-table-column prop="prestore" label="预存余额" align="center" />
+        <el-table-column prop="shallPayAll" label="应收金额总计" align="center" />
+        <el-table-column prop="receivedPayAll" label="实收金额总计" align="center" />
+        <el-table-column prop="notPayAll" label="未缴金额总计" align="center" />
       </el-table>
-      <!-- 展示月度费用状态详情 -->
-      <el-table :data="pvData_details" :visible.sync="dialogMoneyGetCheckBoxVisible" tooltip-effect="dark" style="width: 100%">
-        <el-table-column label="日期" prop="date" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.date }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="读数" prop="meterReading" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.meterReading }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="应收" prop="shallPay" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.shallPay }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="未收" prop="notPay" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.notPay }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+      <br>
+      <el-popover placement="right" width="400" trigger="click">
+        <el-table :data="pvData_details">
+          <el-table-column label="日期" prop="date" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.date }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="读数" prop="meterReading" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.meterReading }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="应收" prop="shallPay" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.shallPay }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="未收" prop="notPay" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.notPay }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button slot="reference">查看月度费用详情</el-button>
+      </el-popover>
 
       <!-- 定义表单提交项 -->
-      <el-form ref="dataForm" :model="formPost" :data="pvData_all" label-width="80px">
-        <el-form-item label="房间号" prop="houseId">
-          <el-input v-model="formPost.houseId" disabled />
-        </el-form-item>
-        <el-form-item label="缴费周期">
-          <el-col :span="11">
-            <el-date-picker v-model="formPost.date1" type="date" placeholder="选择日期" style="width: 100%;" />
-          </el-col>
-          <el-col class="line" :span="2">---</el-col>
-          <el-col :span="11">
-            <el-date-picker v-model="formPost.date2" type="date" placeholder="选择日期" style="width: 100%;" />
-          </el-col>
-        </el-form-item>
-        <el-form-item label="缴费金额">
-          <el-input v-model="formPost.moneyNum" width="100px" />
-        </el-form-item>
-        <el-form-item label="缴款方式">
-          <el-radio-group v-model="formPost.payType">
-            <el-radio label="支付宝" />
-            <el-radio label="微信" />
-            <el-radio label="现金" />
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
-        </el-form-item>
-        <!-- <div slot="footer" class="dialog-footer">
+      <el-card class="box-card">
+        <el-form ref="dataForm" :model="formPost" label-width="80px">
+          <el-form-item label="房间号" prop="houseId">
+            <el-input v-model="formPost.houseId" disabled />
+          </el-form-item>
+          <el-form-item label="缴费周期">
+            <el-col :span="11">
+              <el-date-picker v-model="formPost.date1" type="date" placeholder="选择日期" style="width: 100%;" />
+            </el-col>
+            <el-col class="line" :span="2">---</el-col>
+            <el-col :span="11">
+              <el-date-picker v-model="formPost.date2" type="date" placeholder="选择日期" style="width: 100%;" />
+            </el-col>
+          </el-form-item>
+          <el-form-item label="缴费金额">
+            <el-input v-model="formPost.moneyNum" width="100px" />
+          </el-form-item>
+          <el-form-item label="缴款方式">
+            <el-radio-group v-model="formPost.payType">
+              <el-radio label="支付宝" />
+              <el-radio label="微信" />
+              <el-radio label="现金" />
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+          </el-form-item>
+          <!-- <div slot="footer" class="dialog-footer">
           <el-button @click="dialogMoneyGetFormVisible = false">
             Cancel
           </el-button>
@@ -135,16 +140,17 @@
             Confirm
           </el-button>
         </div> -->
-        <el-form-item>
-          <el-button type="primary" @click="handleSubmitForm(formPost)">提交</el-button>
-          <el-button @click="dialogMoneyGetFormVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+          <el-form-item>
+            <el-button type="primary" @click="handleSubmitForm(formPost)">提交</el-button>
+            <el-button @click="dialogMoneyGetFormVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
     </el-dialog>
 
     <!-- 月度费用状态详情模态框 -->
     <el-dialog :visible.sync="dialogPvVisibleDetailByMonth" title="所有的费用详情">
-      <el-table :data="pvData_details" :visible.sync="dialogMoneyGetCheckBoxVisible" tooltip-effect="dark" style="width: 100%">
+      <el-table :data="pvData_details" tooltip-effect="dark" style="width: 100%">
         <el-table-column label="年/月" prop="date" align="center">
           <template slot-scope="{row}">
             <span>{{ row.date }}</span>
@@ -239,7 +245,7 @@ export default {
       },
       // 定义表单提交项具体项目
       formPost: {
-        houseId: '',
+        houseId: undefined,
         date1: '',
         date2: '',
         moneyNum: '',
@@ -261,7 +267,6 @@ export default {
       dialogMoneyGetFormVisible: false,
       dialogFormVisible: false,
       dialogPvVisibleDetailByMonth: false,
-      dialogMoneyGetCheckBoxVisible: false,
       dialogStatus: '',
       temp: {
         // 费用收缴模态框字段定义
@@ -348,22 +353,14 @@ export default {
     // },
     // 收费按钮绑定的处理事件
     handleMoneyGet(houseId) {
-    //   this.temp = Object.assign({}, row) // Object.assign方法将所有可枚举属性的值从一个或多个源对象复制到目标对象，返回目标对象
-    //   // this.temp.timestamp = new Date(this.temp.timestamp)
-    //   this.dialogStatus = 'money' // dialogStatus具体状态，并根据此变量进行不同内容的显示，暂时现将“转预存”按钮定义为update，其对应的文本在textMap定义
-    //   this.dialogFormVisible = true
-    //   this.$nextTick(() => {
-    //     this.$refs['dataForm'].clearValidate()
-    //   })
-      // 访问获取费用状态统计信息的接口
-      // this.dialogMoneyGetCheckBoxVisible = false
+      this.formPost.houseId = houseId
+      console.log(this.formPost.houseId)
       fetchPreViewAll(houseId).then(response => {
         this.pvData_all = response.data.pvData
       })
       // 访问获取具体每月的电表读数等费用信息
       fetchAllDetailByMonth(houseId).then(response => {
         this.pvData_details = response.data.items
-        console.log('details---' + response.data.items)
       })
       this.dialogMoneyGetFormVisible = true
     },
@@ -388,8 +385,6 @@ export default {
     // 获取费用状态统计
     handleFetchPv_all(houseId) {
       // 定义具体费用字段的弹出模态框
-      console.log(houseId)
-      //   console.log('currentTarget-----' + pv.currentTarget)
       fetchPreViewAll(houseId).then(response => {
         this.pvData_all = response.data.pvData
         this.dialogPvVisible_all = true
@@ -405,13 +400,11 @@ export default {
         this.dialogPvVisible_single = true
       })
     },
-    handleSubmitForm(formPost, houseId) {
+    handleSubmitForm(formPost) {
       console.log('formPost-----')
-      console.log(houseId)
       console.log(formPost)
-      postMoney(formPost, houseId).then(response => {
-        if (response.code === 200) {
-          this.dialogMoneyGetCheckBoxVisible = false
+      postMoney(formPost).then(response => {
+        if (response.codeStatus === 200) {
           this.$notify({
             title: 'Success',
             message: '提交成功',
@@ -421,12 +414,17 @@ export default {
         } else {
           this.$notify({
             title: 'Failure',
-            message: '提交失败',
-            type: 'danger',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
             duration: 2000
           })
         }
       })
+      this.dialogMoneyGetFormVisible = false
+    //   this.$nextTick(() => {
+    //     // this.$refs['dataform'].clearValidate()
+    //     this.$refs['dataform'].resetFields()
+    //   })
     }
     // sortChange(data) {
     //   const { prop, order } = data
