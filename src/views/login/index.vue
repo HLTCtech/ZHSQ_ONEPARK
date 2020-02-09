@@ -3,25 +3,25 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">财务后台管理登录</h3>
+        <h3 class="title">财务系统后台管理登录</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="userPhone">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="userPhone"
+          v-model="loginForm.userPhone"
+          placeholder="请输入手机号"
+          name="userPhone"
           type="text"
           tabindex="1"
           autocomplete="on"
         />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip v-model="capsTooltip" content="已开启大写" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -31,7 +31,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="Password"
+            placeholder="请输入密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -45,64 +45,88 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
+      <!-- 获取验证码 -->
+      <el-form-item prop="smsCode">
+        <span class="svg-container">
+          <svg-icon icon-class="chat" />
+        </span>
+        <el-input
+          ref="smsCode"
+          v-model="loginForm.smsCode"
+          placeholder="请输入短信验证码"
+          name="smsCode"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+        <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getVerify(loginForm)">
+          <span v-show="show">获取验证码</span>
+          <span v-show="!show" class="count"> {{count}} s</span>
         </el-button>
-      </div>
+      </el-form-item>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+
+      <!-- <div style="position:absolute">
+        <div class="tips">
+          <span>Powered by HuaLongTech</span>
+        </div>
+      </div> -->
     </el-form>
 
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
+// import { validUsername } from '@/utils/validate'
+// import SocialSign from './components/SocialSignin'
+import { getSMS } from '@/api/user'
 
 export default {
   name: 'Login',
-  components: { SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('请输入正确的用户名（也即手机号）'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    const validateUserPhone = (rule, value, callback) => {
+      const phone = value
+      if (!/^1[3456789]\d{9}$/.test(phone)) {
+        callback(new Error('请输入正确的用户名（手机号）'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('请输入正确的密码（不少于6位）'))
+      } else {
+        callback()
+      }
+    }
+    const validateSmsCode = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('请输入正确的验证码（不少于6位）'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        userPhone: '',
+        password: '',
+        smsCode: ''
       },
+      show: true,
+      count: '',
+      timer: null,
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        userPhone: [{ required: true, trigger: 'blur', validator: validateUserPhone }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        smsCode: [{ required: true, trigger: 'blur', validator: validateSmsCode }]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -173,7 +197,7 @@ export default {
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
+          this.$message({ message: '请输入正确的账号密码及验证码', type: 'error' })
           return false
         }
       })
@@ -185,25 +209,47 @@ export default {
         }
         return acc
       }, {})
+    },
+    // 获取验证码
+    getVerify(loginForm) {
+      // 只对表单中的验证码字段进行验证
+      // 使用的是validateField，验证错误，!userPhoneerror是验证正确的操作逻辑
+      this.$refs.loginForm.validateField('userPhone', (userPhoneerror) => {
+        if (!userPhoneerror) {
+          this.$refs.loginForm.validateField('password', (passworderror) => {
+            if (!passworderror) {
+              // 调用获取验证码api
+              getSMS(loginForm).then(response => {
+                if (response.codeStatus === 200) {
+                  this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
+                } else {
+                  this.$message({ message: '提交失败，请联系系统管理员', type: 'error' })
+                }
+              })
+              // 更改获取验证码按钮倒计时
+              const TIME_COUNT = 60 // 更改倒计时时间
+              if (!this.timer) {
+                this.count = TIME_COUNT
+                this.show = false
+                this.timer = setInterval(() => {
+                  if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.count--
+                  } else {
+                    this.show = true
+                    clearInterval(this.timer) // 清除定时器
+                    this.timer = null
+                  }
+                }, 1000)
+              }
+            } else {
+              this.$message({ message: '请输入正确的手机号及密码', type: 'error' })
+            }
+          })
+        } else {
+          this.$message({ message: '请输入正确的手机号及密码', type: 'error' })
+        }
+      })
     }
-    // afterQRScan() {
-    //   if (e.key === 'x-admin-oauth-code') {
-    //     const code = getQueryObject(e.newValue)
-    //     const codeMap = {
-    //       wechat: 'code',
-    //       tencent: 'code'
-    //     }
-    //     const type = codeMap[this.auth_type]
-    //     const codeName = code[type]
-    //     if (codeName) {
-    //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-    //         this.$router.push({ path: this.redirect || '/' })
-    //       })
-    //     } else {
-    //       alert('第三方登录失败')
-    //     }
-    //   }
-    // }
   }
 }
 </script>
@@ -313,6 +359,16 @@ $light_gray:#eee;
     top: 7px;
     font-size: 16px;
     color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .show-sms {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $light_gray;
     cursor: pointer;
     user-select: none;
   }

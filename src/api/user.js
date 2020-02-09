@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login(loginForm) {
   return request({
     url: '/user/login',
     method: 'post',
-    data
+    params: { loginForm }
   })
 }
 
@@ -20,5 +20,13 @@ export function logout() {
   return request({
     url: '/user/logout',
     method: 'post'
+  })
+}
+
+export function getSMS(loginForm) {
+  return request({
+    url: '/user/getSMS',
+    method: 'post',
+    params: { loginForm }
   })
 }
