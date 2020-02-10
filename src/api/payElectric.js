@@ -38,6 +38,26 @@ export function fetchShopSearch(query) {
   })
 }
 
+// 台账--搜索
+// 根据选定字段查询指定的商铺信息
+export function fetchElectricStandingBookSearch(query) {
+  return request({
+    url: '/pay/electric/standingBook/search',
+    method: 'get',
+    params: { query }
+  })
+}
+
+// 台账--list
+// 展示电费台账所有信息
+export function fetchStandingBookListAll(query) {
+  return request({
+    url: '/pay/electric/standingBook/all',
+    method: 'get',
+    params: query
+  })
+}
+
 // 分隔线****************************************************************************
 // 住宅商铺通用api
 // 指定房号--电费状态统计的弹出模态框

@@ -240,7 +240,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'BillPay',
+  name: 'ElectricHousePay',
   components: { Pagination },
   directives: { waves },
   data() {
@@ -274,6 +274,7 @@ export default {
         moneyNum: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
         payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
       },
+      // list接口请求参数
       listQuery_all: {
         page: 1
       },
@@ -282,7 +283,7 @@ export default {
       danyuan_numOptions: ['1单元', '2单元', '3单元'],
       floor_numOptions: ['1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼', '10楼', '11楼', '12楼', '13楼', '14楼', '15楼', '16楼', '17楼', '18楼'],
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
-      // 声明下通过api变量
+      // 声明下api变量
       titleData: [],
       tableColumns: [],
       // 定义模态框显示与否

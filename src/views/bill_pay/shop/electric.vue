@@ -30,7 +30,7 @@
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" fixed>
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
           <!-- <el-tag @click="handleFetchPv($event)">
@@ -238,7 +238,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'BillPay',
+  name: 'ElectricShopPay',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -280,6 +280,7 @@ export default {
         moneyNum: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
         payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
       },
+      // list接口请求参数
       listQuery_all: {
         page: 1
       },
@@ -288,7 +289,7 @@ export default {
       fangjian_numOptions: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115',
         '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '130', '131', '132', '133',
         '134', '135', '136', '137', '138', '139', '140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '150'],
-      // 声明下通过api变量
+      // 声明下api变量
       titleData: [],
       tableColumns: [],
       // 定义模态框显示与否

@@ -239,10 +239,10 @@ export const constantRoutes = [
       },
       {
         path: 'StandingBook_electric',
-        component: () => import('@/views/error-page/401'),
+        component: () => import('@/views/electricManage/standingBook'),
         name: 'property',
         meta: {
-          title: '台账管理'
+          title: '电费台账'
         }
       },
       {
