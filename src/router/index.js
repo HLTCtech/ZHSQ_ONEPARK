@@ -91,15 +91,15 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/electric'),
         name: 'electric',
         meta: {
-          title: '电费'
+          title: '住宅电费'
         }
       },
       {
         path: 'property',
-        component: () => import('@/views/bill_pay/shop'), // 测试用shop组件
+        component: () => import('@/views/bill_pay/house/property'), // 测试用shop组件
         name: 'property',
         meta: {
-          title: '物业费'
+          title: '住宅物业费'
         }
       },
       {
@@ -144,7 +144,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/shop/electric'),
         name: 'electric',
         meta: {
-          title: '电费'
+          title: '商铺电费'
         }
       },
       {
@@ -152,7 +152,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/shop/property'),
         name: 'property',
         meta: {
-          title: '物业费'
+          title: '商铺物业费'
         }
       },
       {

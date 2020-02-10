@@ -40,7 +40,11 @@
           <span v-if="scope.column.property=='houseId'" align="center">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='payStatus'" class="link-type" @click="handleFetchPv_all(scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
+          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId)">
+            <!-- <el-tag :type="scope.column.status === 'yes' ? 'success' : 'danger'" disable-transitions> -->
+            {{ scope.row[scope.column.property] }}
+            <!-- </el-tag> -->
+          </el-tag>
           <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
@@ -280,10 +284,10 @@ export default {
         page: 1
       },
       // 定义顶部搜索框的选择字段
-      lou_numOptions: ['1号楼', '2号楼', '3号楼', '4号楼', '5号楼', '6号楼', '7号楼', '8号楼', '9号楼', '10号楼', '11号楼', '12号楼', '13号楼', '14号楼', '15号楼', '16号楼', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
-      danyuan_numOptions: ['1单元', '2单元', '3单元'],
-      floor_numOptions: ['1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼', '10楼', '11楼', '12楼', '13楼', '14楼', '15楼', '16楼', '17楼', '18楼'],
-      fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
+      lou_numOptions: ['16号楼', '17号楼', '22号楼', '27号楼', '31号楼', '32号楼', '33号楼', '35号楼', '36号楼', '37号楼', '38号楼'],
+      fangjian_numOptions: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115',
+        '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '130', '131', '132', '133',
+        '134', '135', '136', '137', '138', '139', '140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '150'],
       // 声明下通过api变量
       titleData: [],
       tableColumns: [],

@@ -39,14 +39,14 @@
     <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
-          <!-- <el-tag @click="handleFetchPv($event)">
-            {{ scope.row[scope.column.property] }}
-          </el-tag> -->
-          <!-- <span v-if="scope.row.houseId" class="link-type" @click="handleFetchPv(scope.row.id)">{{ scope.row[scope.column.property] }}</span> -->
           <span v-if="scope.column.property=='houseId'" align="center">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='payStatus'" class="link-type" @click="handleFetchPv_all(scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
+          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId)">
+            <!-- <el-tag :type="scope.column.status === 'yes' ? 'success' : 'danger'" disable-transitions> -->
+            {{ scope.row[scope.column.property] }}
+            <!-- </el-tag> -->
+          </el-tag>
           <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
@@ -243,16 +243,6 @@ export default {
   name: 'BillPay',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       listLoading: true,
@@ -357,7 +347,6 @@ export default {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
-        console.log(response.total)
       })
     },
     // 根据选定信息搜索
