@@ -1,45 +1,58 @@
 import request from '@/utils/request'
 
+// 住宅相关api-------------------------------------
 // 查询所有的住宅信息
-export function fetchListAll(query) {
+export function fetchHouseListAll(query) {
   return request({
-    url: '/house/pay/electric/all',
+    url: '/pay/electric/house/all',
     method: 'get',
     params: query
   })
 }
 
 // 根据选定字段查询指定的住宅信息
-export function fetchSearch(query) {
+export function fetchHouseSearch(query) {
   return request({
-    url: '/house/pay/electric/search',
+    url: '/pay/electric/house/search',
     method: 'get',
     params: { query }
   })
 }
 
-// 根据选定字段查询指定的住宅信息
-export function fetchSearchByHouseId(houseId) {
+// 商铺相关api-------------------------------------
+// 查询所有商铺信息
+export function fetchShopListAll(query) {
   return request({
-    url: '/house/pay/electric/search/id',
+    url: '/pay/electric/shop/all',
     method: 'get',
-    params: { houseId }
+    params: query
   })
 }
 
-// 指定房号--所有的具体费用详情的弹出模态框
+// 根据选定字段查询指定的商铺信息
+export function fetchShopSearch(query) {
+  return request({
+    url: '/pay/electric/house/search',
+    method: 'get',
+    params: { query }
+  })
+}
+
+// 分隔线****************************************************************************
+// 住宅商铺通用api
+// 指定房号--电费状态统计的弹出模态框
 export function fetchPreViewAll(houseId) {
   return request({
-    url: '/house/pay/electric/pv/all',
+    url: '/pay/electric/pv/all',
     method: 'get',
     params: { houseId }
   })
 }
 
-// 指定月份--具体费用详情的弹出模态框
+// 指定月份--具体月份费用详情的弹出模态框
 export function fetchPreViewSingle(pv, houseId) {
   return request({
-    url: '/house/pay/electric/pv/single',
+    url: '/pay/electric/pv/single',
     method: 'get',
     params: { pv, houseId }
   })
@@ -48,7 +61,7 @@ export function fetchPreViewSingle(pv, houseId) {
 // 展示所有月份的电表读数及费用信息
 export function fetchAllDetailByMonth(houseId) {
   return request({
-    url: '/house/pay/electric/details',
+    url: '/pay/electric/details',
     method: 'get',
     params: { houseId }
   })
@@ -57,9 +70,18 @@ export function fetchAllDetailByMonth(houseId) {
 // 向后台提交表单（费用收缴）
 export function postMoney(formPost, houseId) {
   return request({
-    url: '/house/pay/electric/moneypost',
+    url: '/pay/electric/moneypost',
     method: 'post',
     params: { formPost, houseId }
+  })
+}
+
+// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
+export function fetchSearchByHouseId(houseId) {
+  return request({
+    url: '/pay/electric/searchById',
+    method: 'get',
+    params: { houseId }
   })
 }
 

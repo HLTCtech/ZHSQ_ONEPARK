@@ -3,18 +3,20 @@
   <div class="app-container">
     <div class="filter-container">
       <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
-      <el-select v-model="listQuery_search.buildingNum" placeholder="楼号" clearable style="width: 90px" class="filter-item">
+      <el-select v-model="listQuery_search.buildingNum" placeholder="选择楼号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.unitNum" placeholder="单元号" clearable style="width: 90px" class="filter-item">
+      <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.floorNum" placeholder="楼层号" clearable style="width: 90px" class="filter-item">
+      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in floor_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.houseNum" placeholder="房间号" clearable style="width: 90px" class="filter-item">
+      <el-select v-model="listQuery_search.houseNum" placeholder="选择房号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
       <el-date-picker
         v-model="listQuery_search.datePicker"
@@ -232,7 +234,7 @@
 </template>
 
 <script>
-import { fetchListAll, fetchSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId } from '@/api/house_moneyGet'
+import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -262,7 +264,9 @@ export default {
         unitNum: undefined,
         floorNum: undefined,
         houseNum: undefined,
-        datePicker: undefined
+        datePicker: undefined,
+        houseId: undefined,
+        houseName: undefined
       },
       // 定义表单提交项具体项目
       formPost: {
@@ -284,9 +288,9 @@ export default {
         page: 1
       },
       // 定义顶部搜索框的选择字段
-      lou_numOptions: ['1号楼', '2号楼', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
-      danyuan_numOptions: ['1单元', '2', '3'],
-      floor_numOptions: ['1楼', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+      lou_numOptions: ['1号楼', '2号楼', '3号楼', '4号楼', '5号楼', '6号楼', '7号楼', '8号楼', '9号楼', '10号楼', '11号楼', '12号楼', '13号楼', '14号楼', '15号楼', '16号楼', '17号楼', '18号楼', '19号楼', '20号楼', '21号楼', '22号楼', '23号楼', '24号楼', '25号楼', '26号楼', '27号楼', '28号楼', '29号楼', '30号楼', '31号楼'],
+      danyuan_numOptions: ['1单元', '2单元', '3单元'],
+      floor_numOptions: ['1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼', '10楼', '11楼', '12楼', '13楼', '14楼', '15楼', '16楼', '17楼', '18楼'],
       fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
       // 声明下通过api变量
       titleData: [],
@@ -349,7 +353,7 @@ export default {
   },
   methods: {
     getList() {
-      fetchListAll(this.listQuery_all).then(response => {
+      fetchHouseListAll(this.listQuery_all).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
@@ -358,7 +362,7 @@ export default {
     },
     // 根据选定信息搜索
     fetchListSearch() {
-      fetchSearch(this.listQuery_search).then(response => {
+      fetchHouseSearch(this.listQuery_search).then(response => {
         // 将api返回值传递到前端变量
         console.log('listQuery----' + this.listQuery)
         this.titleData = response.data.titles
