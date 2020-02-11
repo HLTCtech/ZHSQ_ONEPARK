@@ -25,8 +25,8 @@
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="ID" prop="id" align="center" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed/>
-      <el-table-column label="业主姓名" prop="houseName" align="center" fixed/>
+      <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="房屋状况" prop="houseStatus" align="center" />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="面积" align="center">
@@ -64,6 +64,14 @@
         <el-table-column label="差额" prop="gap" align="center" />
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
+      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+        <template slot-scope="{row}">
+          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
+          <el-button type="primary" size="mini" @click="handleMoneyGet(row)">
+            收缴
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <!-- 分页功能实现标签 -->
