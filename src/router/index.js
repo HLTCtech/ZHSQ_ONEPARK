@@ -230,25 +230,17 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'bill_electric',
-        component: () => import('@/views/error-page/401'),
-        name: 'electric',
-        meta: {
-          title: '费用收缴'
-        }
-      },
-      {
         path: 'StandingBook_electric',
         component: () => import('@/views/electricManage/standingBook'),
-        name: 'property',
+        name: 'electricStandingbook',
         meta: {
           title: '电费台账'
         }
       },
       {
-        path: 'notice',
-        component: () => import('@/views/error-page/401'),
-        name: 'parking',
+        path: 'notification',
+        component: () => import('@/views/electricManage/notification'),
+        name: 'electricNotification',
         meta: {
           title: '电费通知单'
         }

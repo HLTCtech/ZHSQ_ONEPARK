@@ -39,7 +39,7 @@ export function fetchShopSearch(query) {
 }
 
 // 台账--搜索
-// 根据选定字段查询指定的商铺信息
+// 根据选定字段查询指定的台账信息
 export function fetchElectricStandingBookSearch(query) {
   return request({
     url: '/pay/electric/standingBook/search',
@@ -53,6 +53,26 @@ export function fetchElectricStandingBookSearch(query) {
 export function fetchStandingBookListAll(query) {
   return request({
     url: '/pay/electric/standingBook/all',
+    method: 'get',
+    params: query
+  })
+}
+
+// 通知单--搜索
+// 根据选定字段查询指定的通知单信息
+export function fetchElectricNotificationSearch(query) {
+  return request({
+    url: '/pay/electric/notification/search',
+    method: 'get',
+    params: { query }
+  })
+}
+
+// 通知单--list
+// 展示电费通知单所有信息
+export function fetchNotificationListAll(query) {
+  return request({
+    url: '/pay/electric/notification/all',
     method: 'get',
     params: query
   })
