@@ -27,12 +27,19 @@
 
     <!-- 表格 -->
     <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
-      <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center" height="250px">
+      <!-- 左侧固定列 -->
+      <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
+      <el-table-column fixed prop="houseId" label="房号" width="80" align="center" />
+      <el-table-column fixed prop="houseName" label="业主姓名" width="80" align="center" />
+      <!-- 右侧固定列 -->
+      <el-table-column fixed="right" prop="shallPayAll" label="应交合计" width="80" align="center" />
+      <el-table-column fixed="right" prop="moneyPaidAll" label="已交合计" width="80" align="center" />
+      <el-table-column fixed="right" prop="notPayAll" label="未交合计" width="80" align="center" />
+      <el-table-column fixed="right" prop="prestore" label="预存电费" width="80" align="center" />
+      <!-- 表头及表格内数据 -->
+      <el-table-column v-for="(item,key) in titleDataFiltered" :key="key" :prop="item.value" :label="item.name" align="center" height="250px">
         <template slot-scope="scope">
-          <span v-if="scope.column.property=='houseId'" align="center" fixed>{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='id'" fixed>{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='houseName'" fixed>{{ scope.row[scope.column.property] }}</span>
-          <span v-else>{{ scope.row[scope.column.property] }}</span>
+          <span>{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -59,9 +66,10 @@ export default {
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
-        shopId: undefined,
-        shopName: undefined,
-        year: undefined
+        houseId: undefined,
+        houseName: undefined,
+        year: undefined,
+        datePicker: undefined
       },
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
@@ -74,6 +82,7 @@ export default {
       // 声明下api变量
       titleData: [],
       tableColumns: [],
+      titleDataFiltered: [],
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -114,7 +123,23 @@ export default {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
-        console.log(this.titleData)
+        // 获取表头字段数组长度
+        var titleLength = this.titleData.length
+        // 删除前三个字段
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        // 删除最后四个字段
+        var titleLengthLast1 = titleLength - 4
+        var titleLengthLast2 = titleLength - 5
+        var titleLengthLast3 = titleLength - 6
+        var titleLengthLast4 = titleLength - 7
+        this.$delete(this.titleData, titleLengthLast1)
+        this.$delete(this.titleData, titleLengthLast2)
+        this.$delete(this.titleData, titleLengthLast3)
+        this.$delete(this.titleData, titleLengthLast4)
+        // 将处理过的表头数组返回
+        this.titleDataFiltered = this.titleData
       })
     },
     // 根据选定信息搜索
@@ -129,6 +154,11 @@ export default {
     handleFilter() {
       // 搜索功能调用
       this.fetchListSearch()
+    },
+    filterTitleDate(titleData) {
+      this.titleDataFiltered = titleData
+      console.log('titleData')
+      console.log(this.titleDataFiltered)
     }
   }
 }
