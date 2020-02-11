@@ -36,7 +36,7 @@
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
           <span v-if="scope.column.property=='houseId'" align="center">{{ scope.row[scope.column.property] }}</span>

@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅收费界面 -->
+  <!-- 电费台账界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
@@ -26,7 +26,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center">
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <!-- 左侧固定列 -->
       <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
       <el-table-column fixed prop="houseId" label="房号" width="80" align="center" />

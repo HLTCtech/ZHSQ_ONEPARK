@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅收费界面 -->
+  <!-- 电费通知单界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />

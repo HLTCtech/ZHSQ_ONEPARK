@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅收费界面 -->
+  <!-- 商铺收费界面 -->
   <div class="app-container">
     <div class="filter-container">
       <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
@@ -30,7 +30,7 @@
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" fixed>
+    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
           <!-- <el-tag @click="handleFetchPv($event)">

@@ -96,7 +96,7 @@ export const constantRoutes = [
       },
       {
         path: 'property',
-        component: () => import('@/views/bill_pay/house/property'), // 测试用shop组件
+        component: () => import('@/views/bill_pay/house/property'),
         name: 'property',
         meta: {
           title: '住宅物业费'
@@ -259,19 +259,11 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'bill_property',
-        component: () => import('@/views/error-page/401'),
-        name: 'electric',
-        meta: {
-          title: '费用收缴'
-        }
-      },
-      {
         path: 'StandingBook_property',
         component: () => import('@/views/error-page/401'),
         name: 'property',
         meta: {
-          title: '台账管理'
+          title: '物业流水'
         }
       },
       {
@@ -279,7 +271,7 @@ export const constantRoutes = [
         component: () => import('@/views/error-page/401'),
         name: 'parking',
         meta: {
-          title: '物业流水'
+          title: '住宅物业费台账'
         }
       },
       {
@@ -287,7 +279,7 @@ export const constantRoutes = [
         component: () => import('@/views/error-page/401'),
         name: 'parking',
         meta: {
-          title: '住宅物业费'
+          title: '商铺物业费台账'
         }
       },
       {
@@ -295,7 +287,7 @@ export const constantRoutes = [
         component: () => import('@/views/error-page/401'),
         name: 'parking',
         meta: {
-          title: '商铺物业费'
+          title: '装修保证金'
         }
       }
     ]
