@@ -193,11 +193,11 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'electric_all',
-        component: () => import('@/views/bill_charts/bill_all'),
-        name: 'electric',
+        path: 'propertyWaterBill',
+        component: () => import('@/views/bill_overall/propertyWaterBill'),
+        name: 'propertyWaterBill',
         meta: {
-          title: '电费'
+          title: '物业收费流水'
         }
       },
       {
@@ -206,6 +206,14 @@ export const constantRoutes = [
         name: 'property',
         meta: {
           title: '物业费'
+        }
+      },
+      {
+        path: 'parking_all',
+        component: () => import('@/views/bill_charts/bill_tabYear'),
+        name: 'parking',
+        meta: {
+          title: '停车管理费'
         }
       },
       {
@@ -259,25 +267,17 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'StandingBook_property',
-        component: () => import('@/views/error-page/401'),
-        name: 'property',
-        meta: {
-          title: '物业流水'
-        }
-      },
-      {
-        path: 'Stream_property',
-        component: () => import('@/views/error-page/401'),
-        name: 'parking',
+        path: 'houseStandingBook',
+        component: () => import('@/views/propertyManage/houseStandingBook'),
+        name: 'houseStandingBook',
         meta: {
           title: '住宅物业费台账'
         }
       },
       {
-        path: 'bill_property_house',
-        component: () => import('@/views/error-page/401'),
-        name: 'parking',
+        path: 'shopStandingBook',
+        component: () => import('@/views/propertyManage/shopStandingBook'),
+        name: 'shopStandingBook',
         meta: {
           title: '商铺物业费台账'
         }

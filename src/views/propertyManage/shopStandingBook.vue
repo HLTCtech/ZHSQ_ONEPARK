@@ -27,7 +27,7 @@
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
-      <el-table-column label="房屋状况" prop="houseStatus" align="center" fixed />
+      <!-- <el-table-column label="房屋状况" prop="houseStatus" align="center" /> -->
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="面积" align="center">
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
@@ -64,14 +64,6 @@
         <el-table-column label="差额" prop="gap" align="center" />
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
-      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
-        <template slot-scope="{row}">
-          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyGet(row)">
-            收缴
-          </el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页功能实现标签 -->
@@ -80,13 +72,13 @@
 </template>
 
 <script>
-import { fetchHouseListAll, fetchHouseSearch } from '@/api/payProperty'
+import { fetchShopListAll, fetchShopSearch } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'PayHouseProperty',
+  name: 'ShopStandingBook',
   components: { Pagination },
   directives: { waves },
   data() {
@@ -145,14 +137,14 @@ export default {
   },
   methods: {
     getList() {
-      fetchHouseListAll(this.listQuery_all).then(response => {
+      fetchShopListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
       })
     },
     // 根据选定信息搜索
     fetchListSearch() {
-      fetchHouseSearch(this.listQuery_search).then(response => {
+      fetchShopSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
       })
     },

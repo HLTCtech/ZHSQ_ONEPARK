@@ -64,14 +64,6 @@
         <el-table-column label="差额" prop="gap" align="center" />
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
-      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
-        <template slot-scope="{row}">
-          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyGet(row)">
-            收缴
-          </el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页功能实现标签 -->
@@ -86,7 +78,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'PayHouseProperty',
+  name: 'HouseStandingBook',
   components: { Pagination },
   directives: { waves },
   data() {
