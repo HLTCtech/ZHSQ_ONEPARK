@@ -103,11 +103,11 @@ export const constantRoutes = [
         }
       },
       {
-        path: 'car',
-        component: () => import('@/views/bill_pay/house/car'),
-        name: 'car',
+        path: 'decorationDeposit',
+        component: () => import('@/views/bill_pay/house/decorationDeposit'),
+        name: 'decorationDeposit',
         meta: {
-          title: '停车场管理费'
+          title: '住宅装修保证金'
         }
       },
       {
@@ -156,11 +156,11 @@ export const constantRoutes = [
         }
       },
       {
-        path: 'car',
-        component: () => import('@/views/bill_pay/shop/car'),
-        name: 'car',
+        path: 'decorationDeposit',
+        component: () => import('@/views/bill_pay/shop/decorationDeposit'),
+        name: 'decorationDeposit',
         meta: {
-          title: '停车场管理费'
+          title: '装修保证金'
         }
       },
       {
@@ -201,25 +201,25 @@ export const constantRoutes = [
         }
       },
       {
-        path: 'property_all',
-        component: () => import('@/views/bill_charts/bill_tabPane'),
-        name: 'property',
+        path: 'decorationDeposit',
+        component: () => import('@/views/bill_overall/decorationDepositStandingBook'),
+        name: 'decorationDeposit',
         meta: {
-          title: '物业费'
+          title: '装修保证金台账'
         }
       },
       {
-        path: 'parking_all',
+        path: 'parking_all1',
         component: () => import('@/views/bill_charts/bill_tabYear'),
-        name: 'parking',
+        name: 'parking1',
         meta: {
           title: '停车管理费'
         }
       },
       {
-        path: 'parking_all',
+        path: 'parking_all2',
         component: () => import('@/views/bill_charts/bill_tabYear'),
-        name: 'parking',
+        name: 'parking2',
         meta: {
           title: '停车管理费'
         }
