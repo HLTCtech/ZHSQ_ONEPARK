@@ -112,7 +112,7 @@ export function postMoney(formPost, houseId) {
   return request({
     url: '/pay/electric/moneypost',
     method: 'post',
-    params: { formPost, houseId }
+    params: { formPost }
   })
 }
 

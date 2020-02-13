@@ -291,17 +291,6 @@ export default {
       dialogFormVisible: false,
       dialogPvVisibleDetailByMonth: false,
       dialogStatus: '',
-      temp: {
-        // 费用收缴模态框字段定义
-        id: undefined,
-        importance: 1,
-        remark: '',
-        moneyNum_get: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
       pvData_all: [],
       pvData_single: [],
       pvData_details: [],
