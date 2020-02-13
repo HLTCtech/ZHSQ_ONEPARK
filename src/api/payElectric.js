@@ -108,7 +108,7 @@ export function fetchAllDetailByMonth(houseId) {
 }
 
 // 向后台提交表单（费用收缴）
-export function postMoney(formPost, houseId) {
+export function postMoney(formPost) {
   return request({
     url: '/pay/electric/moneypost',
     method: 'post',
