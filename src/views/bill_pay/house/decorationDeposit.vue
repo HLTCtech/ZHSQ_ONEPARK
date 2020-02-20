@@ -33,7 +33,7 @@
     <br>
 
     <!-- 表格 -->
-    <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%">
+    <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />

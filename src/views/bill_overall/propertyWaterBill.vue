@@ -26,7 +26,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" height="900">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />

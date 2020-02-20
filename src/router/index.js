@@ -207,23 +207,23 @@ export const constantRoutes = [
         meta: {
           title: '装修保证金台账'
         }
-      },
-      {
-        path: 'parking_all1',
-        component: () => import('@/views/bill_charts/bill_tabYear'),
-        name: 'parking1',
-        meta: {
-          title: '停车管理费'
-        }
-      },
-      {
-        path: 'parking_all2',
-        component: () => import('@/views/bill_charts/bill_tabYear'),
-        name: 'parking2',
-        meta: {
-          title: '停车管理费'
-        }
       }
+      // {
+      //   path: 'parking_all1',
+      //   component: () => import('@/views/bill_charts/bill_tabYear'),
+      //   name: 'parking1',
+      //   meta: {
+      //     title: '停车管理费'
+      //   }
+      // },
+      // {
+      //   path: 'parking_all2',
+      //   component: () => import('@/views/bill_charts/bill_tabYear'),
+      //   name: 'parking2',
+      //   meta: {
+      //     title: '停车管理费'
+      //   }
+      // }
     ]
   },
   {

@@ -23,7 +23,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" height="1000">
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
