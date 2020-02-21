@@ -46,7 +46,7 @@
       <el-table-column label="退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyReturn(row)">
+          <el-button type="primary" size="mini" @click="handleMoneyReturn(row.houseId)">
             退款
           </el-button>
         </template>
