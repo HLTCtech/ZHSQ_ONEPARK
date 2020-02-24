@@ -76,6 +76,23 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/info',
+    component: Layout,
+    // redirect: '/info',
+    children: [
+      {
+        path: 'Housechange',
+        component: () => import('@/views/info/houseChange'),
+        name: 'infoHouseChange',
+        meta: {
+          title: '信息变更',
+          icon: 'guide',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
     // 住宅费用收缴端口
     path: '/pay/house',
     component: Layout,

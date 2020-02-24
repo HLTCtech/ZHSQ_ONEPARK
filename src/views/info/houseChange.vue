@@ -1,0 +1,246 @@
+<template>
+  <!-- 电费台账界面 -->
+  <div class="app-container">
+    <div class="filter-container">
+      <el-select v-model="listQuery_search.buildingNum" placeholder="选择楼号" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in floor_numOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-select v-model="listQuery_search.houseNum" placeholder="选择住宅房间号" clearable style="width: 140px" class="filter-item">
+        <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-select v-model="listQuery_search.shopNum" placeholder="选择商铺房间号" clearable style="width: 140px" class="filter-item">
+        <el-option v-for="item in Shopfangjian_numOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
+    </div>
+
+    <!-- 表格 -->
+    <el-table :data="tableData" style="width: 100%" height="800" highlight-current-row>
+      <el-table-column label="ID" prop="id" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
+      <el-table-column label="业主电话" prop="housePhone" align="center" />
+      <el-table-column label="面积" align="center">
+        <el-table-column label="住宅面积" prop="houseArea" align="center" />
+        <el-table-column label="地下室面积" prop="basementArea" align="center" />
+      </el-table-column>
+      <el-table-column label="车位位置" prop="carLoc" align="center" />
+      <el-table-column label="车牌号" prop="carNum" align="center" />
+      <el-table-column label="变更信息" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+        <template slot-scope="{ row }">
+          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
+          <el-button type="primary" size="mini" @click="handleHouseInfo(row)">
+            变更
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 信息变更模态框 -->
+    <el-dialog :visible.sync="dialogHouseInfoVisible" title="信息变更">
+      <el-card class="box-card">
+        <el-form ref="dataForm" :model="formPost" label-width="80px">
+          <el-form-item label="房间号" prop="houseId">
+            <el-input v-model="formPost.houseId" disabled />
+          </el-form-item>
+          <el-form-item label="业主姓名" prop="houseName">
+            <el-input v-model="formPost.houseName" width="100px" />
+          </el-form-item>
+          <el-form-item label="业主电话" prop="housePhone">
+            <el-input v-model="formPost.housePhone" width="100px" />
+          </el-form-item>
+          <el-form-item label="住宅面积" prop="houseArea">
+            <el-input v-model="formPost.houseArea" width="100px" />
+          </el-form-item>
+          <el-form-item label="地下室面积" prop="basementArea">
+            <el-input v-model="formPost.basementArea" width="100px" />
+          </el-form-item>
+          <el-form-item label="车位位置" prop="carLoc">
+            <el-input v-model="formPost.carLoc" width="100px" />
+          </el-form-item>
+          <el-form-item label="车牌号" prop="carNum">
+            <el-input v-model="formPost.carNum" width="100px" />
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+          </el-form-item>
+          <!-- <el-form-item>
+            <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
+            <el-button @click="handleCleanDataForm()">取消</el-button>
+          </el-form-item> -->
+
+          <!-- 提交确认框 -->
+          <el-form-item>
+            <el-popover placement="bottom" width="100%" trigger="hover" type="success">
+              <el-button type="success" @click="handleSubmitForm(formPost)">确认提交</el-button>
+              <el-button @click="handleCleanDataForm()">取消</el-button>
+              <el-button slot="reference">点击提交</el-button>
+            </el-popover>
+          </el-form-item>
+
+        </el-form>
+      </el-card>
+    </el-dialog>
+
+    <!-- 分页功能实现标签 -->
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+  </div>
+</template>
+
+<script>
+import { fetchHouseInfoAll, fetchHouseInfoSearch, postHouseInfo, fetchHouseInfoByHouseId } from '@/api/infoChange'
+import waves from '@/directive/waves' // waves directive
+// import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+
+export default {
+  name: 'ElectricStandingBook',
+  components: { Pagination },
+  directives: { waves },
+  data() {
+    return {
+      listLoading: true,
+      total: 0,
+      // 定义搜索按钮的query字段
+      listQuery_search: {
+        page: 1,
+        buildingNum: null,
+        unitNum: null,
+        floorNum: null,
+        houseNum: null,
+        shopNum: null,
+        houseId: null,
+        houseName: null
+      },
+      // 定义信息变更模态框提交字段
+      formPost: {
+        houseId: null,
+        houseName: null,
+        housePhone: null,
+        houseArea: null,
+        basementArea: null,
+        carLoc: null,
+        carNum: null,
+        remark: null
+      },
+      dialogHouseInfoVisible: false,
+      // 年份选择
+      lou_numOptions: ['1号楼', '2号楼', '3号楼', '4号楼', '5号楼', '6号楼', '7号楼', '8号楼', '9号楼', '10号楼', '11号楼', '12号楼', '13号楼', '14号楼', '15号楼', '16号楼', '17号楼', '18号楼', '19号楼', '20号楼', '21号楼', '22号楼', '23号楼', '24号楼', '25号楼', '26号楼', '27号楼', '28号楼', '29号楼', '30号楼', '31号楼', '32号楼', '33号楼', '34号楼', '35号楼', '36号楼', '37号楼', '38号楼'],
+      danyuan_numOptions: ['1单元', '2单元', '3单元'],
+      floor_numOptions: ['1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼', '10楼', '11楼', '12楼', '13楼', '14楼', '15楼', '16楼', '17楼', '18楼'],
+      fangjian_numOptions: ['01', '02', '03', '04', '05', '06'],
+      Shopfangjian_numOptions: ['101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115',
+        '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '130', '131', '132', '133',
+        '134', '135', '136', '137', '138', '139', '140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '150'],
+      // list接口请求参数
+      listQuery_all: {
+        page: 1,
+        year: 2020
+      },
+      // 声明下api变量
+      tableData: []
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      fetchHouseInfoAll(this.listQuery_all).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
+      })
+    },
+    // 根据选定信息搜索
+    fetchListSearch() {
+      fetchHouseInfoSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
+      })
+    },
+    handleFilter() {
+      // 搜索功能调用
+      this.fetchListSearch()
+    },
+    // 变更信息按钮模态框
+    handleHouseInfo(row) {
+      this.formPost.houseId = row.houseId
+      this.formPost.houseName = row.houseName
+      this.formPost.housePhone = row.housePhone
+      this.formPost.houseArea = row.houseArea
+      this.formPost.basementArea = row.basementArea
+      this.formPost.carLoc = row.carLoc
+      this.formPost.carNum = row.carNum
+      this.dialogHouseInfoVisible = true
+    },
+    // 提交时弹出确认框
+    open() {
+      this.$confirm('是否确认提交', '注意', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '准备提交'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        })
+      })
+    },
+    handleSubmitForm(formPost) {
+      postHouseInfo(formPost).then(response => {
+        if (response.codeStatus === 200) {
+          this.$notify({
+            title: 'Success',
+            message: '提交成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.dialogHouseInfoVisible = false
+          this.$nextTick(() => {
+            this.$refs['dataForm'].resetFields()
+          })
+          // 逻辑可能存在问题，比如id如何传到页面上
+          // 暂未测试
+          // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+          fetchHouseInfoByHouseId(formPost.houseId).then(response => {
+            this.tableData = response.data.items
+            this.total = response.total
+          })
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
+      })
+      //   this.dialogMoneyGetFormVisible = false
+      //   this.$nextTick(() => {
+      //     this.$refs['dataForm'].resetFields()
+      //   })
+    },
+    handleCleanDataForm() {
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
+      })
+      this.dialogHouseInfoVisible = false
+    }
+  }
+}
+</script>

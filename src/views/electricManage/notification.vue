@@ -61,10 +61,10 @@ export default {
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
-        houseId: undefined,
-        houseName: undefined,
-        year: undefined,
-        datePicker: undefined
+        houseId: null,
+        houseName: null,
+        year: null,
+        datePicker: null
       },
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择

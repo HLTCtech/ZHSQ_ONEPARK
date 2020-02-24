@@ -9,7 +9,7 @@
       <el-select v-model="listQuery_search.houseNum" placeholder="选择房间号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
       <el-date-picker
@@ -258,19 +258,19 @@ export default {
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
-        buildingNum: undefined,
-        houseNum: undefined,
-        datePicker: undefined,
-        shopId: undefined,
-        shopName: undefined
+        buildingNum: null,
+        houseNum: null,
+        datePicker: null,
+        shopId: null,
+        shopName: null
       },
       // 定义表单提交项具体项目
       formPost: {
-        houseId: undefined,
-        dateRange: '',
-        moneyNum: '',
-        payType: '',
-        remark: ''
+        houseId: null,
+        dateRange: null,
+        moneyNum: null,
+        payType: null,
+        remark: null
       },
       // 定义表单提交项目规则
       formRules: {

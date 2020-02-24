@@ -9,13 +9,13 @@
       <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层号" clearable style="width: 120px" class="filter-item">
+      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in floor_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.houseNum" placeholder="选择房号" clearable style="width: 120px" class="filter-item">
+      <el-select v-model="listQuery_search.houseNum" placeholder="选择房间号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
       <el-date-picker
@@ -250,21 +250,21 @@ export default {
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
-        buildingNum: undefined,
-        unitNum: undefined,
-        floorNum: undefined,
-        houseNum: undefined,
-        datePicker: undefined,
-        houseId: undefined,
-        houseName: undefined
+        buildingNum: null,
+        unitNum: null,
+        floorNum: null,
+        houseNum: null,
+        datePicker: null,
+        houseId: null,
+        houseName: null
       },
       // 定义表单提交项具体项目
       formPost: {
-        houseId: undefined,
-        dateRange: '',
-        moneyNum: '',
-        payType: '',
-        remark: ''
+        houseId: null,
+        dateRange: null,
+        moneyNum: null,
+        payType: null,
+        remark: null
       },
       // 定义表单提交项目规则
       formRules: {
@@ -382,17 +382,6 @@ export default {
         this.dialogPvVisibleDetailByMonth = true
       })
     },
-    // 定义在费用收缴模态框点击确定按钮的事件
-    // handlePostMoneyGet(row) {
-    //   console.log(this.multipleSelection)
-    //   this.dialogMoneyGetFormVisible = false
-    //   this.$notify({
-    //     title: 'Success',
-    //     message: '提交成功',
-    //     type: 'success',
-    //     duration: 2000
-    //   })
-    // },
     // 获取费用状态统计
     handleFetchPv_all(houseId) {
       // 定义具体费用字段的弹出模态框
