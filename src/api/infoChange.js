@@ -35,3 +35,12 @@ export function fetchHouseInfoByHouseId(houseId) {
     params: { houseId }
   })
 }
+
+// 向后台提交表单（新增信息）
+export function postNewHouseInfo(newInfoFormPost) {
+  return request({
+    url: '/info/houseChange/infoPost/new',
+    method: 'post',
+    params: { newInfoFormPost }
+  })
+}

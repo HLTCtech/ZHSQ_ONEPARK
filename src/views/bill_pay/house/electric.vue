@@ -115,17 +115,6 @@
             <el-input v-model="formPost.houseId" disabled />
           </el-form-item>
           <el-form-item label="缴费周期" required>
-            <!-- <el-col :span="11">
-              <el-form-item prop="date1">
-                <el-date-picker v-model="formPost.date1" type="date" placeholder="请选择日期" style="width: 100%;" />
-              </el-form-item>
-            </el-col>
-            <el-col class="line" :span="2">---</el-col>
-            <el-col :span="11">
-              <el-form-item prop="date2">
-                <el-date-picker v-model="formPost.date2" type="date" placeholder="请选择日期" style="width: 100%;" />
-              </el-form-item>
-            </el-col> -->
             <el-form-item prop="dateRange">
               <el-date-picker
                 v-model="formPost.dateRange"
@@ -150,25 +139,40 @@
               <el-radio label="支付宝" />
               <el-radio label="微信" />
               <el-radio label="现金" />
+              <el-radio label="其他" />
+              <el-radio label="特批" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
-          <!-- <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogMoneyGetFormVisible = false">
-            Cancel
-          </el-button>
-          <el-button type="primary" @click="handlePostMoneyGet(row)">
-            Confirm
-          </el-button>
-        </div> -->
           <el-form-item>
             <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
             <el-button @click="handleCleanDataForm()">取消</el-button>
           </el-form-item>
         </el-form>
       </el-card>
+
+      <!-- 收费类型为特批时验证码模态框处理 -->
+      <el-dialog width="40%" title="领导审批" style="top: 20%" :visible.sync="dialogApproveSmsVisible" append-to-body>
+        <el-input
+          ref="smsCode"
+          v-model="formPost.smsCode"
+          placeholder="请输入短信验证码"
+          name="smsCode"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+        <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getSmsCode(formPost)">
+          <span v-show="show">获取验证码</span>
+          <span v-show="!show" class="count"> {{count}} s</span>
+        </el-button>
+        <br>
+        <br>
+        <el-button type="success" @click="handlePost(formPost)">确定提交</el-button>
+        <el-button @click="handleCleanSMSDataForm()">取消</el-button>
+      </el-dialog>
     </el-dialog>
 
     <!-- 月度费用状态详情模态框 -->
@@ -234,7 +238,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId } from '@/api/payElectric'
+import { getSMS } from '@/api/sms'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -258,13 +264,18 @@ export default {
         houseId: null,
         houseName: null
       },
+      show: true,
+      count: '',
       // 定义表单提交项具体项目
       formPost: {
         houseId: null,
         dateRange: null,
         moneyNum: null,
         payType: null,
-        remark: null
+        remark: null,
+        payItem: '住宅电费',
+        adminId: this.$store.getters.adminId,
+        smsCode: null
       },
       // 定义表单提交项目规则
       formRules: {
@@ -296,6 +307,7 @@ export default {
       pvData_details: [],
       dialogPvVisible_all: false,
       dialogPvVisible_single: false,
+      dialogApproveSmsVisible: false,
       checkBoxData: [],
       // 时间选择器返回数据
       pickerOptions: {
@@ -327,6 +339,13 @@ export default {
       }
     //   date_picker: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'adminName',
+      'adminId',
+      'roles'
+    ])
   },
   created() {
     this.getList()
@@ -400,43 +419,114 @@ export default {
         this.dialogPvVisible_single = true
       })
     },
+    // 获取验证码按钮
+    getSmsCode(formPost) {
+      getSMS(formPost).then(response => {
+        if (response.codeStatus === 200) {
+          this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
+        } else {
+          this.$message({ message: '提交失败，请联系系统管理员', type: 'error' })
+        }
+      })
+      // 更改获取验证码按钮倒计时
+      const TIME_COUNT = 30 // 更改倒计时时间
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--
+          } else {
+            this.show = true
+            clearInterval(this.timer) // 清除定时器
+            this.timer = null
+          }
+        }, 1000)
+      }
+    },
+    // 缴款类型是特批时，验证码点击提交的收费表单
+    handlePost(formPost) {
+      if (formPost.smsCode === null || formPost.smsCode.length < 6) {
+        this.$message({ message: '请输入正确的验证码', type: 'error' })
+      } else {
+        postMoney(formPost).then(response => {
+          if (response.codeStatus === 200) {
+            this.$notify({
+              title: 'Success',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.dialogApproveSmsVisible = false
+            this.dialogMoneyGetFormVisible = false
+            this.$nextTick(() => {
+              this.$refs['dataForm'].resetFields()
+            })
+            // 逻辑可能存在问题，比如id如何传到页面上
+            // 暂未测试
+            // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+            fetchSearchByHouseId(formPost.houseId).then(response => {
+              this.titleData = response.data.titles
+              this.tableColumns = response.data.items
+            })
+          } else {
+            this.$notify({
+              title: 'Failure',
+              message: '提交失败，请联系系统管理员',
+              type: 'error',
+              duration: 3000
+            })
+          }
+        })
+      }
+    },
+    // 提交收费表单
     handleSubmitForm(formPost) {
+      // 表单项规则验证
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log('formPost-----')
-          console.log(formPost)
-          postMoney(formPost).then(response => {
-            if (response.codeStatus === 200) {
-              this.$notify({
-                title: 'Success',
-                message: '提交成功',
-                type: 'success',
-                duration: 2000
+          // 收费类型为特批时验证码模态框处理
+          if (this.formPost.payType === '特批') {
+            this.dialogApproveSmsVisible = true
+          } else {
+            // 操作确认框
+            this.$confirm('确定提交么？', '费用收缴', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'info'
+            }).then(() => {
+              console.log('formPost-----')
+              console.log(formPost)
+              postMoney(formPost).then(response => {
+                if (response.codeStatus === 200) {
+                  this.$notify({
+                    title: 'Success',
+                    message: '提交成功',
+                    type: 'success',
+                    duration: 2000
+                  })
+                  this.dialogMoneyGetFormVisible = false
+                  this.$nextTick(() => {
+                    this.$refs['dataForm'].resetFields()
+                  })
+                  // 逻辑可能存在问题，比如id如何传到页面上
+                  // 暂未测试
+                  // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+                  fetchSearchByHouseId(formPost.houseId).then(response => {
+                    this.titleData = response.data.titles
+                    this.tableColumns = response.data.items
+                  })
+                } else {
+                  this.$notify({
+                    title: 'Failure',
+                    message: '提交失败，请联系系统管理员',
+                    type: 'error',
+                    duration: 3000
+                  })
+                }
               })
-              this.dialogMoneyGetFormVisible = false
-              this.$nextTick(() => {
-                this.$refs['dataForm'].resetFields()
-              })
-              // 逻辑可能存在问题，比如id如何传到页面上
-              // 暂未测试
-              // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-              fetchSearchByHouseId(formPost.houseId).then(response => {
-                this.titleData = response.data.titles
-                this.tableColumns = response.data.items
-              })
-            } else {
-              this.$notify({
-                title: 'Failure',
-                message: '提交失败，请联系系统管理员',
-                type: 'error',
-                duration: 3000
-              })
-            }
-          })
-        //   this.dialogMoneyGetFormVisible = false
-        //   this.$nextTick(() => {
-        //     this.$refs['dataForm'].resetFields()
-        //   })
+            })
+          }
         }
       })
     },
@@ -445,44 +535,31 @@ export default {
         this.$refs['dataForm'].resetFields()
       })
       this.dialogMoneyGetFormVisible = false
+    },
+    handleCleanSMSDataForm() {
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
+      })
+      this.dialogApproveSmsVisible = false
+      this.dialogMoneyGetFormVisible = false
     }
-    // sortChange(data) {
-    //   const { prop, order } = data
-    //   if (prop === 'id') {
-    //     this.sortByID(order)
-    //   }
-    // },
-    // sortByID(order) {
-    //   if (order === 'ascending') {
-    //     this.listQuery.sort = '+id'
-    //   } else {
-    //     this.listQuery.sort = '-id'
-    //   }
-    //   this.handleFilter()
-    // },
-    // resetTemp() {
-    //   this.temp = {
-    //     id: undefined,
-    //     type: ''
-    //   }
-    // }
-    // formatJson(filterVal, jsonData) {
-    //   return jsonData.map(v => filterVal.map(j => {
-    //     if (j === 'timestamp') {
-    //       return parseTime(v[j])
-    //     } else {
-    //       return v[j]
-    //     }
-    //   }))
-    // }
-    // getSortClass: function(key) {
-    //   const sort = this.listQuery.sort
-    //   return sort === `+${key}`
-    //     ? 'ascending'
-    //     : sort === `-${key}`
-    //       ? 'descending'
-    //       : ''
-    // }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
+
+.show-sms {
+    position: absolute;
+    right: 10px;
+    top: 82px;
+    font-size: 15px;
+    color: $light_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  </style>

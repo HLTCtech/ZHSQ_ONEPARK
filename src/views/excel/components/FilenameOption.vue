@@ -1,7 +1,7 @@
 <template>
   <div style="display:inline-block;">
-    <label class="radio-label" style="padding-left:0;">Filename: </label>
-    <el-input v-model="filename" placeholder="Please enter the file name (default excel-list)" style="width:345px;" prefix-icon="el-icon-document" />
+    <el-tag type:success style="padding-left:0;" >导出的excel文件名：</el-tag>
+    <el-input v-model="filename" placeholder="请输入导出Excel的文件名(默认excel-list)" style="width:330px;" prefix-icon="el-icon-document" />
   </div>
 </template>
 

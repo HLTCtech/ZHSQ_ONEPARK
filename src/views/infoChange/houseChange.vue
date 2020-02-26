@@ -1,5 +1,5 @@
 <template>
-  <!-- 电费台账界面 -->
+  <!-- 信息变更界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-select v-model="listQuery_search.buildingNum" placeholder="选择楼号" clearable style="width: 120px" class="filter-item">
@@ -24,6 +24,12 @@
       </el-button>
     </div>
 
+    <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleNewInfo">
+      新增信息
+    </el-button>
+    <br>
+    <br>
+
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%" height="800" highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
@@ -34,8 +40,6 @@
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
         <el-table-column label="地下室面积" prop="basementArea" align="center" />
       </el-table-column>
-      <el-table-column label="车位位置" prop="carLoc" align="center" />
-      <el-table-column label="车牌号" prop="carNum" align="center" />
       <el-table-column label="变更信息" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{ row }">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
@@ -65,29 +69,55 @@
           <el-form-item label="地下室面积" prop="basementArea">
             <el-input v-model="formPost.basementArea" width="100px" />
           </el-form-item>
-          <el-form-item label="车位位置" prop="carLoc">
-            <el-input v-model="formPost.carLoc" width="100px" />
-          </el-form-item>
-          <el-form-item label="车牌号" prop="carNum">
-            <el-input v-model="formPost.carNum" width="100px" />
-          </el-form-item>
           <el-form-item label="备注" prop="remark">
             <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
-          <!-- <el-form-item>
+          <el-form-item>
             <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
             <el-button @click="handleCleanDataForm()">取消</el-button>
-          </el-form-item> -->
+          </el-form-item>
 
           <!-- 提交确认框 -->
-          <el-form-item>
+          <!-- <el-form-item>
             <el-popover placement="bottom" width="100%" trigger="hover" type="success">
               <el-button type="success" @click="handleSubmitForm(formPost)">确认提交</el-button>
               <el-button @click="handleCleanDataForm()">取消</el-button>
               <el-button slot="reference">点击提交</el-button>
             </el-popover>
-          </el-form-item>
+          </el-form-item> -->
 
+        </el-form>
+      </el-card>
+    </el-dialog>
+
+    <!-- 新增信息按钮的模态框 -->
+    <el-dialog :visible.sync="dialogNewHouseInfoVisible" title="新增房屋信息">
+
+      <!-- 定义表单提交项 -->
+      <el-card class="box-card">
+        <el-form ref="newInfoForm" :rules="formRules" :model="newInfoFormPost" label-width="80px">
+          <el-form-item label="房号" prop="houseId">
+            <el-input v-model="newInfoFormPost.houseId" placeholder="请输入房号（只允许输入一个）" />
+          </el-form-item>
+          <el-form-item label="业主姓名" prop="houseName">
+            <el-input v-model="newInfoFormPost.houseName" />
+          </el-form-item>
+          <el-form-item label="业主电话" prop="housePhone">
+            <el-input v-model="newInfoFormPost.housePhone" />
+          </el-form-item>
+          <el-form-item label="住宅面积" prop="houseArea">
+            <el-input v-model="newInfoFormPost.houseArea" />
+          </el-form-item>
+          <el-form-item label="地下室面积" prop="basementArea">
+            <el-input v-model="newInfoFormPost.basementArea" />
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input v-model="newInfoFormPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="handleSubmitNewInfoForm(newInfoFormPost)">确认提交</el-button>
+            <el-button @click="handleCleanNewInfoDataForm()">取消</el-button>
+          </el-form-item>
         </el-form>
       </el-card>
     </el-dialog>
@@ -98,13 +128,13 @@
 </template>
 
 <script>
-import { fetchHouseInfoAll, fetchHouseInfoSearch, postHouseInfo, fetchHouseInfoByHouseId } from '@/api/infoChange'
+import { fetchHouseInfoAll, fetchHouseInfoSearch, postHouseInfo, fetchHouseInfoByHouseId, postNewHouseInfo } from '@/api/infoChange'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'ElectricStandingBook',
+  name: 'HouseInfoChange',
   components: { Pagination },
   directives: { waves },
   data() {
@@ -129,9 +159,16 @@ export default {
         housePhone: null,
         houseArea: null,
         basementArea: null,
-        carLoc: null,
-        carNum: null,
         remark: null
+      },
+      newInfoFormPost: {
+        houseId: null,
+        houseName: null,
+        housePhone: null,
+        houseArea: null,
+        basementArea: null,
+        remark: null,
+        adminId: this.$store.adminId
       },
       dialogHouseInfoVisible: false,
       // 年份选择
@@ -147,6 +184,11 @@ export default {
         page: 1,
         year: 2020
       },
+      formRules: {
+        houseId: [{ required: true, message: '请输入房号（只输入一个）', trigger: 'blur' }],
+        houseName: [{ required: true, message: '请输入客户姓名' }]
+      },
+      dialogNewHouseInfoVisible: false,
       // 声明下api变量
       tableData: []
     }
@@ -179,8 +221,6 @@ export default {
       this.formPost.housePhone = row.housePhone
       this.formPost.houseArea = row.houseArea
       this.formPost.basementArea = row.basementArea
-      this.formPost.carLoc = row.carLoc
-      this.formPost.carNum = row.carNum
       this.dialogHouseInfoVisible = true
     },
     // 提交时弹出确认框
@@ -202,44 +242,97 @@ export default {
       })
     },
     handleSubmitForm(formPost) {
-      postHouseInfo(formPost).then(response => {
-        if (response.codeStatus === 200) {
-          this.$notify({
-            title: 'Success',
-            message: '提交成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.dialogHouseInfoVisible = false
-          this.$nextTick(() => {
-            this.$refs['dataForm'].resetFields()
-          })
-          // 逻辑可能存在问题，比如id如何传到页面上
-          // 暂未测试
-          // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-          fetchHouseInfoByHouseId(formPost.houseId).then(response => {
-            this.tableData = response.data.items
-            this.total = response.total
-          })
-        } else {
-          this.$notify({
-            title: 'Failure',
-            message: '提交失败，请联系系统管理员',
-            type: 'error',
-            duration: 3000
-          })
-        }
+      this.$confirm('确定提交么？', '变更信息', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        postHouseInfo(formPost).then(response => {
+          if (response.codeStatus === 200) {
+            this.$notify({
+              title: 'Success',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.dialogHouseInfoVisible = false
+            this.$nextTick(() => {
+              this.$refs['dataForm'].resetFields()
+            })
+            // 逻辑可能存在问题，比如id如何传到页面上
+            // 暂未测试
+            // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+            fetchHouseInfoByHouseId(formPost.houseId).then(response => {
+              this.tableData = response.data.items
+              this.total = response.total
+            })
+          } else {
+            this.$notify({
+              title: 'Failure',
+              message: '提交失败，请联系系统管理员',
+              type: 'error',
+              duration: 3000
+            })
+          }
+        })
       })
-      //   this.dialogMoneyGetFormVisible = false
-      //   this.$nextTick(() => {
-      //     this.$refs['dataForm'].resetFields()
-      //   })
     },
     handleCleanDataForm() {
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
       })
       this.dialogHouseInfoVisible = false
+    },
+    handleSubmitNewInfoForm(newInfoFormPost) {
+      console.log('user id-------------------')
+      console.log(newInfoFormPost.adminId)
+      this.$refs['newInfoForm'].validate((valid) => {
+        if (valid) {
+          this.$confirm('确定提交么？', '新增信息', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            postNewHouseInfo(newInfoFormPost).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.dialogNewHouseInfoVisible = false
+                this.$nextTick(() => {
+                  this.$refs['newInfoForm'].resetFields()
+                })
+                // 逻辑可能存在问题，比如id如何传到页面上
+                // 暂未测试
+                // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+                fetchHouseInfoByHouseId(newInfoFormPost.houseId).then(response => {
+                  this.tableData = response.data.items
+                  this.total = response.total
+                })
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+          })
+        }
+      })
+    },
+    handleCleanNewInfoDataForm() {
+      this.$nextTick(() => {
+        this.$refs['newInfoForm'].resetFields()
+      })
+      this.dialogNewHouseInfoVisible = false
+    },
+    handleNewInfo() {
+      this.dialogNewHouseInfoVisible = true
     }
   }
 }

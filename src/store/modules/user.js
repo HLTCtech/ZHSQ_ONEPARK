@@ -2,9 +2,11 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
+// 定义存放在store中的登录者信息
 const state = {
   token: getToken(),
-  name: '',
+  adminName: '',
+  adminId: '',
   avatar: '',
   introduction: '',
   roles: []
@@ -17,8 +19,11 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_NAME: (state, adminName) => {
+    state.adminName = adminName
+  },
+  SET_ID: (state, adminId) => {
+    state.adminId = adminId
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -51,10 +56,10 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('验证失败，请重新登录')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { roles, introduction, avatar, adminName, adminId } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -62,7 +67,8 @@ const actions = {
         }
 
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_NAME', adminName)
+        commit('SET_ID', adminId)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
         resolve(data)

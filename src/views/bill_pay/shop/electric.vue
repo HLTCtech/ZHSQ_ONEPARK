@@ -432,40 +432,46 @@ export default {
     handleSubmitForm(formPost) {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log('formPost-----')
-          console.log(formPost)
-          postMoney(formPost).then(response => {
-            if (response.codeStatus === 200) {
-              this.$notify({
-                title: 'Success',
-                message: '提交成功',
-                type: 'success',
-                duration: 2000
-              })
-              this.dialogMoneyGetFormVisible = false
-              this.$nextTick(() => {
-                this.$refs['dataForm'].resetFields()
-              })
-              // 逻辑可能存在问题，比如id如何传到页面上
-              // 暂未测试
-              // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-              fetchSearchByHouseId(formPost.houseId).then(response => {
-                this.titleData = response.data.titles
-                this.tableColumns = response.data.items
-              })
-            } else {
-              this.$notify({
-                title: 'Failure',
-                message: '提交失败，请联系系统管理员',
-                type: 'error',
-                duration: 3000
-              })
-            }
+          this.$confirm('确定提交么？', '费用收缴', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            console.log('formPost-----')
+            console.log(formPost)
+            postMoney(formPost).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.dialogMoneyGetFormVisible = false
+                this.$nextTick(() => {
+                  this.$refs['dataForm'].resetFields()
+                })
+                // 逻辑可能存在问题，比如id如何传到页面上
+                // 暂未测试
+                // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
+                fetchSearchByHouseId(formPost.houseId).then(response => {
+                  this.titleData = response.data.titles
+                  this.tableColumns = response.data.items
+                })
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+            //   this.dialogMoneyGetFormVisible = false
+            //   this.$nextTick(() => {
+            //     this.$refs['dataForm'].resetFields()
+            //   })
           })
-        //   this.dialogMoneyGetFormVisible = false
-        //   this.$nextTick(() => {
-        //     this.$refs['dataForm'].resetFields()
-        //   })
         }
       })
     },

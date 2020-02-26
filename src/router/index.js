@@ -82,8 +82,8 @@ export const constantRoutes = [
     children: [
       {
         path: 'Housechange',
-        component: () => import('@/views/info/houseChange'),
-        name: 'infoHouseChange',
+        component: () => import('@/views/infoChange/houseChange'),
+        name: 'infoChange',
         meta: {
           title: '信息变更',
           icon: 'guide',

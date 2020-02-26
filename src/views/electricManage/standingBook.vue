@@ -25,24 +25,51 @@
       </el-button>
     </div>
 
+    <!-- excel导出功能 -->
+    <div>
+      <FilenameOption v-model="filename" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        导出Excel
+      </el-button>
+    </div>
+
+    <!-- 测试打印功能 -->
+    <div>
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handelPrint">
+        打印
+      </el-button>
+    </div>
+
     <!-- 表格 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
-      <!-- 左侧固定列 -->
-      <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
-      <el-table-column fixed prop="houseId" label="房号" width="80" align="center" />
-      <el-table-column fixed prop="houseName" label="业主姓名" width="80" align="center" />
-      <!-- 右侧固定列 -->
-      <el-table-column fixed="right" prop="shallPayAll" label="应交合计" width="80" align="center" />
-      <el-table-column fixed="right" prop="moneyPaidAll" label="已交合计" width="80" align="center" />
-      <el-table-column fixed="right" prop="notPayAll" label="未交合计" width="80" align="center" />
-      <el-table-column fixed="right" prop="prestore" label="预存电费" width="80" align="center" />
-      <!-- 表头及表格内数据 -->
+    <div class="printTable">
+      <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800" :summary-method="getSummaries" show-summary>
+        <!-- 左侧固定列 -->
+        <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
+        <el-table-column fixed prop="houseId" label="房号" width="80" align="center" />
+        <el-table-column fixed prop="houseName" label="业主姓名" width="80" align="center" />
+        <!-- 右侧固定列 -->
+        <el-table-column fixed="right" prop="shallPayAll" label="应交合计" width="80" align="center" />
+        <el-table-column fixed="right" prop="moneyPaidAll" label="已交合计" width="80" align="center" />
+        <el-table-column fixed="right" prop="notPayAll" label="未交合计" width="80" align="center" />
+        <el-table-column fixed="right" prop="prestore" label="预存电费" width="80" align="center" />
+        <!-- 表头及表格内数据 -->
+        <el-table-column v-for="(item,key) in titleDataFiltered" :key="key" :prop="item.value" :label="item.name" align="center" height="250px">
+          <template slot-scope="scope">
+            <span>{{ scope.row[scope.column.property] }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 表格底部显示各项合计 -->
+    <!-- <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
+      <el-table-column fixed label="合计" width="240" align="center" style="background-color: green" />
       <el-table-column v-for="(item,key) in titleDataFiltered" :key="key" :prop="item.value" :label="item.name" align="center" height="250px">
         <template slot-scope="scope">
           <span>{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
 
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
@@ -52,17 +79,22 @@
 <script>
 import { fetchStandingBookListAll, fetchElectricStandingBookSearch } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
-// import { parseTime } from '@/utils'
+import { parseTime } from '@/utils'
+import FilenameOption from '@/views/excel/components/FilenameOption'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'ElectricStandingBook',
-  components: { Pagination },
+  components: { Pagination, FilenameOption },
   directives: { waves },
   data() {
     return {
+      downloadLoading: false,
       listLoading: true,
       total: 0,
+      // 定义导出excel默认选项
+      filename: '',
+      autoWidth: true,
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
@@ -79,6 +111,8 @@ export default {
         page: 1,
         year: 2020
       },
+      // 声明表底合计行的变量
+      sumAll: [],
       // 声明下api变量
       titleData: [],
       tableColumns: [],
@@ -155,10 +189,86 @@ export default {
       // 搜索功能调用
       this.fetchListSearch()
     },
-    filterTitleDate(titleData) {
-      this.titleDataFiltered = titleData
-      console.log('titleData')
-      console.log(this.titleDataFiltered)
+    // excel导出
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const headerChinese = []
+        const headerVar = []
+        for (let i = 0; i < this.titleDataFiltered.length; i++) {
+          headerChinese[i] = this.titleDataFiltered[i].name
+        }
+        for (let i = 0; i < this.titleDataFiltered.length; i++) {
+          headerVar[i] = this.titleDataFiltered[i].value
+        }
+        headerChinese.unshift('序号', '房号', '业主姓名')
+        headerChinese.push('应交合计', '已交合计', '未交合计', '预存电费')
+        headerVar.unshift('id', 'houseId', 'houseName')
+        headerVar.push('shallPayAll', 'moneyPaidAll', 'notPayAll', 'prestore')
+        // console.log('HeaderChinese+++++++++++++++++++++++++++++++++++++++++++++++++')
+        // console.log(headerChinese)
+        // console.log('HeaderVar==============================================')
+        // console.log(headerVar)
+        const data = this.formatJson(headerVar, this.tableColumns)
+        console.log('123123123')
+        console.log(this.sumAll)
+        console.log(data.push(this.sumAll))
+        // console.log('data------------------------------------------------')
+        // console.log(data)
+        excel.export_json_to_excel({
+          header: headerChinese,
+          data,
+          filename: this.filename,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
+    // 在表格底部的合计行
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0 || index === 1 || index === 2) {
+          sums[index] = '总价'
+          return
+        }
+        const values = data.map(item => Number(item[column.property]))
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+        } else {
+          sums[index] = '暂无数据'
+        }
+      })
+      // console.log(sums)
+      this.sumAll = sums
+      return sums
+    },
+    // 测试打印功能
+    handelPrint() {
+      var newStr = document.getElementsByClassName('printTable')[0].innerHTML
+      document.body.innerHTML = newStr
+      // 调用打印功能
+      window.print()
+      // 点击取消后刷新页面
+      window.location.reload()
     }
   }
 }
