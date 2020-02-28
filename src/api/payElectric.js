@@ -19,6 +19,15 @@ export function fetchHouseSearch(query) {
   })
 }
 
+// 住宅收费---获取经理验证码
+export function getHouseSMS(smsForm) {
+  return request({
+    url: '/pay/electric/house/getSMS',
+    method: 'post',
+    params: { smsForm }
+  })
+}
+
 // 商铺相关api-------------------------------------
 // 查询所有商铺信息
 export function fetchShopListAll(query) {

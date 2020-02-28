@@ -25,7 +25,7 @@
     </div>
 
     <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleNewInfo">
-      新增信息
+      新增房源信息
     </el-button>
     <br>
     <br>
@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { fetchHouseInfoAll, fetchHouseInfoSearch, postHouseInfo, fetchHouseInfoByHouseId, postNewHouseInfo } from '@/api/infoChange'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -159,7 +160,8 @@ export default {
         housePhone: null,
         houseArea: null,
         basementArea: null,
-        remark: null
+        remark: null,
+        adminId: this.$store.getters.adminId
       },
       newInfoFormPost: {
         houseId: null,
@@ -168,7 +170,7 @@ export default {
         houseArea: null,
         basementArea: null,
         remark: null,
-        adminId: this.$store.adminId
+        adminId: this.$store.getters.adminId
       },
       dialogHouseInfoVisible: false,
       // 年份选择
@@ -181,8 +183,7 @@ export default {
         '134', '135', '136', '137', '138', '139', '140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '150'],
       // list接口请求参数
       listQuery_all: {
-        page: 1,
-        year: 2020
+        page: 1
       },
       formRules: {
         houseId: [{ required: true, message: '请输入房号（只输入一个）', trigger: 'blur' }],
@@ -192,6 +193,13 @@ export default {
       // 声明下api变量
       tableData: []
     }
+  },
+  computed: {
+    ...mapGetters([
+      'adminName',
+      'adminId',
+      'roles'
+    ])
   },
   created() {
     this.getList()

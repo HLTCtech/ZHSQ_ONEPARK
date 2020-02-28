@@ -100,6 +100,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, fetchSearchByHouseId } from '@/api/payDecorationDeposit'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -136,7 +137,8 @@ export default {
         moneyGet: '',
         payType: '',
         remark: '',
-        gap: ''
+        gap: '',
+        adminId: this.$store.getters.adminId
       },
       // 定义表单提交项目规则
       formRules: {
@@ -177,6 +179,13 @@ export default {
       }
     //   date_picker: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'adminName',
+      'adminId',
+      'roles'
+    ])
   },
   created() {
     this.getList()

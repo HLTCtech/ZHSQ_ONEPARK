@@ -239,8 +239,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId } from '@/api/payElectric'
-import { getSMS } from '@/api/sms'
+import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId, getHouseSMS } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -421,7 +420,7 @@ export default {
     },
     // 获取验证码按钮
     getSmsCode(formPost) {
-      getSMS(formPost).then(response => {
+      getHouseSMS(formPost).then(response => {
         if (response.codeStatus === 200) {
           this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
         } else {
@@ -461,6 +460,7 @@ export default {
             this.dialogMoneyGetFormVisible = false
             this.$nextTick(() => {
               this.$refs['dataForm'].resetFields()
+              this.formPost.smsCode = ''
             })
             // 逻辑可能存在问题，比如id如何传到页面上
             // 暂未测试
@@ -537,11 +537,8 @@ export default {
       this.dialogMoneyGetFormVisible = false
     },
     handleCleanSMSDataForm() {
-      this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
-      })
+      this.formPost.smsCode = ''
       this.dialogApproveSmsVisible = false
-      this.dialogMoneyGetFormVisible = false
     }
   }
 }

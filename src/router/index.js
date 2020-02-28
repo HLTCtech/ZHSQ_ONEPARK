@@ -85,7 +85,7 @@ export const constantRoutes = [
         component: () => import('@/views/infoChange/houseChange'),
         name: 'infoChange',
         meta: {
-          title: '信息变更',
+          title: '房源信息变更',
           icon: 'guide',
           noCache: true
         }
@@ -112,11 +112,27 @@ export const constantRoutes = [
         }
       },
       {
+        path: 'water',
+        component: () => import('@/views/bill_pay/house/water'),
+        name: 'water',
+        meta: {
+          title: '住宅水费'
+        }
+      },
+      {
         path: 'property',
         component: () => import('@/views/bill_pay/house/property'),
         name: 'property',
         meta: {
           title: '住宅物业费'
+        }
+      },
+      {
+        path: 'parking',
+        component: () => import('@/views/bill_pay/house/parking'),
+        name: 'parking',
+        meta: {
+          title: '停车场维护费'
         }
       },
       {
@@ -132,15 +148,15 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/heat'),
         name: 'heat',
         meta: {
-          title: '暖气费'
+          title: '住宅暖气费'
         }
       },
       {
-        path: 'card',
-        component: () => import('@/views/bill_pay/house/card'),
-        name: 'card',
+        path: 'rubbish',
+        component: () => import('@/views/bill_pay/house/rubbish'),
+        name: 'rubbish',
         meta: {
-          title: '智能卡工本费'
+          title: '垃圾清运费'
         }
       }
     ]
@@ -177,23 +193,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/shop/decorationDeposit'),
         name: 'decorationDeposit',
         meta: {
-          title: '装修保证金'
-        }
-      },
-      {
-        path: 'heat',
-        component: () => import('@/views/bill_pay/shop/heat'),
-        name: 'heat',
-        meta: {
-          title: '暖气费'
-        }
-      },
-      {
-        path: 'card',
-        component: () => import('@/views/bill_pay/shop/card'),
-        name: 'card',
-        meta: {
-          title: '智能卡工本费'
+          title: '商铺装修保证金'
         }
       }
     ]
@@ -350,35 +350,11 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'export-excel',
-        component: () => import('@/views/excel/export-excel'),
-        name: 'ExportExcel',
-        meta: {
-          title: '导出Excel'
-        }
-      },
-      // {
-      //   path: 'export-selected-excel',
-      //   component: () => import('@/views/excel/select-excel'),
-      //   name: 'SelectExcel',
-      //   meta: {
-      //     title: '选择导出'
-      //   }
-      // },
-      // {
-      //   path: 'export-merge-header',
-      //   component: () => import('@/views/excel/merge-header'),
-      //   name: 'MergeHeader',
-      //   meta: {
-      //     title: 'Merge Header'
-      //   }
-      // },
-      {
         path: 'upload-excel',
         component: () => import('@/views/excel/upload-excel'),
         name: 'UploadExcel',
         meta: {
-          title: '上传月度电表读数Excel'
+          title: '上传电表读数Excel'
         }
       }
     ]

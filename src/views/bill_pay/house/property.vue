@@ -23,7 +23,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%" height="1000">
+    <el-table :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row :summary-method="getSummaries" show-summary>
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
@@ -159,6 +159,37 @@ export default {
     handleFilter() {
       // 搜索功能调用
       this.fetchListSearch()
+    },
+    // 返回表尾部数据合计行
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '总价'
+          return
+        }
+        var str = ['houseShallPayProperty1', 'houseCashGet', 'basementShallPayProperty2', 'basementCashGet', 'gap']
+        if (str.indexOf(column.property) > -1) {
+          console.log('column--------')
+          console.log(column)
+          const values = data.map(item => Number(item[column.property]))
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr)
+              if (!isNaN(value)) {
+                return prev + curr
+              } else {
+                return prev
+              }
+            }, 0)
+          } else {
+            sums[index] = ''
+          }
+        }
+      })
+
+      return sums
     }
   }
 }
