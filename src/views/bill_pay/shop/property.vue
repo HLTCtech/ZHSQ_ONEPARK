@@ -41,7 +41,7 @@
           <el-table-column label="到期验证" prop="houseClosingVerify" align="center" />
           <el-table-column label="逾期天数" prop="houseOverdueDays" align="center">
             <template slot-scope="scope">
-              <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'success' : 'danger'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
+              <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="月数" prop="houseMonths" align="center" />
@@ -54,7 +54,7 @@
           <el-table-column label="截止日期" prop="basementDeadline" align="center" />
           <el-table-column label="逾期天数" prop="basementOverdueDays" align="center">
             <template slot-scope="scope">
-              <el-tag :type="scope.row.basementOverdueDays >= 0 ? 'success' : 'danger'" disable-transitions>{{ scope.row.basementOverdueDays }}</el-tag>
+              <el-tag :type="scope.row.basementOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.basementOverdueDays }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="应交物业费2" prop="basementShallPayProperty2" align="center" />
