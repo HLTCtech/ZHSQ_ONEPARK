@@ -1,46 +1,56 @@
 import request from '@/utils/request'
 
-// 缴费成功后的跳转逻辑，根据指定carLoc查询指定的住宅信息
-export function fetchSearchByCarLoc(carLoc) {
+// 所有记录的list
+export function fetchWaterLogList(listQuery_all) {
   return request({
-    url: '/pay/parking/searchByCarLoc',
+    url: '/pay/water/log/all',
     method: 'get',
-    params: { carLoc }
+    params: { listQuery_all }
   })
 }
 
-// 向后台提交表单（新增车位信息）
-export function postNewCarInfo(newInfoFormPost) {
+// 搜索记录search
+export function fetchWaterLogSearch(listQuery_search) {
   return request({
-    url: '/pay/parking/carInfoPost/new',
-    method: 'post',
-    params: { newInfoFormPost }
+    url: '/pay/water/log/search',
+    method: 'get',
+    params: { listQuery_search }
   })
 }
 
-// 向后台提交收费详情表单
-export function postMoney(formPost) {
+// 缴费成功后查询指定id的操作记录
+export function fetchSearchByHouseId(houseId) {
   return request({
-    url: '/pay/water/moneyPost',
+    url: '/pay/water/log/searchById',
+    method: 'get',
+    params: { houseId }
+  })
+}
+
+// 单一收费详情表单
+export function singleMoneyPost(singleFormPost) {
+  return request({
+    url: '/pay/water/singleMoneyPost',
     method: 'post',
-    params: { formPost }
+    params: { singleFormPost }
+  })
+}
+
+// 复合收费详情表单
+export function mixMoneyPost(mixFormPost) {
+  return request({
+    url: '/pay/water/mixMoneyPost',
+    method: 'post',
+    params: { mixFormPost }
   })
 }
 
 // 新增车位时当缴费方式为“特批”，调取sms
-export function getWaterSMS(formPost) {
+export function getWaterSMS(singleSMSPost) {
   return request({
     url: '/pay/water/getSMS',
     method: 'post',
-    params: { formPost }
+    params: { singleSMSPost }
   })
 }
 
-// 变更车位时当缴费方式为“特批”，调取sms
-export function getChangeParkingSMS(infoChangeFormPost) {
-  return request({
-    url: '/pay/parking/change/getSMS',
-    method: 'post',
-    params: { infoChangeFormPost }
-  })
-}
