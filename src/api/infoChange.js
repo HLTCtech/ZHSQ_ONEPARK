@@ -18,10 +18,19 @@ export function fetchHouseInfoSearch(query) {
   })
 }
 
-// 向后台提交表单（费用收缴）
-export function postHouseInfo(formPost) {
+// 向后台提交表单（房屋面积变更）
+export function postHouseInfoArea(formPost) {
   return request({
-    url: '/info/houseChange/infoPost',
+    url: '/info/houseChange/areaChangePost',
+    method: 'post',
+    params: { formPost }
+  })
+}
+
+// 向后台提交表单（业主信息变更）
+export function postHouseInfoUser(formPost) {
+  return request({
+    url: '/info/houseChange/userChangePost',
     method: 'post',
     params: { formPost }
   })
