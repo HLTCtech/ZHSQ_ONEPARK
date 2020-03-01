@@ -23,13 +23,19 @@
       </el-button>
     </div>
 
+    <el-button v-waves class="filter-item" type="success" icon="el-icon-coin" @click="handleMoneyGetOutter">
+      费用收缴
+    </el-button>
+    <br>
+    <br>
+
     <!-- 缴款记录表格 -->
     <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
-      <el-table-column label="缴款金额" prop="paidNum" align="center" />
-      <el-table-column label="缴款日期" prop="paidDate" align="center" />
+      <el-table-column label="缴费金额" prop="paidNum" align="center" />
+      <el-table-column label="缴费日期" prop="paidDate" align="center" />
       <el-table-column label="操作人" prop="adminName" align="center" />
       <el-table-column label="备注" prop="remark" align="center" />
       <el-table-column label="收费" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
@@ -56,7 +62,7 @@
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
-            <el-form-item label="缴费类型" label-width="100px" prop="singlePayType">
+            <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
                 <el-option v-for="item in singlePayOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
@@ -164,8 +170,7 @@ export default {
       },
       // list()查询请求变量
       listQuery_all: {
-        page: 1,
-        year: 2020
+        page: 1
       },
       // 时间选择器返回数据
       pickerOptions: {
@@ -197,8 +202,6 @@ export default {
       },
       // 单一缴费时的选项
       singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
-      // 复合收缴付款类型选择器选项
-      payOptions: [{ value: 'alipay', label: '支付宝' }, { value: 'wechat', label: '微信' }, { value: 'cash', label: '现金' }, { value: 'other', label: '其他' }],
       listLoading: true,
       // 调取短信验证码提交项目
       singleSMSPost: {
@@ -236,10 +239,10 @@ export default {
       // 单一收缴表单提交项目规则
       singleformRules: {
         houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
-        singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
+        singlePayType: [{ required: true, message: '请选择缴费方式', trigger: 'change' }],
         singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
       },
-      // 单一收缴表单提交项目规则
+      // 复合收缴表单提交项目规则
       mixformRules: {
         houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
         // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
@@ -287,6 +290,11 @@ export default {
         this.tableData = response.data.items
         this.total = response.total
       })
+    },
+    // 搜索框下面的收费按钮
+    handleMoneyGetOutter() {
+      this.singleFormPost.houseId = ''
+      this.dialogMoneyPost = true
     },
     // 点击收费按钮
     handleMoneyGet(houseId) {

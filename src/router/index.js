@@ -152,9 +152,9 @@ export const constantRoutes = [
         }
       },
       {
-        path: 'rubbish',
-        component: () => import('@/views/bill_pay/house/rubbish'),
-        name: 'rubbish',
+        path: 'trash',
+        component: () => import('@/views/bill_pay/house/trash'),
+        name: 'trash',
         meta: {
           title: '垃圾清运费'
         }
@@ -195,6 +195,19 @@ export const constantRoutes = [
         meta: {
           title: '商铺装修保证金'
         }
+      }
+    ]
+  },
+  {
+    // 杂项费用收缴端口
+    path: '/pay/sundries',
+    component: Layout,
+    children: [
+      {
+        path: 'paySundries',
+        component: () => import('@/views/bill_pay/sundries'),
+        name: 'Sundries',
+        meta: { title: '杂项费用', icon: 'bug' }
       }
     ]
   },
