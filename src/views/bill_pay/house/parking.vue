@@ -91,19 +91,19 @@
     <el-dialog :visible.sync="dialogParkingInfoChangeFormVisible" title="信息变更/续费">
       <el-card class="box-card">
         <el-form ref="infoChangeData" :model="infoChangeFormPost" label-width="80px">
-          <el-form-item label="房号" prop="houseId">
+          <el-form-item label="房号" label-width="100px" prop="houseId">
             <el-input v-model="infoChangeFormPost.houseId" />
           </el-form-item>
-          <el-form-item label="业主姓名" prop="houseName">
+          <el-form-item label="业主姓名" label-width="100px" prop="houseName">
             <el-input v-model="infoChangeFormPost.houseName" />
           </el-form-item>
-          <el-form-item label="车牌号" prop="carNum">
+          <el-form-item label="车牌号" label-width="100px" prop="carNum">
             <el-input v-model="infoChangeFormPost.carNum" />
           </el-form-item>
-          <el-form-item label="指定位置" prop="carLoc">
+          <el-form-item label="指定位置" label-width="100px" prop="carLoc">
             <el-input v-model="infoChangeFormPost.carLoc" disabled />
           </el-form-item>
-          <el-form-item label="缴费周期">
+          <el-form-item label="缴费周期" label-width="100px">
             <el-form-item prop="dateRange">
               <el-date-picker
                 v-model="infoChangeFormPost.dateRange"
@@ -120,10 +120,7 @@
               />
             </el-form-item>
           </el-form-item>
-          <el-form-item label="缴费金额" prop="moneyNum" autocomplete="off">
-            <el-input v-model.number="infoChangeFormPost.moneyNum" width="100px" />
-          </el-form-item>
-          <el-form-item label="缴款方式" prop="payType">
+          <el-form-item label="缴款方式" label-width="100px" prop="payType">
             <el-radio-group v-model="infoChangeFormPost.payType">
               <el-radio label="支付宝" />
               <el-radio label="微信" />
@@ -131,6 +128,15 @@
               <el-radio label="其他" />
               <el-radio label="特批" />
             </el-radio-group>
+          </el-form-item>
+          <el-form-item label="缴费金额" label-width="100px" prop="moneyNum" autocomplete="off">
+            <el-input v-model.number="infoChangeFormPost.moneyNum" width="100px" />
+          </el-form-item>
+          <el-form-item label="代金券金额" label-width="100px" prop="voucher">
+            <el-input v-model="infoChangeFormPost.voucher" placeholder="请输入代金券金额" />
+          </el-form-item>
+          <el-form-item label="实收总金额" label-width="100px">
+            <el-input v-model.number="changePayTotal" width="100px" disabled />
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <el-input
@@ -169,7 +175,7 @@
         type="primary"
         :disabled="disabled=!show"
         style="width:175px;"
-        @click="getChangeInfoSmsCode(infoChangeFormPost)"
+        @click="handleGetSmsCode(SMSPost)"
       >
         <span v-show="show">获取验证码</span>
         <span v-show="!show" class="count">{{ count }} s</span>
@@ -190,28 +196,28 @@
           :model="newInfoFormPost"
           label-width="80px"
         >
-          <el-form-item label="房号" prop="houseId" required>
+          <el-form-item label="房号" label-width="100px" prop="houseId" required>
             <el-input v-model="newInfoFormPost.houseId" placeholder="请输入房号（只允许输入一个）" />
           </el-form-item>
-          <el-form-item label="业主姓名" prop="houseName" required>
+          <el-form-item label="业主姓名" label-width="100px" prop="houseName" required>
             <el-input v-model="newInfoFormPost.houseName" />
           </el-form-item>
-          <el-form-item label="业主电话" prop="housePhone" required>
+          <el-form-item label="业主电话" label-width="100px" prop="housePhone" required>
             <el-input v-model="newInfoFormPost.housePhone" />
           </el-form-item>
-          <el-form-item label="车牌号" prop="carNum" required>
+          <el-form-item label="车牌号" label-width="100px" prop="carNum" required>
             <el-input v-model="newInfoFormPost.carNum" />
           </el-form-item>
-          <el-form-item label="车辆品牌" prop="carBrand" required>
+          <el-form-item label="车辆品牌" label-width="100px" prop="carBrand" required>
             <el-input v-model="newInfoFormPost.carBrand" />
           </el-form-item>
-          <el-form-item label="颜色" prop="carColor" required>
+          <el-form-item label="颜色" label-width="100px" prop="carColor" required>
             <el-input v-model="newInfoFormPost.carColor" />
           </el-form-item>
-          <el-form-item label="指定位置" prop="carLoc" required>
+          <el-form-item label="指定位置" label-width="100px" prop="carLoc" required>
             <el-input v-model="newInfoFormPost.carLoc" />
           </el-form-item>
-          <el-form-item label="有效期" required>
+          <el-form-item label="有效期" label-width="100px" required>
             <el-form-item prop="dateRange">
               <el-date-picker
                 v-model="newInfoFormPost.dateRange"
@@ -228,10 +234,7 @@
               />
             </el-form-item>
           </el-form-item>
-          <el-form-item label="缴费金额" prop="moneyNum" autocomplete="off">
-            <el-input v-model.number="newInfoFormPost.moneyNum" width="100px" />
-          </el-form-item>
-          <el-form-item label="缴款方式" prop="payType" required>
+          <el-form-item label="缴款方式" label-width="100px" prop="payType" required>
             <el-radio-group v-model="newInfoFormPost.payType">
               <el-radio label="支付宝" />
               <el-radio label="微信" />
@@ -240,7 +243,16 @@
               <el-radio label="特批" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="缴费金额" label-width="100px" prop="moneyNum" autocomplete="off">
+            <el-input v-model.number="newInfoFormPost.moneyNum" width="100px" />
+          </el-form-item>
+          <el-form-item label="代金券金额" label-width="100px" prop="voucher">
+            <el-input v-model="newInfoFormPost.voucher" placeholder="请输入代金券金额" />
+          </el-form-item>
+          <el-form-item label="实收总金额" label-width="100px">
+            <el-input v-model.number="singlePayTotal" width="100px" disabled />
+          </el-form-item>
+          <el-form-item label="备注" label-width="100px" prop="remark">
             <el-input
               v-model="newInfoFormPost.remark"
               type="textarea"
@@ -277,13 +289,13 @@
         type="primary"
         :disabled="disabled=!show"
         style="width:175px;"
-        @click="getNewInfoSmsCode(newInfoFormPost)"
+        @click="handleGetSmsCode(SMSPost)"
       >
         <span v-show="show">获取验证码</span>
         <span v-show="!show" class="count">{{ count }} s</span>
       </el-button>
-      <br />
-      <br />
+      <br>
+      <br>
       <el-button type="success" @click="handleNewInfoPost(newInfoFormPost)">确定提交</el-button>
       <el-button @click="handleNewInfoCleanSMSDataForm()">取消</el-button>
     </el-dialog>
@@ -299,7 +311,8 @@
 </template>
 
 <script>
-import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getNewParkingSMS, getChangeParkingSMS } from '@/api/payParking'
+import { mapGetters } from 'vuex'
+import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode } from '@/api/payParking'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -340,8 +353,9 @@ export default {
         remark: null,
         payType: null,
         moneyNum: null,
-        smsCode: null,
-        adminId: this.$store.getters.adminId
+        voucher: null,
+        adminId: this.$store.getters.adminId,
+        moneyPayTotal: null
       },
       // 定义车位信息变更时的字段
       infoChangeFormPost: {
@@ -356,16 +370,10 @@ export default {
         remark: null,
         payType: null,
         moneyNum: null,
-        smsCode: null,
-        adminId: this.$store.getters.adminId
+        voucher: null,
+        adminId: this.$store.getters.adminId,
+        moneyPayTotal: null
       },
-      // 先注释掉信息变更模态框的校验规则
-      // 定义费用收缴表单提交项目规则
-      //   infoChangeFormRules: {
-      //     dateRange: [{ required: true, message: '请选择时间周期' }],
-      //     moneyNum: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
-      //     payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
-      //   },
       // 定义新增车位信息表单提交项目规则
       newCarInfoFormRules: {
         houseId: [{ required: true, message: '请输入房号' }],
@@ -386,6 +394,12 @@ export default {
       dialogParkingInfoChangeFormVisible: false,
       newInfoDialogApproveSmsVisible: false,
       changeInfoDialogApproveSmsVisible: false,
+      // 调取短信验证码提交项目
+      SMSPost: {
+        houseId: null,
+        adminId: this.$store.getters.adminId,
+        payItem: '停车场管理费'
+      },
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -414,7 +428,43 @@ export default {
           }
         }]
       }
-    //   date_picker: ''
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'adminName',
+      'adminId',
+      'roles'
+    ]),
+    singlePayTotal: function() {
+      var sum = 0
+      var a = this.newInfoFormPost.moneyNum
+      var b = this.newInfoFormPost.voucher
+      // parseInt(Number(a))
+      // parseInt(Number(b))
+      if (a === '') {
+        a = 0
+      }
+      if (b === '') {
+        b = 0
+      }
+      sum = (a - 0) + (b - 0)
+      return sum
+    },
+    changePayTotal: function() {
+      var sum = 0
+      var a = this.infoChangeFormPost.moneyNum
+      var b = this.infoChangeFormPost.voucher
+      // parseInt(Number(a))
+      // parseInt(Number(b))
+      if (a === '') {
+        a = 0
+      }
+      if (b === '') {
+        b = 0
+      }
+      sum = (a - 0) + (b - 0)
+      return sum
     }
   },
   created() {
@@ -443,33 +493,9 @@ export default {
       this.dialogParkingInfoChangeFormVisible = true
     },
     // 新增信息---获取验证码按钮
-    getNewInfoSmsCode(formPost) {
-      getNewParkingSMS(formPost).then(response => {
-        if (response.codeStatus === 200) {
-          this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
-        } else {
-          this.$message({ message: '提交失败，请联系系统管理员', type: 'error' })
-        }
-      })
-      // 更改获取验证码按钮倒计时
-      const TIME_COUNT = 30 // 更改倒计时时间
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.timer) // 清除定时器
-            this.timer = null
-          }
-        }, 1000)
-      }
-    },
-    // 变更信息---获取验证码按钮
-    getChangeInfoSmsCode(formPost) {
-      getChangeParkingSMS(formPost).then(response => {
+    handleGetSmsCode(SMSPost) {
+      this.SMSPost.houseId = this.newInfoFormPost.houseId
+      getSMSCode(SMSPost).then(response => {
         if (response.codeStatus === 200) {
           this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
         } else {
@@ -494,6 +520,7 @@ export default {
     },
     // 信息变更---提交收费表单
     handleSubmitInfoChangeForm(infoChangeFormPost) {
+      this.infoChangeFormPost.moneyPayTotal = this.changePayTotal
       // 收费类型为特批时验证码模态框处理
       if (this.infoChangeFormPost.payType === '特批') {
         this.changeInfoDialogApproveSmsVisible = true
@@ -531,7 +558,7 @@ export default {
         })
       }
     },
-    // 变更车位---缴款类型是特批时，验证码点击提交的收费表单
+    // 信息变更---缴款类型是特批时，验证码点击提交的收费表单
     handleChangeInfoPost(infoChangeFormPost) {
       if (infoChangeFormPost.smsCode === null || infoChangeFormPost.smsCode.length < 6) {
         this.$message({ message: '请输入正确的验证码', type: 'error' })
@@ -570,6 +597,7 @@ export default {
     },
     // 新增信息---提交新增车辆信息表单
     handleSubmitNewInfoForm(newInfoFormPost) {
+      this.newInfoFormPost.moneyPayTotal = this.singlePayTotal
       this.$refs['newInfoForm'].validate((valid) => {
         if (valid) {
           // 收费类型为特批时验证码模态框处理

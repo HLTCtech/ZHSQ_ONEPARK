@@ -20,11 +20,11 @@ export function fetchHouseSearch(query) {
 }
 
 // 住宅收费---获取经理验证码
-export function getHouseSMS(smsForm) {
+export function getElectricSMS(singleSMSPost) {
   return request({
     url: '/pay/electric/house/getSMS',
     method: 'post',
-    params: { smsForm }
+    params: { singleSMSPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function fetchShopListAll(query) {
 // 根据选定字段查询指定的商铺信息
 export function fetchShopSearch(query) {
   return request({
-    url: '/pay/electric/house/search',
+    url: '/pay/electric/shop/search',
     method: 'get',
     params: { query }
   })
@@ -116,15 +116,6 @@ export function fetchAllDetailByMonth(houseId) {
   })
 }
 
-// 向后台提交表单（费用收缴）
-export function postMoney(formPost) {
-  return request({
-    url: '/pay/electric/moneypost',
-    method: 'post',
-    params: { formPost }
-  })
-}
-
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId) {
   return request({
@@ -134,35 +125,20 @@ export function fetchSearchByHouseId(houseId) {
   })
 }
 
-// 下面为article.js中代码，暂未针对具体业务进行修改
-// export function fetchArticle(id) {
-//   return request({
-//     url: '/house/detail',
-//     method: 'get',
-//     params: { id }
-//   })
-// }
+// 单一收费详情表单
+export function singleMoneyPost(singleFormPost) {
+  return request({
+    url: '/pay/electric/singleMoneyPost',
+    method: 'post',
+    params: { singleFormPost }
+  })
+}
 
-// export function fetchPv(pv) {
-//   return request({
-//     url: '/article/pv',
-//     method: 'get',
-//     params: { pv }
-//   })
-// }
-
-// export function createArticle(data) {
-//   return request({
-//     url: '/article/create',
-//     method: 'post',
-//     data
-//   })
-// }
-
-// export function updateArticle(data) {
-//   return request({
-//     url: '/article/update',
-//     method: 'post',
-//     data
-//   })
-// }
+// 复合收费详情表单
+export function mixMoneyPost(mixFormPost) {
+  return request({
+    url: '/pay/electric/mixMoneyPost',
+    method: 'post',
+    params: { mixFormPost }
+  })
+}

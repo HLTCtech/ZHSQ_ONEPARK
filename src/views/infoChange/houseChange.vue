@@ -2,21 +2,6 @@
   <!-- 信息变更界面 -->
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery_search.buildingNum" placeholder="选择楼号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in floor_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.houseNum" placeholder="选择住宅房间号" clearable style="width: 140px" class="filter-item">
-        <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.shopNum" placeholder="选择商铺房间号" clearable style="width: 140px" class="filter-item">
-        <el-option v-for="item in Shopfangjian_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -24,7 +9,7 @@
       </el-button>
     </div>
 
-    <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleNewInfo">
+    <el-button v-waves class="filter-item" type="success" icon="el-icon-search" @click="handleNewInfo">
       新增房源信息
     </el-button>
     <br>
@@ -170,12 +155,6 @@ export default {
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {
-        page: 1,
-        buildingNum: null,
-        unitNum: null,
-        floorNum: null,
-        houseNum: null,
-        shopNum: null,
         houseId: null,
         houseName: null
       },
@@ -214,7 +193,8 @@ export default {
       },
       formRules: {
         houseId: [{ required: true, message: '请输入房号（只输入一个）', trigger: 'blur' }],
-        houseName: [{ required: true, message: '请输入客户姓名' }]
+        houseName: [{ required: true, message: '请输入客户姓名' }],
+        housePhone: [{ required: true, message: '请输入业主电话', trigger: 'blur' }]
       },
       dialogNewHouseInfoVisible: false,
       // 声明下api变量

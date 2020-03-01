@@ -46,7 +46,7 @@
       <el-table-column label="退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyReturn(row.houseId)">
+          <el-button type="primary" size="mini" @click="handleMoneyReturn(row)">
             退款
           </el-button>
         </template>
@@ -59,36 +59,91 @@
       <!-- 定义表单提交项 -->
       <el-card class="box-card">
         <el-form ref="dataForm" :rules="formRules" :model="formPost" label-width="80px">
-          <el-form-item label="房号" prop="houseId">
+          <el-form-item label="房号" label-width="100px" prop="houseId">
             <el-input v-model="formPost.houseId" placeholder="请输入房号（多个房间请用'/'间隔；如16-101/16-102" />
           </el-form-item>
-          <el-form-item label="客户姓名" prop="houseName">
+          <el-form-item label="客户姓名" label-width="100px" prop="houseName">
             <el-input v-model="formPost.houseName" />
           </el-form-item>
-          <el-form-item label="实收金额" prop="moneyGet">
+          <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
+            <el-select v-model="formPost.payType" placeholder="请选择">
+              <el-option v-for="item in payOptions" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="缴费金额" label-width="100px" prop="moneyGet">
             <el-input v-model.number="formPost.moneyGet" />
           </el-form-item>
-          <el-form-item label="差额" prop="gap">
-            <el-input v-model="formPost.moneyGet" disabled />
-          </el-form-item>
-          <el-form-item label="交款方式" prop="payType">
-            <el-radio-group v-model="formPost.payType">
-              <el-radio label="支付宝" />
-              <el-radio label="微信" />
-              <el-radio label="现金" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="交款日期" prop="paidDate">
+          <el-form-item label="交款日期" label-width="100px" prop="paidDate">
             <div class="block">
-              <el-date-picker v-model="formPost.paidDate" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd" />
+              <el-date-picker v-model="formPost.paidDate" align="right" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
             </div>
           </el-form-item>
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="差额" label-width="100px" prop="gap">
+            <el-input v-model="formPost.moneyGet" disabled />
+          </el-form-item>
+          <el-form-item label="备注" label-width="100px" prop="remark">
             <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
-            <el-button @click="handleCleanDataForm()">取消</el-button>
+            <el-button @click="handleCleanDataFormReturn()">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-dialog>
+
+    <!-- 收费类型为特批时验证码模态框处理 -->
+    <el-dialog width="40%" title="领导审批" style="top: 20%" :visible.sync="dialogSMSVisible" append-to-body>
+      <el-input
+        ref="smsCode"
+        v-model="formPost.smsCode"
+        placeholder="请输入短信验证码"
+        name="smsCode"
+        type="number"
+        tabindex="1"
+        autocomplete="on"
+      />
+      <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getSmsCode(SMSPost)">
+        <span v-show="show">获取验证码</span>
+        <span v-show="!show" class="count"> {{ count }} s</span>
+      </el-button>
+      <br>
+      <br>
+      <el-button type="success" @click="handleSMSPost(formPost)">确定提交</el-button>
+      <el-button @click="handleCleanSMS()">取消</el-button>
+    </el-dialog>
+
+    <!-- 退款按钮的模态框 -->
+    <el-dialog :visible.sync="dialogMoneyReturn" title="退款">
+
+      <!-- 定义表单提交项 -->
+      <el-card class="box-card">
+        <el-form ref="dataFormReturn" :rules="formRulesReturn" :model="formReturn" label-width="80px">
+          <el-form-item label="房号" label-width="100px" prop="houseId">
+            <el-input v-model="formReturn.houseId" placeholder="请输入房号（多个房间请用'/'间隔；如16-101/16-102" disabled />
+          </el-form-item>
+          <el-form-item label="客户姓名" label-width="100px" prop="houseName">
+            <el-input v-model="formReturn.houseName" disabled />
+          </el-form-item>
+          <el-form-item label="退款方式" label-width="100px" prop="payTypeReturn">
+            <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
+              <el-option v-for="item in payOptionsReturn" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="退款金额" label-width="100px" prop="moneyReturn">
+            <el-input v-model.number="formReturn.moneyReturn" />
+          </el-form-item>
+          <el-form-item label="退款日期" label-width="100px" prop="returnDate">
+            <div class="block">
+              <el-date-picker v-model="formReturn.returnDate" align="right" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
+            </div>
+          </el-form-item>
+          <el-form-item label="备注" label-width="100px" prop="remark">
+            <el-input v-model="formReturn.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="handleSubmitFormReturn(formReturn)">提交</el-button>
+            <el-button @click="handleCleanDataFormReturn()">取消</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -101,7 +156,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, fetchSearchByHouseId } from '@/api/payDecorationDeposit'
+import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS } from '@/api/payDecorationDeposit'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -112,45 +167,18 @@ export default {
   directives: { waves },
   data() {
     return {
+      show: true,
+      count: '',
       listLoading: true,
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
-        houseId: undefined,
-        year: undefined,
-        houseName: undefined,
-        datePicker: undefined
+        houseId: null,
+        year: null,
+        houseName: null,
+        datePicker: null
       },
-      titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
-      // 年份选择
-      yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
-      // list接口请求参数
-      listQuery_all: {
-        page: 1,
-        year: 2020
-      },
-      formPost: {
-        houseId: undefined,
-        houseName: '',
-        paidDate: '',
-        moneyGet: '',
-        payType: '',
-        remark: '',
-        gap: '',
-        adminId: this.$store.getters.adminId
-      },
-      // 定义表单提交项目规则
-      formRules: {
-        houseId: [{ required: true, message: '请输入房号（多个房间请用"/"间隔；如16-101/16-102）', trigger: 'blur' }],
-        houseName: [{ required: true, message: '请输入客户姓名' }],
-        moneyGet: [{ required: true, message: '请输入实收金额(纯数字)', type: 'number', trigger: 'blur' }],
-        paidDate: [{ required: true, message: '请选择交款日期', trigger: 'blur' }],
-        payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
-      },
-      dialogMoneyGetFormVisible: false,
-      // 声明下api变量
-      tableData: [],
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -178,7 +206,64 @@ export default {
             picker.$emit('pick', [start, end])
           }
         }]
-      }
+      },
+      titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
+      // 年份选择
+      yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
+      // list接口请求参数
+      listQuery_all: {
+        page: 1,
+        year: 2020
+      },
+      formPost: {
+        houseId: null,
+        houseName: null,
+        paidDate: null,
+        moneyGet: null,
+        payType: null,
+        remark: null,
+        gap: null,
+        smsCode: null,
+        adminId: this.$store.getters.adminId
+      },
+      formReturn: {
+        houseId: null,
+        houseName: null,
+        payTypeReturn: null,
+        moneyReturn: null,
+        returnDate: null,
+        remark: null,
+        adminId: this.$store.getters.adminId
+      },
+      // 调取短信验证码提交项目
+      SMSPost: {
+        houseId: null,
+        adminId: this.$store.getters.adminId,
+        payItem: '住宅装修保证金'
+      },
+      // 单一缴费时的选项
+      payOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
+      // 退款时的选项
+      payOptionsReturn: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }],
+      // 定义表单提交项目规则
+      formRules: {
+        houseId: [{ required: true, message: '请输入房号（多个房间请用"/"间隔；如16-101/16-102）', trigger: 'blur' }],
+        houseName: [{ required: true, message: '请输入客户姓名' }],
+        moneyGet: [{ required: true, message: '请输入实收金额(纯数字)', type: 'number', trigger: 'blur' }],
+        paidDate: [{ required: true, message: '请选择交款日期', trigger: 'blur' }],
+        payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
+      },
+      formRulesReturn: {
+        moneyReturn: [{ required: true, message: '请输入退款金额(纯数字)', type: 'number', trigger: 'blur' }],
+        returnDate: [{ required: true, message: '请选择退款日期', trigger: 'blur' }],
+        payTypeReturn: [{ required: true, message: '请选择退款方式', trigger: 'blur' }]
+      },
+      // 短信验证码模态框
+      dialogSMSVisible: false,
+      dialogMoneyGetFormVisible: false,
+      dialogMoneyReturn: false,
+      // 声明下api变量
+      tableData: []
     }
   },
   computed: {
@@ -211,22 +296,130 @@ export default {
     handleMoneyGet() {
       this.dialogMoneyGetFormVisible = true
     },
-    handleMoneyReturn(houseId) {
-      this.formPost.houseId = houseId
-      console.log(this.formPost.houseId)
-      this.dialogMoneyGetFormVisible = true
+    handleMoneyReturn(row) {
+      this.formReturn.houseId = row.houseId
+      this.formReturn.houseName = row.houseName
+      this.dialogMoneyReturn = true
     },
+    // 获取验证码按钮
+    getSmsCode(SMSPost) {
+      SMSPost.houseId = this.formPost.houseId
+      getSMS(SMSPost).then(response => {
+        if (response.codeStatus === 200) {
+          this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
+        } else {
+          this.$message({ message: '提交失败，请联系系统管理员', type: 'error' })
+        }
+      })
+      // 更改获取验证码按钮倒计时
+      const TIME_COUNT = 30 // 更改倒计时时间
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--
+          } else {
+            this.show = true
+            clearInterval(this.timer) // 清除定时器
+            this.timer = null
+          }
+        }, 1000)
+      }
+    },
+    // 缴款类型是特批时，验证码点击提交的收费表单
+    handleSMSPost(formPost) {
+      if (formPost.smsCode === null || formPost.smsCode.length < 6) {
+        this.$message({ message: '请输入正确的验证码', type: 'error' })
+      } else {
+        postMoney(formPost).then(response => {
+          if (response.codeStatus === 200) {
+            this.$notify({
+              title: 'Success',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+
+            this.dialogSMSVisible = false
+            this.dialogMoneyGetFormVisible = false
+            this.$nextTick(() => {
+              this.$refs['dataForm'].resetFields()
+              this.formPost.smsCode = ''
+            })
+            fetchSearchByHouseId(formPost.houseId).then(response => {
+              this.tableData = response.data.items
+            })
+          } else {
+            this.$notify({
+              title: 'Failure',
+              message: '提交失败，请联系系统管理员',
+              type: 'error',
+              duration: 3000
+            })
+          }
+        })
+      }
+    },
+    // 单一收费提交收费表单
     handleSubmitForm(formPost) {
+      this.formPost.gap = this.formPost.moneyGet
+      // 表单项规则验证
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          // 收费类型为特批时验证码模态框处理
+          if (this.formPost.payType === '特批') {
+            this.dialogSMSVisible = true
+          } else {
+            // 操作确认框
+            this.$confirm('确定提交么？', '费用收缴', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'info'
+            }).then(() => {
+              // this.formPost.paidTotalNum = this.singlePayTotal
+              postMoney(formPost).then(response => {
+                if (response.codeStatus === 200) {
+                  this.$notify({
+                    title: 'Success',
+                    message: '提交成功',
+                    type: 'success',
+                    duration: 2000
+                  })
+                  this.$nextTick(() => {
+                    this.$refs['dataForm'].resetFields()
+                    this.formPost.smsCode = ''
+                  })
+                  this.dialogMoneyGetFormVisible = false
+                  fetchSearchByHouseId(formPost.houseId).then(response => {
+                    this.tableData = response.data.items
+                  })
+                } else {
+                  this.$notify({
+                    title: 'Failure',
+                    message: '提交失败，请联系系统管理员',
+                    type: 'error',
+                    duration: 3000
+                  })
+                }
+              })
+            })
+          }
+        }
+      })
+    },
+    // 退款表单
+    handleSubmitFormReturn(formReturn) {
+      // 表单项规则验证
+      this.$refs['dataFormReturn'].validate((valid) => {
+        if (valid) {
+        // 操作确认框
           this.$confirm('确定提交么？', '费用收缴', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'info'
           }).then(() => {
-            console.log('formPost-----')
-            console.log(formPost)
-            postMoney(formPost).then(response => {
+            returnMoney(formReturn).then(response => {
               if (response.codeStatus === 200) {
                 this.$notify({
                   title: 'Success',
@@ -234,14 +427,11 @@ export default {
                   type: 'success',
                   duration: 2000
                 })
-                this.dialogMoneyGetFormVisible = false
                 this.$nextTick(() => {
-                  this.$refs['dataForm'].resetFields()
+                  this.$refs['dataFormReturn'].resetFields()
                 })
-                // 逻辑可能存在问题，比如id如何传到页面上
-                // 暂未测试
-                // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-                fetchSearchByHouseId(formPost.houseId).then(response => {
+                this.dialogMoneyReturn = false
+                fetchSearchByHouseId(formReturn.houseId).then(response => {
                   this.tableData = response.data.items
                 })
               } else {
@@ -257,12 +447,40 @@ export default {
         }
       })
     },
+    // 获取验证码页面取消按钮
+    handleCleanSMS() {
+      this.formPost.smsCode = ''
+      this.dialogSMSVisible = false
+    },
     handleCleanDataForm() {
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
       })
       this.dialogMoneyGetFormVisible = false
+    },
+    handleCleanDataFormReturn() {
+      this.$nextTick(() => {
+        this.$refs['dataFormReturn'].resetFields()
+      })
+      this.dialogMoneyReturn = false
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
+
+.show-sms {
+    position: absolute;
+    right: 10px;
+    top: 82px;
+    font-size: 15px;
+    color: $light_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  </style>

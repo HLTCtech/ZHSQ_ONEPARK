@@ -76,23 +76,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/info',
-    component: Layout,
-    // redirect: '/info',
-    children: [
-      {
-        path: 'Housechange',
-        component: () => import('@/views/infoChange/houseChange'),
-        name: 'infoChange',
-        meta: {
-          title: '房源信息变更',
-          icon: 'guide',
-          noCache: true
-        }
-      }
-    ]
-  },
-  {
     // 住宅费用收缴端口
     path: '/pay/house',
     component: Layout,
@@ -207,146 +190,131 @@ export const constantRoutes = [
         path: 'paySundries',
         component: () => import('@/views/bill_pay/sundries'),
         name: 'Sundries',
-        meta: { title: '杂项费用', icon: 'bug' }
+        meta: { title: '费用收缴--杂项', icon: 'bug' }
       }
     ]
   },
   {
-    // 所有的总账显示
-    path: '/bill_all',
+    // 费用总览------暂未开发
+    path: '/billOverall',
     component: Layout,
-    redirect: '/bill_all/electric',
-    name: 'bill_all',
+    children: [
+      {
+        path: 'paySundries',
+        component: () => import('@/views/bill_pay/sundries'),
+        name: 'Sundries',
+        meta: { title: '费用总览', icon: 'money' }
+      }
+    ]
+  },
+  {
+    // 操作记录------暂未开发
+    path: '/billOverall/log',
+    component: Layout,
+    children: [
+      {
+        path: 'paySundries',
+        component: () => import('@/views/bill_pay/sundries'),
+        name: 'Sundries',
+        meta: { title: '操作记录查询', icon: 'money' }
+      }
+    ]
+  },
+  {
+    // 物业流水
+    path: '/waterBill',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'waterBill',
     meta: {
-      title: '费用总览',
+      title: '流水管理',
       icon: 'money'
     },
     children: [
       {
         path: 'propertyWaterBill',
-        component: () => import('@/views/bill_overall/propertyWaterBill'),
+        component: () => import('@/views/waterBill/propertyWaterBill'),
         name: 'propertyWaterBill',
         meta: {
-          title: '物业收费流水'
+          title: '物业流水总览'
         }
       },
       {
-        path: 'decorationDeposit',
-        component: () => import('@/views/bill_overall/decorationDepositStandingBook'),
-        name: 'decorationDeposit',
+        path: 'exportPropertyWaterBill',
+        component: () => import('@/views/waterBill/exportPropertyWaterBill'),
+        name: 'exportPropertyWaterBill',
         meta: {
-          title: '装修保证金台账'
+          title: '物业流水导出'
         }
       }
-      // {
-      //   path: 'parking_all1',
-      //   component: () => import('@/views/bill_charts/bill_tabYear'),
-      //   name: 'parking1',
-      //   meta: {
-      //     title: '停车管理费'
-      //   }
-      // },
-      // {
-      //   path: 'parking_all2',
-      //   component: () => import('@/views/bill_charts/bill_tabYear'),
-      //   name: 'parking2',
-      //   meta: {
-      //     title: '停车管理费'
-      //   }
-      // }
     ]
   },
   {
-    // 电费单项管理
-    path: '/electric',
+    // 台账管理
+    path: '/standingBook',
     component: Layout,
-    redirect: '/bill_all/electric',
-    name: 'electric',
+    // redirect: '/bill_all/electric',
+    name: 'standingBook',
     meta: {
-      title: '电费管理',
+      title: '台账管理',
       icon: 'money'
     },
     children: [
       {
-        path: 'StandingBook_electric',
-        component: () => import('@/views/electricManage/standingBook'),
-        name: 'electricStandingbook',
+        path: 'electricStandingBook',
+        component: () => import('@/views/standingBookManage/electricStandingBook'),
+        name: 'electricStandingBook',
         meta: {
-          title: '电费台账'
+          title: '电费台账管理'
         }
       },
       {
-        path: 'notification',
-        component: () => import('@/views/electricManage/notification'),
+        path: 'electricNotification',
+        component: () => import('@/views/standingBookManage/electricNotification'),
         name: 'electricNotification',
         meta: {
           title: '电费通知单'
         }
-      }
-    ]
-  },
-  {
-    // 物业费单项管理
-    path: '/property',
-    component: Layout,
-    redirect: '/bill_all/property',
-    name: 'property',
-    meta: {
-      title: '物业费管理',
-      icon: 'money'
-    },
-    children: [
+      },
       {
-        path: 'houseStandingBook',
-        component: () => import('@/views/propertyManage/houseStandingBook'),
-        name: 'houseStandingBook',
+        path: 'propertyHouseStandingBook',
+        component: () => import('@/views/standingBookManage/propertyHouseStandingBook'),
+        name: 'propertyHouseStandingBook',
         meta: {
           title: '住宅物业费台账'
         }
       },
       {
-        path: 'shopStandingBook',
-        component: () => import('@/views/propertyManage/shopStandingBook'),
-        name: 'shopStandingBook',
+        path: 'propertyShopStandingBook',
+        component: () => import('@/views/standingBookManage/propertyShopStandingBook'),
+        name: 'propertyShopStandingBook',
         meta: {
           title: '商铺物业费台账'
         }
       },
       {
-        path: 'bill_property_shop',
-        component: () => import('@/views/error-page/401'),
-        name: 'parking',
+        path: 'decorationDepositStandingBook',
+        component: () => import('@/views/standingBookManage/decorationDepositStandingBook'),
+        name: 'decorationDepositStandingBook',
         meta: {
-          title: '装修保证金'
+          title: '装修保证金台账'
         }
       }
     ]
   },
   {
-    // 停车场单项管理
-    path: '/parking',
+    path: '/info',
     component: Layout,
-    redirect: '/bill_all/parking',
-    name: 'parking',
-    meta: {
-      title: '停车场管理',
-      icon: 'money'
-    },
+    // redirect: '/info',
     children: [
       {
-        path: 'bill_parking',
-        component: () => import('@/views/error-page/401'),
-        name: 'electric',
+        path: 'Housechange',
+        component: () => import('@/views/infoChange/houseChange'),
+        name: 'infoChange',
         meta: {
-          title: '费用收缴'
-        }
-      },
-      {
-        path: 'parking_all',
-        component: () => import('@/views/error-page/401'),
-        name: 'property',
-        meta: {
-          title: '停车场总览'
+          title: '房源信息变更',
+          icon: 'guide',
+          noCache: true
         }
       }
     ]

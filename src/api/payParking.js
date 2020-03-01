@@ -46,19 +46,11 @@ export function postChangeInfo(infoChangeFormPost) {
 }
 
 // 新增车位时当缴费方式为“特批”，调取sms
-export function getNewParkingSMS(newInfoFormPost) {
+export function getSMSCode(newInfoFormPost) {
   return request({
-    url: '/pay/parking/new/getSMS',
+    url: '/pay/parking/getSMS',
     method: 'post',
     params: { newInfoFormPost }
   })
 }
 
-// 变更车位时当缴费方式为“特批”，调取sms
-export function getChangeParkingSMS(infoChangeFormPost) {
-  return request({
-    url: '/pay/parking/change/getSMS',
-    method: 'post',
-    params: { infoChangeFormPost }
-  })
-}

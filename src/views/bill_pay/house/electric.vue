@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅收费界面 -->
+  <!-- 住宅电费收费界面 -->
   <div class="app-container">
     <div class="filter-container">
       <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
@@ -9,14 +9,10 @@
       <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery_search.floorNum" placeholder="选择楼层" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in floor_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.houseNum" placeholder="选择房间号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in fangjian_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseNum" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
+
       <!-- 时间选择器 -->
       <el-date-picker
         v-model="listQuery_search.datePicker"
@@ -70,7 +66,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- 费用收缴按钮的模态框 -->
+    <!-- 费用收缴模态框 -->
     <el-dialog :visible.sync="dialogMoneyGetFormVisible" title="费用收缴">
       <!-- 展示当前房间的费用状态统计 -->
       <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%" align="center">
@@ -110,69 +106,89 @@
 
       <!-- 定义表单提交项 -->
       <el-card class="box-card">
-        <el-form ref="dataForm" :rules="formRules" :model="formPost" label-width="80px">
-          <el-form-item label="房间号" prop="houseId">
-            <el-input v-model="formPost.houseId" disabled />
-          </el-form-item>
-          <el-form-item label="缴费周期" required>
-            <el-form-item prop="dateRange">
-              <el-date-picker
-                v-model="formPost.dateRange"
-                class="filter-item"
-                type="daterange"
-                align="left"
-                unlink-panels
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                value-format="yyyy-MM-dd"
-                validate-event
-                required
-              />
+
+        <el-switch v-model="payPattern" label="" label-width="100px" active-text="复合缴费" inactive-text="单一缴费" active-value="0" inactive-value="1" />
+        <br>
+        <br>
+
+        <!-- 选择单一缴费时的提交表单 -->
+        <div v-if="payPattern==1" label="单一缴费" label-width="100px">
+          <el-form ref="singleDataForm" :rules="singleformRules" :model="singleFormPost" label-width="80px">
+            <el-form-item label="房间号" label-width="100px" prop="houseId">
+              <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
-          </el-form-item>
-          <el-form-item label="缴费金额" prop="moneyNum" autocomplete="off">
-            <el-input v-model.number="formPost.moneyNum" width="100px" />
-          </el-form-item>
-          <el-form-item label="缴款方式" prop="payType" required>
-            <el-radio-group v-model="formPost.payType">
-              <el-radio label="支付宝" />
-              <el-radio label="微信" />
-              <el-radio label="现金" />
-              <el-radio label="其他" />
-              <el-radio label="特批" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="formPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="handleSubmitForm(formPost)">提交</el-button>
-            <el-button @click="handleCleanDataForm()">取消</el-button>
-          </el-form-item>
-        </el-form>
+            <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
+              <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
+                <el-option v-for="item in singlePayOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="缴费金额" label-width="100px" prop="singlePayMoney">
+              <el-input v-model.number="singleFormPost.singlePayMoney" type="number" style="width: 200px" placeholder="请输入金额" />
+            </el-form-item>
+            <el-form-item label="备注" label-width="100px" prop="remark">
+              <el-input v-model="singleFormPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" @click="singleSubmitFormPost(singleFormPost)">提交</el-button>
+              <el-button @click="CleanDataForm()">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <!-- 选择复合缴费时的提交表单 -->
+        <div v-if="payPattern==0" label="复合缴费" label-width="100px">
+          <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
+            <el-form-item label="房间号" label-width="100px" prop="houseId">
+              <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            </el-form-item>
+            <el-form-item label="支付宝" label-width="100px">
+              <el-input v-model.number="mixFormPost.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="微信" label-width="100px">
+              <el-input v-model.number="mixFormPost.mixPayType[1].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="现金" label-width="100px">
+              <el-input v-model.number="mixFormPost.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="其他" label-width="100px">
+              <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
+            </el-form-item>
+            <el-form-item label="总金额" label-width="100px">
+              <el-input v-model.number="mixPayTotal" width="100px" disabled />
+            </el-form-item>
+            <el-form-item label="备注" label-width="100px" prop="remark">
+              <el-input v-model="mixFormPost.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" @click="mixSubmitFormPost(mixFormPost)">提交</el-button>
+              <el-button @click="CleanDataForm()">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <!-- 收费类型为特批时验证码模态框处理 -->
+        <el-dialog width="40%" title="领导审批" style="top: 20%" :visible.sync="dialogSMSVisible" append-to-body>
+          <el-input
+            ref="smsCode"
+            v-model="singleFormPost.smsCode"
+            placeholder="请输入短信验证码"
+            name="smsCode"
+            type="number"
+            tabindex="1"
+            autocomplete="on"
+          />
+          <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getSmsCode(singleSMSPost)">
+            <span v-show="show">获取验证码</span>
+            <span v-show="!show" class="count"> {{ count }} s</span>
+          </el-button>
+          <br>
+          <br>
+          <el-button type="success" @click="handleSMSPost(singleFormPost)">确定提交</el-button>
+          <el-button @click="handleCleanSMS()">取消</el-button>
+        </el-dialog>
+
       </el-card>
 
-      <!-- 收费类型为特批时验证码模态框处理 -->
-      <el-dialog width="40%" title="领导审批" style="top: 20%" :visible.sync="dialogApproveSmsVisible" append-to-body>
-        <el-input
-          ref="smsCode"
-          v-model="formPost.smsCode"
-          placeholder="请输入短信验证码"
-          name="smsCode"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-        <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getSmsCode(formPost)">
-          <span v-show="show">获取验证码</span>
-          <span v-show="!show" class="count"> {{count}} s</span>
-        </el-button>
-        <br>
-        <br>
-        <el-button type="success" @click="handlePost(formPost)">确定提交</el-button>
-        <el-button @click="handleCleanSMSDataForm()">取消</el-button>
-      </el-dialog>
     </el-dialog>
 
     <!-- 月度费用状态详情模态框 -->
@@ -239,7 +255,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, postMoney, fetchSearchByHouseId, getHouseSMS } from '@/api/payElectric'
+import { fetchHouseListAll, fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -250,6 +266,10 @@ export default {
   directives: { waves },
   data() {
     return {
+      show: true,
+      count: '',
+      payPattern: true,
+      props: { multiple: true },
       listLoading: true,
       total: 0,
       // 定义搜索按钮的query字段
@@ -257,33 +277,62 @@ export default {
         page: 1,
         buildingNum: null,
         unitNum: null,
-        floorNum: null,
         houseNum: null,
         datePicker: null,
         houseId: null,
         houseName: null
       },
-      show: true,
-      count: '',
-      // 定义表单提交项具体项目
-      formPost: {
+      // 单一缴费时的选项
+      singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
+      // 调取短信验证码提交项目
+      singleSMSPost: {
         houseId: null,
-        dateRange: null,
-        moneyNum: null,
-        payType: null,
+        adminId: this.$store.getters.adminId,
+        payItem: '住宅电费'
+      },
+      // 单一缴费表单提交项目
+      singleFormPost: {
+        houseId: null,
+        singlePayType: null,
+        singlePayMoney: null,
         remark: null,
         payItem: '住宅电费',
         adminId: this.$store.getters.adminId,
         smsCode: null
       },
-      // 定义表单提交项目规则
-      formRules: {
-        // date1: [{ required: true, message: '请选择时间周期起始日期', type: 'date', trigger: 'change' }],
-        // date2: [{ required: true, message: '请选择时间周期终点日期', type: 'date', trigger: 'change' }],
-        dateRange: [{ required: true, message: '请选择时间周期' }],
-        moneyNum: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
-        payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
+      // 复合缴费表单提交项目
+      mixFormPost: {
+        houseId: null,
+        mixPayType: [{
+          name: 'mixPayAlipay', value: null
+        },
+        { name: 'mixPayWechat', value: null
+        },
+        { name: 'mixPayCash', value: null
+        },
+        { name: 'mixPayOther', value: null
+        }],
+        mixPayTotalNum: null,
+        remark: null,
+        payItem: '住宅点费',
+        adminId: this.$store.getters.adminId
       },
+      // 单一收缴表单提交项目规则
+      singleformRules: {
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
+        singlePayType: [{ required: true, message: '请选择缴费方式', trigger: 'change' }],
+        singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
+      },
+      // 复合收缴表单提交项目规则
+      mixformRules: {
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
+        // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
+        // singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
+      },
+      // 短信验证码模态框
+      dialogSMSVisible: false,
+      // 收费页面模态框
+      dialogMoneyPost: false,
       // list接口请求参数
       listQuery_all: {
         page: 1
@@ -344,7 +393,19 @@ export default {
       'adminName',
       'adminId',
       'roles'
-    ])
+    ]),
+    mixPayTotal: function() {
+      var sum = 0
+      this.mixFormPost.mixPayType.forEach((v, i) => {
+        if (v.value === '') {
+          v.value = 0
+        }
+        parseInt(v.value)
+        sum += v.value
+      })
+      parseInt(sum)
+      return sum
+    }
   },
   created() {
     this.getList()
@@ -360,8 +421,6 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       fetchHouseSearch(this.listQuery_search).then(response => {
-        // 将api返回值传递到前端变量
-        console.log('listQuery----' + this.listQuery)
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
       })
@@ -370,20 +429,11 @@ export default {
       // 搜索功能调用
       this.fetchListSearch()
     },
-    // handleUpdate(row) {
-    //   // 转预存模态框函数调用
-    //   this.temp = Object.assign({}, row) // Object.assign方法将所有可枚举属性的值从一个或多个源对象复制到目标对象，返回目标对象
-    //   // this.temp.timestamp = new Date(this.temp.timestamp)
-    //   this.dialogStatus = 'update' // dialogStatus具体状态，并根据此变量进行不同内容的显示，暂时现将“转预存”按钮定义为update，其对应的文本在textMap定义
-    //   this.dialogFormVisible = true
-    //   this.$nextTick(() => {
-    //     this.$refs['dataForm'].clearValidate()
-    //   })
-    // },
     // 收费按钮绑定的处理事件
     handleMoneyGet(houseId) {
-      this.formPost.houseId = houseId
-      console.log(this.formPost.houseId)
+      console.log(houseId)
+      this.singleFormPost.houseId = houseId
+      this.mixFormPost.houseId = houseId
       fetchPreViewAll(houseId).then(response => {
         this.pvData_all = response.data.pvData
       })
@@ -419,8 +469,9 @@ export default {
       })
     },
     // 获取验证码按钮
-    getSmsCode(formPost) {
-      getHouseSMS(formPost).then(response => {
+    getSmsCode(singleSMSPost) {
+      singleSMSPost.houseId = this.singleFormPost.houseId
+      getElectricSMS(singleSMSPost).then(response => {
         if (response.codeStatus === 200) {
           this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
         } else {
@@ -444,11 +495,11 @@ export default {
       }
     },
     // 缴款类型是特批时，验证码点击提交的收费表单
-    handlePost(formPost) {
-      if (formPost.smsCode === null || formPost.smsCode.length < 6) {
+    handleSMSPost(singleFormPost) {
+      if (singleFormPost.smsCode === null || singleFormPost.smsCode.length < 6) {
         this.$message({ message: '请输入正确的验证码', type: 'error' })
       } else {
-        postMoney(formPost).then(response => {
+        singleMoneyPost(singleFormPost).then(response => {
           if (response.codeStatus === 200) {
             this.$notify({
               title: 'Success',
@@ -456,16 +507,21 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.dialogApproveSmsVisible = false
+
+            this.dialogSMSVisible = false
             this.dialogMoneyGetFormVisible = false
             this.$nextTick(() => {
-              this.$refs['dataForm'].resetFields()
-              this.formPost.smsCode = ''
+              this.$refs['singleDataForm'].resetFields()
+              this.singleFormPost.smsCode = ''
             })
-            // 逻辑可能存在问题，比如id如何传到页面上
-            // 暂未测试
-            // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-            fetchSearchByHouseId(formPost.houseId).then(response => {
+            // 同时清空复合缴费表单
+            this.mixFormPost.mixPayTotalNum = 0
+            this.mixFormPost.mixPayType[0].value = ''
+            this.mixFormPost.mixPayType[1].value = ''
+            this.mixFormPost.mixPayType[2].value = ''
+            this.mixFormPost.mixPayType[3].value = ''
+            this.mixFormPost.remark = ''
+            fetchSearchByHouseId(singleFormPost.houseId).then(response => {
               this.titleData = response.data.titles
               this.tableColumns = response.data.items
             })
@@ -480,14 +536,14 @@ export default {
         })
       }
     },
-    // 提交收费表单
-    handleSubmitForm(formPost) {
+    // 单一收费提交收费表单
+    singleSubmitFormPost(singleFormPost) {
       // 表单项规则验证
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['singleDataForm'].validate((valid) => {
         if (valid) {
           // 收费类型为特批时验证码模态框处理
-          if (this.formPost.payType === '特批') {
-            this.dialogApproveSmsVisible = true
+          if (this.singleFormPost.singlePayType === '特批') {
+            this.dialogSMSVisible = true
           } else {
             // 操作确认框
             this.$confirm('确定提交么？', '费用收缴', {
@@ -495,9 +551,7 @@ export default {
               cancelButtonText: '取消',
               type: 'info'
             }).then(() => {
-              console.log('formPost-----')
-              console.log(formPost)
-              postMoney(formPost).then(response => {
+              singleMoneyPost(singleFormPost).then(response => {
                 if (response.codeStatus === 200) {
                   this.$notify({
                     title: 'Success',
@@ -505,14 +559,19 @@ export default {
                     type: 'success',
                     duration: 2000
                   })
-                  this.dialogMoneyGetFormVisible = false
                   this.$nextTick(() => {
-                    this.$refs['dataForm'].resetFields()
+                    this.$refs['singleDataForm'].resetFields()
+                    this.singleFormPost.smsCode = ''
                   })
-                  // 逻辑可能存在问题，比如id如何传到页面上
-                  // 暂未测试
-                  // 提交表单成功后跳转到指定houseid的搜索页面，返回提交房间表单的所有状态信息
-                  fetchSearchByHouseId(formPost.houseId).then(response => {
+                  // 同时清空复合缴费表单
+                  this.mixFormPost.mixPayTotalNum = 0
+                  this.mixFormPost.mixPayType[0].value = ''
+                  this.mixFormPost.mixPayType[1].value = ''
+                  this.mixFormPost.mixPayType[2].value = ''
+                  this.mixFormPost.mixPayType[3].value = ''
+                  this.mixFormPost.remark = ''
+                  this.dialogMoneyGetFormVisible = false
+                  fetchSearchByHouseId(singleFormPost.houseId).then(response => {
                     this.titleData = response.data.titles
                     this.tableColumns = response.data.items
                   })
@@ -530,15 +589,79 @@ export default {
         }
       })
     },
-    handleCleanDataForm() {
-      this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
+    // 复合收费提交收费表单
+    mixSubmitFormPost(mixFormPost) {
+      // 表单项规则验证
+      this.$refs['mixDataForm'].validate((valid) => {
+        console.log(this.mixPayTotal)
+        if (this.mixPayTotal === 0) {
+          this.$message.error('总金额为0！')
+        }
+        if (valid) {
+          // 操作确认框
+          this.$confirm('确定提交么？', '费用收缴', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            this.mixFormPost.mixPayTotalNum = this.mixPayTotal
+            mixMoneyPost(mixFormPost).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                // 同时清空单一缴费表单
+                if (this.$refs['singleDataForm'] !== undefined) {
+                  this.$nextTick(() => {
+                    this.$refs['singleDataForm'].resetFields()
+                  })
+                }
+                this.mixFormPost.mixPayTotalNum = 0
+                this.mixFormPost.mixPayType[0].value = ''
+                this.mixFormPost.mixPayType[1].value = ''
+                this.mixFormPost.mixPayType[2].value = ''
+                this.mixFormPost.mixPayType[3].value = ''
+                this.mixFormPost.remark = ''
+                this.dialogMoneyGetFormVisible = false
+                fetchSearchByHouseId(mixFormPost.houseId).then(response => {
+                  this.titleData = response.data.titles
+                  this.tableColumns = response.data.items
+                })
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+          })
+        }
       })
-      this.dialogMoneyGetFormVisible = false
     },
-    handleCleanSMSDataForm() {
-      this.formPost.smsCode = ''
-      this.dialogApproveSmsVisible = false
+    // 获取验证码页面取消按钮
+    handleCleanSMS() {
+      this.singleFormPost.smsCode = ''
+      this.dialogSMSVisible = false
+    },
+    // 收费页面取消按钮
+    CleanDataForm() {
+      if (this.$refs['singleDataForm'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['singleDataForm'].resetFields()
+        })
+      }
+      this.mixFormPost.mixPayTotalNum = 0
+      this.mixFormPost.mixPayType[0].value = null
+      this.mixFormPost.mixPayType[1].value = null
+      this.mixFormPost.mixPayType[2].value = null
+      this.mixFormPost.mixPayType[3].value = null
+      this.mixFormPost.remark = ''
+      this.dialogMoneyGetFormVisible = false
     }
   }
 }

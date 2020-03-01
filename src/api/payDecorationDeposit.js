@@ -55,3 +55,21 @@ export function fetchShopDecorationDepositSearch(query) {
     params: { query }
   })
 }
+
+// 当缴费方式为“特批”，调取sms
+export function getSMS(formPost) {
+  return request({
+    url: '/pay/decorationDeposit/getSMS',
+    method: 'post',
+    params: { formPost }
+  })
+}
+
+// 退款
+export function returnMoney(formReturn) {
+  return request({
+    url: '/pay/decorationDeposit/moneyReturn',
+    method: 'post',
+    params: { formReturn }
+  })
+}
