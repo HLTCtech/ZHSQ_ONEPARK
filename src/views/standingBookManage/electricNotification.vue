@@ -29,7 +29,11 @@
     <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <!-- 左侧固定列 -->
       <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
-      <el-table-column fixed prop="houseId" label="房号" width="80" align="center" />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column fixed prop="houseName" label="业主姓名" width="80" align="center" />
       <!-- 表头及表格内数据 -->
       <el-table-column v-for="(item,key) in titleDataFiltered" :key="key" :prop="item.value" :label="item.name" align="center" height="250px">
@@ -39,6 +43,21 @@
       </el-table-column>
     </el-table>
 
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
+
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
   </div>
@@ -47,6 +66,7 @@
 <script>
 import { fetchNotificationListAll, fetchElectricNotificationSearch } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -58,6 +78,8 @@ export default {
     return {
       listLoading: true,
       total: 0,
+      pvData_all: [],
+      dialogHouseLog: false,
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
@@ -145,6 +167,13 @@ export default {
       this.titleDataFiltered = titleData
       console.log('titleData')
       console.log(this.titleDataFiltered)
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      getLogByHouseId(houseId).then(response => {
+        this.pvData_all = response.data.pvData
+        this.dialogHouseLog = true
+      })
     }
   }
 }

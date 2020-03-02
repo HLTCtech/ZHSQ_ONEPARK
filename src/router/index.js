@@ -208,15 +208,15 @@ export const constantRoutes = [
     ]
   },
   {
-    // 操作记录------暂未开发
-    path: '/billOverall/log',
+    // 操作记录
+    path: '/operationLog',
     component: Layout,
     children: [
       {
-        path: 'paySundries',
-        component: () => import('@/views/bill_pay/sundries'),
+        path: 'operationLog',
+        component: () => import('@/views/operationLog/logAll'),
         name: 'Sundries',
-        meta: { title: '操作记录查询', icon: 'money' }
+        meta: { title: '操作记录管理', icon: 'money' }
       }
     ]
   },

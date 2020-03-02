@@ -35,7 +35,11 @@
     <!-- 表格 -->
     <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="实收金额" prop="moneyGet" align="center" />
@@ -52,6 +56,21 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
 
     <!-- 费用收缴按钮的模态框 -->
     <el-dialog :visible.sync="dialogMoneyGetFormVisible" title="费用收缴">
@@ -158,6 +177,7 @@
 import { mapGetters } from 'vuex'
 import { fetchShopDecorationDepositListAll, fetchShopDecorationDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS } from '@/api/payDecorationDeposit'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -262,8 +282,10 @@ export default {
       dialogSMSVisible: false,
       dialogMoneyGetFormVisible: false,
       dialogMoneyReturn: false,
+      dialogHouseLog: false,
       // 声明下api变量
-      tableData: []
+      tableData: [],
+      pvData_all: []
     }
   },
   computed: {
@@ -463,6 +485,17 @@ export default {
         this.$refs['dataFormReturn'].resetFields()
       })
       this.dialogMoneyReturn = false
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      if (houseId === '') {
+        this.$message('这条数据没有房号')
+      } else {
+        getLogByHouseId(houseId).then(response => {
+          this.pvData_all = response.data.pvData
+          this.dialogHouseLog = true
+        })
+      }
     }
   }
 }

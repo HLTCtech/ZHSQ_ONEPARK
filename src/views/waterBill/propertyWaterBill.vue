@@ -29,7 +29,11 @@
     <el-table :data="tableData" style="width: 100%" height="900">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="面积" align="center">
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
@@ -98,6 +102,21 @@
       <el-table-column label="备注" prop="remark" align="center" />
     </el-table>
 
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
+
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
   </div>
@@ -106,6 +125,7 @@
 <script>
 import { fetchPropertyWaterBillListAll, fetchPropertyWaterBillSearch } from '@/api/billOverall'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -135,6 +155,8 @@ export default {
       },
       // 声明下api变量
       tableData: [],
+      pvData_all: [],
+      dialogHouseLog: false,
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -185,6 +207,13 @@ export default {
     handleFilter() {
       // 搜索功能调用
       this.fetchListSearch()
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      getLogByHouseId(houseId).then(response => {
+        this.pvData_all = response.data.pvData
+        this.dialogHouseLog = true
+      })
     }
   }
 }

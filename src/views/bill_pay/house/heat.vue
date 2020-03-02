@@ -32,7 +32,11 @@
     <!-- 缴款记录表格 -->
     <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="缴费金额" prop="paidNum" align="center" />
       <el-table-column label="缴费日期" prop="paidDate" align="center" />
@@ -47,6 +51,21 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
 
     <!-- 收费页面模态框 -->
     <el-dialog :visible.sync="dialogMoneyPost" title="费用收缴">
@@ -144,6 +163,7 @@
 import { mapGetters } from 'vuex'
 import { fetchHeatLogList, fetchHeatLogSearch, singleMoneyPost, mixMoneyPost, getHeatSMS, fetchSearchByHouseId } from '@/api/payHeat'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -160,6 +180,7 @@ export default {
       dialogApproveSmsVisible: false,
       // 声明表格数据源
       tableData: [],
+      pvData_all: [],
       // 声明分页变量
       total: 0,
       // search()查询请求变量
@@ -251,7 +272,8 @@ export default {
       // 短信验证码模态框
       dialogSMSVisible: false,
       // 收费页面模态框
-      dialogMoneyPost: false
+      dialogMoneyPost: false,
+      dialogHouseLog: false
     }
   },
   computed: {
@@ -494,6 +516,13 @@ export default {
       this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
       this.dialogMoneyPost = false
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      getLogByHouseId(houseId).then(response => {
+        this.pvData_all = response.data.pvData
+        this.dialogHouseLog = true
+      })
     }
   }
 }

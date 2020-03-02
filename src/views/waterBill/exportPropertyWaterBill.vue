@@ -30,13 +30,6 @@
       </el-button>
     </div>
 
-    <!-- 测试打印功能 -->
-    <div>
-      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handelPrint">
-        打印
-      </el-button>
-    </div>
-
     <!-- 表格 -->
     <div class="printTable">
       <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">

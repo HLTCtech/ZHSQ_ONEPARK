@@ -28,7 +28,7 @@
     <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.column.property=='houseId'" align="center">{{ scope.row[scope.column.property] }}</span>
+          <el-tag v-if="scope.column.property=='houseId'" align="center" @click="getHouseLog(scope.row.houseId)">{{ scope.row[scope.column.property] }}</el-tag>
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
           <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId)">
@@ -58,6 +58,21 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_HouseLog" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
 
     <!-- 费用收缴模态框 -->
     <el-dialog :visible.sync="dialogMoneyGetFormVisible" title="费用收缴">
@@ -250,6 +265,7 @@
 import { mapGetters } from 'vuex'
 import { fetchShopListAll, fetchShopSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -261,6 +277,8 @@ export default {
     return {
       show: true,
       count: '',
+      pvData_all: [],
+      pvData_HouseLog: [],
       payPattern: true,
       props: { multiple: true },
       listLoading: true,
@@ -339,12 +357,12 @@ export default {
       dialogFormVisible: false,
       dialogPvVisibleDetailByMonth: false,
       dialogStatus: '',
-      pvData_all: [],
       pvData_single: [],
       pvData_details: [],
       dialogPvVisible_all: false,
       dialogPvVisible_single: false,
       dialogApproveSmsVisible: false,
+      dialogHouseLog: false,
       checkBoxData: [],
       // 时间选择器返回数据
       pickerOptions: {
@@ -651,6 +669,14 @@ export default {
       this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
       this.dialogMoneyGetFormVisible = false
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      // 定义具体费用字段的弹出模态框
+      getLogByHouseId(houseId).then(response => {
+        this.pvData_HouseLog = response.data.pvData
+        this.dialogHouseLog = true
+      })
     }
   }
 }

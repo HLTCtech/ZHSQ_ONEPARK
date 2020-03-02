@@ -63,8 +63,12 @@
       stripe
       highlight-current-row
     >
-      <el-table-column label="ID" prop="id" align="center" />
-      <el-table-column label="房号" prop="houseId" align="center" />
+      <el-table-column label="ID" prop="id" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="业主姓名" prop="houseName" align="center" />
       <el-table-column label="联系电话" prop="housePhone" align="center" />
       <el-table-column label="车牌号" prop="carNum" align="center" />
@@ -86,6 +90,21 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 点击houseId弹出信息变更历史模态框 -->
+    <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
+      <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
+        <el-table-column prop="houseId" label="房间号" />
+        <el-table-column prop="houseName" label="业主姓名" />
+        <el-table-column prop="housePhone" label="业主手机号" />
+        <el-table-column prop="houseArea" label="住宅面积" />
+        <el-table-column prop="basementArea" label="地下室面积" />
+        <el-table-column prop="changeTime" label="变更时间" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
 
     <!-- 信息变更按钮：定义表单提交项 -->
     <el-dialog :visible.sync="dialogParkingInfoChangeFormVisible" title="信息变更/续费">
@@ -314,6 +333,7 @@
 import { mapGetters } from 'vuex'
 import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode } from '@/api/payParking'
 import waves from '@/directive/waves' // waves directive
+import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
@@ -325,6 +345,7 @@ export default {
     return {
       listLoading: true,
       total: 0,
+      pvData_all: [],
       // 定义搜索按钮的query字段
       listQuery_search: {
         page: 1,
@@ -394,6 +415,7 @@ export default {
       dialogParkingInfoChangeFormVisible: false,
       newInfoDialogApproveSmsVisible: false,
       changeInfoDialogApproveSmsVisible: false,
+      dialogHouseLog: false,
       // 调取短信验证码提交项目
       SMSPost: {
         houseId: null,
@@ -698,6 +720,13 @@ export default {
     handleChangeInfoCleanSMSDataForm() {
       this.infoChangeFormPost.smsCode = ''
       this.changeInfoDialogApproveSmsVisible = false
+    },
+    // 点击houseId获取房间变更历史
+    getHouseLog(houseId) {
+      getLogByHouseId(houseId).then(response => {
+        this.pvData_all = response.data.pvData
+        this.dialogHouseLog = true
+      })
     }
   }
 }
