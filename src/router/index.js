@@ -211,12 +211,44 @@ export const constantRoutes = [
     // 操作记录
     path: '/operationLog',
     component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'operationLog',
+    meta: {
+      title: '操作记录',
+      icon: 'money'
+    },
     children: [
       {
-        path: 'operationLog',
-        component: () => import('@/views/operationLog/logAll'),
-        name: 'Sundries',
-        meta: { title: '操作记录管理', icon: 'money' }
+        path: 'moneyGet',
+        component: () => import('@/views/operationLog/moneyGet'),
+        name: 'moneyGet',
+        meta: {
+          title: '收费记录'
+        }
+      },
+      {
+        path: 'moneyReturn',
+        component: () => import('@/views/operationLog/moneyReturn'),
+        name: 'moneyReturn',
+        meta: {
+          title: '装修保证金退款记录'
+        }
+      },
+      {
+        path: 'houseInfoChange',
+        component: () => import('@/views/operationLog/houseInfoChange'),
+        name: 'houseInfoChange',
+        meta: {
+          title: '房屋信息变更记录'
+        }
+      },
+      {
+        path: 'parkingInfoChange',
+        component: () => import('@/views/operationLog/parkingInfoChange'),
+        name: 'parkingInfoChange',
+        meta: {
+          title: '车辆信息变更记录'
+        }
       }
     ]
   },
