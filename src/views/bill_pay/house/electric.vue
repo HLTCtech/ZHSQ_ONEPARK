@@ -117,6 +117,19 @@
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
+            <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
+              <el-date-picker
+                v-model="singleFormPost.singlePayDateRange"
+                class="filter-item"
+                type="daterange"
+                align="right"
+                unlink-panels
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
             <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
                 <el-option v-for="item in singlePayOptions" :key="item.value" :label="item.label" :value="item.value" />
@@ -152,6 +165,19 @@
             </el-form-item>
             <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
+            </el-form-item>
+            <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
+              <el-date-picker
+                v-model="mixFormPost.mixPayDateRange"
+                class="filter-item"
+                type="daterange"
+                align="right"
+                unlink-panels
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+              />
             </el-form-item>
             <el-form-item label="总金额" label-width="100px">
               <el-input v-model.number="mixPayTotal" width="100px" disabled />
@@ -314,7 +340,8 @@ export default {
         remark: null,
         payItem: '住宅电费',
         adminId: this.$store.getters.adminId,
-        smsCode: null
+        smsCode: null,
+        singlePayDateRange: null
       },
       // 复合缴费表单提交项目
       mixFormPost: {
@@ -331,17 +358,20 @@ export default {
         mixPayTotalNum: null,
         remark: null,
         payItem: '住宅点费',
+        mixPayDateRange: null,
         adminId: this.$store.getters.adminId
       },
       // 单一收缴表单提交项目规则
       singleformRules: {
         houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
         singlePayType: [{ required: true, message: '请选择缴费方式', trigger: 'change' }],
-        singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
+        singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
+        singlePayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
       },
       // 复合收缴表单提交项目规则
       mixformRules: {
-        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
+        mixPayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
         // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
         // singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
       },

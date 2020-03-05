@@ -59,17 +59,17 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/guide',
+    path: '/payAll',
     component: Layout,
-    redirect: '/guide/index',
+    // redirect: '/guide/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
+        component: () => import('@/views/bill_pay/payAll'),
+        name: 'payAll',
         meta: {
-          title: '用户引导',
-          icon: 'guide',
+          title: '费用收缴',
+          icon: 'money',
           noCache: true
         }
       }
@@ -200,9 +200,9 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'paySundries',
-        component: () => import('@/views/bill_pay/sundries'),
-        name: 'Sundries',
+        path: 'summation',
+        component: () => import('@/views/billOverall/billSummation'),
+        name: 'summation',
         meta: { title: '费用总览', icon: 'money' }
       }
     ]
