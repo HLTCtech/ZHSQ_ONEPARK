@@ -36,6 +36,15 @@ export function postHouseInfoUser(formPost) {
   })
 }
 
+// 向后台提交表单（房间状态变更）
+export function postHouseInfoStatus(formPost) {
+  return request({
+    url: '/info/houseChange/statusChangePost',
+    method: 'post',
+    params: { formPost }
+  })
+}
+
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchHouseInfoByHouseId(houseId) {
   return request({
