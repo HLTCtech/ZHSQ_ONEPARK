@@ -130,21 +130,6 @@
           </el-form>
         </div>
 
-        <!-- 点击houseId弹出信息变更历史模态框 -->
-        <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
-          <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
-            <el-table-column prop="houseId" label="房间号" />
-            <el-table-column prop="houseName" label="业主姓名" />
-            <el-table-column prop="housePhone" label="业主手机号" />
-            <el-table-column prop="houseArea" label="住宅面积" />
-            <el-table-column prop="basementArea" label="地下室面积" />
-            <el-table-column prop="changeTime" label="变更时间" />
-          </el-table>
-          <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
-          </span>
-        </el-dialog>
-
         <!-- 收费类型为特批时验证码模态框处理 -->
         <el-dialog width="40%" title="领导审批" style="top: 20%" :visible.sync="dialogSMSVisible" append-to-body>
           <el-input
