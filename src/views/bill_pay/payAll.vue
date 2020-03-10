@@ -182,6 +182,7 @@ export default {
       mixFormPost: {
         houseId: null,
         shallPay: null,
+        multipleSelection: null,
         mixPayType: [{
           name: 'mixPayAlipay', value: null
         },
@@ -338,6 +339,7 @@ export default {
     // 多选框全选
     handleSelectionChange(val) {
       this.multipleSelection = val
+      console.log(this.multipleSelection)
     },
     // 收费页面取消按钮
     CleanDataForm() {

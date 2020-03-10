@@ -401,7 +401,7 @@ export const constantRoutes = [
           noCache: true,
           activeMenu: '/example/list'
         },
-        hidden: true
+        hidden: false
       },
       {
         path: 'list',
@@ -446,37 +446,25 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
   // {
-  //   path: '/documentation',
+  //   path: '/profile',
   //   component: Layout,
+  //   redirect: '/profile/index',
+  //   hidden: false,
   //   children: [
   //     {
   //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: '文档', icon: 'documentation', affix: true }
+  //       component: () => import('@/views/profile/index'),
+  //       name: 'Profile',
+  //       meta: {
+  //         title: 'Profile',
+  //         icon: 'user',
+  //         noCache: true
+  //       }
   //     }
   //   ]
-  // },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: {
-          title: 'Profile',
-          icon: 'user',
-          noCache: true
-        }
-      }
-    ]
-  }
+  // }
 ]
 
 /**
@@ -489,7 +477,7 @@ export const asyncRoutes = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
+    // alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
       title: '权限管理',
@@ -498,47 +486,16 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
         path: 'role',
-        component: () => import('@/views/permission/role'),
+        component: () => import('@/views/permission/permissionChange'),
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
-          roles: ['admin']
+          title: '权限管理',
+          roles: ['admin'] // 只有admin权限的人才能看见
         }
       }
     ]
   },
-  // 图标库
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
-  //     }
-  //   ]
-  // },
 
   /** when your routing map is too long, you can split it into small modules **/
   // 直接导入modules下面的路由模块
