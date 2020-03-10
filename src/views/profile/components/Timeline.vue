@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <el-timeline>
-      <el-timeline-item v-for="(item,index) of timeline" :key="index" :timestamp="item.timestamp" placement="top">
+      <el-timeline-item v-for="(item,index) of logData" :key="index" :timestamp="item.timestamp" placement="top">
         <el-card>
           <h4>{{ item.title }}</h4>
           <p>{{ item.content }}</p>
@@ -12,31 +12,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { getUserLog } from '@/api/user'
 export default {
   data() {
     return {
-      timeline: [
-        {
-          timestamp: '2019/5/20',
-          title: '*年*月*日给XXX充值***钱',
-          content: 'PanJiaChen committed 2019/4/20 20:46'
-        },
-        {
-          timestamp: '2019/4/21',
-          title: '*年*月*日给XXX充值***钱',
-          content: 'PanJiaChen committed 2019/4/21 20:46'
-        },
-        {
-          timestamp: '2019/3/22',
-          title: '*年*月*日给XXX充值***钱',
-          content: 'PanJiaChen committed 2019/4/22 20:46'
-        },
-        {
-          timestamp: '2019/2/23',
-          title: '*年*月*日给XXX充值***钱',
-          content: 'PanJiaChen committed 2019/4/23 20:46'
-        }
-      ]
+      logData: [],
+      adminId: this.$store.getters.adminId
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'adminName',
+      'adminId',
+      'roles'
+    ])
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    // 获取表格数据
+    getList() {
+      getUserLog(this.adminId).then(response => {
+        this.logData = response.data.items
+      })
     }
   }
 }

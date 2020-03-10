@@ -30,3 +30,11 @@ export function getSMS(loginForm) {
     params: { loginForm }
   })
 }
+
+export function getUserLog(adminId) {
+  return request({
+    url: '/admin/getLog',
+    method: 'get',
+    params: { adminId }
+  })
+}
