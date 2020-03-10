@@ -83,7 +83,7 @@ export const constantRoutes = [
     name: 'pay_house',
     meta: {
       title: '费用收缴--住宅',
-      icon: 'money'
+      icon: 'house'
     },
     children: [
       {
@@ -152,7 +152,7 @@ export const constantRoutes = [
     name: 'pay_shop',
     meta: {
       title: '费用收缴--商铺',
-      icon: 'money'
+      icon: 'shop'
     },
     children: [
       {
@@ -190,7 +190,7 @@ export const constantRoutes = [
         path: 'paySundries',
         component: () => import('@/views/bill_pay/sundries'),
         name: 'Sundries',
-        meta: { title: '费用收缴--杂项', icon: 'bug' }
+        meta: { title: '费用收缴--杂项', icon: 'bill' }
       }
     ]
   },
@@ -203,7 +203,7 @@ export const constantRoutes = [
         path: 'summation',
         component: () => import('@/views/billOverall/billSummation'),
         name: 'summation',
-        meta: { title: '费用总览', icon: 'money' }
+        meta: { title: '费用总览', icon: 'overall' }
       }
     ]
   },
@@ -215,7 +215,7 @@ export const constantRoutes = [
     name: 'operationLog',
     meta: {
       title: '操作记录',
-      icon: 'money'
+      icon: 'log'
     },
     children: [
       {
@@ -260,7 +260,7 @@ export const constantRoutes = [
     name: 'waterBill',
     meta: {
       title: '流水管理',
-      icon: 'money'
+      icon: 'waterbill'
     },
     children: [
       {
@@ -289,7 +289,7 @@ export const constantRoutes = [
     name: 'standingBook',
     meta: {
       title: '台账管理',
-      icon: 'money'
+      icon: 'standingbook'
     },
     children: [
       {
@@ -345,7 +345,7 @@ export const constantRoutes = [
         name: 'infoChange',
         meta: {
           title: '房源信息变更',
-          icon: 'guide',
+          icon: 'housechange',
           noCache: true
         }
       }
