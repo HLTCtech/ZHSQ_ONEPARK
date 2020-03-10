@@ -138,6 +138,8 @@ export default {
       pvData_all: [],
       tableDataShallPayAll: [],
       multipleSelection: [],
+      finalSelection: [],
+      moneyTypes: [],
       dialogMoneyPost: false,
       // 根据用户输入请求参数
       listQuery: {
@@ -146,34 +148,6 @@ export default {
         houseName: null
       },
       dialogHouseLog: false,
-      // 时间选择器返回数据
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
       panNumOptions: ['尚郡', '壹号院'],
       // 单一缴费时的选项
       singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
@@ -194,7 +168,8 @@ export default {
         }],
         mixPayTotalNum: null,
         remark: null,
-        adminId: this.$store.getters.adminId
+        adminId: this.$store.getters.adminId,
+        finalSelection: null
       },
       // 复合收缴表单提交项目规则
       mixformRules: {
@@ -288,6 +263,7 @@ export default {
             type: 'info'
           }).then(() => {
             this.mixFormPost.mixPayTotalNum = this.mixPayTotal
+            this.mixFormPost.finalSelection = this.finalSelection
             moneyPostAll(mixFormPost).then(response => {
               if (response.codeStatus === 200) {
                 this.$notify({
@@ -339,7 +315,15 @@ export default {
     // 多选框全选
     handleSelectionChange(val) {
       this.multipleSelection = val
-      console.log(this.multipleSelection)
+      // 先把所需要的费用类型数组置空
+      this.finalSelection = []
+      // 获取当前选择的对象
+      this.moneyTypes = this.$refs.multipleSelection.selection
+      // 将当前选择的对象中的费用类型提取到数组中
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        this.finalSelection[i] = (this.moneyTypes[i].moneyType)
+      }
+      console.log(this.finalSelection)
     },
     // 收费页面取消按钮
     CleanDataForm() {

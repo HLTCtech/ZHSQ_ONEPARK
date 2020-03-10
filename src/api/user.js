@@ -38,3 +38,48 @@ export function getUserLog(adminId) {
     params: { adminId }
   })
 }
+
+// 获取所有的操作员信息
+export function fetchOperatorList(query) {
+  return request({
+    url: '/admin/operator/list',
+    method: 'get',
+    params: { query }
+  })
+}
+
+// 搜索指定操作员信息
+export function fetchOperatorSearch(query) {
+  return request({
+    url: '/admin/operator/search',
+    method: 'get',
+    params: { query }
+  })
+}
+
+// 提交新的操作员信息
+export function newOperatorPost(newAdminForm) {
+  return request({
+    url: '/admin/operator/new',
+    method: 'post',
+    params: { newAdminForm }
+  })
+}
+
+// 变更操作员信息提交
+export function infoChangeOperatorPost(operatorInfoChangeForm) {
+  return request({
+    url: '/admin/operator/infoChange',
+    method: 'post',
+    params: { operatorInfoChangeForm }
+  })
+}
+
+// 根据operatorId获取信息
+export function fetchSearchByOperatorId(operatorId) {
+  return request({
+    url: '/admin/operator/searchById',
+    method: 'get',
+    params: { operatorId }
+  })
+}
