@@ -36,3 +36,12 @@ export function fetchDecorationDepositSearch(query) {
   })
 }
 
+// 查询费用累计信息
+export function fetchBillList(query) {
+  return request({
+    url: '/billOverall/billAddUp/all',
+    method: 'get',
+    params: { query }
+  })
+}
+

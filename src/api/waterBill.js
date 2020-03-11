@@ -9,7 +9,7 @@ export function fetchExportList(query) {
   })
 }
 
-// 查询流失信息
+// 查询流水信息
 export function fetchExportSearch(query) {
   return request({
     url: '/waterBill/search',

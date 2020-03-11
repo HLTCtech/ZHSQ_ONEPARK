@@ -1,26 +1,10 @@
 <template>
-  <!-- 住宅物业费收费界面 -->
+  <!-- 费用总览界面 -->
   <div class="app-container">
     <div class="filter-container">
-      <el-input
-        v-model="listQuery_search.houseId"
-        type="text"
-        placeholder="输入房间号"
-        style="width: 130px"
-        class="filter-item"
-        clearable
-      />
-      <el-input
-        v-model="listQuery_search.houseName"
-        type="text"
-        placeholder="输入业主姓名"
-        style="width: 130px"
-        class="filter-item"
-        clearable
-      />
       <!-- 时间选择器 -->
       <el-date-picker
-        v-model="listQuery_search.dateRange"
+        v-model="listQuery.dateRange"
         class="filter-item"
         type="daterange"
         align="right"
@@ -31,78 +15,58 @@
         :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
       />
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >搜索</el-button>
-
-      <!-- 测试打印功能 -->
-      <div>
-        <el-button
-          :loading="downloadLoading"
-          style="margin:0 0 20px 20px;"
-          type="primary"
-          icon="el-icon-document"
-          @click="handelPrint"
-        >打印</el-button>
-      </div>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
+        生成统计数据
+      </el-button>
     </div>
 
     <!-- excel导出功能 -->
     <div>
       <FilenameOption v-model="filename" />
-      <el-button
-        :loading="downloadLoading"
-        style="margin:0 0 20px 20px;"
-        type="primary"
-        icon="el-icon-document"
-        @click="handleDownload"
-      >导出Excel</el-button>
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        导出Excel
+      </el-button>
+    </div>
+
+    <!-- 测试打印功能 -->
+    <div>
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handelPrint">
+        打印
+      </el-button>
     </div>
 
     <!-- 表格 -->
-    <div class="printTable">
-      <el-table :data="loginfo.students" border style="width: 100%">
-        <el-table-column prop="name" width="150" align="center" label="费用项目\周期" fixed />
-        <template v-for="(col,i) in loginfo.dateList">
-          <el-table-column
-            :key="col"
-            :show-overflow-tooltip="true"
-            :label="col"
-            width="100"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.list[i].num }}</span>
-            </template>
-          </el-table-column>
-        </template>
-      </el-table>
-    </div>
+    <el-card class="box-card">
+      <el-card style="margin-top: 20px; height: 50px;width:400px; text-align:center; vertical-align:middle">
+        选择的本周周期：{{ billDateRange }}
+      </el-card>
+      <br>
+      <div class="printTable">
+        <el-table :data="tableData" highlight-current-row border fit max-height="900px" style="width:800px">
+          <el-table-column label="费用\周期" prop="billItem" align="center" />
+          <el-table-column label="本周" prop="billByWeek" align="center" />
+          <el-table-column label="本周代金券" prop="voucherByWeek" align="center" />
+          <el-table-column label="本月" prop="billByMonth" align="center" />
+          <el-table-column label="本月代金券" prop="voucherByMonth" align="center" />
+          <el-table-column label="本年" prop="billByYear" align="center" />
+          <el-table-column label="本年代金券" prop="voucherByYear" align="center" />
+        </el-table>
+      </div>
+    </el-card>
 
-    <!-- 分页功能实现标签 -->
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="listQuery_all.page"
-      @pagination="getList"
-    />
   </div>
+
 </template>
 
 <script>
-import { fetchExportList, fetchExportSearch } from '@/api/waterBill'
+import { fetchBillList } from '@/api/billOverall'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'ExportPropertyWaterBill',
-  components: { Pagination, FilenameOption },
+  components: { FilenameOption },
   directives: { waves },
   data() {
     return {
@@ -112,140 +76,46 @@ export default {
       // 定义导出excel默认选项
       filename: '',
       autoWidth: true,
-      // 定义搜索按钮的query字段
-      listQuery_search: {
-        page: 1,
-        houseId: null,
-        houseName: null,
-        dateRange: null
-      },
-      titles: [{ ID: 'id' }, { 房号: 'houseId' }, { 业主姓名: 'houseName' }],
-      // 年份选择
-      yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // list接口请求参数
-      listQuery_all: {
-        page: 1
+      listQuery: {
+        dateRange: []
       },
       // 声明下api变量
       tableData: [],
       // 时间选择器返回数据
       pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
           }
-        ]
-      },
-      loginfo: {
-        students: [
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          },
-          {
-            id: 1,
-            name: '电费',
-            list: [{ num: 11 }, { num: 1 }, { num: 0 }]
-          }
-        ],
-        dateList: ['本周', '本月', '本年']
+        }]
       }
-      //   date_picker: ''
     }
   },
-  created() {
-    this.getList()
+  computed: {
+    billDateRange: function() {
+      var weekRange
+      weekRange = this.listQuery.dateRange
+      return weekRange
+    }
   },
   methods: {
     getList() {
-      fetchExportList(this.listQuery_all).then(response => {
-        this.tableData = response.data.items
-        this.total = response.total
-      })
-    },
-    // 根据选定信息搜索
-    fetchListSearch() {
-      fetchExportSearch(this.listQuery_search).then(response => {
+      fetchBillList(this.listQuery).then(response => {
         this.tableData = response.data.items
       })
-    },
-    handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
     },
     // excel导出
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['本周', '本月', '本年']
-        // const tHeader = ['Id', '房号', '业主姓名', '缴费项目', '周期开始', '周期结束', '缴费方式1', '缴费金额1', '缴费方式2', '缴费金额2', '备注']
-        const filterVal = ['num', 'num', 'num']
-        const list = this.loginfo.students
+        const tHeader = ['费用\周期', '本周', '本周代金券', '本月', '本月代金券', '本年', '本年代金券']
+        const filterVal = ['billItem', 'billByWeek', 'voucherByWeek', 'billByMonth', 'voucherByMonth', 'billByYear', 'voucherByYear']
+        const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
         console.log(data)
@@ -260,15 +130,13 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v =>
-        filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            return v[j]
-          }
-        })
-      )
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     },
     // 测试打印功能
     handelPrint() {
@@ -284,19 +152,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #889aa4;
-$light_gray: #eee;
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
 
 .show-sms {
-  position: absolute;
-  right: 10px;
-  top: 82px;
-  font-size: 15px;
-  color: $light_gray;
-  cursor: pointer;
-  user-select: none;
-}
+    position: absolute;
+    right: 10px;
+    top: 82px;
+    font-size: 15px;
+    color: $light_gray;
+    cursor: pointer;
+    user-select: none;
+  }
 
 body .el-table th.gutter {
   display: table-cell !important;
@@ -305,7 +173,8 @@ body .el-table th.gutter {
   th.gutter,
   colgroup.gutter {
     display: block !important;
-    width: 6px !important;
+    width: 6px !important
   }
 }
+
 </style>
