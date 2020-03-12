@@ -45,3 +45,18 @@ export function fetchBillList(query) {
   })
 }
 
+// 获取当月应收数额（dashboard---panel）
+export function getEchartMoneyAllMonthly(query) {
+  return request({
+    url: '/billOverall/echart/moneyGetMonthly',
+    method: 'get'
+  })
+}
+
+// 每月费用具体情况（dashboard---line）
+export function getEchartMoneyMonthly(query) {
+  return request({
+    url: '/billOverall/echart/moneyExact',
+    method: 'get'
+  })
+}

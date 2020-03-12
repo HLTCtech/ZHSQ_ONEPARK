@@ -1,45 +1,45 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+    <el-col :xs="16" :sm="12" :lg="8" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('electric')">
         <div class="card-panel-icon-wrapper icon-electric">
           <svg-icon icon-class="electric" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            电费
+            电费(本月实收)
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="electricEndval" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+    <el-col :xs="16" :sm="12" :lg="8" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('property')">
         <div class="card-panel-icon-wrapper icon-water">
-          <svg-icon icon-class="water" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            水费
-          </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-property">
           <svg-icon icon-class="property" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            物业费
+            物业费(本月实收)
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="propertyEndval" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="16" :sm="12" :lg="8" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('car')">
+        <div class="card-panel-icon-wrapper icon-property">
+          <svg-icon icon-class="parking" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            停车场管理费(本月实收)
+          </div>
+          <count-to :start-val="0" :end-val="carEndval" :duration="3200" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+    <!-- <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-parking">
           <svg-icon icon-class="parking" class-name="card-panel-icon" />
@@ -51,20 +51,38 @@
           <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
         </div>
       </div>
-    </el-col>
+    </el-col> -->
   </el-row>
 </template>
 
 <script>
 import CountTo from 'vue-count-to'
+import { getEchartMoneyAllMonthly } from '@/api/billOverall'
 
 export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      electricEndval: null,
+      propertyEndval: null,
+      carEndval: null
+    }
+  },
+  created() {
+    this.getEchart()
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    getEchart() {
+      getEchartMoneyAllMonthly().then(response => {
+        this.electricEndval = response.data.electricEndval
+        this.propertyEndval = response.data.propertyEndval
+        this.carEndval = response.data.carEndval
+      })
     }
   }
 }
