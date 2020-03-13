@@ -12,23 +12,23 @@ const chartsRouter = {
     icon: 'chart'
   },
   children: [
-    {
-      path: 'keyboard',
-      component: () => import('@/views/charts/keyboard'),
-      name: 'KeyboardChart',
-      meta: { title: '键盘表', noCache: true }
-    },
+    // {
+    //   path: 'keyboard',
+    //   component: () => import('@/views/charts/keyboard'),
+    //   name: 'KeyboardChart',
+    //   meta: { title: '键盘表', noCache: true }
+    // },
     {
       path: 'line',
       component: () => import('@/views/charts/line'),
       name: 'LineChart',
-      meta: { title: '曲线图', noCache: true }
+      meta: { title: '收费情况曲线图', noCache: true }
     },
     {
       path: 'mix-chart',
       component: () => import('@/views/charts/mix-chart'),
       name: 'MixChart',
-      meta: { title: '综合表格', noCache: true }
+      meta: { title: '收费情况柱状图', noCache: true }
     }
   ]
 }

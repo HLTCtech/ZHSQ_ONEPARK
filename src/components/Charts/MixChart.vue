@@ -5,6 +5,7 @@
 <script>
 import echarts from 'echarts'
 import resize from './mixins/resize'
+import { getEchartMoneyGotMonthly } from '@/api/billOverall'
 
 export default {
   mixins: [resize],
@@ -43,18 +44,41 @@ export default {
   },
   methods: {
     initChart() {
+      getEchartMoneyGotMonthly().then(response => {
+        this.chart.hideLoading()
+        this.chart.setOption({
+          series: [{
+            name: '电费',
+            data: response.data.electric
+          },
+          {
+            name: '物业费',
+            data: response.data.property
+          },
+          {
+            name: '停车场管理费',
+            data: response.data.car
+          },
+          {
+            name: '平均',
+            data: response.data.average
+          }
+          ]
+        })
+      })
+
       this.chart = echarts.init(document.getElementById(this.id))
       const xData = (function() {
         const data = []
         for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
+          data.push(i + '月')
         }
         return data
       }())
       this.chart.setOption({
-        backgroundColor: '#344b58',
+        backgroundColor: '#394056',
         title: {
-          text: 'statistics',
+          text: '实收情况柱状图',
           x: '20',
           top: '20',
           textStyle: {
@@ -90,7 +114,7 @@ export default {
           textStyle: {
             color: '#90979c'
           },
-          data: ['female', 'male', 'average']
+          data: ['电费', '停车场管理费', '物业费', '平均']
         },
         calculable: true,
         xAxis: [{
@@ -142,8 +166,8 @@ export default {
             0
           ],
           bottom: 30,
-          start: 10,
-          end: 80,
+          start: 0,
+          end: 60,
           handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
           handleSize: '110%',
           handleStyle: {
@@ -162,14 +186,14 @@ export default {
           end: 35
         }],
         series: [{
-          name: 'female',
+          name: '电费',
           type: 'bar',
           stack: 'total',
           barMaxWidth: 35,
           barGap: '10%',
           itemStyle: {
             normal: {
-              color: 'rgba(255,144,128,1)',
+              color: 'rgba(0,191,183,1)',
               label: {
                 show: true,
                 textStyle: {
@@ -182,29 +206,16 @@ export default {
               }
             }
           },
-          data: [
-            709,
-            1917,
-            2455,
-            2610,
-            1719,
-            1433,
-            1544,
-            3285,
-            5208,
-            3372,
-            2484,
-            4078
-          ]
+          data: []
         },
 
         {
-          name: 'male',
+          name: '停车场管理费',
           type: 'bar',
           stack: 'total',
           itemStyle: {
             normal: {
-              color: 'rgba(0,191,183,1)',
+              color: 'rgba(255,144,128,1)',
               barBorderRadius: 0,
               label: {
                 show: true,
@@ -215,22 +226,31 @@ export default {
               }
             }
           },
-          data: [
-            327,
-            1776,
-            507,
-            1200,
-            800,
-            482,
-            204,
-            1390,
-            1001,
-            951,
-            381,
-            220
-          ]
-        }, {
-          name: 'average',
+          data: []
+        },
+
+        {
+          name: '物业费',
+          type: 'bar',
+          stack: 'total',
+          itemStyle: {
+            normal: {
+              color: 'rgba(0, 136, 212, 0.3)',
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: []
+        },
+
+        {
+          name: '平均',
           type: 'line',
           stack: 'total',
           symbolSize: 10,
@@ -248,20 +268,7 @@ export default {
               }
             }
           },
-          data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298
-          ]
+          data: []
         }
         ]
       })

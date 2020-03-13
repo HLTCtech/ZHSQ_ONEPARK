@@ -39,7 +39,7 @@ export function fetchDecorationDepositSearch(query) {
 // 查询费用累计信息
 export function fetchBillList(query) {
   return request({
-    url: '/billOverall/billAddUp/all',
+    url: '/billOverall/billAddUp/dashboard/all',
     method: 'get',
     params: { query }
   })
@@ -48,7 +48,7 @@ export function fetchBillList(query) {
 // 获取当月应收数额（dashboard---panel）
 export function getEchartMoneyAllMonthly(query) {
   return request({
-    url: '/billOverall/echart/moneyGetMonthly',
+    url: '/billOverall/echart/dashboard/moneyGetMonthly',
     method: 'get'
   })
 }
@@ -56,7 +56,15 @@ export function getEchartMoneyAllMonthly(query) {
 // 每月费用具体情况（dashboard---line）
 export function getEchartMoneyMonthly(query) {
   return request({
-    url: '/billOverall/echart/moneyExact',
+    url: '/billOverall/echart/dashboard/moneyExact',
+    method: 'get'
+  })
+}
+
+// 实收费用具体情况（dashboard---lineMarker）
+export function getEchartMoneyGotMonthly(query) {
+  return request({
+    url: '/billOverall/echart/moneyGet',
     method: 'get'
   })
 }

@@ -5,6 +5,7 @@
 <script>
 import echarts from 'echarts'
 import resize from './mixins/resize'
+import { getEchartMoneyGotMonthly } from '@/api/billOverall'
 
 export default {
   mixins: [resize],
@@ -45,14 +46,33 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
 
+      getEchartMoneyGotMonthly().then(response => {
+        this.chart.hideLoading()
+        this.chart.setOption({
+          series: [{
+            name: '电费',
+            data: response.data.electric
+          },
+          {
+            name: '物业费',
+            data: response.data.property
+          },
+          {
+            name: '停车场管理费',
+            data: response.data.car
+          }
+          ]
+        })
+      })
+
       this.chart.setOption({
         backgroundColor: '#394056',
         title: {
           top: 20,
-          text: 'Requests',
+          text: '实收情况统计图',
           textStyle: {
             fontWeight: 'normal',
-            fontSize: 16,
+            fontSize: 20,
             color: '#F1F1F3'
           },
           left: '1%'
@@ -71,10 +91,10 @@ export default {
           itemWidth: 14,
           itemHeight: 5,
           itemGap: 13,
-          data: ['CMCC', 'CTCC', 'CUCC'],
+          data: ['电费', '物业费', '停车场管理费'],
           right: '4%',
           textStyle: {
-            fontSize: 12,
+            fontSize: 18,
             color: '#F1F1F3'
           }
         },
@@ -93,7 +113,7 @@ export default {
               color: '#57617B'
             }
           },
-          data: ['13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35', '13:40', '13:45', '13:50', '13:55']
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
         }],
         yAxis: [{
           type: 'value',
@@ -118,8 +138,9 @@ export default {
             }
           }
         }],
+        // 电费具体数据
         series: [{
-          name: 'CMCC',
+          name: '电费',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -151,9 +172,11 @@ export default {
 
             }
           },
-          data: [220, 182, 191, 134, 150, 120, 110, 125, 145, 122, 165, 122]
-        }, {
-          name: 'CTCC',
+          data: []
+        },
+        // 物业费具体数据
+        {
+          name: '物业费',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -185,9 +208,11 @@ export default {
 
             }
           },
-          data: [120, 110, 125, 145, 122, 165, 122, 220, 182, 191, 134, 150]
-        }, {
-          name: 'CUCC',
+          data: []
+        },
+        // 停车场管理费具体数据
+        {
+          name: '停车场管理费',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -218,7 +243,7 @@ export default {
               borderWidth: 12
             }
           },
-          data: [220, 182, 125, 145, 122, 191, 134, 150, 120, 110, 165, 122]
+          data: []
         }]
       })
     }
