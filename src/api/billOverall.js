@@ -46,7 +46,7 @@ export function fetchBillList(query) {
 }
 
 // 获取当月应收数额（dashboard---panel）
-export function getEchartMoneyAllMonthly(query) {
+export function getEchartMoneyAllMonthly() {
   return request({
     url: '/billOverall/echart/dashboard/moneyGetMonthly',
     method: 'get'
@@ -54,7 +54,7 @@ export function getEchartMoneyAllMonthly(query) {
 }
 
 // 每月费用具体情况（dashboard---line）
-export function getEchartMoneyMonthly(query) {
+export function getEchartMoneyMonthly() {
   return request({
     url: '/billOverall/echart/dashboard/moneyExact',
     method: 'get'
@@ -62,9 +62,17 @@ export function getEchartMoneyMonthly(query) {
 }
 
 // 实收费用具体情况（dashboard---lineMarker）
-export function getEchartMoneyGotMonthly(query) {
+export function getEchartMoneyGotMonthly() {
   return request({
     url: '/billOverall/echart/moneyGet',
+    method: 'get'
+  })
+}
+
+// 周实收费用（dashboard---barChart)
+export function getEchartMoneyGotWeekly() {
+  return request({
+    url: '/billOverall/echart/moneyGetWeekly',
     method: 'get'
   })
 }

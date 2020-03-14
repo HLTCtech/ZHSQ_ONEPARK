@@ -58,6 +58,25 @@ export const constantRoutes = [
       }
     ]
   },
+  // 收费凭证
+  {
+    path: '/chargingVoucher',
+    component: Layout,
+    // redirect: '/guide/index',
+    children: [
+      {
+        path: 'voucherManage',
+        component: () => import('@/views/chargingVoucher/voucherManage'),
+        name: 'voucherManage',
+        meta: {
+          title: '凭证打印',
+          icon: 'printer',
+          noCache: true
+        }
+      }
+    ]
+  },
+  // 费用清缴
   {
     path: '/payAll',
     component: Layout,
@@ -195,7 +214,7 @@ export const constantRoutes = [
     ]
   },
   {
-    // 费用总览------暂未开发
+    // 费用总览
     path: '/billOverall',
     component: Layout,
     children: [
@@ -446,25 +465,25 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
+  },
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: {
+          title: 'Profile',
+          icon: 'user',
+          noCache: true
+        }
+      }
+    ]
   }
-  // {
-  //   path: '/profile',
-  //   component: Layout,
-  //   redirect: '/profile/index',
-  //   hidden: false,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/profile/index'),
-  //       name: 'Profile',
-  //       meta: {
-  //         title: 'Profile',
-  //         icon: 'user',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // }
 ]
 
 /**

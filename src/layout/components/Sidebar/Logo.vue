@@ -24,8 +24,9 @@ export default {
   },
   data() {
     return {
-      title: '华龙物业财务系统',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '华龙综合业务平台',
+      // logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: require('../../../logo.png')
     }
   }
 }

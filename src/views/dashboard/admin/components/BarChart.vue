@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import { getEchartMoneyGotWeekly } from '@/api/billOverall'
 
 const animationDuration = 6000
 
@@ -46,12 +47,41 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
+      getEchartMoneyGotWeekly().then(response => {
+        this.chart.hideLoading()
+        this.chart.setOption({
+          series: [{
+            name: '电费',
+            data: response.data.electric
+          },
+          {
+            name: '物业费',
+            data: response.data.property
+          },
+          {
+            name: '停车场管理费',
+            data: response.data.car
+          }
+          ],
+          title: {
+            text: response.data.dateRange
+          }
+        })
+      })
+
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
+        },
+        title: {
+          show: true,
+          text: '',
+          x: 'right',
+          y: 'top',
+          fontSize: 5
         },
         grid: {
           top: 10,
@@ -62,7 +92,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           axisTick: {
             alignWithLabel: true
           }
@@ -74,25 +104,25 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '物业费',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
+          data: [],
           animationDuration
         }, {
-          name: 'pageB',
+          name: '停车场管理费',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
+          data: [],
           animationDuration
         }, {
-          name: 'pageC',
+          name: '电费',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          data: [],
           animationDuration
         }]
       })

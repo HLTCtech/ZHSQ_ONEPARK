@@ -1,6 +1,6 @@
 // 定义标题以及设置侧边栏的默认样式
 module.exports = {
-  title: '华龙物业财务系统',
+  title: '华龙综合业务平台',
 
   /**
    * @type {boolean} true | false
