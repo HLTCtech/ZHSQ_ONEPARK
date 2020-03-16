@@ -10,13 +10,14 @@
     </div>
 
     <!-- 表格 -->
-    <el-card style="margin-top: 20px; height: 50px;width:400px; text-align:center; vertical-align:middle">
+    <el-card style="margin-top: 20px; height: 50px;width:300px; text-align:center; vertical-align:middle">
       可打印的收费项目清单
     </el-card>
     <br>
     <div class="printTable">
       <el-table :data="tableData" highlight-current-row border fit max-height="900px" @selection-change="handleSelectionChange">
         <el-table-column type="selection" />
+        <el-table-column label="收费项目id" prop="voucherId" align="center" />
         <el-table-column label="房号" prop="houseId" align="center" />
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
@@ -30,12 +31,23 @@
         <el-table-column label="操作人" prop="operatorName" align="center" />
         <el-table-column label="打印" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.item)">
+            <el-button type="primary" size="mini" @click="handlePrintPV(row.voucherId)">
               打印
             </el-button>
           </template>
         </el-table-column>
       </el-table>
+    </div>
+
+    <button v-print="printObj">Print local range</button>
+
+    <div id="printMe" style="background:red;">
+      <p>葫芦娃，葫芦娃</p>
+      <p>一根藤上七朵花 </p>
+      <p>小小树藤是我家 啦啦啦啦 </p>
+      <p> 叮当当咚咚当当 是我家</p>
+      <p> 啦啦啦啦</p>
+      <p>...</p>
     </div>
 
     <!-- 分页功能实现标签 -->
@@ -64,7 +76,14 @@ export default {
         page: 1,
         adminId: this.$store.getters.adminId
       },
-      tableData: []
+      testPrint: 0,
+      tableData: [],
+      printObj: {
+        id: 'printMe',
+        popTitle: 'Test Printing',
+        extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
+        endCallback: this.printDown()
+      }
     }
   },
   computed: {
@@ -74,10 +93,14 @@ export default {
       'roles'
     ])
   },
+  created() {
+    this.getList()
+  },
   methods: {
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
       })
     },
     // 多选框全选
@@ -101,6 +124,13 @@ export default {
           return v[j]
         }
       }))
+    },
+    printDown() {
+      console.log('123123123123123')
+    },
+    // 打印按钮绑定事件
+    handlePrintPV(voucherId) {
+      console.log('test')
     },
     // 测试打印功能
     handelPrint() {

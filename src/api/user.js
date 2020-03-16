@@ -27,7 +27,7 @@ export function getSMS(loginForm) {
   return request({
     url: '/admin/getSMS',
     method: 'post',
-    params: { loginForm }
+    params: loginForm
   })
 }
 

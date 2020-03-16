@@ -27,7 +27,7 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'production',
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -39,8 +39,16 @@ module.exports = {
     proxy: {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
+      // [process.env.VUE_APP_BASE_API]: {
+      //   // target: `https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=`,
+      //   target: '192.168.0.115',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     ['^' + process.env.VUE_APP_BASE_API]: ''
+      //   }
+      // }
       [process.env.VUE_APP_BASE_API]: {
-        target: `https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=`,
+        target: 'http://192.168.0.115/hlProertyManage_war',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
