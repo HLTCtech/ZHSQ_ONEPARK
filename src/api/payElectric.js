@@ -14,8 +14,8 @@ export function fetchHouseListAll(query) {
 export function fetchHouseSearch(query) {
   return request({
     url: '/pay/electric/house/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -24,7 +24,7 @@ export function getElectricSMS(singleSMSPost) {
   return request({
     url: '/pay/electric/house/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 
@@ -42,8 +42,8 @@ export function fetchShopListAll(query) {
 export function fetchShopSearch(query) {
   return request({
     url: '/pay/electric/shop/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -52,8 +52,8 @@ export function fetchShopSearch(query) {
 export function fetchElectricStandingBookSearch(query) {
   return request({
     url: '/pay/electric/standingBook/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -73,7 +73,7 @@ export function fetchElectricNotificationSearch(query) {
   return request({
     url: '/pay/electric/notification/search',
     method: 'get',
-    params: { query }
+    params: query
   })
 }
 
@@ -103,7 +103,7 @@ export function fetchPreViewSingle(pv, houseId) {
   return request({
     url: '/pay/electric/pv/single',
     method: 'get',
-    params: { pv, houseId }
+    params: pv, houseId
   })
 }
 
@@ -130,7 +130,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/electric/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 

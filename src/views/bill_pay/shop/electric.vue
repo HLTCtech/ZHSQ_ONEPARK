@@ -5,7 +5,6 @@
       <el-input v-model="listQuery_search.buildingNum" type="text" placeholder="输入楼号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseNum" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
       <el-date-picker
         v-model="listQuery_search.datePicker"
@@ -289,7 +288,6 @@ export default {
         buildingNum: null,
         houseNum: null,
         datePicker: null,
-        houseId: null,
         houseName: null
       },
       // 单一缴费时的选项

@@ -11,7 +11,6 @@
       </el-select>
       <el-input v-model="listQuery_search.houseNum" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入完整房号" style="width: 130px" class="filter-item" clearable />
 
       <!-- 时间选择器 -->
       <el-date-picker
@@ -166,7 +165,7 @@
             <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
             </el-form-item>
-            <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
+            <el-form-item label="缴费周期" label-width="100px" prop="mixPayDateRange">
               <el-date-picker
                 v-model="mixFormPost.mixPayDateRange"
                 class="filter-item"
@@ -321,7 +320,6 @@ export default {
         unitNum: null,
         houseNum: null,
         datePicker: null,
-        houseId: null,
         houseName: null
       },
       // 单一缴费时的选项
