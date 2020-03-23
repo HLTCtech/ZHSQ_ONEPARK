@@ -289,7 +289,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="handleFilter" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -450,7 +450,7 @@ export default {
     }
   },
   created() {
-    this.fetchListSearch()
+    this.handleFilter()
   },
   methods: {
     // 根据选定信息搜索
@@ -459,11 +459,15 @@ export default {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
+        this.listQuery_search.page = 1
       })
     },
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      fetchHouseSearch(this.listQuery_search).then(response => {
+        this.titleData = response.data.titles
+        this.tableColumns = response.data.items
+        this.total = response.total
+      })
     },
     // 收费按钮绑定的处理事件
     handleMoneyGet(houseId) {

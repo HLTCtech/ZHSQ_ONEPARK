@@ -256,13 +256,13 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchShopListAll, fetchShopSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
+import { fetchShopSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -341,10 +341,6 @@ export default {
       dialogSMSVisible: false,
       // 收费页面模态框
       dialogMoneyPost: false,
-      // list接口请求参数
-      listQuery_all: {
-        page: 1
-      },
       // 定义顶部搜索框的选择字段
       lou_numOptions: ['1号楼', '2号楼', '3号楼', '4号楼', '5号楼', '6号楼', '7号楼', '8号楼', '9号楼', '10号楼', '11号楼', '12号楼', '13号楼', '14号楼', '15号楼', '16号楼', '17号楼', '18号楼', '19号楼', '20号楼', '21号楼', '22号楼', '23号楼', '24号楼', '25号楼', '26号楼', '27号楼', '28号楼', '29号楼', '30号楼', '31号楼'],
       // 声明下api变量
@@ -413,26 +409,24 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.handleFilter()
   },
   methods: {
-    getList() {
-      fetchShopListAll(this.listQuery_all).then(response => {
-        this.titleData = response.data.titles
-        this.tableColumns = response.data.items
-        this.total = response.total
-      })
-    },
     // 根据选定信息搜索
     fetchListSearch() {
       fetchShopSearch(this.listQuery_search).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
+        this.total = response.total
+        this.listQuery_search.page = 1
       })
     },
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      fetchShopSearch(this.listQuery_search).then(response => {
+        this.titleData = response.data.titles
+        this.tableColumns = response.data.items
+        this.total = response.total
+      })
     },
     // 收费按钮绑定的处理事件
     handleMoneyGet(houseId) {
