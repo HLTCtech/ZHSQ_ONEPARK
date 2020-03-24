@@ -91,7 +91,7 @@
     </el-table> -->
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" /> -->
   </div>
 </template>
 
@@ -101,11 +101,11 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import { getLogByHouseId } from '@/api/operationLog'
 import FilenameOption from '@/views/excel/components/FilenameOption'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'ElectricStandingBook',
-  components: { Pagination, FilenameOption },
+  components: { FilenameOption },
   directives: { waves },
   data() {
     return {
@@ -117,7 +117,6 @@ export default {
       autoWidth: true,
       // 定义搜索按钮的query字段
       listQuery_search: {
-        page: 1,
         houseId: null,
         houseName: null,
         year: null,
@@ -128,7 +127,6 @@ export default {
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // list接口请求参数
       listQuery_all: {
-        page: 1,
         year: 2020
       },
       // 声明表底合计行的变量
@@ -227,16 +225,10 @@ export default {
         headerChinese.push('应交合计', '已交合计', '未交合计', '预存电费')
         headerVar.unshift('id', 'houseId', 'houseName')
         headerVar.push('shallPayAll', 'moneyPaidAll', 'notPayAll', 'prestore')
-        // console.log('HeaderChinese+++++++++++++++++++++++++++++++++++++++++++++++++')
-        // console.log(headerChinese)
-        // console.log('HeaderVar==============================================')
-        // console.log(headerVar)
         const data = this.formatJson(headerVar, this.tableColumns)
         console.log('123123123')
         console.log(this.sumAll)
         console.log(data.push(this.sumAll))
-        // console.log('data------------------------------------------------')
-        // console.log(data)
         excel.export_json_to_excel({
           header: headerChinese,
           data,
