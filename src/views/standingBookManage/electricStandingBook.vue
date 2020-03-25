@@ -123,6 +123,7 @@ export default {
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // list接口请求参数
       listQuery_all: {
+        year: 2020
       },
       // 声明表底合计行的变量
       sumAll: [],
@@ -194,10 +195,26 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       fetchElectricStandingBookSearch(this.listQuery_search).then(response => {
-        // 将api返回值传递到前端变量
-        console.log('listQuery----' + this.listQuery)
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
+        this.total = response.total
+        // 获取表头字段数组长度
+        var titleLength = this.titleData.length
+        // 删除前三个字段
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        // 删除最后四个字段
+        var titleLengthLast1 = titleLength - 4
+        var titleLengthLast2 = titleLength - 5
+        var titleLengthLast3 = titleLength - 6
+        var titleLengthLast4 = titleLength - 7
+        this.$delete(this.titleData, titleLengthLast1)
+        this.$delete(this.titleData, titleLengthLast2)
+        this.$delete(this.titleData, titleLengthLast3)
+        this.$delete(this.titleData, titleLengthLast4)
+        // 将处理过的表头数组返回
+        this.titleDataFiltered = this.titleData
       })
     },
     handleFilter() {

@@ -89,6 +89,7 @@ export default {
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // list接口请求参数
       listQuery_all: {
+        year: 2020
       },
       // 声明下api变量
       titleData: [],
