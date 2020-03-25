@@ -147,10 +147,16 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       fetchElectricNotificationSearch(this.listQuery_search).then(response => {
-        // 将api返回值传递到前端变量
-        console.log('listQuery----' + this.listQuery)
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
+        this.total = response.total
+        console.log(this.titleData)
+        // 删除前三个字段
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        this.$delete(this.titleData, 0)
+        // 将处理过的表头数组返回
+        this.titleDataFiltered = this.titleData
       })
     },
     handleFilter() {
