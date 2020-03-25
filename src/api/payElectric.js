@@ -72,8 +72,8 @@ export function fetchStandingBookListAll(query) {
 export function fetchElectricNotificationSearch(query) {
   return request({
     url: '/pay/electric/notification/search',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: { query }
   })
 }
 

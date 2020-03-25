@@ -79,7 +79,6 @@ export default {
       dialogHouseLog: false,
       // 定义搜索按钮的query字段
       listQuery_search: {
-        page: 1,
         houseId: null,
         houseName: null,
         datePicker: null
