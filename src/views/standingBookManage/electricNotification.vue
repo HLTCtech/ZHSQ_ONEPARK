@@ -4,9 +4,6 @@
     <div class="filter-container">
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-      <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in yearOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <!-- 时间选择器 -->
       <el-date-picker
         v-model="listQuery_search.datePicker"
@@ -59,7 +56,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" /> -->
   </div>
 </template>
 
@@ -68,11 +65,11 @@ import { fetchNotificationListAll, fetchElectricNotificationSearch } from '@/api
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'ElectricNotification',
-  components: { Pagination },
+  // components: { Pagination },
   directives: { waves },
   data() {
     return {
@@ -85,7 +82,6 @@ export default {
         page: 1,
         houseId: null,
         houseName: null,
-        year: null,
         datePicker: null
       },
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
@@ -93,8 +89,6 @@ export default {
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // list接口请求参数
       listQuery_all: {
-        page: 1,
-        year: 2020
       },
       // 声明下api变量
       titleData: [],
