@@ -139,6 +139,6 @@ export function mixMoneyPost(mixFormPost) {
   return request({
     url: '/pay/electric/mixMoneyPost',
     method: 'post',
-    params: { mixFormPost }
+    data: { mixFormPost }
   })
 }
