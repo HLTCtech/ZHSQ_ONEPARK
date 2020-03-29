@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅收费界面 -->
+  <!-- 商铺收费界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery_search.buildingNum" type="text" placeholder="输入楼号" style="width: 130px" class="filter-item" clearable />
