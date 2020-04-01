@@ -361,14 +361,14 @@ export default {
       },
       // 单一收缴表单提交项目规则
       singleformRules: {
-        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
-        singlePayType: [{ required: true, message: '请选择缴费方式', trigger: 'change' }],
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'blur' }],
+        singlePayType: [{ required: true, message: '请选择缴费方式', trigger: 'blur' }],
         singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }],
         singlePayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
       },
       // 复合收缴表单提交项目规则
       mixformRules: {
-        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'blur' }],
         mixPayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
         // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
         // singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]

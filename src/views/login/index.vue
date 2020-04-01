@@ -61,7 +61,7 @@
         />
         <el-button class="show-sms" type="primary" :disabled="disabled=!show" style="width:175px;" @click="getVerify(loginForm)">
           <span v-show="show">获取验证码</span>
-          <span v-show="!show" class="count"> {{count}} s</span>
+          <span v-show="!show" class="count"> {{ count }} s</span>
         </el-button>
       </el-form-item>
 

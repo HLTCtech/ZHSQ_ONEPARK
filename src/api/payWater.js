@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchWaterLogList(listQuery_all) {
   return request({
     url: '/pay/water/log/all',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
