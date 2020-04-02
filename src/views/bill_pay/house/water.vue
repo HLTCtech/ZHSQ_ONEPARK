@@ -18,7 +18,7 @@
         :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
       />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch(listQuery_search.page = 1)">
         搜索
       </el-button>
     </div>
@@ -154,7 +154,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="handleSearch" />
 
   </div>
 </template>
@@ -187,7 +187,8 @@ export default {
       listQuery_search: {
         houseId: null,
         houseName: null,
-        dateRange: null
+        dateRange: null,
+        page: null
       },
       // list()查询请求变量
       listQuery_all: {

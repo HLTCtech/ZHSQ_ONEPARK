@@ -13,8 +13,8 @@ export function fetchWaterLogList(listQuery_all) {
 export function fetchWaterLogSearch(listQuery_search) {
   return request({
     url: '/pay/water/log/search',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
 
@@ -32,7 +32,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/water/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function mixMoneyPost(mixFormPost) {
   return request({
     url: '/pay/water/mixMoneyPost',
     method: 'post',
-    params: { mixFormPost }
+    data: { mixFormPost }
   })
 }
 
@@ -50,7 +50,7 @@ export function getWaterSMS(singleSMSPost) {
   return request({
     url: '/pay/water/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 
