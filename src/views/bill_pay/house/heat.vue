@@ -18,7 +18,7 @@
         :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
       />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch(listQuery_search.page = 1)">
         搜索
       </el-button>
     </div>

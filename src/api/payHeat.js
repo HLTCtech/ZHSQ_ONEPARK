@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchHeatLogList(listQuery_all) {
   return request({
     url: '/pay/heat/log/all',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchHeatLogList(listQuery_all) {
 export function fetchHeatLogSearch(listQuery_search) {
   return request({
     url: '/pay/heat/log/search',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
 
@@ -22,8 +22,8 @@ export function fetchHeatLogSearch(listQuery_search) {
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/pay/heat/log/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -32,7 +32,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/heat/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function mixMoneyPost(mixFormPost) {
   return request({
     url: '/pay/heat/mixMoneyPost',
     method: 'post',
-    params: { mixFormPost }
+    data: { mixFormPost }
   })
 }
 
@@ -50,7 +50,7 @@ export function getHeatSMS(singleSMSPost) {
   return request({
     url: '/pay/heat/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 
