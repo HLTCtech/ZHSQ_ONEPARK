@@ -294,6 +294,19 @@ export default {
       })
       parseInt(sum)
       return sum
+    },
+    payPatternChange() {
+      return this.payPattern
+    }
+  },
+  watch: {
+    payPatternChange(val) {
+      if (this.$refs['singleDataForm'] !== undefined) {
+        this.$refs['singleDataForm'].clearValidate()
+      }
+      if (this.$refs['mixDataForm'] !== undefined) {
+        this.$refs['mixDataForm'].clearValidate()
+      }
     }
   },
   created() {
@@ -451,9 +464,57 @@ export default {
       this.$refs['mixDataForm'].validate((valid) => {
         console.log(this.mixPayTotal)
         if (this.mixPayTotal === 0) {
-          this.$message.error('总金额为0！')
-        }
-        if (valid) {
+          // this.$message.error('总金额为0！')
+          this.$confirm('总金额为0', '费用收缴', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            if (valid) {
+              // 操作确认框
+              this.$confirm('确定提交么？', '费用收缴', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'info'
+              }).then(() => {
+                this.mixFormPost.mixPayTotalNum = this.mixPayTotal
+                mixMoneyPost(mixFormPost).then(response => {
+                  if (response.codeStatus === 200) {
+                    this.$notify({
+                      title: 'Success',
+                      message: '提交成功',
+                      type: 'success',
+                      duration: 2000
+                    })
+                    // 同时清空单一缴费表单
+                    if (this.$refs['singleDataForm'] !== undefined) {
+                      this.$nextTick(() => {
+                        this.$refs['singleDataForm'].resetFields()
+                      })
+                    }
+                    this.mixFormPost.mixPayTotalNum = 0
+                    this.mixFormPost.mixPayType[0].value = ''
+                    this.mixFormPost.mixPayType[1].value = ''
+                    this.mixFormPost.mixPayType[2].value = ''
+                    this.mixFormPost.mixPayType[3].value = ''
+                    this.mixFormPost.remark = ''
+                    this.dialogMoneyPost = false
+                    fetchSearchByHouseId(mixFormPost.houseId).then(response => {
+                      this.tableData = response.data.items
+                    })
+                  } else {
+                    this.$notify({
+                      title: 'Failure',
+                      message: '提交失败，请联系系统管理员',
+                      type: 'error',
+                      duration: 3000
+                    })
+                  }
+                })
+              })
+            }
+          })
+        } else if (valid) {
           // 操作确认框
           this.$confirm('确定提交么？', '费用收缴', {
             confirmButtonText: '确定',
