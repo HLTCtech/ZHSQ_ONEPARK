@@ -39,122 +39,127 @@
       </el-table>
     </div>
 
-    <button v-print="printObj">Print local range</button>
+    <el-button @click="printDialog()">Print local range</el-button>
 
     <!-- 收据打印样式定义 -->
-    <div class="invoicMain">
-      <div class="invoiceHeader">
-        <ul class="headerLeft">
-          <li>
-            <label>收费日期：</label><span>2020-05-03 10:00:00</span>
-          </li>
-        </ul>
-        <div class="headerMiddle">
-          <h1>河南院子物业服务有限公司收据</h1>
-          <div class="line" />
-        </div>
-        <ul class="headerRight">
-          <li>
-            <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
-          </li>
-        </ul>
-      </div>
-      <div class="invoiceBody">
-        <div class="userInfo" style="height:60px">
-          <ul>
-            <li>
-              <label>项目名称：</label><span>华龙壹号院</span>
-            </li>
-          </ul>
-          <div class="password"><label>缴费单位：</label></div><span>二期21号楼2单元28层2806</span>
-        </div>
-        <div class="userInfo" style="height:60px">
-          <ul>
-            <li>
-              <label>业主名称：</label><span>张翔</span>
-            </li>
-          </ul>
-          <div class="password"><label>缴费人</label></div><span>张翔</span>
-        </div>
-        <div>
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="width: 30%">收费项目</td>
-              <td style="width: 35%">费用周期</td>
-              <td style="width: 25%">实收金额</td>
-              <td style="width: 10%">付款方式</td>
-            </tr>
-          </table>
-          <div class="line" />
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="width: 30%;color: black;">电费</td>
-              <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-              <td style="width: 25%;color: black;">500.0</td>
-              <td style="width: 10%;color: black;">支付宝</td>
-            </tr>
-          </table>
-          <div class="line" />
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="width: 30%;color: black;">水费</td>
-              <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-              <td style="width: 25%;color: black;">500.0</td>
-              <td style="width: 10%;color: black;">支付宝</td>
-            </tr>
-          </table>
-          <div class="line" />
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="width: 30%;color: black;">物业费</td>
-              <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-              <td style="width: 25%;color: black;">500.0</td>
-              <td style="width: 10%;color: black;">支付宝</td>
-            </tr>
-          </table>
-          <div class="line" />
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="width: 30%;color: black;">停车管理费</td>
-              <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-              <td style="width: 25%;color: black;">500.0</td>
-              <td style="width: 10%;color: black;">支付宝</td>
-            </tr>
-          </table>
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <tr class="GoodsTotal">
-              <td style="width: 598px"><label>合计人民币(大写)：</label></td>
-              <td colspan="2">
-                <div style="width: 100%;display:flex">
-                  <div type="text" style="margin-left: 40%;color: black;">伍佰元整</div>
-                </div>
-              </td>
-            </tr>
-          </table>
-          <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-            <!-- <tr class="GoodsTotal">
+    <el-dialog :visible.sync="dialogPrint" title="收据打印">
+      <div id="printVoucher">
+        <div class="invoicMain">
+          <div class="invoiceHeader">
+            <ul class="headerLeft">
+              <li>
+                <label>收费日期：</label><span>2020-05-03 10:00:00</span>
+              </li>
+            </ul>
+            <div class="headerMiddle">
+              <h1>河南院子物业服务有限公司收据</h1>
+              <div class="line" />
+            </div>
+            <ul class="headerRight">
+              <li>
+                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
+              </li>
+            </ul>
+          </div>
+          <div class="invoiceBody">
+            <div class="userInfo" style="height:60px">
+              <ul>
+                <li>
+                  <label>项目名称：</label><span>华龙壹号院</span>
+                </li>
+              </ul>
+              <div class="password"><label>缴费单位：</label></div><span>二期21号楼2单元28层2806</span>
+            </div>
+            <div class="userInfo" style="height:60px">
+              <ul>
+                <li>
+                  <label>业主名称：</label><span>张翔</span>
+                </li>
+              </ul>
+              <div class="password"><label>缴费人</label></div><span>张翔</span>
+            </div>
+            <div>
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%">收费项目</td>
+                  <td style="width: 35%">费用周期</td>
+                  <td style="width: 25%">实收金额</td>
+                  <td style="width: 10%">付款方式</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">电费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
+                  <td style="width: 25%;color: black;">500.0</td>
+                  <td style="width: 10%;color: black;">支付宝</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">水费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
+                  <td style="width: 25%;color: black;">500.0</td>
+                  <td style="width: 10%;color: black;">微信</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">物业费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
+                  <td style="width: 25%;color: black;">500.0</td>
+                  <td style="width: 10%;color: black;">现金</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">停车管理费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
+                  <td style="width: 25%;color: black;">500.0</td>
+                  <td style="width: 10%;color: black;">现金</td>
+                </tr>
+              </table>
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr class="GoodsTotal">
+                  <td style="width: 598px"><label>合计人民币(大写)：</label></td>
+                  <td colspan="2">
+                    <div style="width: 100%;display:flex">
+                      <div type="text" style="margin-left: 40%;color: black;">伍佰元整</div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <!-- <tr class="GoodsTotal">
               <td><label style="margin-right: 90%">备注：</label>
                 <span style="color:black; ">500度</span>
               </td>
             </tr> -->
-            <ul style="margin-top:20px">
-              <li>
-                <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>800度</span>
-              </li>
-            </ul>
-          </table>
+                <ul style="margin-top:20px">
+                  <li>
+                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>800度</span>
+                  </li>
+                </ul>
+              </table>
 
+            </div>
+          </div>
+          <ul class="invoicetFooter">
+            <li>
+              <label>单位盖章：</label>
+            </li>
+            <li>
+              <label>收款人：</label>
+            </li>
+          </ul>
         </div>
       </div>
-      <ul class="invoicetFooter">
-        <li>
-          <label>单位盖章：</label>
-        </li>
-        <li>
-          <label>收款人：</label>
-        </li>
-      </ul>
-    </div>
+      <el-button v-print="printObj">打印</el-button>
+    </el-dialog>
 
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
@@ -184,8 +189,9 @@ export default {
       },
       testPrint: 0,
       tableData: [],
+      dialogPrint: false,
       printObj: {
-        id: 'invoicMain',
+        id: 'printVoucher',
         popTitle: 'Test Printing',
         extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
         endCallback: this.printDown()
@@ -203,6 +209,9 @@ export default {
     this.getList()
   },
   methods: {
+    printDialog() {
+      this.dialogPrint = true
+    },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
         this.tableData = response.data.items

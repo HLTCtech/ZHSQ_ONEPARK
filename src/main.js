@@ -19,6 +19,7 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
+// 调用vue-print-nb组件
 import Print from '@/utils/vue-print-nb'
 Vue.use(Print)
 
