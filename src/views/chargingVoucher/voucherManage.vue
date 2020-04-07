@@ -2,20 +2,29 @@
   <!-- 收费凭证打印界面 -->
   <div class="app-container">
 
+    <!-- 顶部搜索框 -->
+    <div class="filter-container">
+      <el-input v-model="listQuery_all.houseId" type="text" placeholder="输入房号" style="width: 200px" class="filter-item" clearable />
+      <el-input v-model="listQuery_all.houseName" type="text" placeholder="输入业主姓名" style="width: 200px" class="filter-item" clearable />
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList(listQuery_all.page=1)">
+        搜索
+      </el-button>
+    </div>
+
     <!-- 表格 -->
     <el-card style="margin-top: 20px; height: 50px;width:300px; text-align:center; vertical-align:middle">
       可打印的收费项目清单
     </el-card>
     <br>
 
-    <el-button type="success" @click="printAllDialog()">多项打印</el-button>
-    <br><br>
-
     <div id="printMe" class="printTable">
-      <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" />
+      <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px">
         <el-table-column label="收费项目id" prop="voucherId" width="50px" align="center" />
-        <el-table-column label="房号" prop="houseId" align="center" />
+        <el-table-column label="房号" prop="houseId" align="center">
+          <template slot-scope="scope">
+            <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
         <el-table-column label="费用周期" prop="dateRange" width="220px" align="center" />
@@ -64,7 +73,7 @@
             <div class="userInfo" style="height:60px">
               <ul>
                 <li>
-                  <label>项目名称：</label><span>华龙壹号院</span>
+                  <label>项目名称：</label><span>{{ printPanNum }}</span>
                 </li>
               </ul>
               <div class="password"><label>缴费房号：</label></div><span>{{ printHouseId }}</span>
@@ -132,8 +141,8 @@
                   </td>
                 </tr>
               </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <ul style="margin-top:20px">
+              <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
+                <ul style="margin-top:10px">
                   <li>
                     <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ printRemark }}</span>
                   </li>
@@ -141,18 +150,18 @@
               </table>
             </div>
           </div>
-          <ul class="invoicetFooter">
+          <ul class="invoicetFooter" style="margin-top:20px">
             <li>
               <label>单位盖章：</label>
             </li>
             <li>
-              <label>收款人：</label>
+              <label>收款人：</label><span>{{ adminName }}</span>
             </li>
           </ul>
         </div>
       </div>
       <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success">打印</el-button>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(voucherId)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
 
@@ -163,7 +172,7 @@
           <div class="invoiceHeader">
             <ul class="headerLeft">
               <li>
-                <label>收费日期：</label><span>{{ printDate }}</span>
+                <label>收费日期：</label><span>{{ dataComplex.payDate }}</span>
               </li>
             </ul>
             <div class="headerMiddle">
@@ -180,18 +189,18 @@
             <div class="userInfo" style="height:60px">
               <ul>
                 <li>
-                  <label>项目名称：</label><span>华龙壹号院</span>
+                  <label>项目名称：</label><span>{{ dataComplex.panNum }}</span>
                 </li>
               </ul>
-              <div class="password"><label>缴费房号：</label></div><span>{{ printHouseId }}</span>
+              <div class="password"><label>缴费房号：</label></div><span>{{ dataComplex.houseId }}</span>
             </div>
             <div class="userInfo" style="height:60px">
               <ul>
                 <li>
-                  <label>业主名称：</label><span>{{ printHouseName }}</span>
+                  <label>业主名称：</label><span>{{ dataComplex.houseName }}</span>
                 </li>
               </ul>
-              <div class="password"><label>缴费人</label></div><span>{{ printPaidName }}</span>
+              <div class="password"><label>缴费人</label></div><span>{{ dataComplex.houseName }}</span>
             </div>
             <div>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
@@ -205,37 +214,37 @@
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">{{ printItem }}</td>
-                  <td style="width: 35%;color: black;">{{ printDateRange }}</td>
-                  <td style="width: 25%;color: black;">500.0</td>
-                  <td style="width: 10%;color: black;">支付宝</td>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item1 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange1 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum1 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">"</td>
-                  <td style="width: 35%;color: black;">"</td>
-                  <td style="width: 25%;color: black;">500.0</td>
-                  <td style="width: 10%;color: black;">微信</td>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item2 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange2 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum2 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType2 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">物业费</td>
-                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-                  <td style="width: 25%;color: black;">500.0</td>
-                  <td style="width: 10%;color: black;">现金</td>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item3 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange3 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum3 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType3 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">停车管理费</td>
-                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
-                  <td style="width: 25%;color: black;">500.0</td>
-                  <td style="width: 10%;color: black;">现金</td>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item4 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange4 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum4 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType4 }}</td>
                 </tr>
               </table>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
@@ -243,32 +252,32 @@
                   <td style="width: 598px"><label>合计人民币(大写)：</label></td>
                   <td colspan="2">
                     <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black;">元整</div>
+                      <div type="text" style="margin-left: 40%;color: black;">{{ dataComplex.payNumAllChinese }}</div>
                     </div>
                   </td>
                 </tr>
               </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+              <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
                 <ul style="margin-top:20px">
                   <li>
-                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ printRemark }}</span>
+                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataComplex.remark }}</span>
                   </li>
                 </ul>
               </table>
             </div>
           </div>
-          <ul class="invoicetFooter">
+          <ul class="invoicetFooter" style="margin-top:20px">
             <li>
               <label>单位盖章：</label>
             </li>
             <li>
-              <label>收款人：</label>
+              <label>收款人：</label><span>{{ adminName }}</span>
             </li>
           </ul>
         </div>
       </div>
       <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success">打印</el-button>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handleComplexPrintPost(dataComplex)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
 
@@ -280,7 +289,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchAllCharging } from '@/api/chargingVoucher'
+import { fetchAllCharging, getMoneyDetailsByHouseId, complexVoucherIdPost, singleVoucherIdPost } from '@/api/chargingVoucher'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -296,6 +305,8 @@ export default {
       total: 0,
       listQuery_all: {
         page: 1,
+        houseId: null,
+        houseName: null,
         adminId: this.$store.getters.adminId
       },
       tableData: [],
@@ -305,12 +316,15 @@ export default {
         id: 'printVoucher',
         popTitle: 'Test Printing',
         extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
-        endCallback: this.printDown()
+        endCallback() {
+          console.log('23423423423423434')
+        }
       },
       rowSelected: [],
       payNumAllChinese: null,
       // 定义打印模态框变量
       printHouseId: null,
+      printPanNum: null,
       printDate: null,
       printHouseName: null,
       printPaidName: null,
@@ -322,7 +336,50 @@ export default {
       printPayNum2: '',
       printPayType2: '',
       printPayNum3: '',
-      printPayType3: ''
+      printPayType3: '',
+      // 从store中取出adminId/adminName
+      // adminId: this.$store.getters.adminId,
+      // adminName: this.$store.getters.adminName
+      housePaidQuery: {
+        houseId: null,
+        adminId: this.$store.getters.adminId
+      },
+      // 多项打印字段定义
+      dataComplex: {
+        panNum: null,
+        houseId: null,
+        payDate: null,
+        houseName: null,
+        remark: null,
+        voucherId1: null,
+        item1: null,
+        dateRange1: null,
+        payType1: null,
+        payNum1: null,
+        voucherId2: null,
+        item2: null,
+        dateRange2: null,
+        payType2: null,
+        payNum2: null,
+        voucherId3: null,
+        item3: null,
+        dateRange3: null,
+        payType3: null,
+        payNum3: null,
+        voucherId4: null,
+        item4: null,
+        dateRange4: null,
+        payType4: null,
+        payNum4: null,
+        payNumAllChinese: null
+      },
+      // 多项目打印后向后台post项目id，字段定义
+      voucherIds: {
+        voucherId1: null,
+        voucherId2: null,
+        voucherId3: null,
+        voucherId4: null
+      }
     }
   },
   computed: {
@@ -336,6 +393,80 @@ export default {
     this.getList()
   },
   methods: {
+    // 单一项目打印
+    handlePrintPost(voucherId) {
+      singleVoucherIdPost(this.voucherId).then(response => {
+        if (response.codeStatus === 200) {
+          this.$notify({
+            title: '注意！',
+            message: '还有5s该条数据就无法打印',
+            type: 'error',
+            duration: 5000
+          })
+
+          var that = this
+          setTimeout(function() {
+            that.dialogPrint = false
+            fetchAllCharging(this.listQuery_all).then(response => {
+              this.tableData = response.data.items
+              this.total = response.total
+            })
+          }, 5000)
+          // this.dialogAllPrint = false
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
+      })
+    },
+    // 多项目打印后把打印项目post到后台
+    handleComplexPrintPost(dataComplex) {
+      this.voucherIds.voucherId1 = this.dataComplex.voucherId1
+      this.voucherIds.voucherId2 = this.dataComplex.voucherId2
+      this.voucherIds.voucherId3 = this.dataComplex.voucherId3
+      this.voucherIds.voucherId4 = this.dataComplex.voucherId4
+      console.log(this.voucherIds)
+      complexVoucherIdPost(this.voucherIds).then(response => {
+        if (response.codeStatus === 200) {
+          this.$notify({
+            title: '注意！',
+            message: '还有5s该条数据就无法打印',
+            type: 'error',
+            duration: 5000
+          })
+
+          var that = this
+          setTimeout(function() {
+            that.dialogAllPrint = false
+            fetchAllCharging(this.listQuery_all).then(response => {
+              this.tableData = response.data.items
+              this.total = response.total
+            })
+          }, 5000)
+          // this.dialogAllPrint = false
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
+      })
+    },
+    // 点击houseId获取房间所有缴费记录
+    getHouseLog(houseId) {
+      this.housePaidQuery.houseId = houseId
+      getMoneyDetailsByHouseId(this.housePaidQuery).then(response => {
+        this.dataComplex = response.data.items
+        console.log(this.dataComplex)
+        this.dialogAllPrint = true
+      })
+    },
     cancelPrint() {
       this.dialogPrint = false
       this.dialogAllPrint = false
@@ -343,6 +474,8 @@ export default {
     // 每行末尾针对单一项目的收费模态框
     printDialog(row) {
       this.dialogPrint = true
+      this.voucherId = row.voucherId
+      this.printPanNum = row.panNum
       this.printHouseId = row.houseId
       this.printDate = row.payDate
       this.printHouseName = row.houseName
@@ -358,30 +491,11 @@ export default {
       this.printPayNum3 = row.payNum3
       this.payNumAllChinese = row.payNumAllChinese
     },
-    // 针对同一房间的多种项目的收费模态框
-    printAllDialog() {
-      this.dialogAllPrint = true
-    },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
       })
-    },
-    // 多选框全选
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-      // 先把所需要的费用类型数组置空
-      this.finalSelection = []
-      // 获取当前选择的对象
-      this.rowSelected = this.$refs.multipleSelection.selection
-      console.log('rowSelected')
-      console.log(this.rowSelected)
-      // 将当前选择的对象中的费用类型提取到数组中
-      // for (var i = 0; i < this.multipleSelection.length; i++) {
-      //   this.finalSelection[i] = (this.moneyTypes[i].moneyType)
-      // }
-      // console.log(this.finalSelection)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
@@ -393,7 +507,12 @@ export default {
       }))
     },
     printDown() {
-      console.log('123123123123123')
+      this.$notify({
+        title: 'Success',
+        message: '打印成功',
+        type: 'success',
+        duration: 2000
+      })
     }
   }
 }
