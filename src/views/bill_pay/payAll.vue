@@ -185,6 +185,7 @@ export default {
       'adminId',
       'roles'
     ]),
+    // 计算总费用
     selectItemNum: function() {
       var sum = 0
       var i = this.multipleSelection.length

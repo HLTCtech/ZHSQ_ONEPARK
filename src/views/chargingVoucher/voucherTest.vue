@@ -2,33 +2,32 @@
   <!-- 收费凭证打印界面 -->
   <div class="app-container">
 
+    <!-- 测试打印功能 -->
+    <div>
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handelPrint">
+        打印
+      </el-button>
+    </div>
+
     <!-- 表格 -->
     <el-card style="margin-top: 20px; height: 50px;width:300px; text-align:center; vertical-align:middle">
       可打印的收费项目清单
     </el-card>
     <br>
-
-    <el-button type="success" @click="printAllDialog()">多项打印</el-button>
-    <br><br>
-
     <div id="printMe" class="printTable">
-      <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" highlight-current-row border fit max-height="900px" @selection-change="handleSelectionChange">
         <el-table-column type="selection" />
         <el-table-column label="收费项目id" prop="voucherId" width="50px" align="center" />
         <el-table-column label="房号" prop="houseId" align="center" />
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
         <el-table-column label="费用周期" prop="dateRange" width="220px" align="center" />
-        <el-table-column label="实收总金额" prop="moneyGet" align="center" />
-        <el-table-column label="付款方式1" prop="payType1" align="center" />
-        <el-table-column label="付款金额1" prop="payNum1" align="center" />
-        <el-table-column label="付款方式2" prop="payType2" align="center" />
-        <el-table-column label="付款金额2" prop="payNum1" align="center" />
-        <el-table-column label="付款方式3" prop="payType3" align="center" />
-        <el-table-column label="付款金额3" prop="payNum3" align="center" />
+        <el-table-column label="实收金额" prop="moneyGet" align="center" />
+        <el-table-column label="付款方式及金额1" prop="payTypeNum1" align="center" />
+        <el-table-column label="付款方式及金额2" prop="payTypeNum2" align="center" />
+        <el-table-column label="付款方式及金额3" prop="payTypeNum3" align="center" />
         <el-table-column label="收费日期" prop="payDate" align="center" />
         <el-table-column label="备注" prop="remark" align="center" />
-        <!-- <el-table-column prop="payNumAllChinese" align="center" /> -->
         <el-table-column label="操作人" prop="operatorName" align="center" />
         <el-table-column label="打印" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="{row}">
@@ -40,7 +39,9 @@
       </el-table>
     </div>
 
-    <!-- 指定行的收费模态框 -->
+    <!-- <el-button @click="printDialog()">Print local range</el-button> -->
+
+    <!-- 收据打印样式定义 -->
     <el-dialog :visible.sync="dialogPrint" title="收据打印">
       <div id="printVoucher">
         <div class="invoicMain">
@@ -89,124 +90,8 @@
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">{{ printItem }}</td>
-                  <td style="width: 35%;color: black;">{{ printDateRange }}</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum1 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType1 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum2 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType2 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum3 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType3 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">&nbsp;</td>
-                  <td style="width: 10%;color: black;">&nbsp;</td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr class="GoodsTotal">
-                  <td style="width: 598px"><label>合计人民币(大写)：</label></td>
-                  <td colspan="2">
-                    <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black;">{{ payNumAllChinese }}</div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <ul style="margin-top:20px">
-                  <li>
-                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ printRemark }}</span>
-                  </li>
-                </ul>
-              </table>
-            </div>
-          </div>
-          <ul class="invoicetFooter">
-            <li>
-              <label>单位盖章：</label>
-            </li>
-            <li>
-              <label>收款人：</label>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success">打印</el-button>
-      <el-button @click="cancelPrint()">取消</el-button>
-    </el-dialog>
-
-    <!-- 同一房间的多种项目统一收费模态框 -->
-    <el-dialog :visible.sync="dialogAllPrint" title="收据打印">
-      <div id="printVoucher">
-        <div class="invoicMain">
-          <div class="invoiceHeader">
-            <ul class="headerLeft">
-              <li>
-                <label>收费日期：</label><span>{{ printDate }}</span>
-              </li>
-            </ul>
-            <div class="headerMiddle">
-              <h1>河南院子物业服务有限公司收据</h1>
-              <div class="line" />
-            </div>
-            <ul class="headerRight">
-              <li>
-                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
-              </li>
-            </ul>
-          </div>
-          <div class="invoiceBody">
-            <div class="userInfo" style="height:60px">
-              <ul>
-                <li>
-                  <label>项目名称：</label><span>华龙壹号院</span>
-                </li>
-              </ul>
-              <div class="password"><label>缴费房号：</label></div><span>{{ printHouseId }}</span>
-            </div>
-            <div class="userInfo" style="height:60px">
-              <ul>
-                <li>
-                  <label>业主名称：</label><span>{{ printHouseName }}</span>
-                </li>
-              </ul>
-              <div class="password"><label>缴费人</label></div><span>{{ printPaidName }}</span>
-            </div>
-            <div>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%">收费项目</td>
-                  <td style="width: 35%">费用周期</td>
-                  <td style="width: 25%">实收金额</td>
-                  <td style="width: 10%">付款方式</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">{{ printItem }}</td>
-                  <td style="width: 35%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 30%;color: black;">电费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
                   <td style="width: 25%;color: black;">500.0</td>
                   <td style="width: 10%;color: black;">支付宝</td>
                 </tr>
@@ -214,8 +99,8 @@
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">"</td>
-                  <td style="width: 35%;color: black;">"</td>
+                  <td style="width: 30%;color: black;">水费</td>
+                  <td style="width: 35%;color: black;">2020-02-01至2020-02-29</td>
                   <td style="width: 25%;color: black;">500.0</td>
                   <td style="width: 10%;color: black;">微信</td>
                 </tr>
@@ -243,7 +128,7 @@
                   <td style="width: 598px"><label>合计人民币(大写)：</label></td>
                   <td colspan="2">
                     <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black;">元整</div>
+                      <div type="text" style="margin-left: 40%;color: black;">伍佰元整</div>
                     </div>
                   </td>
                 </tr>
@@ -267,9 +152,11 @@
           </ul>
         </div>
       </div>
+
       <!-- 打印按钮 -->
       <el-button v-print="printObj" style="margin-top:50px" type="success">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
+
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
@@ -300,29 +187,18 @@ export default {
       },
       tableData: [],
       dialogPrint: false,
-      dialogAllPrint: false,
       printObj: {
         id: 'printVoucher',
         popTitle: 'Test Printing',
         extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
         endCallback: this.printDown()
       },
-      rowSelected: [],
-      payNumAllChinese: null,
       // 定义打印模态框变量
       printHouseId: null,
       printDate: null,
       printHouseName: null,
       printPaidName: null,
-      printRemark: null,
-      printItem: '',
-      printDateRange: '',
-      printPayNum1: '',
-      printPayType1: '',
-      printPayNum2: '',
-      printPayType2: '',
-      printPayNum3: '',
-      printPayType3: ''
+      printRemark: null
     }
   },
   computed: {
@@ -338,9 +214,7 @@ export default {
   methods: {
     cancelPrint() {
       this.dialogPrint = false
-      this.dialogAllPrint = false
     },
-    // 每行末尾针对单一项目的收费模态框
     printDialog(row) {
       this.dialogPrint = true
       this.printHouseId = row.houseId
@@ -348,19 +222,6 @@ export default {
       this.printHouseName = row.houseName
       this.printPaidName = row.houseName
       this.printRemark = row.remark
-      this.printItem = row.item
-      this.printDateRange = row.dateRange
-      this.printPayType1 = row.payType1
-      this.printPayNum1 = row.payNum1
-      this.printPayType2 = row.payType2
-      this.printPayNum2 = row.payNum2
-      this.printPayType3 = row.payType3
-      this.printPayNum3 = row.payNum3
-      this.payNumAllChinese = row.payNumAllChinese
-    },
-    // 针对同一房间的多种项目的收费模态框
-    printAllDialog() {
-      this.dialogAllPrint = true
     },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
@@ -374,14 +235,12 @@ export default {
       // 先把所需要的费用类型数组置空
       this.finalSelection = []
       // 获取当前选择的对象
-      this.rowSelected = this.$refs.multipleSelection.selection
-      console.log('rowSelected')
-      console.log(this.rowSelected)
+      this.moneyTypes = this.$refs.multipleSelection.selection
       // 将当前选择的对象中的费用类型提取到数组中
-      // for (var i = 0; i < this.multipleSelection.length; i++) {
-      //   this.finalSelection[i] = (this.moneyTypes[i].moneyType)
-      // }
-      // console.log(this.finalSelection)
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        this.finalSelection[i] = (this.moneyTypes[i].moneyType)
+      }
+      console.log(this.finalSelection)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
@@ -394,6 +253,19 @@ export default {
     },
     printDown() {
       console.log('123123123123123')
+    },
+    // 打印按钮绑定事件
+    handlePrintPV(voucherId) {
+      console.log('test')
+    },
+    // 测试打印功能
+    handelPrint() {
+      var newStr = document.getElementsByClassName('printTable')[0].innerHTML
+      document.body.innerHTML = newStr
+      // 调用打印功能
+      window.print()
+      // 点击取消后刷新页面
+      window.location.reload()
     }
   }
 }
