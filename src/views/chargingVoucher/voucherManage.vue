@@ -175,7 +175,7 @@
     </el-dialog>
 
     <!-- 同一房间的多种项目统一收费模态框 -->
-    <el-dialog :visible.sync="dialogAllPrint" title="收据打印">
+    <!-- <el-dialog :visible.sync="dialogAllPrint" title="收据打印">
       <div id="printVoucher">
         <div class="invoicMain">
           <div class="invoiceHeader">
@@ -285,10 +285,9 @@
           </ul>
         </div>
       </div>
-      <!-- 打印按钮 -->
       <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handleComplexPrintPost(dataComplex)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
-    </el-dialog>
+    </el-dialog> -->
 
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
@@ -715,7 +714,7 @@ ul,
     }
 
     .payTypes {
-        height: 210px;
+        height: 40px;
         width: 100%;
         border-collapse: collapse;
         border-bottom: 1px solid #9c5223;
