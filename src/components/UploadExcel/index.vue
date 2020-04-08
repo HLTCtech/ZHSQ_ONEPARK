@@ -84,7 +84,7 @@ export default {
 
       const client = new OSS({
         // region以杭州为例（oss-cn-hangzhou），其他region按实际情况填写。
-        region: 'oss-cn-beijing.aliyuncs.com',
+        region: 'oss-cn-beijing',
         // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
         accessKeyId: 'LTAI4FgSpxAu8qrgZ9rePVoz',
         accessKeySecret: 'OUwPlikf0QdYfPCEtxjf2Qt6evN1L2',
@@ -101,13 +101,30 @@ export default {
         try {
           // object-key可以自定义为文件名（例如file.txt）或目录（例如abc/test/file.txt）的形式，实现将文件上传至当前Bucket或Bucket下的指定目录。
           // const result = await client.put('object-key', data)
-          const result = await client.put('user.xls', data)
+          const result = await client.put('electricData.xls', data)
           console.log(result)
+          console.log('-----------------------------------')
+          this.$notify({
+            title: 'Success',
+            message: '上传成功',
+            type: 'success',
+            duration: 2000
+          })
         } catch (e) {
           console.log(e)
+          this.$notify({
+            title: 'Error',
+            message: '上传失败',
+            type: 'success',
+            duration: 2000
+          })
         }
       }
       putObject()
+      const progress = function progress(p, checkpoint) {
+        console.log(p)
+      }
+      console.log(progress)
     },
     readerData(rawFile) {
       this.loading = true
