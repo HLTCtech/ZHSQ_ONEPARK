@@ -71,37 +71,28 @@
           </div>
           <div class="invoiceBody">
             <div class="userInfo" style="height:60px">
-              <ul style="width:46%">
+              <ul>
                 <li>
                   <label>项目名称：</label><span>{{ printPanNum }}</span>
                 </li>
               </ul>
-              <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ printHouseId }}</span></div>
-              <div class="password"><label>业主姓名：</label><span style="color:black">{{ printHouseName }}</span></div>
+              <div class="password"><label>缴费房号：</label></div><span>{{ printHouseId }}</span>
+            </div>
+            <div class="userInfo" style="height:60px">
+              <ul>
+                <li>
+                  <label>业主名称：</label><span>{{ printHouseName }}</span>
+                </li>
+              </ul>
+              <div class="password"><label>缴费人</label></div><span>{{ printPaidName }}</span>
             </div>
             <div>
-              <table class="GoodsTable" style="height: 80px" cellpadding="0" cellspacing="0">
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 10%">收费项目</td>
-                  <td style="width: 20%">费用周期</td>
-                  <td style="width: 10%">实收金额</td>
-                  <table class="payTypes" style="height: 40px" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="width: 100%">缴费方式</td>
-                    </tr>
-                  </table>
-                  <table class="GoodsTable" style="height: 40px" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="width: 2px">支付宝</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">微信</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">现金</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">代金券</td>
-                      <td style="width: 2px">金额</td>
-                    </tr>
-                  </table>
+                  <td style="width: 30%">收费项目</td>
+                  <td style="width: 35%">费用周期</td>
+                  <td style="width: 25%">实收金额</td>
+                  <td style="width: 10%">付款方式</td>
                 </tr>
               </table>
               <div class="line" />
@@ -638,20 +629,8 @@ ul,
         color: #9c5223;
     }
 
-    .houseId {
-        padding: 0 10px;
-        width: 60%;
-        border-left: 1px solid #9c5223;
-        text-align: left;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        color: #9c5223;
-    }
-
     .password {
         padding: 0 10px;
-        width: 50%;
         border-left: 1px solid #9c5223;
         text-align: center;
         height: 100%;
@@ -714,14 +693,6 @@ ul,
         flex: 1;
     }
 
-    .payTypes {
-        height: 210px;
-        width: 100%;
-        border-collapse: collapse;
-        border-bottom: 1px solid #9c5223;
-        color: #9c5223;
-    }
-
     .GoodsTable {
         height: 210px;
         width: 100%;
@@ -743,30 +714,6 @@ ul,
     }
 
     .GoodsTable tr:nth-child(1) td {
-        text-align: center;
-    }
-
-    .payTypeList {
-        height: 210px;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .payTypeList td {
-        border-right: 1px solid #9c5223;
-        color: #9c5223;
-    }
-
-    .payTypeList tr:nth-child(1),
-    .payTypeList tr:nth-last-child(2) {
-        height: 24px;
-    }
-
-    .payTypeList tr:nth-last-child(1) {
-        height: 34px;
-    }
-
-    .payTypeList tr:nth-child(1) td {
         text-align: center;
     }
 
