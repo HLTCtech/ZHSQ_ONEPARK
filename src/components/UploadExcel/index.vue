@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import XLSX from 'xlsx'
+// import XLSX from 'xlsx'
+import { Message } from 'element-ui'
 
 export default {
   props: {
@@ -40,13 +41,14 @@ export default {
       if (this.loading) return
       const files = e.dataTransfer.files
       if (files.length !== 1) {
-        this.$message.error('Only support uploading one file!')
+        // this.$message.error('Only support uploading one file!')
         return
       }
       const rawFile = files[0] // only use files[0]
 
       if (!this.isExcel(rawFile)) {
-        this.$message.error('Only supports upload .xlsx, .xls, .csv suffix files')
+        // this.$message.error('仅支持上传.xlsx，xls格式的excel')
+        // this.$message.error('Only supports upload .xlsx, .xls, .csv suffix files')
         return false
       }
       this.upload(rawFile)
@@ -70,14 +72,14 @@ export default {
     upload(rawFile) {
       this.$refs['excel-upload-input'].value = null // fix can't select the same excel
 
-      if (!this.beforeUpload) {
-        this.readerData(rawFile)
-        return
-      }
-      const before = this.beforeUpload(rawFile)
-      if (before) {
-        this.readerData(rawFile)
-      }
+      // if (!this.beforeUpload) {
+      //   this.readerData(rawFile)
+      //   return
+      // }
+      // const before = this.beforeUpload(rawFile)
+      // if (before) {
+      //   this.readerData(rawFile)
+      // }
 
       // 测试阿里云oss接口
       const OSS = require('ali-oss')
@@ -104,61 +106,54 @@ export default {
           const result = await client.put('electricData.xls', data)
           console.log(result)
           console.log('-----------------------------------')
-          this.$notify({
-            title: 'Success',
-            message: '上传成功',
-            type: 'success',
-            duration: 2000
-          })
+          Message.success('上传成功')
         } catch (e) {
           console.log(e)
-          this.$notify({
-            title: 'Error',
-            message: '上传失败',
-            type: 'success',
-            duration: 2000
-          })
+          Message.success('上传失败，请刷新页面重试')
         }
       }
       putObject()
-      const progress = function progress(p, checkpoint) {
-        console.log(p)
-      }
-      console.log(progress)
+      //
+      //
+      // Todo
+      // 上传之后是否要给后台post一个信号？并且根据后台显示进行前端返回？
+      //
+      //
+      //
     },
-    readerData(rawFile) {
-      this.loading = true
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = e => {
-          const data = e.target.result
-          const workbook = XLSX.read(data, { type: 'array' })
-          const firstSheetName = workbook.SheetNames[0]
-          const worksheet = workbook.Sheets[firstSheetName]
-          const header = this.getHeaderRow(worksheet)
-          const results = XLSX.utils.sheet_to_json(worksheet)
-          this.generateData({ header, results })
-          this.loading = false
-          resolve()
-        }
-        reader.readAsArrayBuffer(rawFile)
-      })
-    },
-    getHeaderRow(sheet) {
-      const headers = []
-      const range = XLSX.utils.decode_range(sheet['!ref'])
-      let C
-      const R = range.s.r
-      /* start in the first row */
-      for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
-        const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })]
-        /* find the cell in the first row */
-        let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
-        if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
-        headers.push(hdr)
-      }
-      return headers
-    },
+    // readerData(rawFile) {
+    //   this.loading = true
+    //   return new Promise((resolve, reject) => {
+    //     const reader = new FileReader()
+    //     reader.onload = e => {
+    //       const data = e.target.result
+    //       const workbook = XLSX.read(data, { type: 'array' })
+    //       const firstSheetName = workbook.SheetNames[0]
+    //       const worksheet = workbook.Sheets[firstSheetName]
+    //       const header = this.getHeaderRow(worksheet)
+    //       const results = XLSX.utils.sheet_to_json(worksheet)
+    //       this.generateData({ header, results })
+    //       this.loading = false
+    //       resolve()
+    //     }
+    //     reader.readAsArrayBuffer(rawFile)
+    //   })
+    // },
+    // getHeaderRow(sheet) {
+    //   const headers = []
+    //   const range = XLSX.utils.decode_range(sheet['!ref'])
+    //   let C
+    //   const R = range.s.r
+    //   /* start in the first row */
+    //   for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
+    //     const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })]
+    //     /* find the cell in the first row */
+    //     let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
+    //     if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
+    //     headers.push(hdr)
+    //   }
+    //   return headers
+    // },
     isExcel(file) {
       return /\.(xlsx|xls|csv)$/.test(file.name)
     }
