@@ -59,7 +59,7 @@
             </div>
             <ul class="headerRight">
               <li>
-                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
+                <label style="margin-right: 150px"> 收据号： </label>
               </li>
             </ul>
           </div>
@@ -222,8 +222,6 @@ export default {
       dialogAllPrint: false,
       printObj: {
         id: 'printVoucher',
-        popTitle: 'Test Printing',
-        extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
         endCallback() {
           console.log('23423423423423434')
         }

@@ -481,9 +481,17 @@ export default {
       this.dialogMoneyGetFormVisible = false
     },
     handleCleanDataFormReturn() {
-      this.$nextTick(() => {
-        this.$refs['dataFormReturn'].resetFields()
-      })
+      if (this.$refs['dataForm'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['dataForm'].resetFields()
+        })
+      }
+      if (this.$refs['dataFormReturn'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['dataFormReturn'].resetFields()
+        })
+      }
+      this.dialogMoneyGetFormVisible = false
       this.dialogMoneyReturn = false
     },
     // 点击houseId获取房间变更历史

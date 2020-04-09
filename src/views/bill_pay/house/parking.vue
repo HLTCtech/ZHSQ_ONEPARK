@@ -51,8 +51,8 @@
       icon="el-icon-search"
       @click="handleNewParking()"
     >新增车位信息</el-button>
-    <br />
-    <br />
+    <br>
+    <br>
 
     <!-- 表格 -->
     <el-table
@@ -79,14 +79,14 @@
       <el-table-column label="备注" prop="remark" align="center" />
 
       <el-table-column
-        label="变更信息"
+        label="操作"
         align="center"
-        width="80"
+        width="100"
         class-name="small-padding fixed-width"
         fixed="right"
       >
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleCarInfoChange(row)">变更</el-button>
+          <el-button type="primary" size="small" @click="handleCarInfoChange(row)">变更/收费</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -115,6 +115,9 @@
           </el-form-item>
           <el-form-item label="业主姓名" label-width="100px" prop="houseName">
             <el-input v-model="infoChangeFormPost.houseName" />
+          </el-form-item>
+          <el-form-item label="联系电话" label-width="100px" prop="houseName">
+            <el-input v-model="infoChangeFormPost.housePhone" />
           </el-form-item>
           <el-form-item label="车牌号" label-width="100px" prop="carNum">
             <el-input v-model="infoChangeFormPost.carNum" />
@@ -199,8 +202,8 @@
         <span v-show="show">获取验证码</span>
         <span v-show="!show" class="count">{{ count }} s</span>
       </el-button>
-      <br />
-      <br />
+      <br>
+      <br>
       <el-button type="success" @click="handleChangeInfoPost(infoChangeFormPost)">确定提交</el-button>
       <el-button @click="handleChangeInfoCleanSMSDataForm()">取消</el-button>
     </el-dialog>
