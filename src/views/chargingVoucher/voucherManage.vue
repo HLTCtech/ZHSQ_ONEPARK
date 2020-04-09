@@ -20,11 +20,7 @@
     <div id="printMe" class="printTable">
       <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px">
         <el-table-column label="收费项目id" prop="voucherId" width="50px" align="center" />
-        <el-table-column label="房号" prop="houseId" align="center">
-          <template slot-scope="scope">
-            <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column label="房号" prop="houseId" align="center" />
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
         <el-table-column label="费用周期" prop="dateRange" width="220px" align="center" />
@@ -99,7 +95,6 @@
                 </table>
               </div>
             </div>
-
             <div>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
@@ -190,7 +185,7 @@
         </div>
       </div>
       <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(voucherId)">打印</el-button>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
 
@@ -238,6 +233,21 @@ export default {
       // adminId: this.$store.getters.adminId,
       // adminName: this.$store.getters.adminName
       housePaidQuery: {
+        houseId: null,
+        adminId: this.$store.getters.adminId
+      },
+      // 点击打印按钮时的请求参数
+      getHouseIdPrintQuery: {
+        houseId: null,
+        adminId: this.$store.getters.adminId
+      },
+      // 打印完成之后把打印的项目参数
+      printedHouIds: {
+        voucherId1: null,
+        voucherId2: null,
+        voucherId3: null,
+        voucherId4: null,
+        voucherId5: null,
         houseId: null,
         adminId: this.$store.getters.adminId
       },
@@ -298,8 +308,9 @@ export default {
   },
   methods: {
     // 单一项目打印
-    handlePrintPost(voucherId) {
-      singleVoucherIdPost(this.voucherId).then(response => {
+    handlePrintPost(houseId) {
+      this.printedHouIds.houseId = houseId
+      singleVoucherIdPost(this.printedHouIds).then(response => {
         if (response.codeStatus === 200) {
           this.$notify({
             title: '注意！',
@@ -333,7 +344,8 @@ export default {
     },
     // 每行末尾针对单一项目的收费模态框
     printDialog(houseId) {
-      getVoucherByHouseId(this.housePaidQuery).then(response => {
+      this.getHouseIdPrintQuery.houseId = houseId
+      getVoucherByHouseId(this.getHouseIdPrintQuery).then(response => {
         this.panNum = response.data.panNum
         this.houseId = response.data.houseId
         this.houseName = response.data.houseName
@@ -376,6 +388,11 @@ export default {
         this.wechatNum5 = response.data.items.wechatNum5
         this.cashNum5 = response.data.items.cashNum5
         this.chargingVoucherNum5 = response.data.items.chargingVoucherNum5
+        this.printedHouIds.voucherId1 = response.data.items.voucherId1
+        this.printedHouIds.voucherId2 = response.data.items.voucherId2
+        this.printedHouIds.voucherId3 = response.data.items.voucherId3
+        this.printedHouIds.voucherId4 = response.data.items.voucherId4
+        this.printedHouIds.voucherId5 = response.data.items.voucherId5
       })
 
       this.dialogPrint = true
