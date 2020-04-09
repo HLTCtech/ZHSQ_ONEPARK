@@ -27,3 +27,30 @@ export function moneyPostAll(moneyAllPost) {
   })
 }
 
+// 监听前端物业费周期并返回对应金额
+export function getRealtimeProperty(propertyDateRange) {
+  return request({
+    url: '/pay/bill/getRealtimeProperty',
+    method: 'post',
+    data: { propertyDateRange }
+  })
+}
+
+// 监听前端停车管理费周期并返回对应金额
+export function getRealtimeParking(parkingDateRange) {
+  return request({
+    url: '/pay/bill/getRealtimeParking',
+    method: 'post',
+    data: { parkingDateRange }
+  })
+}
+
+// 监听前端电费周期并返回对应金额
+export function getRealtimeElectric(electricDateRange) {
+  return request({
+    url: '/pay/bill/getRealtimeElectric',
+    method: 'post',
+    data: { electricDateRange }
+  })
+}
+

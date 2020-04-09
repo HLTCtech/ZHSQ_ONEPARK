@@ -4,9 +4,6 @@
 
     <!-- 顶部搜索框 -->
     <div class="filter-container">
-      <el-select v-model="listQuery.panNum" placeholder="选择楼盘" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in panNumOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <el-input v-model="listQuery.houseId" type="text" placeholder="输入房号" style="width: 200px" class="filter-item" clearable />
       <el-input v-model="listQuery.houseName" type="text" placeholder="输入业主姓名" style="width: 200px" class="filter-item" clearable />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">
@@ -62,6 +59,47 @@
         <el-tag type="info" size="large" style="width: 350px;text-align:center" class="payType-item" disabled>缴费周期</el-tag>
         <el-tag type="info" size="large" style="width: 200px;text-align:center" class="payType-item" disabled>缴费金额</el-tag>
         <el-tag type="info" size="large" style="width: 200px;text-align:center" class="payType-item" disabled>代金券金额</el-tag>
+        <el-tag type="info" size="large" style="width: 200px;text-align:center" class="payType-item" disabled>应缴金额</el-tag>
+      </div>
+      <!-- 物业费缴纳 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>物业费</el-tag>
+        <el-date-picker
+          v-model="ItemsPay.propertyDateRange"
+          class="filter-item"
+          type="daterange"
+          align="left"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
+          validate-event
+          required
+        />
+        <el-input v-model="ItemsPay.propertyMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.propertyVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ propertyShallPay }}</el-tag>
+      </div>
+      <!-- 停车管理费缴纳 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>停车管理费</el-tag>
+        <el-date-picker
+          v-model="ItemsPay.parkingDateRange"
+          class="filter-item"
+          type="daterange"
+          align="left"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
+          validate-event
+          required
+        />
+        <el-input v-model="ItemsPay.parkingMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.parkingVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ parkingShallPay }}</el-tag>
       </div>
       <!-- 电费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
@@ -80,82 +118,45 @@
           required
         />
         <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
-      </div>
-      <!-- 物业费缴纳 -->
-      <div class="payType-container" style="padding:0 0 0 0">
-        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>物业费</el-tag>
-        <el-date-picker
-          v-model="ItemsPay.electricDateRange"
-          class="filter-item"
-          type="daterange"
-          align="left"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="yyyy-MM-dd"
-          validate-event
-          required
-        />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
-      </div>
-      <!-- 停车管理费缴纳 -->
-      <div class="payType-container" style="padding:0 0 0 0">
-        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>停车管理费</el-tag>
-        <el-date-picker
-          v-model="ItemsPay.electricDateRange"
-          class="filter-item"
-          type="daterange"
-          align="left"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="yyyy-MM-dd"
-          validate-event
-          required
-        />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ electricShallPay }}</el-tag>
       </div>
       <!-- 水费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>水费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.waterMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
       </div>
       <!-- 暖气费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>暖气费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.heatMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
       </div>
       <!-- 装修保证金缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>装修保证金</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.decorationMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
       </div>
       <!-- 垃圾清运费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>垃圾清运费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.trashMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
       </div>
       <!-- 杂项费用缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>杂项费用</el-tag>
-        <el-select v-model="listQuery.panNum" placeholder="选择缴费项目" clearable style="width: 350px" class="filter-item">
-          <el-option v-for="item in panNumOptions" :key="item" :label="item" :value="item" />
+        <el-select v-model="ItemsPay.sundriesType" placeholder="选择缴费项目" clearable style="width: 350px" class="filter-item">
+          <el-option v-for="item in sundriesOptions" :key="item" :label="item" :value="item" />
         </el-select>
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.electricVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.sundriesMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
       </div>
     </el-card>
 
@@ -218,7 +219,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchBillInfoSearch, fetchBillAllList, moneyPostAll } from '@/api/payAll'
+import { fetchBillInfoSearch, fetchBillAllList, moneyPostAll, getRealtimeProperty, getRealtimeParking, getRealtimeElectric } from '@/api/payAll'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -252,7 +253,6 @@ export default {
         houseName: null
       },
       dialogHouseLog: false,
-      panNumOptions: ['尚郡', '壹号院'],
       // 单一缴费时的选项
       singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
       listLoading: true,
@@ -283,7 +283,20 @@ export default {
       },
       // 多项目缴费的参数电仪
       ItemsPay: {
-        electricDateRange: null
+        propertyDateRange: [],
+        propertyMoneyNum: null,
+        propertyVoucherNum: null,
+        parkingDateRange: null,
+        parkingMoneyNum: null,
+        parkingVoucherNum: null,
+        electricDateRange: null,
+        electricMoneyNum: null,
+        waterMoneyNum: null,
+        heatMoneyNum: null,
+        decorationMoneyNum: null,
+        trashMoneyNum: null,
+        sundriesType: null,
+        sundriesMoneyNum: null
       },
       pickerOptions: {
         shortcuts: [{
@@ -312,9 +325,12 @@ export default {
           }
         }]
       },
-      listQuery_search: {
-        datePicker: null
-      }
+      // 定义杂项费用类型
+      sundriesOptions: ['出入证工本费', '出入证押金', '有限电视', '智能卡工本费', '蓝牙卡工本费', '对外保洁', '电动车充电', '温泉水卡补卡', '车位锁工本费', '室内开荒'],
+      // 根据前端选择的时间周期显示应缴金额
+      propertyShallPay: null,
+      parkingShallPay: null,
+      electricShallPay: null
     }
   },
   computed: {
@@ -352,10 +368,38 @@ export default {
       return sum
     }
   },
+  watch: {
+    // 监听前端周期变化
+    'ItemsPay.propertyDateRange': function() {
+      this.getRealtimeProperty()
+    },
+    'ItemsPay.parkingDateRange': function() {
+      this.getRealtimeParking()
+    },
+    'ItemsPay.electricDateRange': function() {
+      this.getRealtimeElectric()
+    }
+  },
   // created() {
   //   this.getList()
   // },
   methods: {
+    // 根据前端周期监听返回相应的金额
+    getRealtimeProperty() {
+      getRealtimeProperty(this.ItemsPay.propertyDateRange).then(response => {
+        this.propertyShallPay = response.propertyShallPay
+      })
+    },
+    getRealtimeParking() {
+      getRealtimeParking(this.ItemsPay.parkingDateRange).then(response => {
+        this.parkingShallPay = response.parkingShallPay
+      })
+    },
+    getRealtimeElectric() {
+      getRealtimeElectric(this.ItemsPay.electricDateRange).then(response => {
+        this.electricShallPay = response.electricShallPay
+      })
+    },
     // 搜索费用信息
     handleSearch() {
       fetchBillInfoSearch(this.listQuery).then(response => {
