@@ -9,21 +9,12 @@ export function fetchAllCharging(listQuery) {
   })
 }
 
-// 查询当前登录的操作人所有的收费记录
-export function getMoneyDetailsByHouseId(query) {
+// 根据房号和当前操作人id查询所有的缴费记录
+export function getVoucherByHouseId(query) {
   return request({
-    url: '/chargingVoucher/getPaidDetialsByHouseId',
+    url: '/chargingVoucher/getVoucherByHouseId',
     method: 'get',
     params: { query }
-  })
-}
-
-// 多项目打印后提交项目id
-export function complexVoucherIdPost(query) {
-  return request({
-    url: '/chargingVoucher/complexPrintVoucherIds',
-    method: 'post',
-    data: { query }
   })
 }
 
