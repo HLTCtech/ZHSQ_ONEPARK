@@ -87,7 +87,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/payAll'),
         name: 'payAll',
         meta: {
-          title: '费用清缴',
+          title: '一键收费',
           icon: 'money',
           noCache: true
         }

@@ -47,7 +47,7 @@
         总金额：{{ selectItemNum }}
       </el-card>
       <div style="margin-top: 20px">
-        <el-button type="success" @click="handleMoneyPost()">费用收缴</el-button>
+        <el-button type="success" @click="handleMoneyPost()">清缴</el-button>
         <el-button @click="toggleSelection()">取消</el-button>
       </div>
     </el-card>
@@ -75,10 +75,11 @@
           end-placeholder="结束日期"
           value-format="yyyy-MM-dd"
           validate-event
+          :picker-options="pickerOptions"
           required
         />
-        <el-input v-model="ItemsPay.propertyMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.propertyVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.propertyMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.propertyVoucherNum" type="number" style="width: 200px" class="filter-item" clearable />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ propertyShallPay }}</el-tag>
       </div>
       <!-- 停车管理费缴纳 -->
@@ -95,10 +96,11 @@
           end-placeholder="结束日期"
           value-format="yyyy-MM-dd"
           validate-event
+          :picker-options="pickerOptions"
           required
         />
-        <el-input v-model="ItemsPay.parkingMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input v-model="ItemsPay.parkingVoucherNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.parkingMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.parkingVoucherNum" type="number" style="width: 200px" class="filter-item" clearable />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ parkingShallPay }}</el-tag>
       </div>
       <!-- 电费缴纳 -->
@@ -115,9 +117,10 @@
           end-placeholder="结束日期"
           value-format="yyyy-MM-dd"
           validate-event
+          :picker-options="pickerOptions"
           required
         />
-        <el-input v-model="ItemsPay.electricMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
+        <el-input v-model="ItemsPay.electricMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
         <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ electricShallPay }}</el-tag>
       </div>
@@ -125,29 +128,25 @@
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>水费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.waterMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-input v-model="ItemsPay.waterMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 暖气费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>暖气费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.heatMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-input v-model="ItemsPay.heatMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 装修保证金缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>装修保证金</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.decorationMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-input v-model="ItemsPay.decorationMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 垃圾清运费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>垃圾清运费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.trashMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-input v-model="ItemsPay.trashMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 杂项费用缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
@@ -155,12 +154,15 @@
         <el-select v-model="ItemsPay.sundriesType" placeholder="选择缴费项目" clearable style="width: 350px" class="filter-item">
           <el-option v-for="item in sundriesOptions" :key="item" :label="item" :value="item" />
         </el-select>
-        <el-input v-model="ItemsPay.sundriesMoneyNum" type="text" style="width: 200px" class="filter-item" clearable />
-        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-input v-model="ItemsPay.sundriesMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+      </div>
+      <div style="margin-top: 20px">
+        <el-button type="success" @click="handleMoneyPostAll()">费用收缴</el-button>
+        <el-button @click="toggleSelection()">取消</el-button>
       </div>
     </el-card>
 
-    <!-- 收费页面模态框 -->
+    <!-- 清缴模态框 -->
     <el-dialog :visible.sync="dialogMoneyPost" title="欠费清缴">
       <el-card class="box-card">
         <!-- 复合缴费 -->
@@ -199,6 +201,45 @@
       </el-card>
     </el-dialog>
 
+    <!-- 收缴模态框 -->
+    <el-dialog :visible.sync="dialogMoneyPostAllItems" title="费用收缴">
+      <el-card class="box-card">
+        <!-- 复合缴费 -->
+        <div label="复合缴费" label-width="100px">
+          <el-form ref="ItemsPayForm" :rules="ItemsPayRules" :model="ItemsPay" label-width="80px">
+            <el-form-item label="房间号" label-width="100px" prop="houseId">
+              <el-input v-model="ItemsPay.houseId" disabled />
+            </el-form-item>
+            <el-form-item label="应收总金额" label-width="100px">
+              <el-input v-model.number="ItemsPay.shallPay" width="100px" disabled />
+            </el-form-item>
+            <el-form-item label="支付宝" label-width="100px">
+              <el-input v-model.number="ItemsPay.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="微信" label-width="100px">
+              <el-input v-model.number="ItemsPay.mixPayType[1].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="现金" label-width="100px">
+              <el-input v-model.number="ItemsPay.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
+            </el-form-item>
+            <el-form-item label="其他" label-width="100px">
+              <el-input v-model.number="ItemsPay.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
+            </el-form-item>
+            <el-form-item label="实收总金额" label-width="100px">
+              <el-input v-model.number="payAllItemsMixPayTotal" width="100px" disabled />
+            </el-form-item>
+            <el-form-item label="备注" label-width="100px" prop="remark">
+              <el-input v-model="ItemsPay.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="success" @click="allItemsFormPost(ItemsPay)">提交</el-button>
+              <el-button @click="CleanDataForm()">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-card>
+    </el-dialog>
+
     <!-- 点击houseId弹出信息变更历史模态框 -->
     <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
       <el-table :data="pvData_all" fit highlight-current-row style="width: 100%">
@@ -219,7 +260,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchBillInfoSearch, fetchBillAllList, moneyPostAll, getRealtimeProperty, getRealtimeParking, getRealtimeElectric } from '@/api/payAll'
+import { fetchBillInfoSearch, fetchBillAllList, moneyCleanPostAll, moneyPayPostAll, getRealtimeProperty, getRealtimeParking, getRealtimeElectric } from '@/api/payAll'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -237,6 +278,7 @@ export default {
       props: { multiple: true },
       dialogApproveSmsVisible: false,
       dialogMoneyOwing: false,
+      dialogMoneyPostAllItems: false,
       billStatus: null,
       // 声明表格数据源
       tableDataHouseInfo: [],
@@ -248,7 +290,6 @@ export default {
       dialogMoneyPost: false,
       // 根据用户输入请求参数
       listQuery: {
-        panNum: null,
         houseId: null,
         houseName: null
       },
@@ -275,52 +316,71 @@ export default {
         adminId: this.$store.getters.adminId,
         finalSelection: null
       },
-      // 复合收缴表单提交项目规则
+      // 费用清缴复合收缴表单提交项目规则
       mixformRules: {
         houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
         // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
         // singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
       },
-      // 多项目缴费的参数电仪
-      ItemsPay: {
-        propertyDateRange: [],
-        propertyMoneyNum: null,
-        propertyVoucherNum: null,
-        parkingDateRange: null,
-        parkingMoneyNum: null,
-        parkingVoucherNum: null,
-        electricDateRange: null,
-        electricMoneyNum: null,
-        waterMoneyNum: null,
-        heatMoneyNum: null,
-        decorationMoneyNum: null,
-        trashMoneyNum: null,
-        sundriesType: null,
-        sundriesMoneyNum: null
+      // 费用收缴规则
+      ItemsPayRules: {
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
       },
+      // 多项目缴费的参数定义
+      ItemsPay: {
+        houseId: null,
+        mixPayType: [{
+          name: 'mixPayAlipay', value: null
+        },
+        { name: 'mixPayWechat', value: null
+        },
+        { name: 'mixPayCash', value: null
+        },
+        { name: 'mixPayOther', value: null
+        }],
+        shallPay: null,
+        payAllItemsMixPayTotal: null,
+        remark: null,
+        adminId: this.$store.getters.adminId,
+        propertyDateRange: [],
+        propertyMoneyNum: '',
+        propertyVoucherNum: '',
+        parkingDateRange: null,
+        parkingMoneyNum: '',
+        parkingVoucherNum: '',
+        electricDateRange: null,
+        electricMoneyNum: '',
+        waterMoneyNum: '',
+        heatMoneyNum: '',
+        decorationMoneyNum: '',
+        trashMoneyNum: '',
+        sundriesType: null,
+        sundriesMoneyNum: ''
+      },
+      // 往后推算的时间选择器
       pickerOptions: {
         shortcuts: [{
-          text: '最近一周',
+          text: '一个月',
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: '最近一个月',
+          text: '三个月',
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: '最近三个月',
+          text: '半年',
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 180)
             picker.$emit('pick', [start, end])
           }
         }]
@@ -358,6 +418,18 @@ export default {
     mixPayTotal: function() {
       var sum = 0
       this.mixFormPost.mixPayType.forEach((v, i) => {
+        if (v.value === '') {
+          v.value = 0
+        }
+        parseInt(v.value)
+        sum += v.value
+      })
+      parseInt(sum)
+      return sum
+    },
+    payAllItemsMixPayTotal: function() {
+      var sum = 0
+      this.ItemsPay.mixPayType.forEach((v, i) => {
         if (v.value === '') {
           v.value = 0
         }
@@ -417,13 +489,19 @@ export default {
         this.dialogHouseLog = true
       })
     },
-    // 费用收缴按钮
+    // 清缴按钮
     handleMoneyPost() {
+      if (this.houseId === undefined) {
+        this.$message({
+          message: '请先输入房号',
+          type: 'warning'
+        })
+      }
       this.mixFormPost.houseId = this.tableDataHouseInfo[0].houseId
       this.mixFormPost.shallPay = this.selectItemNum
       this.dialogMoneyPost = true
     },
-    // 复合收费提交收费表单
+    // 清缴费用复合收费提交收费表单
     mixSubmitFormPost(mixFormPost) {
       // 表单项规则验证
       this.$refs['mixDataForm'].validate((valid) => {
@@ -447,7 +525,7 @@ export default {
           }).then(() => {
             this.mixFormPost.mixPayTotalNum = this.mixPayTotal
             this.mixFormPost.finalSelection = this.finalSelection
-            moneyPostAll(mixFormPost).then(response => {
+            moneyCleanPostAll(mixFormPost).then(response => {
               if (response.codeStatus === 200) {
                 this.$notify({
                   title: 'Success',
@@ -468,6 +546,93 @@ export default {
                 this.mixFormPost.mixPayType[3].value = ''
                 this.mixFormPost.remark = ''
                 this.dialogMoneyPost = false
+                fetchBillAllList(this.listQuery).then(response => {
+                  this.tableDataShallPayAll = response.data.items
+                  this.billStatus = response.billStatus
+                })
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+          })
+        }
+      })
+    },
+    // 费用收缴按钮
+    handleMoneyPostAll() {
+      if (this.houseId === undefined) {
+        this.$message({
+          message: '请先输入房号',
+          type: 'warning'
+        })
+      }
+      this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
+      this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
+        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum)
+      this.dialogMoneyPostAllItems = true
+    },
+    // 收缴费用表单
+    allItemsFormPost(ItemsPay) {
+      // 表单项规则验证
+      this.$refs['ItemsPayForm'].validate((valid) => {
+        if ((this.payAllItemsMixPayTotal !== this.ItemsPay.shallPay) === true) {
+          this.$alert('应收实收金额不一致', '注意', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$message({
+                type: 'info',
+                message: `请核对金额`
+              })
+            }
+          })
+        } else {
+          // 操作确认框
+          this.$confirm('确定提交么？', '费用收缴', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            this.ItemsPay.payAllItemsMixPayTotal = this.payAllItemsMixPayTotal
+            moneyPayPostAll(ItemsPay).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                // 同时清空单一缴费表单
+                if (this.$refs['singleDataForm'] !== undefined) {
+                  this.$nextTick(() => {
+                    this.$refs['singleDataForm'].resetFields()
+                  })
+                }
+                this.ItemsPay.payAllItemsMixPayTotal = 0
+                this.ItemsPay.mixPayType[0].value = ''
+                this.ItemsPay.mixPayType[1].value = ''
+                this.ItemsPay.mixPayType[2].value = ''
+                this.ItemsPay.mixPayType[3].value = ''
+                this.ItemsPay.remark = ''
+                this.ItemsPay.propertyDateRange = ''
+                this.ItemsPay.propertyMoneyNum = ''
+                this.ItemsPay.propertyVoucherNum = ''
+                this.ItemsPay.parkingDateRange = ''
+                this.ItemsPay.parkingMoneyNum = ''
+                this.ItemsPay.parkingVoucherNum = ''
+                this.ItemsPay.electricDateRange = ''
+                this.ItemsPay.electricMoneyNum = ''
+                this.ItemsPay.waterMoneyNum = ''
+                this.ItemsPay.heatMoneyNum = ''
+                this.ItemsPay.decorationMoneyNum = ''
+                this.ItemsPay.trashMoneyNum = ''
+                this.ItemsPay.sundriesType = ''
+                this.ItemsPay.sundriesMoneyNum = ''
+                this.dialogMoneyPostAllItems = false
                 fetchBillAllList(this.listQuery).then(response => {
                   this.tableDataShallPayAll = response.data.items
                   this.billStatus = response.billStatus
@@ -521,7 +686,19 @@ export default {
       this.mixFormPost.mixPayType[2].value = null
       this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
+      if (this.$refs['ItemsPayForm'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['ItemsPayForm'].resetFields()
+        })
+      }
+      this.ItemsPay.mixPayTotalNum = 0
+      this.ItemsPay.mixPayType[0].value = null
+      this.ItemsPay.mixPayType[1].value = null
+      this.ItemsPay.mixPayType[2].value = null
+      this.ItemsPay.mixPayType[3].value = null
+      this.ItemsPay.remark = ''
       this.dialogMoneyPost = false
+      this.dialogMoneyPostAllItems = false
     }
   }
 }

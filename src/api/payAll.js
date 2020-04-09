@@ -18,12 +18,21 @@ export function fetchBillAllList(listQuery) {
   })
 }
 
-// 收缴费用提交
-export function moneyPostAll(moneyAllPost) {
+// 清缴提交
+export function moneyCleanPostAll(moneyAllPost) {
   return request({
-    url: '/pay/bill/moneyPostAll',
+    url: '/pay/bill/moneyCleanPostAll',
     method: 'post',
-    params: { moneyAllPost }
+    data: { moneyAllPost }
+  })
+}
+
+// 收缴提交
+export function moneyPayPostAll(moneyAllPost) {
+  return request({
+    url: '/pay/bill/moneyPayPostAll',
+    method: 'post',
+    data: { moneyAllPost }
   })
 }
 
