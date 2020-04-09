@@ -77,75 +77,97 @@
                 </li>
               </ul>
               <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ printHouseId }}</span></div>
-              <div class="password"><label>业主姓名：</label><span style="color:black">{{ printHouseName }}</span></div>
+              <div class="password" style="border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ printHouseName }}</span></div>
             </div>
+            <div class="userInfo" style="height:60px">
+              <ul style="width: 14%">
+                <li>
+                  <label style="margin:auto auto">收费项目</label>
+                </li>
+              </ul>
+              <div class="houseId" style="width:32%"><label style="margin:auto auto">费用周期</label></div>
+              <div class="password" style="width:15%"><label style="margin:auto auto">实收金额</label></div>
+              <div style="width: 100%;flex-flow: column;height: 60px">
+                <div class="payTypes" style="width:100%;height: 30px">
+                  <label style="margin:auto auto">缴费方式</label>
+                </div>
+                <table class="payItems" style="width:100%;height: 30px">
+                  <tr>
+                    <td style="width:30px;">支付宝</td>
+                    <td style="width:30px;">微信</td>
+                    <td style="width:30px;">现金</td>
+                    <td style="width:30px;border-right: 0px solid #9c5223">代金券</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
             <div>
-              <table class="GoodsTable" style="height: 80px" cellpadding="0" cellspacing="0">
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 10%">收费项目</td>
-                  <td style="width: 20%">费用周期</td>
-                  <td style="width: 10%">实收金额</td>
-                  <table class="payTypes" style="height: 40px" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="width: 100%">缴费方式</td>
-                    </tr>
-                  </table>
-                  <table class="GoodsTable" style="height: 40px" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="width: 2px">支付宝</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">微信</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">现金</td>
-                      <td style="width: 2px">金额</td>
-                      <td style="width: 2px">代金券</td>
-                      <td style="width: 2px">金额</td>
-                    </tr>
-                  </table>
+                  <td style="width: 9.6%;color: black;">{{ printItem }}</td>
+                  <td style="width: 20.2%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ printPayNum1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">{{ printItem }}</td>
-                  <td style="width: 35%;color: black;">{{ printDateRange }}</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum1 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType1 }}</td>
+                  <td style="width: 9.6%;color: black;">{{ printItem }}</td>
+                  <td style="width: 20.2%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ printPayNum1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum2 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType2 }}</td>
+                  <td style="width: 9.6%;color: black;">{{ printItem }}</td>
+                  <td style="width: 20.2%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ printPayNum1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">{{ printPayNum3 }}</td>
-                  <td style="width: 10%;color: black;">{{ printPayType3 }}</td>
+                  <td style="width: 9.6%;color: black;">{{ printItem }}</td>
+                  <td style="width: 20.2%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ printPayNum1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 30%;color: black;">&nbsp;</td>
-                  <td style="width: 35%;color: black;">&nbsp;</td>
-                  <td style="width: 25%;color: black;">&nbsp;</td>
-                  <td style="width: 10%;color: black;">&nbsp;</td>
+                  <td style="width: 9.6%;color: black;">{{ printItem }}</td>
+                  <td style="width: 20.2%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ printPayNum1 }}</td>
                 </tr>
               </table>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr class="GoodsTotal">
                   <td style="width: 598px"><label>合计人民币(大写)：</label></td>
-                  <td colspan="2">
+                  <td colspan="2" style="border-right: 0px solid #9c5223">
                     <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black;">{{ payNumAllChinese }}</div>
+                      <div type="text" style="margin-left: 40%;color: black">{{ payNumAllChinese }}</div>
                     </div>
                   </td>
                 </tr>
@@ -173,121 +195,6 @@
       <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(voucherId)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
-
-    <!-- 同一房间的多种项目统一收费模态框 -->
-    <!-- <el-dialog :visible.sync="dialogAllPrint" title="收据打印">
-      <div id="printVoucher">
-        <div class="invoicMain">
-          <div class="invoiceHeader">
-            <ul class="headerLeft">
-              <li>
-                <label>收费日期：</label><span>{{ dataComplex.payDate }}</span>
-              </li>
-            </ul>
-            <div class="headerMiddle">
-              <h1>河南院子物业服务有限公司收据</h1>
-              <div class="line" />
-            </div>
-            <ul class="headerRight">
-              <li>
-                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
-              </li>
-            </ul>
-          </div>
-          <div class="invoiceBody">
-            <div class="userInfo" style="height:60px">
-              <ul>
-                <li>
-                  <label>项目名称：</label><span>{{ dataComplex.panNum }}</span>
-                </li>
-              </ul>
-              <div class="password"><label>缴费房号：</label></div><span>{{ dataComplex.houseId }}</span>
-            </div>
-            <div class="userInfo" style="height:60px">
-              <ul>
-                <li>
-                  <label>业主名称：</label><span>{{ dataComplex.houseName }}</span>
-                </li>
-              </ul>
-              <div class="password"><label>缴费人</label></div><span>{{ dataComplex.houseName }}</span>
-            </div>
-            <div>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%">收费项目</td>
-                  <td style="width: 35%">费用周期</td>
-                  <td style="width: 25%">实收金额</td>
-                  <td style="width: 10%">付款方式</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">{{ dataComplex.item1 }}</td>
-                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange1 }}</td>
-                  <td style="width: 25%;color: black;">{{ dataComplex.payNum1 }}</td>
-                  <td style="width: 10%;color: black;">{{ dataComplex.payType1 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">{{ dataComplex.item2 }}</td>
-                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange2 }}</td>
-                  <td style="width: 25%;color: black;">{{ dataComplex.payNum2 }}</td>
-                  <td style="width: 10%;color: black;">{{ dataComplex.payType2 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">{{ dataComplex.item3 }}</td>
-                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange3 }}</td>
-                  <td style="width: 25%;color: black;">{{ dataComplex.payNum3 }}</td>
-                  <td style="width: 10%;color: black;">{{ dataComplex.payType3 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 30%;color: black;">{{ dataComplex.item4 }}</td>
-                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange4 }}</td>
-                  <td style="width: 25%;color: black;">{{ dataComplex.payNum4 }}</td>
-                  <td style="width: 10%;color: black;">{{ dataComplex.payType4 }}</td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr class="GoodsTotal">
-                  <td style="width: 598px"><label>合计人民币(大写)：</label></td>
-                  <td colspan="2">
-                    <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black;">{{ dataComplex.payNumAllChinese }}</div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
-                <ul style="margin-top:20px">
-                  <li>
-                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataComplex.remark }}</span>
-                  </li>
-                </ul>
-              </table>
-            </div>
-          </div>
-          <ul class="invoicetFooter" style="margin-top:20px">
-            <li>
-              <label>单位盖章：</label>
-            </li>
-            <li>
-              <label>收款人：</label><span>{{ adminName }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handleComplexPrintPost(dataComplex)">打印</el-button>
-      <el-button @click="cancelPrint()">取消</el-button>
-    </el-dialog> -->
 
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
@@ -652,11 +559,36 @@ ul,
         padding: 0 10px;
         width: 50%;
         border-left: 1px solid #9c5223;
+        border-right: 1px solid #9c5223;
         text-align: center;
         height: 100%;
         display: flex;
         align-items: center;
         color: #9c5223;
+    }
+
+    .payTypes {
+        padding: 0 10px;
+        height: 100%;
+        text-align: center;
+        border-bottom: 1px solid #9c5223;
+        text-align: center;
+        vertical-align: top;
+        display: flex;
+        color: #9c5223;
+    }
+
+    .payItems {
+        height: 100%;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .payItems td {
+        border-right: 1px solid #9c5223;
+        color: #9c5223;
+        width: 30px;
+        text-align: center;
     }
 
     .pwdInfo {
@@ -713,14 +645,6 @@ ul,
         flex: 1;
     }
 
-    .payTypes {
-        height: 40px;
-        width: 100%;
-        border-collapse: collapse;
-        border-bottom: 1px solid #9c5223;
-        color: #9c5223;
-    }
-
     .GoodsTable {
         height: 210px;
         width: 100%;
@@ -742,30 +666,6 @@ ul,
     }
 
     .GoodsTable tr:nth-child(1) td {
-        text-align: center;
-    }
-
-    .payTypeList {
-        height: 210px;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .payTypeList td {
-        border-right: 1px solid #9c5223;
-        color: #9c5223;
-    }
-
-    .payTypeList tr:nth-child(1),
-    .payTypeList tr:nth-last-child(2) {
-        height: 24px;
-    }
-
-    .payTypeList tr:nth-last-child(1) {
-        height: 34px;
-    }
-
-    .payTypeList tr:nth-child(1) td {
         text-align: center;
     }
 
