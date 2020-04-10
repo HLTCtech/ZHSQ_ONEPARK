@@ -76,6 +76,24 @@ export const constantRoutes = [
       }
     ]
   },
+  // 对比测试
+  // {
+  //   path: '/chargingVoucher',
+  //   component: Layout,
+  //   // redirect: '/guide/index',
+  //   children: [
+  //     {
+  //       path: 'voucherManage123',
+  //       component: () => import('@/views/chargingVoucher/voucherManageTest'),
+  //       name: 'voucherManage',
+  //       meta: {
+  //         title: '对比测试',
+  //         icon: 'printer',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
   // 费用清缴
   {
     path: '/payAll',
