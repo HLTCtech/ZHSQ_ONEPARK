@@ -29,11 +29,11 @@
     </div>
 
     <!-- 测试打印功能 -->
-    <div>
+    <!-- <div>
       <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handelPrint">
         打印
       </el-button>
-    </div>
+    </div> -->
 
     <!-- 表格 -->
     <el-card class="box-card">
@@ -137,16 +137,16 @@ export default {
           return v[j]
         }
       }))
-    },
-    // 测试打印功能
-    handelPrint() {
-      var newStr = document.getElementsByClassName('printTable')[0].innerHTML
-      document.body.innerHTML = newStr
-      // 调用打印功能
-      window.print()
-      // 点击取消后刷新页面
-      window.location.reload()
     }
+    // 测试打印功能
+    // handelPrint() {
+    //   var newStr = document.getElementsByClassName('printTable')[0].innerHTML
+    //   document.body.innerHTML = newStr
+    //   // 调用打印功能
+    //   window.print()
+    //   // 点击取消后刷新页面
+    //   window.location.reload()
+    // }
   }
 }
 </script>
