@@ -39,10 +39,13 @@
         <el-table-column label="缴费项目" prop="payItem" align="center" />
         <el-table-column label="周期开始" prop="dateRangeStart" align="center" />
         <el-table-column label="周期结束" prop="dateRangeEnd" align="center" />
-        <el-table-column label="缴费方式1" prop="payType1" align="center" />
-        <el-table-column label="缴费金额1" prop="payNum1" align="center" />
-        <el-table-column label="缴费方式2" prop="payType2" align="center" />
-        <el-table-column label="缴费金额2" prop="payNum2" align="center" />
+        <el-table-column label="支付宝" prop="alipayNum" align="center" />
+        <el-table-column label="微信" prop="wechatNum" align="center" />
+        <el-table-column label="现金" prop="cashNum" align="center" />
+        <el-table-column label="代金券" prop="voucherNum" align="center" />
+        <el-table-column label="其他" prop="otherNum" align="center" />
+        <el-table-column label="特批" prop="specialNum" align="center" />
+        <el-table-column label="缴费时间" prop="paidDate" align="center" />
         <el-table-column label="备注" prop="remark" align="center" />
       </el-table>
     </div>

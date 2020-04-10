@@ -20,22 +20,28 @@
     <div id="printMe" class="printTable">
       <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px">
         <el-table-column label="收费项目id" prop="voucherId" width="50px" align="center" />
-        <el-table-column label="房号" prop="houseId" align="center" />
+        <el-table-column label="房号" prop="houseId" align="center">
+          <template slot-scope="scope">
+            <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
         <el-table-column label="费用周期" prop="dateRange" width="220px" align="center" />
         <el-table-column label="实收总金额" prop="moneyGet" align="center" />
-        <el-table-column label="支付宝" prop="alipayNum" align="center" />
-        <el-table-column label="微信" prop="wechatNum" align="center" />
-        <el-table-column label="现金" prop="cashNum" align="center" />
-        <el-table-column label="代金券" prop="chargingVoucherNum" align="center" />
+        <el-table-column label="付款方式1" prop="payType1" align="center" />
+        <el-table-column label="付款金额1" prop="payNum1" align="center" />
+        <el-table-column label="付款方式2" prop="payType2" align="center" />
+        <el-table-column label="付款金额2" prop="payNum1" align="center" />
+        <el-table-column label="付款方式3" prop="payType3" align="center" />
+        <el-table-column label="付款金额3" prop="payNum3" align="center" />
         <el-table-column label="收费日期" prop="payDate" align="center" />
         <el-table-column label="备注" prop="remark" align="center" />
         <!-- <el-table-column prop="payNumAllChinese" align="center" /> -->
         <el-table-column label="操作人" prop="operatorName" align="center" />
         <el-table-column label="打印" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="printDialog(row.houseId)">
+            <el-button type="primary" size="mini" @click="printDialog(row)">
               打印
             </el-button>
           </template>
@@ -50,7 +56,7 @@
           <div class="invoiceHeader">
             <ul class="headerLeft">
               <li>
-                <label>收费日期：</label><span>{{ payDate }}</span>
+                <label>收费日期：</label><span>{{ printDate }}</span>
               </li>
             </ul>
             <div class="headerMiddle">
@@ -59,108 +65,78 @@
             </div>
             <ul class="headerRight">
               <li>
-                <label style="margin-right: 150px"> 收据号： </label>
+                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
               </li>
             </ul>
           </div>
           <div class="invoiceBody">
             <div class="userInfo" style="height:60px">
-              <ul style="width:46%">
+              <ul>
                 <li>
-                  <label>项目名称：</label><span>{{ panNum }}</span>
+                  <label>项目名称：</label><span>{{ printPanNum }}</span>
                 </li>
               </ul>
-              <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
-              <div class="password" style="border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
+              <div class="password"><label>缴费房号：</label></div><span>{{ printHouseId }}</span>
             </div>
             <div class="userInfo" style="height:60px">
-              <ul style="width: 14%">
+              <ul>
                 <li>
-                  <label style="margin:auto auto">收费项目</label>
+                  <label>业主名称：</label><span>{{ printHouseName }}</span>
                 </li>
               </ul>
-              <div class="houseId" style="width:32%"><label style="margin:auto auto">费用周期</label></div>
-              <div class="password" style="width:15%"><label style="margin:auto auto">实收金额</label></div>
-              <div style="width: 100%;flex-flow: column;height: 60px">
-                <div class="payTypes" style="width:100%;height: 30px">
-                  <label style="margin:auto auto">缴费方式</label>
-                </div>
-                <table class="payItems" style="width:100%;height: 30px">
-                  <tr>
-                    <td style="width:30px;">支付宝</td>
-                    <td style="width:30px;">微信</td>
-                    <td style="width:30px;">现金</td>
-                    <td style="width:30px;border-right: 0px solid #9c5223">代金券</td>
-                  </tr>
-                </table>
-              </div>
+              <div class="password"><label>缴费人</label></div><span>{{ printPaidName }}</span>
             </div>
             <div>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 9.6%;color: black;">{{ item1 }}</td>
-                  <td style="width: 20.2%;color: black;">{{ dateRange1 }}</td>
-                  <td style="width: 10%;color: black;">{{ moneyGet1 }}</td>
-                  <td style="width: 30px;color: black;">{{ alipayNum1 }}</td>
-                  <td style="width: 30px;color: black;">{{ wechatNum1 }}</td>
-                  <td style="width: 30px;color: black;">{{ cashNum1 }}</td>
-                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ chargingVoucherNum1 }}</td>
+                  <td style="width: 30%">收费项目</td>
+                  <td style="width: 35%">费用周期</td>
+                  <td style="width: 25%">实收金额</td>
+                  <td style="width: 10%">付款方式</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 9.6%;color: black;">{{ item2 }}</td>
-                  <td style="width: 20.2%;color: black;">{{ dateRange2 }}</td>
-                  <td style="width: 10%;color: black;">{{ moneyGet2 }}</td>
-                  <td style="width: 30px;color: black;">{{ alipayNum2 }}</td>
-                  <td style="width: 30px;color: black;">{{ wechatNum2 }}</td>
-                  <td style="width: 30px;color: black;">{{ cashNum2 }}</td>
-                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ chargingVoucherNum2 }}</td>
+                  <td style="width: 30%;color: black;">{{ printItem }}</td>
+                  <td style="width: 35%;color: black;">{{ printDateRange }}</td>
+                  <td style="width: 25%;color: black;">{{ printPayNum1 }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayType1 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 9.6%;color: black;">{{ item3 }}</td>
-                  <td style="width: 20.2%;color: black;">{{ dateRange3 }}</td>
-                  <td style="width: 10%;color: black;">{{ moneyGet3 }}</td>
-                  <td style="width: 30px;color: black;">{{ alipayNum3 }}</td>
-                  <td style="width: 30px;color: black;">{{ wechatNum3 }}</td>
-                  <td style="width: 30px;color: black;">{{ cashNum3 }}</td>
-                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ chargingVoucherNum3 }}</td>
+                  <td style="width: 30%;color: black;">&nbsp;</td>
+                  <td style="width: 35%;color: black;">&nbsp;</td>
+                  <td style="width: 25%;color: black;">{{ printPayNum2 }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayType2 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 9.6%;color: black;">{{ item4 }}</td>
-                  <td style="width: 20.2%;color: black;">{{ dateRange4 }}</td>
-                  <td style="width: 10%;color: black;">{{ moneyGet4 }}</td>
-                  <td style="width: 30px;color: black;">{{ alipayNum4 }}</td>
-                  <td style="width: 30px;color: black;">{{ wechatNum4 }}</td>
-                  <td style="width: 30px;color: black;">{{ cashNum4 }}</td>
-                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ chargingVoucherNum4 }}</td>
+                  <td style="width: 30%;color: black;">&nbsp;</td>
+                  <td style="width: 35%;color: black;">&nbsp;</td>
+                  <td style="width: 25%;color: black;">{{ printPayNum3 }}</td>
+                  <td style="width: 10%;color: black;">{{ printPayType3 }}</td>
                 </tr>
               </table>
               <div class="line" />
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="width: 9.6%;color: black;">{{ item5 }}</td>
-                  <td style="width: 20.2%;color: black;">{{ dateRange5 }}</td>
-                  <td style="width: 10%;color: black;">{{ moneyGet5 }}</td>
-                  <td style="width: 30px;color: black;">{{ alipayNum5 }}</td>
-                  <td style="width: 30px;color: black;">{{ wechatNum5 }}</td>
-                  <td style="width: 30px;color: black;">{{ cashNum5 }}</td>
-                  <td style="width: 30px;color: black;border-right: 0px solid #9c5223">{{ chargingVoucherNum5 }}</td>
+                  <td style="width: 30%;color: black;">&nbsp;</td>
+                  <td style="width: 35%;color: black;">&nbsp;</td>
+                  <td style="width: 25%;color: black;">&nbsp;</td>
+                  <td style="width: 10%;color: black;">&nbsp;</td>
                 </tr>
               </table>
               <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                 <tr class="GoodsTotal">
-                  <td style="width: 273px"><label>合计人民币(大写)：</label></td>
-                  <td colspan="2" style="border-right: 0px solid #9c5223">
+                  <td style="width: 598px"><label>合计人民币(大写)：</label></td>
+                  <td colspan="2">
                     <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black">{{ payNumAllChinese }}</div>
+                      <div type="text" style="margin-left: 40%;color: black;">{{ payNumAllChinese }}</div>
                     </div>
                   </td>
                 </tr>
@@ -168,7 +144,7 @@
               <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
                 <ul style="margin-top:10px">
                   <li>
-                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ remark }}</span>
+                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ printRemark }}</span>
                   </li>
                 </ul>
               </table>
@@ -179,13 +155,129 @@
               <label>单位盖章：</label>
             </li>
             <li>
-              <label>收款人：</label><span>{{ operatorName }}</span>
+              <label>收款人：</label><span>{{ adminName }}</span>
             </li>
           </ul>
         </div>
       </div>
       <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId)">打印</el-button>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(voucherId)">打印</el-button>
+      <el-button @click="cancelPrint()">取消</el-button>
+    </el-dialog>
+
+    <!-- 同一房间的多种项目统一收费模态框 -->
+    <el-dialog :visible.sync="dialogAllPrint" title="收据打印">
+      <div id="printVoucher">
+        <div class="invoicMain">
+          <div class="invoiceHeader">
+            <ul class="headerLeft">
+              <li>
+                <label>收费日期：</label><span>{{ dataComplex.payDate }}</span>
+              </li>
+            </ul>
+            <div class="headerMiddle">
+              <h1>河南院子物业服务有限公司收据</h1>
+              <div class="line" />
+            </div>
+            <ul class="headerRight">
+              <li>
+                <label style="margin-right: 50px"> 收据号： </label><span>0566655</span>
+              </li>
+            </ul>
+          </div>
+          <div class="invoiceBody">
+            <div class="userInfo" style="height:60px">
+              <ul>
+                <li>
+                  <label>项目名称：</label><span>{{ dataComplex.panNum }}</span>
+                </li>
+              </ul>
+              <div class="password"><label>缴费房号：</label></div><span>{{ dataComplex.houseId }}</span>
+            </div>
+            <div class="userInfo" style="height:60px">
+              <ul>
+                <li>
+                  <label>业主名称：</label><span>{{ dataComplex.houseName }}</span>
+                </li>
+              </ul>
+              <div class="password"><label>缴费人</label></div><span>{{ dataComplex.houseName }}</span>
+            </div>
+            <div>
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%">收费项目</td>
+                  <td style="width: 35%">费用周期</td>
+                  <td style="width: 25%">实收金额</td>
+                  <td style="width: 10%">付款方式</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item1 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange1 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum1 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType1 }}</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item2 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange2 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum2 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType2 }}</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item3 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange3 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum3 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType3 }}</td>
+                </tr>
+              </table>
+              <div class="line" />
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="width: 30%;color: black;">{{ dataComplex.item4 }}</td>
+                  <td style="width: 35%;color: black;">{{ dataComplex.dateRange4 }}</td>
+                  <td style="width: 25%;color: black;">{{ dataComplex.payNum4 }}</td>
+                  <td style="width: 10%;color: black;">{{ dataComplex.payType4 }}</td>
+                </tr>
+              </table>
+              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <tr class="GoodsTotal">
+                  <td style="width: 598px"><label>合计人民币(大写)：</label></td>
+                  <td colspan="2">
+                    <div style="width: 100%;display:flex">
+                      <div type="text" style="margin-left: 40%;color: black;">{{ dataComplex.payNumAllChinese }}</div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
+                <ul style="margin-top:20px">
+                  <li>
+                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ dataComplex.remark }}</span>
+                  </li>
+                </ul>
+              </table>
+            </div>
+          </div>
+          <ul class="invoicetFooter" style="margin-top:20px">
+            <li>
+              <label>单位盖章：</label>
+            </li>
+            <li>
+              <label>收款人：</label><span>{{ adminName }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- 打印按钮 -->
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handleComplexPrintPost(dataComplex)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
 
@@ -197,7 +289,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchAllCharging, getVoucherByHouseId, singleVoucherIdPost } from '@/api/chargingVoucher'
+import { fetchAllCharging, getMoneyDetailsByHouseId, complexVoucherIdPost, singleVoucherIdPost } from '@/api/chargingVoucher'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -222,11 +314,29 @@ export default {
       dialogAllPrint: false,
       printObj: {
         id: 'printVoucher',
+        popTitle: 'Test Printing',
+        extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
         endCallback() {
           console.log('23423423423423434')
         }
       },
       rowSelected: [],
+      payNumAllChinese: null,
+      // 定义打印模态框变量
+      printHouseId: null,
+      printPanNum: null,
+      printDate: null,
+      printHouseName: null,
+      printPaidName: null,
+      printRemark: null,
+      printItem: '',
+      printDateRange: '',
+      printPayNum1: '',
+      printPayType1: '',
+      printPayNum2: '',
+      printPayType2: '',
+      printPayNum3: '',
+      printPayType3: '',
       // 从store中取出adminId/adminName
       // adminId: this.$store.getters.adminId,
       // adminName: this.$store.getters.adminName
@@ -234,64 +344,42 @@ export default {
         houseId: null,
         adminId: this.$store.getters.adminId
       },
-      // 点击打印按钮时的请求参数
-      getHouseIdPrintQuery: {
+      // 多项打印字段定义
+      dataComplex: {
+        panNum: null,
         houseId: null,
-        adminId: this.$store.getters.adminId
+        payDate: null,
+        houseName: null,
+        remark: null,
+        voucherId1: null,
+        item1: null,
+        dateRange1: null,
+        payType1: null,
+        payNum1: null,
+        voucherId2: null,
+        item2: null,
+        dateRange2: null,
+        payType2: null,
+        payNum2: null,
+        voucherId3: null,
+        item3: null,
+        dateRange3: null,
+        payType3: null,
+        payNum3: null,
+        voucherId4: null,
+        item4: null,
+        dateRange4: null,
+        payType4: null,
+        payNum4: null,
+        payNumAllChinese: null
       },
-      // 打印完成之后把打印的项目参数
-      printedHouIds: {
+      // 多项目打印后向后台post项目id，字段定义
+      voucherIds: {
         voucherId1: null,
         voucherId2: null,
         voucherId3: null,
-        voucherId4: null,
-        voucherId5: null,
-        houseId: null,
-        adminId: this.$store.getters.adminId
-      },
-      // 打印字段定义
-      panNum: null,
-      houseId: null,
-      houseName: null,
-      operatorName: null,
-      payNumAllChinese: null,
-      payDate: null,
-      remark: null,
-      item1: null,
-      dateRange1: null,
-      moneyGet1: null,
-      alipayNum1: null,
-      wechatNum1: null,
-      cashNum1: null,
-      chargingVoucherNum1: null,
-      item2: null,
-      dateRange2: null,
-      moneyGet2: null,
-      alipayNum2: null,
-      wechatNum2: null,
-      cashNum2: null,
-      chargingVoucherNum2: null,
-      item3: null,
-      dateRange3: null,
-      moneyGet3: null,
-      alipayNum3: null,
-      wechatNum3: null,
-      cashNum3: null,
-      chargingVoucherNum3: null,
-      item4: null,
-      dateRange4: null,
-      moneyGet4: null,
-      alipayNum4: null,
-      wechatNum4: null,
-      cashNum4: null,
-      chargingVoucherNum4: null,
-      item5: null,
-      dateRange5: null,
-      moneyGet5: null,
-      alipayNum5: null,
-      wechatNum5: null,
-      cashNum5: null,
-      chargingVoucherNum5: null
+        voucherId4: null
+      }
     }
   },
   computed: {
@@ -306,9 +394,8 @@ export default {
   },
   methods: {
     // 单一项目打印
-    handlePrintPost(houseId) {
-      this.printedHouIds.houseId = houseId
-      singleVoucherIdPost(this.printedHouIds).then(response => {
+    handlePrintPost(voucherId) {
+      singleVoucherIdPost(this.voucherId).then(response => {
         if (response.codeStatus === 200) {
           this.$notify({
             title: '注意！',
@@ -336,64 +423,73 @@ export default {
         }
       })
     },
+    // 多项目打印后把打印项目post到后台
+    handleComplexPrintPost(dataComplex) {
+      this.voucherIds.voucherId1 = this.dataComplex.voucherId1
+      this.voucherIds.voucherId2 = this.dataComplex.voucherId2
+      this.voucherIds.voucherId3 = this.dataComplex.voucherId3
+      this.voucherIds.voucherId4 = this.dataComplex.voucherId4
+      console.log(this.voucherIds)
+      complexVoucherIdPost(this.voucherIds).then(response => {
+        if (response.codeStatus === 200) {
+          this.$notify({
+            title: '注意！',
+            message: '还有5s该条数据就无法打印',
+            type: 'error',
+            duration: 5000
+          })
+
+          var that = this
+          setTimeout(function() {
+            that.dialogAllPrint = false
+            fetchAllCharging(this.listQuery_all).then(response => {
+              this.tableData = response.data.items
+              this.total = response.total
+            })
+          }, 5000)
+          // this.dialogAllPrint = false
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
+      })
+    },
+    // 点击houseId获取房间所有缴费记录
+    getHouseLog(houseId) {
+      this.housePaidQuery.houseId = houseId
+      getMoneyDetailsByHouseId(this.housePaidQuery).then(response => {
+        this.dataComplex = response.data.items
+        console.log(this.dataComplex)
+        this.dialogAllPrint = true
+      })
+    },
     cancelPrint() {
       this.dialogPrint = false
       this.dialogAllPrint = false
     },
     // 每行末尾针对单一项目的收费模态框
-    printDialog(houseId) {
-      this.getHouseIdPrintQuery.houseId = houseId
-      getVoucherByHouseId(this.getHouseIdPrintQuery).then(response => {
-        this.panNum = response.data.panNum
-        this.houseId = response.data.houseId
-        this.houseName = response.data.houseName
-        this.operatorName = response.data.operatorName
-        this.payNumAllChinese = response.data.payNumAllChinese
-        this.payDate = response.data.payDate
-        this.remark = response.data.remark
-        this.item1 = response.data.items.item1
-        this.dateRange1 = response.data.items.dateRange1
-        this.moneyGet1 = response.data.items.moneyGet1
-        this.alipayNum1 = response.data.items.alipayNum1
-        this.wechatNum1 = response.data.items.wechatNum1
-        this.cashNum1 = response.data.items.cashNum1
-        this.chargingVoucherNum1 = response.data.items.chargingVoucherNum1
-        this.item2 = response.data.items.item2
-        this.dateRange2 = response.data.items.dateRange2
-        this.moneyGet2 = response.data.items.moneyGet2
-        this.alipayNum2 = response.data.items.alipayNum2
-        this.wechatNum2 = response.data.items.wechatNum2
-        this.cashNum2 = response.data.items.cashNum2
-        this.chargingVoucherNum2 = response.data.items.chargingVoucherNum2
-        this.item3 = response.data.items.item3
-        this.dateRange3 = response.data.items.dateRange3
-        this.moneyGet3 = response.data.items.moneyGet3
-        this.alipayNum3 = response.data.items.alipayNum3
-        this.wechatNum3 = response.data.items.wechatNum3
-        this.cashNum3 = response.data.items.cashNum3
-        this.chargingVoucherNum3 = response.data.items.chargingVoucherNum3
-        this.item4 = response.data.items.item4
-        this.dateRange4 = response.data.items.dateRange4
-        this.moneyGet4 = response.data.items.moneyGet4
-        this.alipayNum4 = response.data.items.alipayNum4
-        this.wechatNum4 = response.data.items.wechatNum4
-        this.cashNum4 = response.data.items.cashNum4
-        this.chargingVoucherNum4 = response.data.items.chargingVoucherNum4
-        this.item5 = response.data.items.item5
-        this.dateRange5 = response.data.items.dateRange5
-        this.moneyGet5 = response.data.items.moneyGet5
-        this.alipayNum5 = response.data.items.alipayNum5
-        this.wechatNum5 = response.data.items.wechatNum5
-        this.cashNum5 = response.data.items.cashNum5
-        this.chargingVoucherNum5 = response.data.items.chargingVoucherNum5
-        this.printedHouIds.voucherId1 = response.data.items.voucherId1
-        this.printedHouIds.voucherId2 = response.data.items.voucherId2
-        this.printedHouIds.voucherId3 = response.data.items.voucherId3
-        this.printedHouIds.voucherId4 = response.data.items.voucherId4
-        this.printedHouIds.voucherId5 = response.data.items.voucherId5
-      })
-
+    printDialog(row) {
       this.dialogPrint = true
+      this.voucherId = row.voucherId
+      this.printPanNum = row.panNum
+      this.printHouseId = row.houseId
+      this.printDate = row.payDate
+      this.printHouseName = row.houseName
+      this.printPaidName = row.houseName
+      this.printRemark = row.remark
+      this.printItem = row.item
+      this.printDateRange = row.dateRange
+      this.printPayType1 = row.payType1
+      this.printPayNum1 = row.payNum1
+      this.printPayType2 = row.payType2
+      this.printPayNum2 = row.payNum2
+      this.printPayType3 = row.payType3
+      this.printPayNum3 = row.payNum3
+      this.payNumAllChinese = row.payNumAllChinese
     },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
@@ -533,51 +629,14 @@ ul,
         color: #9c5223;
     }
 
-    .houseId {
-        padding: 0 10px;
-        width: 60%;
-        border-left: 1px solid #9c5223;
-        text-align: left;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        color: #9c5223;
-    }
-
     .password {
         padding: 0 10px;
-        width: 50%;
         border-left: 1px solid #9c5223;
-        border-right: 1px solid #9c5223;
         text-align: center;
         height: 100%;
         display: flex;
         align-items: center;
         color: #9c5223;
-    }
-
-    .payTypes {
-        padding: 0 10px;
-        height: 100%;
-        text-align: center;
-        border-bottom: 1px solid #9c5223;
-        text-align: center;
-        vertical-align: top;
-        display: flex;
-        color: #9c5223;
-    }
-
-    .payItems {
-        height: 100%;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .payItems td {
-        border-right: 1px solid #9c5223;
-        color: #9c5223;
-        width: 30px;
-        text-align: center;
     }
 
     .pwdInfo {
