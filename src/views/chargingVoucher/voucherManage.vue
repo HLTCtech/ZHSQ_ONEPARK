@@ -46,119 +46,128 @@
     <!-- 指定行的收费模态框 -->
     <el-dialog :visible.sync="dialogPrint" title="收据打印">
       <div id="printVoucher">
-        <div class="invoicMain">
-          <div class="invoiceHeader">
-            <ul class="headerLeft">
-              <li>
-                <label>收费日期：</label><span>{{ payDate }}</span>
-              </li>
-            </ul>
-            <div class="headerMiddle">
-              <h1>河南院子物业服务有限公司收据</h1>
-              <div class="line" />
-            </div>
-            <ul class="headerRight">
-              <li>
-                <label style="margin-right: 150px"> 收据号： </label>
-              </li>
-            </ul>
-          </div>
-          <div class="invoiceBody">
-            <div class="userInfo" style="height:60px">
-              <ul style="width:46%">
+        <div class="fontbox">
+          <div class="invoicMain">
+            <div class="invoiceHeader">
+              <ul class="headerLeft">
                 <li>
-                  <label>项目名称：</label><span>{{ panNum }}</span>
+                  <label>收费日期：</label><span>{{ payDate }}</span>
                 </li>
               </ul>
-              <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
-              <div class="password" style="border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
-            </div>
-            <div class="userInfo" style="height:60px">
-              <div class="moneyType" style="width: 15%">
-                <label style="margin:auto auto">收费项目</label>
+              <div class="headerMiddle">
+                <h1>河南院子物业服务有限公司收据</h1>
+                <div class="line" />
               </div>
-              <div class="houseId" style="width:35%"><label style="margin:auto auto">费用周期</label></div>
-              <div class="password" style="width:20%"><label style="margin:auto auto">实收金额</label></div>
-              <div class="mixpayType" style="width:25%"><label style="margin:auto auto">缴费方式</label></div>
+              <ul class="headerRight">
+                <li>
+                  <label style="margin-right: 150px"> 收据号： </label>
+                </li>
+              </ul>
+            </div>
+            <div class="invoiceBody">
+              <div class="userInfo" style="height:60px">
+                <ul style="width:46%">
+                  <li>
+                    <label>项目名称：</label><span>{{ panNum }}</span>
+                  </li>
+                </ul>
+                <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
+                <div class="password" style="border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
+              </div>
+              <div class="userInfo" style="height:60px">
+                <div class="moneyType" style="width: 15%">
+                  <label style="margin:auto auto">收费项目</label>
+                </div>
+                <div class="houseId" style="width:35%"><label style="margin:auto auto">费用周期</label></div>
+                <div class="password" style="width:20%"><label style="margin:auto auto">实收金额</label></div>
+                <div class="mixpayType" style="width:25%"><label style="margin:auto auto">缴费方式</label></div>
               <!-- <div style="width: 100%;flex-flow: column;height: 60px">
                 <div class="payTypes" style="width:100%;height: 30px">
                   <label style="margin:auto auto">缴费方式</label>
                 </div>
               </div> -->
+              </div>
+              <div>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">{{ item1 }}</td>
+                    <td style="width: 35%;color: black;">{{ dateRange1 }}</td>
+                    <td style="width: 20%;color: black;">{{ moneyGet1 }}</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem1 }}</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">{{ item2 }}</td>
+                    <td style="width: 35%;color: black;">{{ dateRange2 }}</td>
+                    <td style="width: 20%;color: black;">{{ moneyGet2 }}</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem2 }}</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">{{ item3 }}</td>
+                    <td style="width: 35%;color: black;">{{ dateRange3 }}</td>
+                    <td style="width: 20%;color: black;">{{ moneyGet3 }}</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem3 }}</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">{{ item4 }}</td>
+                    <td style="width: 35%;color: black;">{{ dateRange4 }}</td>
+                    <td style="width: 20%;color: black;">{{ moneyGet4 }}</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem4 }}</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">{{ item5 }}</td>
+                    <td style="width: 35%;color: black;">{{ dateRange5 }}</td>
+                    <td style="width: 20%;color: black;">{{ moneyGet5 }}</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem5 }}</td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr class="GoodsTotal">
+                    <td style="width: 273px"><label>合计人民币(大写)：</label></td>
+                    <td colspan="2" style="border-right: 0px solid #9c5223">
+                      <div style="width: 100%;display:flex">
+                        <div type="text" style="margin-left: 40%;color: black">{{ payNumAllChinese }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
+                  <ul style="margin-top:10px">
+                    <li>
+                      <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ electricNumsRemark }}</span>
+                    </li>
+                  </ul>
+                </table>
+              </div>
             </div>
-            <div>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 15%;color: black;">{{ item1 }}</td>
-                  <td style="width: 35%;color: black;">{{ dateRange1 }}</td>
-                  <td style="width: 20%;color: black;">{{ moneyGet1 }}</td>
-                  <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem1 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 15%;color: black;">{{ item2 }}</td>
-                  <td style="width: 35%;color: black;">{{ dateRange2 }}</td>
-                  <td style="width: 20%;color: black;">{{ moneyGet2 }}</td>
-                  <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem2 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 15%;color: black;">{{ item3 }}</td>
-                  <td style="width: 35%;color: black;">{{ dateRange3 }}</td>
-                  <td style="width: 20%;color: black;">{{ moneyGet3 }}</td>
-                  <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem3 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 15%;color: black;">{{ item4 }}</td>
-                  <td style="width: 35%;color: black;">{{ dateRange4 }}</td>
-                  <td style="width: 20%;color: black;">{{ moneyGet4 }}</td>
-                  <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem4 }}</td>
-                </tr>
-              </table>
-              <div class="line" />
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width: 15%;color: black;">{{ item5 }}</td>
-                  <td style="width: 35%;color: black;">{{ dateRange5 }}</td>
-                  <td style="width: 20%;color: black;">{{ moneyGet5 }}</td>
-                  <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem5 }}</td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
-                <tr class="GoodsTotal">
-                  <td style="width: 273px"><label>合计人民币(大写)：</label></td>
-                  <td colspan="2" style="border-right: 0px solid #9c5223">
-                    <div style="width: 100%;display:flex">
-                      <div type="text" style="margin-left: 40%;color: black">{{ payNumAllChinese }}</div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
-                <ul style="margin-top:10px">
-                  <li>
-                    <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ electricNumsRemark }}</span>
-                  </li>
-                </ul>
-              </table>
-            </div>
+            <ul class="invoicetFooter" style="margin-top:20px">
+              <li>
+                <label>单位盖章：</label>
+              </li>
+              <li>
+                <label>收款人：</label><span>{{ operatorName }}</span>
+              </li>
+            </ul>
           </div>
-          <ul class="invoicetFooter" style="margin-top:20px">
-            <li>
-              <label>单位盖章：</label>
-            </li>
-            <li>
-              <label>收款人：</label><span>{{ operatorName }}</span>
-            </li>
-          </ul>
+
+          <div class="rightText" style="padding-left: 0">
+            <span>
+              <br><br><br><br><br><br>第一联记账联 <br><br><br>第二联客户联 <br><br><br>第三联客服<br><br><br> 第四联存根
+            </span>
+          </div>
         </div>
+
       </div>
       <!-- 打印按钮 -->
       <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId)">打印</el-button>
@@ -404,9 +413,24 @@ ul,
 
     .invoicMain {
         width: 920px;
-        margin: 0 auto;
+        padding: 0 auto;
         font-size: 14px;
         color: #000;
+    }
+
+    .fontbox {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+    }
+
+    .fontbox .rightText {
+        width: 1px;
+        height: 100%;
+        margin-left: 10px;
+        flex-flow: column;
+        align-items: center;
     }
 
     .invoiceHeader {
