@@ -319,6 +319,19 @@ export const constantRoutes = [
     ]
   },
   {
+    // 科目编码
+    path: '/subjectCode',
+    component: Layout,
+    children: [
+      {
+        path: 'subjectCode',
+        component: () => import('@/views/subjectCode/subjectCodeManage'),
+        name: 'subjectCode',
+        meta: { title: '科目编码', icon: 'subjectCode' }
+      }
+    ]
+  },
+  {
     // 台账管理
     path: '/standingBook',
     component: Layout,

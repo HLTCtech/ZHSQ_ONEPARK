@@ -1,9 +1,7 @@
 <template>
-  <!-- 导出物业流水 -->
+  <!-- 科目编码 -->
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
-      <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
       <el-date-picker
         v-model="listQuery_search.dateRange"
@@ -14,7 +12,6 @@
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
       />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -34,19 +31,9 @@
     <div class="printTable">
       <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">
         <el-table-column label="ID" prop="id" align="center" />
-        <el-table-column label="房号" prop="houseId" align="center" />
-        <el-table-column label="业主姓名" prop="houseName" align="center" />
-        <el-table-column label="缴费项目" prop="payItem" align="center" />
-        <el-table-column label="周期开始" prop="dateRangeStart" align="center" />
-        <el-table-column label="周期结束" prop="dateRangeEnd" align="center" />
-        <el-table-column label="支付宝" prop="alipayNum" align="center" />
-        <el-table-column label="微信" prop="wechatNum" align="center" />
-        <el-table-column label="现金" prop="cashNum" align="center" />
-        <el-table-column label="代金券" prop="voucherNum" align="center" />
-        <el-table-column label="其他" prop="otherNum" align="center" />
-        <el-table-column label="特批" prop="specialNum" align="center" />
-        <el-table-column label="缴费时间" prop="paidDate" align="center" />
-        <el-table-column label="备注" prop="remark" align="center" />
+        <el-table-column label="摘要" prop="billSummary" align="center" />
+        <el-table-column label="科目编码" prop="billSubjectCode" align="center" />
+        <el-table-column label="金额" prop="billNum" align="center" />
       </el-table>
     </div>
 
@@ -54,13 +41,13 @@
 </template>
 
 <script>
-import { fetchExportList, fetchExportSearch } from '@/api/waterBill'
+import { fetchExportList, fetchExportSearch } from '@/api/subjectCode'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
 
 export default {
-  name: 'ExportPropertyWaterBill',
+  name: 'ExportSubjectCode',
   components: { FilenameOption },
   directives: { waves },
   data() {
@@ -72,44 +59,10 @@ export default {
       autoWidth: true,
       // 定义搜索按钮的query字段
       listQuery_search: {
-        houseId: null,
-        houseName: null,
         dateRange: null
       },
-      titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
-      // 年份选择
-      yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
       // 声明下api变量
-      tableData: [],
-      // 时间选择器返回数据
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      }
-    //   date_picker: ''
+      tableData: []
     }
   },
   created() {
@@ -135,8 +88,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', '房号', '业主姓名', '缴费项目', '周期开始', '周期结束', '缴费方式1', '缴费金额1', '缴费方式2', '缴费金额2', '备注']
-        const filterVal = ['id', 'houseId', 'houseName', 'payItem', 'dateRangeStart', 'dateRangeEnd', 'payType1', 'payNum1', 'payType2', 'payNum2', 'remark']
+        const tHeader = ['Id', '摘要', '科目编码', '金额']
+        const filterVal = ['id', 'billSummary', 'billSubjectCode', 'billNum']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
