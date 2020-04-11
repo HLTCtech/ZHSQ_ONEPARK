@@ -163,7 +163,7 @@
 
           <div class="rightText" style="padding-left: 0">
             <span>
-              <br><br><br><br><br><br>第一联记账联 <br><br><br>第二联客户联 <br><br><br>第三联客服<br><br><br> 第四联存根
+              <br><br><br><br><br><br>第一联存根 <br><br><br>第二联客户联 <br><br><br>第三联记账联<br><br><br> 第四联客服
             </span>
           </div>
         </div>
