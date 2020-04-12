@@ -133,7 +133,7 @@
       <!-- 暖气费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>暖气费</el-tag>
-        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input placeholder="11月15号至3月15号" type="text" style="width: 350px;" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.heatMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 装修保证金缴纳 -->
