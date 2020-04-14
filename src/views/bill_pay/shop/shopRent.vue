@@ -28,9 +28,9 @@
     <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="shopId" align="center" fixed>
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.shopId)">{{ scope.row.shopId }}</el-tag>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column label="面积" prop="shopArea" align="center" />
       <el-table-column label="店面" prop="shopOwner" align="center" />
