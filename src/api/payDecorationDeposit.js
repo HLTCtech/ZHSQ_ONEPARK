@@ -32,8 +32,8 @@ export function fetchHouseDecorationDepositListAll(query) {
 export function fetchHouseDecorationDepositSearch(query) {
   return request({
     url: '/pay/decorationDeposit/house/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -42,8 +42,8 @@ export function fetchHouseDecorationDepositSearch(query) {
 export function fetchShopDecorationDepositListAll(query) {
   return request({
     url: '/pay/decorationDeposit/shop/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -51,8 +51,8 @@ export function fetchShopDecorationDepositListAll(query) {
 export function fetchShopDecorationDepositSearch(query) {
   return request({
     url: '/pay/decorationDeposit/shop/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 

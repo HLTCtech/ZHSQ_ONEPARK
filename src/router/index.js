@@ -215,6 +215,14 @@ export const constantRoutes = [
         meta: {
           title: '商铺装修保证金'
         }
+      },
+      {
+        path: 'shopRent',
+        component: () => import('@/views/bill_pay/shop/shopRent'),
+        name: 'shopRent',
+        meta: {
+          title: '商铺租金'
+        }
       }
     ]
   },
@@ -423,47 +431,47 @@ export const constantRoutes = [
     ]
   },
   // 通知公告管理
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: '公告管理',
-      icon: 'example'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: {
-          title: '发布文章',
-          icon: 'edit'
-        }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: {
-          title: '编辑文章',
-          noCache: true,
-          activeMenu: '/example/list'
-        },
-        hidden: false
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: {
-          title: '文章列表',
-          icon: 'list'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/list',
+  //   name: 'Example',
+  //   meta: {
+  //     title: '公告管理',
+  //     icon: 'example'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/example/create'),
+  //       name: 'CreateArticle',
+  //       meta: {
+  //         title: '发布文章',
+  //         icon: 'edit'
+  //       }
+  //     },
+  //     {
+  //       path: 'edit/:id(\\d+)',
+  //       component: () => import('@/views/example/edit'),
+  //       name: 'EditArticle',
+  //       meta: {
+  //         title: '编辑文章',
+  //         noCache: true,
+  //         activeMenu: '/example/list'
+  //       },
+  //       hidden: false
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/example/list'),
+  //       name: 'ArticleList',
+  //       meta: {
+  //         title: '文章列表',
+  //         icon: 'list'
+  //       }
+  //     }
+  //   ]
+  // },
   // 图表管理
   chartsRouter,
   {
