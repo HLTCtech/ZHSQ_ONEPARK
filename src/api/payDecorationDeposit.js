@@ -5,7 +5,7 @@ export function postMoney(formPost) {
   return request({
     url: '/pay/decorationDeposit/moneypost',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 
@@ -13,8 +13,8 @@ export function postMoney(formPost) {
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/pay/decorationDeposit/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -23,8 +23,8 @@ export function fetchSearchByHouseId(houseId) {
 export function fetchHouseDecorationDepositListAll(query) {
   return request({
     url: '/pay/decorationDeposit/house/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -61,7 +61,7 @@ export function getSMS(formPost) {
   return request({
     url: '/pay/decorationDeposit/getSMS',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 

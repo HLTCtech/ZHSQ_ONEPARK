@@ -54,12 +54,13 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
 
+      // 通过拦截后台返回的状态码查看是否需要重新登录（在请求拦截器中添加token）
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+        MessageBox.confirm('你已经登出了系统，你可以留在此页或者重新登录', '重新登录', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
