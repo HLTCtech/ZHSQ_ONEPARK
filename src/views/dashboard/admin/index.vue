@@ -8,7 +8,7 @@
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
+      <!-- <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <raddar-chart />
         </div>
@@ -17,8 +17,8 @@
         <div class="chart-wrapper">
           <pie-chart />
         </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      </el-col> -->
+      <el-col :xs="240" :sm="240" :lg="80">
         <div class="chart-wrapper">
           <bar-chart />
         </div>
@@ -31,8 +31,8 @@
 <script>
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
+// import RaddarChart from './components/RaddarChart'
+// import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
 import { getEchartMoneyMonthly } from '@/api/billOverall'
 
@@ -56,8 +56,8 @@ export default {
   components: {
     PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
+    // RaddarChart,
+    // PieChart,
     BarChart
   },
   data() {
