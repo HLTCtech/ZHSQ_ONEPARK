@@ -505,62 +505,49 @@ export default {
     mixSubmitFormPost(mixFormPost) {
       // 表单项规则验证
       this.$refs['mixDataForm'].validate((valid) => {
-        console.log(this.mixPayTotal !== this.mixFormPost.shallPay)
-        if ((this.mixPayTotal !== this.mixFormPost.shallPay) === true) {
-          this.$alert('应收实收金额不一致', '注意', {
-            confirmButtonText: '确定',
-            callback: action => {
-              this.$message({
-                type: 'info',
-                message: `请核对金额`
+        // 操作确认框
+        this.$confirm('确定提交么？', '费用收缴', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.mixFormPost.mixPayTotalNum = this.mixPayTotal
+          this.mixFormPost.finalSelection = this.finalSelection
+          moneyCleanPostAll(mixFormPost).then(response => {
+            if (response.codeStatus === 200) {
+              this.$notify({
+                title: 'Success',
+                message: '提交成功',
+                type: 'success',
+                duration: 2000
+              })
+              // 同时清空单一缴费表单
+              if (this.$refs['singleDataForm'] !== undefined) {
+                this.$nextTick(() => {
+                  this.$refs['singleDataForm'].resetFields()
+                })
+              }
+              this.mixFormPost.mixPayTotalNum = 0
+              this.mixFormPost.mixPayType[0].value = ''
+              this.mixFormPost.mixPayType[1].value = ''
+              this.mixFormPost.mixPayType[2].value = ''
+              this.mixFormPost.mixPayType[3].value = ''
+              this.mixFormPost.remark = ''
+              this.dialogMoneyPost = false
+              fetchBillAllList(this.listQuery).then(response => {
+                this.tableDataShallPayAll = response.data.items
+                this.billStatus = response.billStatus
+              })
+            } else {
+              this.$notify({
+                title: 'Failure',
+                message: '提交失败，请联系系统管理员',
+                type: 'error',
+                duration: 3000
               })
             }
           })
-        } else {
-          // 操作确认框
-          this.$confirm('确定提交么？', '费用收缴', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'info'
-          }).then(() => {
-            this.mixFormPost.mixPayTotalNum = this.mixPayTotal
-            this.mixFormPost.finalSelection = this.finalSelection
-            moneyCleanPostAll(mixFormPost).then(response => {
-              if (response.codeStatus === 200) {
-                this.$notify({
-                  title: 'Success',
-                  message: '提交成功',
-                  type: 'success',
-                  duration: 2000
-                })
-                // 同时清空单一缴费表单
-                if (this.$refs['singleDataForm'] !== undefined) {
-                  this.$nextTick(() => {
-                    this.$refs['singleDataForm'].resetFields()
-                  })
-                }
-                this.mixFormPost.mixPayTotalNum = 0
-                this.mixFormPost.mixPayType[0].value = ''
-                this.mixFormPost.mixPayType[1].value = ''
-                this.mixFormPost.mixPayType[2].value = ''
-                this.mixFormPost.mixPayType[3].value = ''
-                this.mixFormPost.remark = ''
-                this.dialogMoneyPost = false
-                fetchBillAllList(this.listQuery).then(response => {
-                  this.tableDataShallPayAll = response.data.items
-                  this.billStatus = response.billStatus
-                })
-              } else {
-                this.$notify({
-                  title: 'Failure',
-                  message: '提交失败，请联系系统管理员',
-                  type: 'error',
-                  duration: 3000
-                })
-              }
-            })
-          })
-        }
+        })
       })
     },
     // 费用收缴按钮

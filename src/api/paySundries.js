@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchSundriesLogList(listQuery_all) {
   return request({
     url: '/pay/sundries/log/all',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchSundriesLogList(listQuery_all) {
 export function fetchSundriesLogSearch(listQuery_search) {
   return request({
     url: '/pay/sundries/log/search',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
 
@@ -22,8 +22,8 @@ export function fetchSundriesLogSearch(listQuery_search) {
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/pay/sundries/log/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -32,7 +32,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/sundries/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function getSundriesSMS(singleSMSPost) {
   return request({
     url: '/pay/sundries/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 

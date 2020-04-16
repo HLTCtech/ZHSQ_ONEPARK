@@ -70,6 +70,6 @@ export function returnMoney(formReturn) {
   return request({
     url: '/pay/decorationDeposit/moneyReturn',
     method: 'post',
-    params: { formReturn }
+    data: { formReturn }
   })
 }

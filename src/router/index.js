@@ -76,24 +76,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 对比测试
-  // {
-  //   path: '/chargingVoucher',
-  //   component: Layout,
-  //   // redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'voucherManage123',
-  //       component: () => import('@/views/chargingVoucher/voucherManageTest'),
-  //       name: 'voucherManage',
-  //       meta: {
-  //         title: '对比测试',
-  //         icon: 'printer',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
   // 费用清缴
   {
     path: '/payAll',
@@ -253,51 +235,6 @@ export const constantRoutes = [
     ]
   },
   {
-    // 操作记录
-    path: '/operationLog',
-    component: Layout,
-    // redirect: '/bill_all/electric',
-    name: 'operationLog',
-    meta: {
-      title: '操作记录',
-      icon: 'log'
-    },
-    children: [
-      {
-        path: 'moneyGet',
-        component: () => import('@/views/operationLog/moneyGet'),
-        name: 'moneyGet',
-        meta: {
-          title: '收费记录'
-        }
-      },
-      {
-        path: 'moneyReturn',
-        component: () => import('@/views/operationLog/moneyReturn'),
-        name: 'moneyReturn',
-        meta: {
-          title: '装修保证金退款记录'
-        }
-      },
-      {
-        path: 'houseInfoChange',
-        component: () => import('@/views/operationLog/houseInfoChange'),
-        name: 'houseInfoChange',
-        meta: {
-          title: '房屋信息变更记录'
-        }
-      },
-      {
-        path: 'parkingInfoChange',
-        component: () => import('@/views/operationLog/parkingInfoChange'),
-        name: 'parkingInfoChange',
-        meta: {
-          title: '车辆信息变更记录'
-        }
-      }
-    ]
-  },
-  {
     // 物业流水
     path: '/waterBill',
     component: Layout,
@@ -323,19 +260,6 @@ export const constantRoutes = [
         meta: {
           title: '物业流水导出'
         }
-      }
-    ]
-  },
-  {
-    // 科目编码
-    path: '/subjectCode',
-    component: Layout,
-    children: [
-      {
-        path: 'subjectCode',
-        component: () => import('@/views/subjectCode/subjectCodeManage'),
-        name: 'subjectCode',
-        meta: { title: '科目编码', icon: 'subjectCode' }
       }
     ]
   },
@@ -430,48 +354,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 通知公告管理
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/list',
-  //   name: 'Example',
-  //   meta: {
-  //     title: '公告管理',
-  //     icon: 'example'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'create',
-  //       component: () => import('@/views/example/create'),
-  //       name: 'CreateArticle',
-  //       meta: {
-  //         title: '发布文章',
-  //         icon: 'edit'
-  //       }
-  //     },
-  //     {
-  //       path: 'edit/:id(\\d+)',
-  //       component: () => import('@/views/example/edit'),
-  //       name: 'EditArticle',
-  //       meta: {
-  //         title: '编辑文章',
-  //         noCache: true,
-  //         activeMenu: '/example/list'
-  //       },
-  //       hidden: false
-  //     },
-  //     {
-  //       path: 'list',
-  //       component: () => import('@/views/example/list'),
-  //       name: 'ArticleList',
-  //       meta: {
-  //         title: '文章列表',
-  //         icon: 'list'
-  //       }
-  //     }
-  //   ]
-  // },
   // 图表管理
   chartsRouter,
   {
@@ -527,10 +409,69 @@ export const constantRoutes = [
 
 /**
  * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
  * 根据不同的权限动态加载出侧边栏目
+ * 管理员权限路由
  */
 export const asyncRoutes = [
+  {
+    // 科目编码
+    path: '/subjectCode',
+    component: Layout,
+    children: [
+      {
+        path: 'subjectCode',
+        component: () => import('@/views/subjectCode/subjectCodeManage'),
+        name: 'subjectCode',
+        meta: { title: '科目编码', icon: 'subjectCode', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    // 操作记录
+    path: '/operationLog',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'operationLog',
+    meta: {
+      title: '操作记录',
+      icon: 'log',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'moneyGet',
+        component: () => import('@/views/operationLog/moneyGet'),
+        name: 'moneyGet',
+        meta: {
+          title: '收费记录'
+        }
+      },
+      {
+        path: 'moneyReturn',
+        component: () => import('@/views/operationLog/moneyReturn'),
+        name: 'moneyReturn',
+        meta: {
+          title: '装修保证金退款记录'
+        }
+      },
+      {
+        path: 'houseInfoChange',
+        component: () => import('@/views/operationLog/houseInfoChange'),
+        name: 'houseInfoChange',
+        meta: {
+          title: '房屋信息变更记录'
+        }
+      },
+      {
+        path: 'parkingInfoChange',
+        component: () => import('@/views/operationLog/parkingInfoChange'),
+        name: 'parkingInfoChange',
+        meta: {
+          title: '车辆信息变更记录'
+        }
+      }
+    ]
+  },
   {
     path: '/permission',
     component: Layout,
@@ -540,7 +481,7 @@ export const asyncRoutes = [
     meta: {
       title: '权限管理',
       icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
     },
     children: [
       {
@@ -560,130 +501,6 @@ export const asyncRoutes = [
   // componentsRouter,
   // nestedRouter,
   // tableRouter,
-
-  // {
-  //   path: '/tab',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/tab/index'),
-  //       name: 'Tab',
-  //       meta: { title: 'Tab标签', icon: 'tab' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/error',
-  //   component: Layout,
-  //   redirect: 'noRedirect',
-  //   name: 'ErrorPages',
-  //   meta: {
-  //     title: '错误页面',
-  //     icon: '404'
-  //   },
-  //   children: [
-  //     {
-  //       path: '401',
-  //       component: () => import('@/views/error-page/401'),
-  //       name: 'Page401',
-  //       meta: { title: '401', noCache: true }
-  //     },
-  //     {
-  //       path: '404',
-  //       component: () => import('@/views/error-page/404'),
-  //       name: 'Page404',
-  //       meta: { title: '404', noCache: true }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/error-log',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'log',
-  //       component: () => import('@/views/error-log/index'),
-  //       name: 'ErrorLog',
-  //       meta: { title: 'Bug日志', icon: 'bug' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/zip',
-  //   component: Layout,
-  //   redirect: '/zip/download',
-  //   alwaysShow: true,
-  //   name: 'Zip',
-  //   meta: { title: 'Zip压缩包', icon: 'zip' },
-  //   children: [
-  //     {
-  //       path: 'download',
-  //       component: () => import('@/views/zip/index'),
-  //       name: 'ExportZip',
-  //       meta: { title: '导出Zip' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/pdf',
-  //   component: Layout,
-  //   redirect: '/pdf/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/pdf/index'),
-  //       name: 'PDF',
-  //       meta: { title: 'PDF', icon: 'pdf' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/pdf/download',
-  //   component: () => import('@/views/pdf/download'),
-  //   hidden: true
-  // },
-
-  // {
-  //   path: '/theme',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/theme/index'),
-  //       name: 'Theme',
-  //       meta: { title: '主题', icon: 'theme' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/clipboard',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/clipboard/index'),
-  //       name: 'ClipboardDemo',
-  //       meta: { title: 'Clipboard', icon: 'clipboard' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://github.com/PanJiaChen/vue-element-admin',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
 
   // 404 page must be placed at the end !!!
   {

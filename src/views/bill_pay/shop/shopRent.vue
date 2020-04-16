@@ -47,7 +47,6 @@
             <el-tag :type="scope.row.isPaid2018 !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaid2018 }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="remark2018" align="center" />
       </el-table-column>
       <el-table-column label="2019" align="center">
         <el-table-column label="缴费周期" prop="moneyDateRange2019" align="center" />
@@ -57,7 +56,6 @@
             <el-tag :type="scope.row.isPaid2019 !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaid2019 }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="remark2019" align="center" />
       </el-table-column>
       <el-table-column label="近期费用记录" align="center">
         <el-table-column label="缴费周期" prop="moneyDateRangeNearest" align="center" />
@@ -67,12 +65,11 @@
             <el-tag :type="scope.row.isPaidNearest !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaidNearest }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="remark" align="center" />
       </el-table-column>
       <el-table-column label="收费" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyGet(row.shopId, row.shopRenter)">
+          <el-button v-permission="['admin']" type="primary" size="mini" @click="handleMoneyGet(row.shopId, row.shopRenter)">
             收费
           </el-button>
         </template>
@@ -112,7 +109,7 @@
               <el-input v-model="singleFormPost.shopRenter" style="width: 200px" disabled />
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="houseId">
-              <el-input v-model="singleFormPost.moneyDateRangeNearest" style="width: 200px" disabled />
+              <el-input v-model="singleFormPost.moneyDateRangeNearest" style="width: 200px" />
             </el-form-item>
             <el-form-item label="应缴金额" label-width="100px" prop="houseId">
               <el-input v-model="singleFormPost.rentNumNearest" style="width: 200px" disabled />
@@ -145,7 +142,7 @@
               <el-input v-model="mixFormPost.shopRenter" style="width: 200px" disabled />
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="houseId">
-              <el-input v-model="mixFormPost.moneyDateRangeNearest" style="width: 200px" disabled />
+              <el-input v-model="mixFormPost.moneyDateRangeNearest" style="width: 200px" />
             </el-form-item>
             <el-form-item label="应缴金额" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.rentNumNearest" style="width: 200px" disabled />
@@ -206,12 +203,13 @@ import { mapGetters } from 'vuex'
 import { fetchShopRentList, fetchShopRentSearch, getRentShallPay, singleMoneyPost, mixMoneyPost, getSMS } from '@/api/shopRent'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
+import permission from '@/directive/permission/index.js' // 权限判断指令
 // import { parseTime } from '@/utils'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
   name: 'ShopRent',
-  directives: { waves },
+  directives: { waves, permission },
   // components: { Pagination },
   data() {
     return {
@@ -266,7 +264,7 @@ export default {
         }]
       },
       // 单一缴费时的选项
-      singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
+      singlePayOptions: [{ value: '现金', label: '现金' }, { value: '刷卡', label: '刷卡' }, { value: '转账', label: '转账' }, { value: '其他', label: '其他' }],
       listLoading: true,
       // 调取短信验证码提交项目
       singleSMSPost: {

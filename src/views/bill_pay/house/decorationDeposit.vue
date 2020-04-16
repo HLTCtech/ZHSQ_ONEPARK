@@ -169,7 +169,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="handleFilter" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="handleFilter" />
   </div>
 </template>
 
