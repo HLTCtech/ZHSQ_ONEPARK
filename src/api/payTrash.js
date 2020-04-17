@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchTrashLogList(listQuery_all) {
   return request({
     url: '/pay/trash/log/all',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchTrashLogList(listQuery_all) {
 export function fetchTrashLogSearch(listQuery_search) {
   return request({
     url: '/pay/trash/log/search',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
 
@@ -22,8 +22,8 @@ export function fetchTrashLogSearch(listQuery_search) {
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/pay/trash/log/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -32,7 +32,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/trash/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function getTrashSMS(singleSMSPost) {
   return request({
     url: '/pay/trash/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 
