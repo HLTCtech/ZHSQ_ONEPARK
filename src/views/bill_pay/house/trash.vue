@@ -121,7 +121,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="handleSearch" />
 
   </div>
 </template>
@@ -154,7 +154,8 @@ export default {
       listQuery_search: {
         houseId: null,
         houseName: null,
-        dateRange: null
+        dateRange: null,
+        page: 1
       },
       // list()查询请求变量
       listQuery_all: {

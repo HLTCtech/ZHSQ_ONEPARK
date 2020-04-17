@@ -25,13 +25,13 @@
         :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
       />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
         搜索
       </el-button>
     </div>
 
     <!-- 动态加载表头以及内容 -->
-    <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
+    <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
       <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.column.property=='houseId'" align="center" @click="getHouseLog(scope.row.houseId)">{{ scope.row[scope.column.property] }}</el-tag>
@@ -468,18 +468,22 @@ export default {
   methods: {
     // 根据选定信息搜索
     fetchListSearch() {
+      this.listLoading = true
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
-        this.listQuery_search.page = 1
+        this.listLoading = false
       })
     },
     handleFilter() {
+      this.listLoading = true
+      this.listQuery_search.page = 1
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 收费按钮绑定的处理事件

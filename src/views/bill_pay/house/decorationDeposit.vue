@@ -169,7 +169,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="handleFilter" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -300,20 +300,29 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 根据选定信息搜索
     fetchListSearch() {
+      this.listLoading = true
       fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
     handleFilter() {
+      this.listLoading = true
       // 搜索功能调用
-      this.fetchListSearch()
+      this.listQuery_search.page = 1
+      fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     handleMoneyGet() {
       this.dialogMoneyGetFormVisible = true

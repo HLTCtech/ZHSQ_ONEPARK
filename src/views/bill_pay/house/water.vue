@@ -30,7 +30,7 @@
     <br>
 
     <!-- 缴款记录表格 -->
-    <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
+    <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
@@ -315,16 +315,20 @@ export default {
   methods: {
     // 获取表格数据
     getList() {
+      this.listLoading = true
       fetchWaterLogList(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 搜索记录
     handleSearch() {
+      this.listLoading = true
       fetchWaterLogSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 搜索框下面的收费按钮
