@@ -56,6 +56,7 @@
 
     <!-- 表格 -->
     <el-table
+      v-loading="listLoading"
       :data="tableData"
       style="width: 100%"
       height="1000"
@@ -326,8 +327,8 @@
     <pagination
       v-show="total>0"
       :total="total"
-      :page.sync="listQuery_all.page"
-      @pagination="getList"
+      :page.sync="listQuery_search.page"
+      @pagination="fetchListSearch()"
     />
   </div>
 </template>
@@ -504,13 +505,20 @@ export default {
     },
     // 根据选定信息搜索
     fetchListSearch() {
+      this.listLoading = true
       fetchSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
+    // 搜索按钮
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      this.listLoading = true
+      this.listQuery_search.page = 1
+      fetchSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     // 费用收缴按钮绑定的处理事件
     handleCarInfoChange(row) {

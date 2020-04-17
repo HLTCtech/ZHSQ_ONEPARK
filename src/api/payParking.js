@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchListAll(query) {
   return request({
     url: '/pay/parking/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchListAll(query) {
 export function fetchSearch(query) {
   return request({
     url: '/pay/parking/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -22,8 +22,8 @@ export function fetchSearch(query) {
 export function fetchSearchByCarLoc(carLoc) {
   return request({
     url: '/pay/parking/searchByCarLoc',
-    method: 'get',
-    params: { carLoc }
+    method: 'post',
+    data: { carLoc }
   })
 }
 
@@ -32,7 +32,7 @@ export function postNewCarInfo(newInfoFormPost) {
   return request({
     url: '/pay/parking/carInfoPost/new',
     method: 'post',
-    params: { newInfoFormPost }
+    data: { newInfoFormPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function postChangeInfo(infoChangeFormPost) {
   return request({
     url: '/pay/parking/carInfoPost/change',
     method: 'post',
-    params: { infoChangeFormPost }
+    data: { infoChangeFormPost }
   })
 }
 
@@ -50,7 +50,7 @@ export function getSMSCode(newInfoFormPost) {
   return request({
     url: '/pay/parking/getSMS',
     method: 'post',
-    params: { newInfoFormPost }
+    data: { newInfoFormPost }
   })
 }
 
