@@ -13,12 +13,13 @@
 
     <!-- 房间信息 -->
     <el-card class="box-card">
-      <el-table :data="tableDataHouseInfo" border fit highlight-current-row style="width: 100%" align="center">
+      <el-table v-loading="listLoading" :data="tableDataHouseInfo" border fit highlight-current-row style="width: 100%" align="center">
         <el-table-column prop="houseId" label="房间号" align="center">
           <template slot-scope="scope">
             <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="houseStatus" label="房间状态" align="center" />
         <el-table-column prop="houseName" label="业主姓名" align="center" />
         <el-table-column prop="housePhone" label="业主手机号" align="center" />
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
@@ -296,7 +297,7 @@ export default {
       dialogHouseLog: false,
       // 单一缴费时的选项
       singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
-      listLoading: true,
+      listLoading: false,
       // 复合缴费表单提交项目
       mixFormPost: {
         houseId: null,
@@ -474,8 +475,10 @@ export default {
     },
     // 搜索费用信息
     handleSearch() {
+      this.listLoading = true
       fetchBillInfoSearch(this.listQuery).then(response => {
         this.tableDataHouseInfo = response.data.items
+        this.listLoading = false
       })
       fetchBillAllList(this.listQuery).then(response => {
         this.tableDataShallPayAll = response.data.items
