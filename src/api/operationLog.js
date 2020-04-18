@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function getLogByHouseId(houseId) {
   return request({
     url: '/operationLog/getLogByHouseId',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -13,8 +13,8 @@ export function getLogByHouseId(houseId) {
 export function listMoneyGetLog(query) {
   return request({
     url: '/operationLog/moneyGet/list',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -22,8 +22,8 @@ export function listMoneyGetLog(query) {
 export function searchMoneyGetLog(query) {
   return request({
     url: '/operationLog/moneyGet/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -31,8 +31,8 @@ export function searchMoneyGetLog(query) {
 export function listMoneyReturnLog(query) {
   return request({
     url: '/operationLog/moneyReturn/list',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -40,8 +40,8 @@ export function listMoneyReturnLog(query) {
 export function searchMoneyReturnLog(query) {
   return request({
     url: '/operationLog/moneyReturn/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -49,8 +49,8 @@ export function searchMoneyReturnLog(query) {
 export function listHouseChangeLog(query) {
   return request({
     url: '/operationLog/houseChange/list',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -58,8 +58,8 @@ export function listHouseChangeLog(query) {
 export function searchHouseChangeLog(query) {
   return request({
     url: '/operationLog/houseChange/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -67,8 +67,8 @@ export function searchHouseChangeLog(query) {
 export function listParkingChangeLog(query) {
   return request({
     url: '/operationLog/parkingChange/list',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -76,7 +76,7 @@ export function listParkingChangeLog(query) {
 export function searchParkingChangeLog(query) {
   return request({
     url: '/operationLog/parkingChange/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
