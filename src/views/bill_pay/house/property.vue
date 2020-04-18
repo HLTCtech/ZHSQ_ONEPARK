@@ -22,56 +22,27 @@
       </el-button>
     </div>
 
-    <el-button v-waves class="filter-item" type="success" icon="el-icon-coin" @click="handleMoneyGetOutter">
-      费用收缴
-    </el-button>
-    <br>
-    <br>
-
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row :summary-method="getSummaries" show-summary>
+    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="类型" prop="houseType" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="房屋状况" prop="houseStatus" align="center" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
-      <el-table-column label="面积" align="center">
-        <el-table-column label="住宅面积" prop="houseArea" align="center" />
-        <el-table-column label="地下室面积" prop="basementArea" align="center" />
-      </el-table-column>
+      <el-table-column label="面积" prop="area" align="center" />
       <el-table-column label="收费标准(元/㎡)" prop="chargingStandard" align="center" />
-      <el-table-column label="物业费" align="center">
-        <el-table-column label="住宅" align="center">
-          <el-table-column label="应缴费日期" prop="houseShallPayDate" align="center" />
-          <el-table-column label="截止日期" prop="houseDeadline" align="center" />
-          <el-table-column label="到期验证" prop="houseClosingVerify" align="center" />
-          <el-table-column label="逾期天数" prop="houseOverdueDays" align="center">
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="月数" prop="houseMonths" align="center" />
-          <el-table-column label="应交物业费1" prop="houseShallPayProperty1" align="center" />
-          <el-table-column label="已交费用" prop="houseCashGet" align="center" />
-          <el-table-column label="物业费代金券" prop="houseVoucherProperty" align="center" />
-        </el-table-column>
-        <el-table-column label="地下室" align="center">
-          <el-table-column label="交费日期" prop="basementShallPayDate" align="center" />
-          <el-table-column label="截止日期" prop="basementDeadline" align="center" />
-          <el-table-column label="逾期天数" prop="basementOverdueDays" align="center">
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.basementOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.basementOverdueDays }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="应交物业费2" prop="basementShallPayProperty2" align="center" />
-          <el-table-column label="已交费用" prop="basementCashGet" align="center" />
-          <el-table-column label="代金券" prop="basementVoucherProperty" align="center" />
-        </el-table-column>
-        <el-table-column label="差额" prop="gap" align="center" />
+      <el-table-column label="应缴费日期" prop="houseShallPayDate" align="center" />
+      <el-table-column label="截止日期" prop="houseDeadline" align="center" />
+      <el-table-column label="到期验证" prop="houseClosingVerify" align="center" />
+      <el-table-column label="逾期天数" prop="houseOverdueDays" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
       <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
@@ -231,7 +202,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -393,6 +364,19 @@ export default {
       }
       sum = (a - 0) + (b - 0)
       return sum
+    },
+    payPatternChange() {
+      return this.payPattern
+    }
+  },
+  watch: {
+    payPatternChange(val) {
+      if (this.$refs['singleDataForm'] !== undefined) {
+        this.$refs['singleDataForm'].clearValidate()
+      }
+      if (this.$refs['mixDataForm'] !== undefined) {
+        this.$refs['mixDataForm'].clearValidate()
+      }
     }
   },
   created() {
@@ -400,56 +384,60 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchHouseListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
-    // 根据选定信息搜索
+    // 绑定分页按钮
     fetchListSearch() {
+      this.listLoading = true
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
+    // 绑定搜索按钮
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      this.listLoading = true
+      this.listQuery_search.page = 1
+      fetchHouseSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     // 返回表尾部数据合计行
-    getSummaries(param) {
-      const { columns, data } = param
-      const sums = []
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总价'
-          return
-        }
-        var str = ['houseShallPayProperty1', 'houseCashGet', 'basementShallPayProperty2', 'basementCashGet', 'gap']
-        if (str.indexOf(column.property) > -1) {
-          console.log('column--------')
-          console.log(column)
-          const values = data.map(item => Number(item[column.property]))
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr)
-              if (!isNaN(value)) {
-                return prev + curr
-              } else {
-                return prev
-              }
-            }, 0)
-          } else {
-            sums[index] = ''
-          }
-        }
-      })
-      return sums
-    },
-    // 搜索框下面的收费按钮
-    handleMoneyGetOutter() {
-      this.singleFormPost.houseId = ''
-      this.dialogMoneyPost = true
-    },
+    // getSummaries(param) {
+    //   const { columns, data } = param
+    //   const sums = []
+    //   columns.forEach((column, index) => {
+    //     if (index === 0) {
+    //       sums[index] = '总价'
+    //       return
+    //     }
+    //     var str = ['houseShallPayProperty1', 'houseCashGet', 'basementShallPayProperty2', 'basementCashGet', 'gap']
+    //     if (str.indexOf(column.property) > -1) {
+    //       console.log('column--------')
+    //       console.log(column)
+    //       const values = data.map(item => Number(item[column.property]))
+    //       if (!values.every(value => isNaN(value))) {
+    //         sums[index] = values.reduce((prev, curr) => {
+    //           const value = Number(curr)
+    //           if (!isNaN(value)) {
+    //             return prev + curr
+    //           } else {
+    //             return prev
+    //           }
+    //         }, 0)
+    //       } else {
+    //         sums[index] = ''
+    //       }
+    //     }
+    //   })
+    //   return sums
+    // },
     // 点击收费按钮
     handleMoneyGet(houseId) {
       console.log(houseId)
