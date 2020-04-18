@@ -106,10 +106,22 @@ export default {
           const result = await client.put('electricData.xls', data)
           console.log(result)
           console.log('-----------------------------------')
-          Message.success('上传成功')
+          // Message.success('上传成功')
+          Message({
+            showClose: false,
+            message: '上传成功',
+            type: 'success',
+            duration: 3000
+          })
         } catch (e) {
           console.log(e)
-          Message.success('上传失败，请刷新页面重试')
+          // Message.success('上传失败，请刷新页面重试')
+          Message({
+            showClose: false,
+            message: '上传失败，请刷新页面重试',
+            type: 'error',
+            duration: 3000
+          })
         }
       }
       putObject()

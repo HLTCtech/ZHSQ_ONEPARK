@@ -498,9 +498,11 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 根据选定信息搜索
