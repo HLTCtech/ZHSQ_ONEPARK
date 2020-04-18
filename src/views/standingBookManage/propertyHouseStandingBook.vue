@@ -23,49 +23,26 @@
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%" height="800" stripe>
+    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="类型" prop="houseType" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="房屋状况" prop="houseStatus" align="center" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
-      <el-table-column label="面积" align="center">
-        <el-table-column label="住宅面积" prop="houseArea" align="center" />
-        <el-table-column label="地下室面积" prop="basementArea" align="center" />
-      </el-table-column>
+      <el-table-column label="面积" prop="area" align="center" />
       <el-table-column label="收费标准(元/㎡)" prop="chargingStandard" align="center" />
-      <el-table-column label="物业费" align="center">
-        <el-table-column label="住宅" align="center">
-          <el-table-column label="应缴费日期" prop="houseShallPayDate" align="center" />
-          <el-table-column label="截止日期" prop="houseDeadline" align="center" />
-          <el-table-column label="到期验证" prop="houseClosingVerify" align="center" />
-          <el-table-column label="逾期天数" prop="houseOverdueDays" align="center">
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'success' : 'danger'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="月数" prop="houseMonths" align="center" />
-          <el-table-column label="应交物业费1" prop="houseShallPayProperty1" align="center" />
-          <el-table-column label="已交费用" prop="houseCashGet" align="center" />
-          <el-table-column label="物业费代金券" prop="houseVoucherProperty" align="center" />
-        </el-table-column>
-        <el-table-column label="地下室" align="center">
-          <el-table-column label="交费日期" prop="basementShallPayDate" align="center" />
-          <el-table-column label="截止日期" prop="basementDeadline" align="center" />
-          <el-table-column label="逾期天数" prop="basementOverdueDays" align="center">
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.basementOverdueDays >= 0 ? 'success' : 'danger'" disable-transitions>{{ scope.row.basementOverdueDays }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="应交物业费2" prop="basementShallPayProperty2" align="center" />
-          <el-table-column label="已交费用" prop="basementCashGet" align="center" />
-          <el-table-column label="代金券" prop="basementVoucherProperty" align="center" />
-        </el-table-column>
-        <el-table-column label="差额" prop="gap" align="center" />
+      <el-table-column label="应缴费日期" prop="houseShallPayDate" align="center" />
+      <el-table-column label="截止日期" prop="houseDeadline" align="center" />
+      <el-table-column label="到期验证" prop="houseClosingVerify" align="center" />
+      <el-table-column label="逾期天数" prop="houseOverdueDays" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.houseOverdueDays >= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.houseOverdueDays }}</el-tag>
+        </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
     </el-table>
@@ -86,7 +63,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -159,20 +136,29 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchHouseListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
-    // 根据选定信息搜索
+    // 绑定分页
     fetchListSearch() {
+      this.listLoading = true
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
+    // 绑定搜索按钮
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      this.listLoading = true
+      this.listQuery_search.page = 1
+      fetchHouseSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     // 点击houseId获取房间变更历史
     getHouseLog(houseId) {
