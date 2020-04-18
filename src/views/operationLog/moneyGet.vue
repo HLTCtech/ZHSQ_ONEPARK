@@ -26,7 +26,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">
+    <el-table v-loading="listLoading" :data="tableData" highlight-current-row stripe border fit max-height="900px">
       <el-table-column label="ID" prop="id" align="center" />
       <el-table-column label="房号" prop="houseId" align="center" />
       <el-table-column label="缴费项目" prop="payItem" align="center" />
@@ -43,7 +43,7 @@
     </el-table>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -118,20 +118,29 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       listMoneyGetLog(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
-    // 根据选定信息搜索
+    // 分页按钮绑定
     fetchListSearch() {
+      this.listLoading = true
       searchMoneyGetLog(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
+    // 搜索按钮绑定
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      this.listLoading = true
+      this.listQuery_search.page = 1
+      searchMoneyGetLog(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     }
   }
 }
