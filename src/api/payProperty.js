@@ -5,8 +5,8 @@ import request from '@/utils/request'
 export function fetchHouseListAll(query) {
   return request({
     url: '/pay/property/house/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -14,8 +14,8 @@ export function fetchHouseListAll(query) {
 export function fetchHouseSearch(query) {
   return request({
     url: '/pay/property/house/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -24,8 +24,8 @@ export function fetchHouseSearch(query) {
 export function fetchShopListAll(query) {
   return request({
     url: '/pay/property/shop/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -33,8 +33,8 @@ export function fetchShopListAll(query) {
 export function fetchShopSearch(query) {
   return request({
     url: '/pay/property/shop/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -42,8 +42,8 @@ export function fetchShopSearch(query) {
 export function fetchPreViewAll(houseId) {
   return request({
     url: '/pay/property/pv/all',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -52,7 +52,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/property/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -61,16 +61,16 @@ export function mixMoneyPost(mixFormPost) {
   return request({
     url: '/pay/property/mixMoneyPost',
     method: 'post',
-    params: { mixFormPost }
+    data: { mixFormPost }
   })
 }
 
 // 当缴费方式为“特批”，调取sms
 export function getPropertySMS(singleSMSPost) {
   return request({
-    url: '/pay/water/getSMS',
+    url: '/pay/property/getSMS',
     method: 'post',
-    params: { singleSMSPost }
+    data: { singleSMSPost }
   })
 }
 
@@ -78,7 +78,7 @@ export function getPropertySMS(singleSMSPost) {
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/pay/property/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }

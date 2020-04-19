@@ -18,16 +18,14 @@
     <br>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%" height="800" highlight-current-row>
+    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="800" highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed />
+      <el-table-column label="类型" prop="houseType" align="center" fixed />
       <el-table-column label="房间状态" prop="houseStatus" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="业主电话" prop="housePhone" align="center" />
-      <el-table-column label="面积" align="center">
-        <el-table-column label="住宅面积" prop="houseArea" align="center" />
-        <el-table-column label="地下室面积" prop="basementArea" align="center" />
-      </el-table-column>
+      <el-table-column label="面积" prop="area" align="center" />
       <el-table-column label="变更面积" align="center" style="width:120px" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{ row }">
           <el-button type="primary" style="width:80px" size="mini" @click="handleHouseInfoArea(row)">
@@ -186,7 +184,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -269,21 +267,31 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchHouseInfoAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
-    // 根据选定信息搜索
+    // 分页绑定
     fetchListSearch() {
+      this.listLoading = true
       fetchHouseInfoSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
+    // 搜索按钮绑定
     handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
+      this.listLoading = true
+      this.listQuery_search.page = 1
+      fetchHouseInfoSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
+        this.listLoading = false
+      })
     },
     // 变更面积按钮模态框
     handleHouseInfoArea(row) {

@@ -48,7 +48,7 @@
       <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId)">
+          <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.houseName)">
             收缴
           </el-button>
         </template>
@@ -79,8 +79,7 @@
         <el-table-column prop="houseDeadline" label="截止日期" align="center" />
         <el-table-column prop="houseOverdueDays" label="逾期天数" align="center" />
         <el-table-column prop="houseMonths" label="月数" align="center" />
-        <el-table-column prop="houseShallPayProperty1" label="应交物业费1" align="center" />
-        <el-table-column prop="basementShallPayProperty2" label="应交物业费2" align="center" />
+        <el-table-column prop="houseShallPayProperty" label="应交物业费" align="center" />
       </el-table>
       <br>
 
@@ -142,7 +141,7 @@
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="mixPayDateRange">
               <el-date-picker
-                v-model="singleFormPost.mixPayDateRange"
+                v-model="mixFormPost.mixPayDateRange"
                 class="filter-item"
                 type="daterange"
                 align="right"
@@ -283,6 +282,7 @@ export default {
       // 单一缴费表单提交项目
       singleFormPost: {
         houseId: null,
+        houseName: null,
         singlePayType: null,
         singlePayMoney: null,
         remark: null,
@@ -296,6 +296,7 @@ export default {
       // 复合缴费表单提交项目
       mixFormPost: {
         houseId: null,
+        houseName: null,
         mixPayType: [{
           name: 'mixPayAlipay', value: null
         },
@@ -439,10 +440,12 @@ export default {
     //   return sums
     // },
     // 点击收费按钮
-    handleMoneyGet(houseId) {
+    handleMoneyGet(houseId, houseName) {
       console.log(houseId)
       this.singleFormPost.houseId = houseId
       this.mixFormPost.houseId = houseId
+      this.singleFormPost.houseName = houseName
+      this.mixFormPost.houseName = houseName
       fetchPreViewAll(houseId).then(response => {
         this.tableDataPvAll = response.data.pvData
       })
