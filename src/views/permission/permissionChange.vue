@@ -22,6 +22,7 @@
       <el-table-column label="编号" prop="operatorId" align="center" />
       <el-table-column label="姓名" prop="operatorName" align="center" />
       <el-table-column label="电话" prop="operatorPhone" align="center" />
+      <el-table-column label="密码" prop="operatorPasswd" align="center" />
       <el-table-column label="权限" prop="operatorRole" align="center" />
       <el-table-column label="所属部门" prop="operatorDepartment" align="center" />
       <el-table-column label="职位" prop="operatorPosition" align="center" />
@@ -44,6 +45,9 @@
           </el-form-item>
           <el-form-item label="手机号" label-width="100px" prop="operatorPhone">
             <el-input v-model="newOperatorForm.operatorPhone" placeholder="请输入手机号" />
+          </el-form-item>
+          <el-form-item label="密码" label-width="100px" prop="operatorPhone">
+            <el-input v-model="newOperatorForm.operatorPasswd" placeholder="请输入密码" />
           </el-form-item>
           <el-form-item label="所属部门" label-width="100px" prop="operatorDepartment">
             <el-select v-model="newOperatorForm.operatorDepartment" placeholder="请选择部门">
@@ -76,6 +80,9 @@
           </el-form-item>
           <el-form-item label="手机号" label-width="100px" prop="operatorPhone">
             <el-input v-model="operatorInfoChangeForm.operatorPhone" placeholder="请输入手机号" />
+          </el-form-item>
+          <el-form-item label="密码" label-width="100px" prop="operatorPhone">
+            <el-input v-model="operatorInfoChangeForm.operatorPasswd" placeholder="请输入密码" />
           </el-form-item>
           <el-form-item label="所属部门" label-width="100px" prop="operatorDepartment">
             <el-select v-model="operatorInfoChangeForm.operatorDepartment" placeholder="请选择部门">
@@ -149,6 +156,7 @@ export default {
       newOperatorForm: {
         operatorName: null,
         operatorPhone: null,
+        operatorPasswd: null,
         operatorDepartment: null,
         operatorPosition: null,
         operatorRole: null,
@@ -158,6 +166,7 @@ export default {
       newOperatorFormRules: {
         operatorName: [{ required: true, message: '请输入姓名', trigger: 'change' }],
         operatorPhone: [{ required: true, message: '请输入正确格式的手机号', trigger: 'change', validator: validateUserPhone }],
+        operatorPasswd: [{ required: true, message: '请输入密码', trigger: 'change' }],
         operatorRole: [{ required: true, message: '请选择权限', trigger: 'blur' }],
         operatorDepartment: [{ required: true, message: '请选择所属部门', trigger: 'blur' }],
         operatorPosition: [{ required: true, message: '请输入职位', trigger: 'blur' }]
@@ -175,6 +184,7 @@ export default {
         operatorId: null,
         operatorName: null,
         operatorPhone: null,
+        operatorPasswd: null,
         operatorDepartment: null,
         operatorPosition: null,
         operatorRole: null,
@@ -295,6 +305,7 @@ export default {
       this.operatorInfoChangeForm.operatorId = row.operatorId
       this.operatorInfoChangeForm.operatorName = row.operatorName
       this.operatorInfoChangeForm.operatorPhone = row.operatorPhone
+      this.operatorInfoChangeForm.operatorPasswd = row.operatorPasswd
       this.operatorInfoChangeForm.operatorRole = row.operatorRole
       this.operatorInfoChangeForm.operatorDepartment = row.operatorDepartment
       this.operatorInfoChangeForm.operatorPosition = row.operatorPosition

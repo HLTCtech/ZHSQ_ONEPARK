@@ -44,8 +44,8 @@ export function getUserLog(adminId) {
 export function fetchOperatorList(query) {
   return request({
     url: '/admin/operator/list',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -53,8 +53,8 @@ export function fetchOperatorList(query) {
 export function fetchOperatorSearch(query) {
   return request({
     url: '/admin/operator/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -63,7 +63,7 @@ export function newOperatorPost(newAdminForm) {
   return request({
     url: '/admin/operator/new',
     method: 'post',
-    params: { newAdminForm }
+    data: { newAdminForm }
   })
 }
 
@@ -72,7 +72,7 @@ export function infoChangeOperatorPost(operatorInfoChangeForm) {
   return request({
     url: '/admin/operator/infoChange',
     method: 'post',
-    params: { operatorInfoChangeForm }
+    data: { operatorInfoChangeForm }
   })
 }
 
@@ -80,7 +80,7 @@ export function infoChangeOperatorPost(operatorInfoChangeForm) {
 export function fetchSearchByOperatorId(operatorId) {
   return request({
     url: '/admin/operator/searchById',
-    method: 'get',
-    params: { operatorId }
+    method: 'post',
+    data: { operatorId }
   })
 }

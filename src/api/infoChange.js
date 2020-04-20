@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchHouseInfoAll(query) {
   return request({
     url: '/info/houseChange/all',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchHouseInfoAll(query) {
 export function fetchHouseInfoSearch(query) {
   return request({
     url: '/info/houseChange/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -23,7 +23,7 @@ export function postHouseInfoArea(formPost) {
   return request({
     url: '/info/houseChange/areaChangePost',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 
@@ -32,7 +32,7 @@ export function postHouseInfoUser(formPost) {
   return request({
     url: '/info/houseChange/userChangePost',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function postHouseInfoStatus(formPost) {
   return request({
     url: '/info/houseChange/statusChangePost',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 
@@ -49,8 +49,8 @@ export function postHouseInfoStatus(formPost) {
 export function fetchHouseInfoByHouseId(houseId) {
   return request({
     url: '/info/houseChange/searchById',
-    method: 'get',
-    params: { houseId }
+    method: 'post',
+    data: { houseId }
   })
 }
 
@@ -59,6 +59,6 @@ export function postNewHouseInfo(newInfoFormPost) {
   return request({
     url: '/info/houseChange/infoPost/new',
     method: 'post',
-    params: { newInfoFormPost }
+    data: { newInfoFormPost }
   })
 }
