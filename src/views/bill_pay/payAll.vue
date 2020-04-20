@@ -5,11 +5,13 @@
     <!-- 顶部搜索框 -->
     <div class="filter-container">
       <el-input v-model="listQuery.houseId" type="text" placeholder="输入房号" style="width: 200px" class="filter-item" clearable />
-      <el-input v-model="listQuery.houseName" type="text" placeholder="输入业主姓名" style="width: 200px" class="filter-item" clearable />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">
         搜索
       </el-button>
     </div>
+
+    <br>
+    <br>
 
     <!-- 房间信息 -->
     <el-card class="box-card">
@@ -358,6 +360,19 @@ export default {
         sundriesType: null,
         sundriesMoneyNum: ''
       },
+      getProperty: {
+        houseId: null,
+        propertyDateRange: null
+      },
+      getParking: {
+        houseId: null,
+        parkingDateRange: null
+      },
+      getElectric: {
+        houseId: null,
+        electricDateRange: null
+      },
+      houseId: null,
       // 往后推算的时间选择器
       pickerOptions: {
         shortcuts: [{
@@ -459,17 +474,23 @@ export default {
   methods: {
     // 根据前端周期监听返回相应的金额
     getRealtimeProperty() {
-      getRealtimeProperty(this.ItemsPay.propertyDateRange).then(response => {
+      this.getProperty.houseId = this.listQuery.houseId
+      this.getProperty.propertyDateRange = this.ItemsPay.propertyDateRange
+      getRealtimeProperty(this.getProperty).then(response => {
         this.propertyShallPay = response.propertyShallPay
       })
     },
     getRealtimeParking() {
-      getRealtimeParking(this.ItemsPay.parkingDateRange).then(response => {
+      this.getParking.houseId = this.listQuery.houseId
+      this.getParking.parkingDateRange = this.ItemsPay.parkingDateRange
+      getRealtimeParking(this.getParking).then(response => {
         this.parkingShallPay = response.parkingShallPay
       })
     },
     getRealtimeElectric() {
-      getRealtimeElectric(this.ItemsPay.electricDateRange).then(response => {
+      this.getElectric.houseId = this.listQuery.houseId
+      this.getElectric.electricDateRange = this.ItemsPay.electricDateRange
+      getRealtimeElectric(this.getElectric).then(response => {
         this.electricShallPay = response.electricShallPay
       })
     },

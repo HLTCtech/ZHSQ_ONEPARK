@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchBillInfoSearch(listQuery) {
   return request({
     url: '/pay/bill/infoSearch',
-    method: 'get',
-    params: { listQuery }
+    method: 'post',
+    data: { listQuery }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchBillInfoSearch(listQuery) {
 export function fetchBillAllList(listQuery) {
   return request({
     url: '/pay/bill/all',
-    method: 'get',
-    params: { listQuery }
+    method: 'post',
+    data: { listQuery }
   })
 }
 
@@ -37,11 +37,11 @@ export function moneyPayPostAll(moneyAllPost) {
 }
 
 // 监听前端物业费周期并返回对应金额
-export function getRealtimeProperty(propertyDateRange) {
+export function getRealtimeProperty(query) {
   return request({
     url: '/pay/bill/getRealtimeProperty',
     method: 'post',
-    data: { propertyDateRange }
+    data: { query }
   })
 }
 
