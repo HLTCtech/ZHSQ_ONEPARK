@@ -287,7 +287,7 @@ export default {
           var that = this
           setTimeout(function() {
             that.dialogPrint = false
-            fetchAllCharging(this.listQuery_all).then(response => {
+            fetchAllCharging(that.listQuery_all).then(response => {
               this.tableData = response.data.items
               this.total = response.total
             })
