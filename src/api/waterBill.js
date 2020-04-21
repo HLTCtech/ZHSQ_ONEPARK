@@ -12,8 +12,8 @@ export function fetchExportList() {
 export function fetchExportSearch(query) {
   return request({
     url: '/waterBillManage/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 

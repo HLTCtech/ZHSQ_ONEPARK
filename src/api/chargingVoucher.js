@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchAllCharging(listQuery) {
   return request({
     url: '/chargingVoucher/allByAdminId',
-    method: 'get',
-    params: { listQuery }
+    method: 'post',
+    data: { listQuery }
   })
 }
 

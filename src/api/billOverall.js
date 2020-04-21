@@ -13,8 +13,8 @@ export function fetchPropertyWaterBillListAll(query) {
 export function fetchPropertyWaterBillSearch(query) {
   return request({
     url: '/billOverall/propertyWaterBill/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
