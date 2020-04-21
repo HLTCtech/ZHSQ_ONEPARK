@@ -13,8 +13,8 @@ export function fetchAllCharging(listQuery) {
 export function getVoucherByHouseId(query) {
   return request({
     url: '/chargingVoucher/getVoucherByHouseId',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 
