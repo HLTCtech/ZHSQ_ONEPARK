@@ -441,6 +441,7 @@ export default {
     },
     // 房源信息变更提交
     handleSubmitFormArea(formPost) {
+      console.log(this.formPost)
       this.$confirm('确定提交么？', '变更信息', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
