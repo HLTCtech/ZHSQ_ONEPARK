@@ -354,6 +354,19 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    // 费用提醒
+    path: '/billRemind',
+    component: Layout,
+    children: [
+      {
+        path: 'billRemind',
+        component: () => import('@/views/billRemind/billRemind'),
+        name: 'billRemind',
+        meta: { title: '费用提醒', icon: 'subjectCode', roles: ['admin'] }
+      }
+    ]
+  },
   // 图表管理
   chartsRouter,
   {
@@ -473,6 +486,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    // 报修管理
+    path: '/repairManage',
+    component: Layout,
+    children: [
+      {
+        path: 'repairManage',
+        component: () => import('@/views/repairManage/repairManage'),
+        name: 'repairManage',
+        meta: { title: '报修管理', icon: 'subjectCode', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
@@ -491,6 +517,35 @@ export const asyncRoutes = [
         meta: {
           title: '权限管理',
           roles: ['admin'] // 只有admin权限的人才能看见
+        }
+      }
+    ]
+  },
+  {
+    // 物业评价
+    path: '/propertyEvaluate',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'propertyEvaluate',
+    meta: {
+      title: '物业评价',
+      icon: 'waterbill'
+    },
+    children: [
+      {
+        path: 'serviceEvaluate',
+        component: () => import('@/views/propertyEvaluate/serviceEvaluate'),
+        name: 'serviceEvaluate',
+        meta: {
+          title: '服务评价'
+        }
+      },
+      {
+        path: 'butlerEvaluate',
+        component: () => import('@/views/propertyEvaluate/butlerEvaluate'),
+        name: 'butlerEvaluate',
+        meta: {
+          title: '管家评价'
         }
       }
     ]
