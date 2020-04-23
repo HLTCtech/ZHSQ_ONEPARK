@@ -249,6 +249,7 @@ export default {
       formReturn: {
         houseId: null,
         houseName: null,
+        moneyGet: null,
         payTypeReturn: null,
         moneyReturn: null,
         returnDate: null,
@@ -321,6 +322,7 @@ export default {
     handleMoneyReturn(row) {
       this.formReturn.houseId = row.houseId
       this.formReturn.houseName = row.houseName
+      this.formReturn.moneyGet = row.moneyGet
       this.dialogMoneyReturn = true
     },
     // 获取验证码按钮
