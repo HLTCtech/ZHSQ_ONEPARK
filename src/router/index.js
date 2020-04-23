@@ -363,7 +363,7 @@ export const constantRoutes = [
         path: 'billRemind',
         component: () => import('@/views/billRemind/billRemind'),
         name: 'billRemind',
-        meta: { title: '费用提醒', icon: 'subjectCode', roles: ['admin'] }
+        meta: { title: '费用提醒', icon: 'billRemind', roles: ['admin'] }
       }
     ]
   },
@@ -494,7 +494,7 @@ export const asyncRoutes = [
         path: 'repairManage',
         component: () => import('@/views/repairManage/repairManage'),
         name: 'repairManage',
-        meta: { title: '报修管理', icon: 'subjectCode', roles: ['admin'] }
+        meta: { title: '报修管理', icon: 'repair', roles: ['admin'] }
       }
     ]
   },
@@ -529,7 +529,7 @@ export const asyncRoutes = [
     name: 'propertyEvaluate',
     meta: {
       title: '物业评价',
-      icon: 'waterbill'
+      icon: 'suggest'
     },
     children: [
       {
