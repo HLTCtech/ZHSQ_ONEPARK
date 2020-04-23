@@ -530,7 +530,7 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.dialogHouseInfoVisibleRate = false
+            this.dialogHouseInfoVisibleStatus = false
             this.$nextTick(() => {
               this.$refs['dataFormStatus'].clearValidate()
             })
