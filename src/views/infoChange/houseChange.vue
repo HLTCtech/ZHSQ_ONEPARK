@@ -9,13 +9,13 @@
       </el-button>
     </div>
 
-    <div class="filter-container">
+    <!-- <div class="filter-container">
       <el-button v-waves class="filter-item" type="success" icon="el-icon-search" @click="handleNewInfo">
         新增房源信息
       </el-button>
     </div>
     <br>
-    <br>
+    <br> -->
 
     <!-- 表格 -->
     <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
