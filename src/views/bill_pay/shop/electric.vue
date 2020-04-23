@@ -312,17 +312,17 @@ export default {
       mixFormPost: {
         houseId: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
-        payItem: '住宅点费',
+        payItem: '商铺电费',
         adminId: this.$store.getters.adminId
       },
       // 单一收缴表单提交项目规则

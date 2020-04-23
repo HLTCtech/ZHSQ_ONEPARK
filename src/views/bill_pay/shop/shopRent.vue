@@ -292,13 +292,13 @@ export default {
         moneyDateRangeNearest: null,
         rentNumNearest: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,

@@ -298,13 +298,13 @@ export default {
         houseId: null,
         houseName: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
@@ -321,8 +321,8 @@ export default {
       },
       // 复合收缴表单提交项目规则
       mixformRules: {
-        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }]
-        // mixPayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
+        houseId: [{ required: true, message: '请输入单一的完整房间号', trigger: 'change' }],
+        mixPayDateRange: [{ required: true, message: '请选择缴费周期', trigger: 'blur' }]
         // singlePayType: [{ required: true, message: '请选择收费类型', trigger: 'change' }],
         // singlePayMoney: [{ required: true, message: '请输入收缴金额（纯数字）', type: 'number', trigger: 'blur' }]
       },
@@ -607,6 +607,7 @@ export default {
                 this.mixFormPost.mixPayType[1].value = ''
                 this.mixFormPost.mixPayType[2].value = ''
                 this.mixFormPost.mixPayType[3].value = ''
+                this.mixFormPost.mixPayDateRange = ''
                 this.mixFormPost.remark = ''
                 this.dialogMoneyPost = false
                 fetchSearchByHouseId(mixFormPost.houseId).then(response => {

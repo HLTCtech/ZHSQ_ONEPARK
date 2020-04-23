@@ -26,17 +26,23 @@
     <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">
       <el-table-column label="ID" prop="id" align="center" />
       <el-table-column label="房号" prop="houseId" align="center" />
+      <el-table-column label="房间类型" prop="houseType" align="center" />
+      <el-table-column label="房间属性" prop="houseAttribute" align="center" />
       <el-table-column label="变更前" align="center">
         <el-table-column label="业主姓名" prop="houseNameBefore" align="center" />
         <el-table-column label="业主电话" prop="housePhoneBefore" align="center" />
-        <el-table-column label="住宅面积" prop="houseAreaBefore" align="center" />
-        <el-table-column label="地下室面积" prop="basementAreaBefore" align="center" />
+        <el-table-column label="面积" prop="houseAreaBefore" align="center" />
+        <el-table-column label="房间状态" prop="houseStatusBefore" align="center" />
+        <el-table-column label="电费费率" prop="houseElectricRateBefore" align="center" />
+        <el-table-column label="物业费费率" prop="housePropertyRateBefore" align="center" />
       </el-table-column>
       <el-table-column label="变更后" align="center">
         <el-table-column label="业主姓名" prop="houseNameAfter" align="center" />
         <el-table-column label="业主电话" prop="housePhoneAfter" align="center" />
-        <el-table-column label="住宅面积" prop="houseAreaAfter" align="center" />
-        <el-table-column label="地下室面积" prop="basementAreaAfter" align="center" />
+        <el-table-column label="面积" prop="houseAreaAfter" align="center" />
+        <el-table-column label="房间状态" prop="houseStatusAfter" align="center" />
+        <el-table-column label="电费费率" prop="houseElectricRateAfter" align="center" />
+        <el-table-column label="物业费费率" prop="housePropertyRateAfter" align="center" />
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
       <el-table-column label="操作时间" prop="operatDate" align="center" />

@@ -345,13 +345,13 @@ export default {
       mixFormPost: {
         houseId: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
@@ -685,6 +685,7 @@ export default {
                     this.mixFormPost.mixPayType[1].value = ''
                     this.mixFormPost.mixPayType[2].value = ''
                     this.mixFormPost.mixPayType[3].value = ''
+                    this.mixFormPost.mixPayDateRange = null
                     this.mixFormPost.remark = ''
                     this.dialogMoneyGetFormVisible = false
                     fetchSearchByHouseId(mixFormPost.houseId).then(response => {
@@ -730,6 +731,7 @@ export default {
                 this.mixFormPost.mixPayType[1].value = ''
                 this.mixFormPost.mixPayType[2].value = ''
                 this.mixFormPost.mixPayType[3].value = ''
+                this.mixFormPost.mixPayDateRange = null
                 this.mixFormPost.remark = ''
                 this.dialogMoneyGetFormVisible = false
                 fetchSearchByHouseId(mixFormPost.houseId).then(response => {
@@ -767,6 +769,7 @@ export default {
       this.mixFormPost.mixPayType[2].value = null
       this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
+      this.mixFormPost.mixPayDateRange = null
       this.dialogMoneyGetFormVisible = false
     },
     // 点击houseId获取房间变更历史
