@@ -4,8 +4,8 @@
 
     <!-- 顶部搜索框 -->
     <div class="filter-container">
-      <el-select v-model="listQuery_search.moneyType" placeholder="选择费用类型" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in moneyTypeOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery_search.overallRate" placeholder="选择总体评分分数" clearable style="width: 250px" class="filter-item">
+        <el-option v-for="item in overallRateOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-date-picker
         v-model="listQuery_search.dateRange"
@@ -199,8 +199,7 @@ export default {
       total: 0,
       // search()查询请求变量
       listQuery_search: {
-        houseId: null,
-        houseName: null,
+        overallRate: null,
         dateRange: null,
         page: null
       },
@@ -208,7 +207,7 @@ export default {
       listQuery_all: {
         page: 1
       },
-      moneyTypeOptions: ['电费', '物业费', '停车场管理费'],
+      overallRateOptions: ['5分', '4分', '3分', '2分', '1分'],
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -237,8 +236,6 @@ export default {
           }
         }]
       },
-      // 单一缴费时的选项
-      singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
       listLoading: true,
       // 调取短信验证码提交项目
       singleSMSPost: {

@@ -37,19 +37,20 @@
           <el-tag v-if="scope.column.property=='houseId'" align="center" @click="getHouseLog(scope.row.houseId)">{{ scope.row[scope.column.property] }}</el-tag>
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
-          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId)">
+          <span v-else-if="scope.column.property=='electricMeterId'">{{ scope.row[scope.column.property] }}</span>
+          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId, scope.row.electricMeterId)">
             <!-- <el-tag :type="scope.column.status === 'yes' ? 'success' : 'danger'" disable-transitions> -->
             {{ scope.row[scope.column.property] }}
             <!-- </el-tag> -->
           </el-tag>
-          <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId)">{{ scope.row[scope.column.property] }}</span>
+          <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId, scope.row.electricMeterId)">{{ scope.row[scope.column.property] }}</span>
         </template>
       </el-table-column>
 
       <!-- 费用详情按钮 -->
       <el-table-column label="月度费用详情" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleFetchAllDetailByMonth(scope.row.houseId)">
+          <el-button type="primary" size="mini" @click="handleFetchAllDetailByMonth(scope.row.houseId, scope.row.electricMeterId)">
             详情
           </el-button>
         </template>
@@ -58,7 +59,7 @@
       <!-- 费用收缴按钮 -->
       <el-table-column label="费用收缴" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleMoneyGet(scope.row.houseId)">
+          <el-button type="success" size="mini" @click="handleMoneyGet(scope.row.houseId, scope.row.electricMeterId)">
             收缴
           </el-button>
         </template>
@@ -70,6 +71,7 @@
       <!-- 展示当前房间的费用状态统计 -->
       <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%" align="center">
         <el-table-column prop="houseId" label="房间号" align="center" />
+        <el-table-column prop="electricMeterId" label="电表号" align="center" />
         <el-table-column prop="prestore" label="预存余额" align="center" />
         <el-table-column prop="shallPayAll" label="应收金额总计" align="center" />
         <el-table-column prop="receivedPayAll" label="实收金额总计" align="center" />
@@ -327,6 +329,7 @@ export default {
       // 调取短信验证码提交项目
       singleSMSPost: {
         houseId: null,
+        electricMeterId: null,
         adminId: this.$store.getters.adminId,
         payItem: '住宅电费'
       },
@@ -339,7 +342,8 @@ export default {
         payItem: '住宅电费',
         adminId: this.$store.getters.adminId,
         smsCode: null,
-        singlePayDateRange: null
+        singlePayDateRange: null,
+        electricMeterId: null
       },
       // 复合缴费表单提交项目
       mixFormPost: {
@@ -357,7 +361,8 @@ export default {
         remark: null,
         payItem: '住宅电费',
         mixPayDateRange: null,
-        adminId: this.$store.getters.adminId
+        adminId: this.$store.getters.adminId,
+        electricMeterId: null
       },
       // 单一收缴表单提交项目规则
       singleformRules: {
@@ -487,40 +492,42 @@ export default {
       })
     },
     // 收费按钮绑定的处理事件
-    handleMoneyGet(houseId) {
+    handleMoneyGet(houseId, electricMeterId) {
       console.log(houseId)
       this.singleFormPost.houseId = houseId
       this.mixFormPost.houseId = houseId
-      fetchPreViewAll(houseId).then(response => {
+      this.singleFormPost.electricMeterId = electricMeterId
+      this.mixFormPost.electricMeterId = electricMeterId
+      fetchPreViewAll(houseId, electricMeterId).then(response => {
         this.pvData_all = response.data.pvData
       })
       // 访问获取具体每月的电表读数等费用信息
-      fetchAllDetailByMonth(houseId).then(response => {
+      fetchAllDetailByMonth(houseId, electricMeterId).then(response => {
         this.pvData_details = response.data.items
       })
       this.dialogMoneyGetFormVisible = true
     },
     // 获取月度费用详情
-    handleFetchAllDetailByMonth(houseId) {
-      fetchAllDetailByMonth(houseId).then(response => {
+    handleFetchAllDetailByMonth(houseId, electricMeterId) {
+      fetchAllDetailByMonth(houseId, electricMeterId).then(response => {
         this.pvData_details = response.data.items
         this.dialogPvVisibleDetailByMonth = true
       })
     },
     // 获取费用状态统计
-    handleFetchPv_all(houseId) {
+    handleFetchPv_all(houseId, electricMeterId) {
       // 定义具体费用字段的弹出模态框
-      fetchPreViewAll(houseId).then(response => {
+      fetchPreViewAll(houseId, electricMeterId).then(response => {
         this.pvData_all = response.data.pvData
         this.dialogPvVisible_all = true
       })
     },
     // 获取单月费用状态
-    handleFetchPv_single(pv, houseId) {
+    handleFetchPv_single(pv, houseId, electricMeterId) {
       // 定义具体费用字段的弹出模态框
-      console.log(pv, houseId)
+      console.log(pv, houseId, electricMeterId)
       //   console.log('currentTarget-----' + pv.currentTarget)
-      fetchPreViewSingle(pv, houseId).then(response => {
+      fetchPreViewSingle(pv, houseId, electricMeterId).then(response => {
         this.pvData_single = response.data.pvData
         this.dialogPvVisible_single = true
       })
@@ -528,6 +535,7 @@ export default {
     // 获取验证码按钮
     getSmsCode(singleSMSPost) {
       singleSMSPost.houseId = this.singleFormPost.houseId
+      singleSMSPost.electricMeterId = this.singleFormPost.electricMeterId
       getElectricSMS(singleSMSPost).then(response => {
         if (response.codeStatus === 200) {
           this.$message({ message: '验证码会发送到您的手机上，请注意查收', type: 'success' })
@@ -578,7 +586,7 @@ export default {
             this.mixFormPost.mixPayType[2].value = ''
             this.mixFormPost.mixPayType[3].value = ''
             this.mixFormPost.remark = ''
-            fetchSearchByHouseId(singleFormPost.houseId).then(response => {
+            fetchSearchByHouseId(singleFormPost.houseId, singleFormPost.electricMeterId).then(response => {
               this.titleData = response.data.titles
               this.tableColumns = response.data.items
             })
@@ -628,7 +636,7 @@ export default {
                   this.mixFormPost.mixPayType[3].value = ''
                   this.mixFormPost.remark = ''
                   this.dialogMoneyGetFormVisible = false
-                  fetchSearchByHouseId(singleFormPost.houseId).then(response => {
+                  fetchSearchByHouseId(singleFormPost.houseId, singleFormPost.electricMeterId).then(response => {
                     this.titleData = response.data.titles
                     this.tableColumns = response.data.items
                   })
@@ -688,7 +696,7 @@ export default {
                     this.mixFormPost.mixPayDateRange = null
                     this.mixFormPost.remark = ''
                     this.dialogMoneyGetFormVisible = false
-                    fetchSearchByHouseId(mixFormPost.houseId).then(response => {
+                    fetchSearchByHouseId(mixFormPost.houseId, mixFormPost.electricMeterId).then(response => {
                       this.titleData = response.data.titles
                       this.tableColumns = response.data.items
                     })
@@ -734,7 +742,7 @@ export default {
                 this.mixFormPost.mixPayDateRange = null
                 this.mixFormPost.remark = ''
                 this.dialogMoneyGetFormVisible = false
-                fetchSearchByHouseId(mixFormPost.houseId).then(response => {
+                fetchSearchByHouseId(mixFormPost.houseId, mixFormPost.electricMeterId).then(response => {
                   this.titleData = response.data.titles
                   this.tableColumns = response.data.items
                 })

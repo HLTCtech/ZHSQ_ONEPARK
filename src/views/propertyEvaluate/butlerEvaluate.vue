@@ -1,11 +1,11 @@
 <template>
-  <!-- 管家评价 -->
+  <!-- 服务评价 -->
   <div class="app-container">
 
     <!-- 顶部搜索框 -->
     <div class="filter-container">
-      <el-select v-model="listQuery_search.moneyType" placeholder="选择费用类型" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in moneyTypeOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery_search.overallRate" placeholder="选择总体评分分数" clearable style="width: 250px" class="filter-item">
+        <el-option v-for="item in overallRateOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-date-picker
         v-model="listQuery_search.dateRange"
@@ -27,23 +27,28 @@
     <!-- 缴款记录表格 -->
     <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed>
+      <el-table-column label="管家服务态度" prop="attitudeRate" align="center" fixed />
+      <el-table-column label="管家服务质量" prop="qualityRate" align="center" fixed />
+      <el-table-column label="管家响应速度" prop="responseRate" align="center" fixed />
+      <el-table-column label="总体评分" prop="overallRate" align="center" fixed />
+      <el-table-column label="意见建议" prop="suggest" align="center" width="200px" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getSuggestAll(scope.row.houseId, scope.row.suggestTime)">{{ scope.row.suggest }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="业主房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="业主电话" prop="housePhone" align="center" fixed />
-      <el-table-column label="费用类型" prop="moneyType" align="center" />
-      <el-table-column label="缴费金额" prop="moneyPaidNum" align="center" />
-      <el-table-column label="缴费周期" prop="moneyDateRange" align="center" />
-      <el-table-column label="缴费日期" prop="paidDate" align="center" />
-      <el-table-column label="距到期天数" prop="shallPayDateLeft" align="center">
+      <el-table-column label="评价时间" prop="suggestTime" align="center" />
+      <!-- <el-table-column label="距到期天数" prop="shallPayDateLeft" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.shallPayDateLeft <= 0 ? 'danger' : 'success'" disable-transitions>{{ scope.row.shallPayDateLeft }}</el-tag>
         </template>
-      </el-table-column>
-      <el-table-column label="备注" prop="remark" align="center" />
+      </el-table-column> -->
       <!-- <el-table-column label="收费" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId)">
@@ -65,6 +70,14 @@
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogHouseLog = false">确定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 点击意见建议获取详情模态框 -->
+    <el-dialog :visible.sync="dialogSuggestDetail" title="意见详情">
+      <span>{{ suggestDetail }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogSuggestDetail = false">确定</el-button>
       </span>
     </el-dialog>
 
@@ -162,14 +175,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchBillRemindList, fetchBillRemindSearch, singleMoneyPost, mixMoneyPost, getWaterSMS, fetchSearchByHouseId } from '@/api/billRemind'
+import { serviceRateList, serviceRateSearch, singleMoneyPost, mixMoneyPost, getWaterSMS, fetchSearchByHouseId, getServiceSuggestDetail } from '@/api/propertyEvaluate'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'BulterEvaluate',
+  name: 'ServiceEvaluate',
   directives: { waves },
   components: { Pagination },
   data() {
@@ -186,8 +199,7 @@ export default {
       total: 0,
       // search()查询请求变量
       listQuery_search: {
-        houseId: null,
-        houseName: null,
+        overallRate: null,
         dateRange: null,
         page: null
       },
@@ -195,7 +207,7 @@ export default {
       listQuery_all: {
         page: 1
       },
-      moneyTypeOptions: ['电费', '物业费', '停车场管理费'],
+      overallRateOptions: ['5分', '4分', '3分', '2分', '1分'],
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -224,8 +236,6 @@ export default {
           }
         }]
       },
-      // 单一缴费时的选项
-      singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
       listLoading: true,
       // 调取短信验证码提交项目
       singleSMSPost: {
@@ -276,7 +286,9 @@ export default {
       dialogSMSVisible: false,
       // 收费页面模态框
       dialogMoneyPost: false,
-      dialogHouseLog: false
+      dialogHouseLog: false,
+      dialogSuggestDetail: false,
+      suggestDetail: ''
     }
   },
   computed: {
@@ -318,7 +330,7 @@ export default {
     // 获取表格数据
     getList() {
       this.listLoading = true
-      fetchBillRemindList(this.listQuery_all).then(response => {
+      serviceRateList(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -327,7 +339,7 @@ export default {
     // 搜索记录
     handleSearch() {
       this.listLoading = true
-      fetchBillRemindSearch(this.listQuery_search).then(response => {
+      serviceRateSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -585,6 +597,13 @@ export default {
       getLogByHouseId(houseId).then(response => {
         this.pvData_all = response.data.pvData
         this.dialogHouseLog = true
+      })
+    },
+    // 点击意见建议获取详情
+    getSuggestAll(houseId, suggestTime) {
+      getServiceSuggestDetail(houseId, suggestTime).then(response => {
+        this.suggestDetail = response.data.suggestDetail
+        this.dialogSuggestDetail = true
       })
     }
   }

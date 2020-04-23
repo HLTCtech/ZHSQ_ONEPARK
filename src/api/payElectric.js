@@ -1,14 +1,6 @@
 import request from '@/utils/request'
 
 // 住宅相关api-------------------------------------
-// 查询所有的住宅信息
-export function fetchHouseListAll(query) {
-  return request({
-    url: '/pay/electric/house/all',
-    method: 'get',
-    params: query
-  })
-}
 
 // 根据选定字段查询指定的住宅信息
 export function fetchHouseSearch(query) {
@@ -29,14 +21,6 @@ export function getElectricSMS(singleSMSPost) {
 }
 
 // 商铺相关api-------------------------------------
-// 查询所有商铺信息
-export function fetchShopListAll(query) {
-  return request({
-    url: '/pay/electric/shop/all',
-    method: 'get',
-    params: query
-  })
-}
 
 // 根据选定字段查询指定的商铺信息
 export function fetchShopSearch(query) {
@@ -89,38 +73,38 @@ export function fetchNotificationListAll(query) {
 
 // 住宅商铺通用api
 // 指定房号--电费状态统计的弹出模态框
-export function fetchPreViewAll(houseId) {
+export function fetchPreViewAll(houseId, electricMeterId) {
   return request({
     url: '/pay/electric/pv/all',
     method: 'get',
-    params: { houseId }
+    params: { houseId, electricMeterId }
   })
 }
 
 // 指定月份--具体月份费用详情的弹出模态框
-export function fetchPreViewSingle(pv, houseId) {
+export function fetchPreViewSingle(pv, houseId, electricMeterId) {
   return request({
     url: '/pay/electric/pv/single',
     method: 'get',
-    params: pv, houseId
+    params: { pv, houseId, electricMeterId }
   })
 }
 
 // 展示所有月份的电表读数及费用信息
-export function fetchAllDetailByMonth(houseId) {
+export function fetchAllDetailByMonth(houseId, electricMeterId) {
   return request({
     url: '/pay/electric/details',
     method: 'get',
-    params: { houseId }
+    params: { houseId, electricMeterId }
   })
 }
 
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
-export function fetchSearchByHouseId(houseId) {
+export function fetchSearchByHouseId(houseId, electricMeterId) {
   return request({
     url: '/pay/electric/searchById',
     method: 'get',
-    params: { houseId }
+    params: { houseId, electricMeterId }
   })
 }
 

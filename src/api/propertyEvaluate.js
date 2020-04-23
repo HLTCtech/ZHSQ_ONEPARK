@@ -12,7 +12,7 @@ export function serviceRateList(listQuery_all) {
 // 服务评价search
 export function serviceRateSearch(listQuery_search) {
   return request({
-    url: '/property/billRemind/search',
+    url: '/property/serviceRate/search',
     method: 'post',
     data: { listQuery_search }
   })
