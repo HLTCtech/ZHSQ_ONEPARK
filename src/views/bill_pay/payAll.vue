@@ -55,6 +55,9 @@
       </div>
     </el-card>
 
+    <br>
+    <br>
+
     <!-- 一键收费（未欠费） -->
     <el-card class="box-card">
       <div class="payType-container">
@@ -306,13 +309,13 @@ export default {
         shallPay: null,
         multipleSelection: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
@@ -333,24 +336,24 @@ export default {
       ItemsPay: {
         houseId: null,
         mixPayType: [{
-          name: 'mixPayAlipay', value: null
+          name: '支付宝', value: null
         },
-        { name: 'mixPayWechat', value: null
+        { name: '微信', value: null
         },
-        { name: 'mixPayCash', value: null
+        { name: '现金', value: null
         },
-        { name: 'mixPayOther', value: null
+        { name: '其他', value: null
         }],
         shallPay: null,
         payAllItemsMixPayTotal: null,
         remark: null,
         adminId: this.$store.getters.adminId,
         propertyDateRange: [],
-        propertyMoneyNum: '',
-        propertyVoucherNum: '',
+        propertyMoneyNum: null,
+        propertyVoucherNum: null,
         parkingDateRange: null,
-        parkingMoneyNum: '',
-        parkingVoucherNum: '',
+        parkingMoneyNum: null,
+        parkingVoucherNum: null,
         electricDateRange: null,
         electricMoneyNum: '',
         waterMoneyNum: '',
@@ -360,6 +363,10 @@ export default {
         sundriesType: null,
         sundriesMoneyNum: ''
       },
+      propertyMoneyNum: null,
+      propertyVoucherNum: null,
+      parkingMoneyNum: null,
+      parkingVoucherNum: null,
       getProperty: {
         houseId: null,
         propertyDateRange: null
@@ -459,13 +466,29 @@ export default {
   watch: {
     // 监听前端周期变化
     'ItemsPay.propertyDateRange': function() {
-      this.getRealtimeProperty()
+      if (this.ItemsPay.propertyDateRange !== null) {
+        this.getRealtimeProperty()
+      }
+      this.ItemsPay.propertyShallPay = 0
     },
     'ItemsPay.parkingDateRange': function() {
-      this.getRealtimeParking()
+      if (this.ItemsPay.parkingDateRange !== null) {
+        this.getRealtimeParking()
+      }
+      this.ItemsPay.parkingShallPay = 0
     },
     'ItemsPay.electricDateRange': function() {
-      this.getRealtimeElectric()
+      if (this.ItemsPay.electricDateRange !== null) {
+        this.getRealtimeElectric()
+      }
+      this.ItemsPay.electricShallPay = 0
+    },
+    // 监听前端代金券金额变化
+    'ItemsPay.propertyVoucherNum': function() {
+      this.ItemsPay.propertyMoneyNum = this.propertyShallPay - this.ItemsPay.propertyVoucherNum
+    },
+    'ItemsPay.parkingVoucherNum': function() {
+      this.ItemsPay.parkingMoneyNum = this.parkingShallPay - this.ItemsPay.parkingVoucherNum
     }
   },
   // created() {
