@@ -54,8 +54,8 @@
                   <label>收费日期：</label><span>{{ payDate }}</span>
                 </li>
               </ul>
-              <div class="headerMiddle">
-                <h1>河南院子物业服务有限公司收据</h1>
+              <div class="headerMiddle" style="margin-left:100px">
+                <h1>华美物业服务有限公司收据</h1>
                 <div class="line" />
               </div>
               <ul class="headerRight">
@@ -72,7 +72,7 @@
                   </li>
                 </ul>
                 <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
-                <div class="password" style="border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
+                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
               </div>
               <div class="userInfo" style="height:60px">
                 <div class="moneyType" style="width: 15%">
@@ -163,7 +163,7 @@
 
           <div class="rightText" style="padding-left: 0">
             <span>
-              <br><br><br><br><br><br>第一联存根 <br><br><br>第二联客户联 <br><br><br>第三联记账联<br><br><br> 第四联客服
+              <br><br><br><br><br>第一联存根 <br><br>第二联客户联 <br><br>第三联记账联<br><br> 第四联客服
             </span>
           </div>
         </div>
