@@ -19,11 +19,11 @@ export function serviceRateSearch(listQuery_search) {
 }
 
 // 服务评价search
-export function getServiceSuggestDetail(listQuery_search) {
+export function getServiceSuggestDetail(houseId, suggestTime) {
   return request({
     url: '/property/serviceRate/serviceSuggestDetail',
     method: 'post',
-    data: { listQuery_search }
+    data: { houseId, suggestTime }
   })
 }
 
@@ -46,10 +46,10 @@ export function bulterRateSearch(listQuery_search) {
 }
 
 // 管家评价search
-export function getBulterSuggestDetail(listQuery_search) {
+export function getBulterSuggestDetail(houseId, suggestTime) {
   return request({
     url: '/property/bulterRate/bulterSuggestDetail',
     method: 'post',
-    data: { listQuery_search }
+    data: { houseId, suggestTime }
   })
 }
