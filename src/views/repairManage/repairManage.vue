@@ -36,11 +36,19 @@
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="业主手机号" prop="housePhone" align="center" fixed />
       <!-- <el-table-column label="报修图片" prop="repairPic" align="center" fixed /> -->
-      <el-table-column label="报修图片" prop="repairPic" width="200px" align="center">
+      <el-table-column label="报修图片1" prop="repairPic1" width="200px" align="center">
         <template slot-scope="scope">
           <el-popover placement="right" width="100px" trigger="click">
-            <el-image slot="reference" :src="scope.row.repairPic" :alt="scope.row.repairPic" style="max-height: 100px;max-width: 100px" />
-            <el-image :src="scope.row.repairPic" style="max-height: 600px;max-width: 600px" />
+            <el-image slot="reference" :src="scope.row.repairPic1" :alt="scope.row.repairPic1" style="max-height: 100px;max-width: 100px" />
+            <el-image :src="scope.row.repairPic1" style="max-height: 600px;max-width: 600px" />
+          </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column label="报修图片2" prop="repairPic2" width="200px" align="center">
+        <template slot-scope="scope">
+          <el-popover placement="right" width="100px" trigger="click">
+            <el-image slot="reference" :src="scope.row.repairPic2" :alt="scope.row.repairPic2" style="max-height: 100px;max-width: 100px" />
+            <el-image :src="scope.row.repairPic2" style="max-height: 600px;max-width: 600px" />
           </el-popover>
         </template>
       </el-table-column>
@@ -254,7 +262,8 @@ export default {
         repairWishDate: null,
         repairAddDate: null,
         currentStatus: null
-      }
+      },
+      repairContent: null
     }
   },
   computed: {

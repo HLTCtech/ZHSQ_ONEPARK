@@ -547,6 +547,14 @@ export const asyncRoutes = [
         meta: {
           title: '管家评价'
         }
+      },
+      {
+        path: 'repairEvaluate',
+        component: () => import('@/views/propertyEvaluate/repairEvaluate'),
+        name: 'repairEvaluate',
+        meta: {
+          title: '报修评价'
+        }
       }
     ]
   },
