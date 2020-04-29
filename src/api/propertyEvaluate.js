@@ -18,7 +18,7 @@ export function serviceRateSearch(listQuery_search) {
   })
 }
 
-// 服务评价search
+// 服务评价获取评价内容
 export function getServiceSuggestDetail(houseId, suggestTime) {
   return request({
     url: '/property/serviceRate/serviceSuggestDetail',
@@ -45,10 +45,37 @@ export function bulterRateSearch(listQuery_search) {
   })
 }
 
-// 管家评价search
+// 管家评价获取建议内容
 export function getBulterSuggestDetail(houseId, suggestTime) {
   return request({
     url: '/property/bulterRate/bulterSuggestDetail',
+    method: 'post',
+    data: { houseId, suggestTime }
+  })
+}
+
+// 报修评价list
+export function repairRateList(listQuery_all) {
+  return request({
+    url: '/property/repairRate/all',
+    method: 'post',
+    data: { listQuery_all }
+  })
+}
+
+// 报修评价search
+export function repairRateSearch(listQuery_search) {
+  return request({
+    url: '/property/repairRate/search',
+    method: 'post',
+    data: { listQuery_search }
+  })
+}
+
+// 报修评价获取建议内容
+export function getRepairSuggestDetail(houseId, suggestTime) {
+  return request({
+    url: '/property/repairRate/repairSuggestDetail',
     method: 'post',
     data: { houseId, suggestTime }
   })

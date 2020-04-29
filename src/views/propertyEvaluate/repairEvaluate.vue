@@ -4,9 +4,9 @@
 
     <!-- 顶部搜索框 -->
     <div class="filter-container">
-      <el-input v-model="listQuery_search.bulterName" type="text" placeholder="输入姓名" style="width: 130px" class="filter-item" clearable />
-      <el-cascader v-model="listQuery_search.bulterDetails" class="filter-item" :options="bulterOptions" :props="{ checkStrictly: true }" clearable />
-      <el-select v-model="listQuery_search.overallRate" placeholder="选择总体评分分数" clearable style="width: 250px" class="filter-item">
+      <el-input v-model="listQuery_search.repairHouseId" type="text" placeholder="输入房号" style="width: 130px" class="filter-item" clearable />
+      <el-input v-model="listQuery_search.repairHouseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
+      <el-select v-model="listQuery_search.repairOverallRate" placeholder="选择总体评分分数" clearable style="width: 250px" class="filter-item">
         <el-option v-for="item in overallRateOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-date-picker
@@ -31,6 +31,7 @@
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="报修内容" prop="repairContent" align="center" fixed />
       <el-table-column label="提交报修时间" prop="repairAddDate" align="center" fixed />
+      <el-table-column label="期望上门时间" prop="repairWishDate" align="center" fixed />
       <el-table-column label="业主房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
@@ -92,7 +93,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { bulterRateList, bulterRateSearch, getBulterSuggestDetail } from '@/api/propertyEvaluate'
+import { repairRateList, repairRateSearch, getRepairSuggestDetail } from '@/api/propertyEvaluate'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -116,22 +117,16 @@ export default {
       total: 0,
       // search()查询请求变量
       listQuery_search: {
-        overallRate: null,
+        repairHouseId: null,
+        repairHouseName: null,
+        repairOverallRate: null,
         dateRange: null,
-        page: null,
-        bulterName: null,
-        bulterDetails: null
+        page: null
       },
       // list()查询请求变量
       listQuery_all: {
         page: 1
       },
-      bulterOptions: [{ value: '客服部', label: '客服部', children: [{ value: '客服主管', label: '客服主管' }, { value: '客服', label: '客服' }, { value: '内勤', label: '内勤' }] },
-        { value: '维修部', label: '维修部', children: [{ value: '维修班长', label: '维修班长' }, { value: '维修工', label: '维修工' }] },
-        { value: '电梯部', label: '电梯部', children: [{ value: '电梯维保', label: '电梯维保' }] },
-        { value: '绿化部', label: '绿化部', children: [{ value: '绿化工', label: '绿化工' }] },
-        { value: '保洁部', label: '保洁部', children: [{ value: '保洁员', label: '保洁员' }] },
-        { value: '秩序部', label: '秩序部', children: [{ value: '秩序主管', label: '秩序主管' }, { value: '秩序班长', label: '秩序班长' }, { value: '秩序员', label: '秩序员' }] }],
       overallRateOptions: ['5分', '4分', '3分', '2分', '1分'],
       // 时间选择器返回数据
       pickerOptions: {
@@ -210,7 +205,7 @@ export default {
     // 获取表格数据
     getList() {
       this.listLoading = true
-      bulterRateList(this.listQuery_all).then(response => {
+      repairRateList(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -219,7 +214,7 @@ export default {
     // 搜索记录
     handleSearch() {
       this.listLoading = true
-      bulterRateSearch(this.listQuery_search).then(response => {
+      repairRateSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -234,7 +229,7 @@ export default {
     },
     // 点击意见建议获取详情
     getSuggestAll(houseId, suggestTime) {
-      getBulterSuggestDetail(houseId, suggestTime).then(response => {
+      getRepairSuggestDetail(houseId, suggestTime).then(response => {
         this.suggestDetail = response.data.suggestDetail
         this.dialogSuggestDetail = true
       })
