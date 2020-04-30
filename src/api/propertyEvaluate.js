@@ -18,7 +18,7 @@ export function serviceRateSearch(listQuery_search) {
   })
 }
 
-// 服务评价获取评价内容
+// 服务评价获取建议内容
 export function getServiceSuggestDetail(houseId, suggestTime) {
   return request({
     url: '/property/serviceRate/serviceSuggestDetail',
