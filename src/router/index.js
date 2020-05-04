@@ -58,7 +58,7 @@ export const constantRoutes = [
       }
     ]
   },
-  // 收费凭证
+  // 壹号院收费凭证
   {
     path: '/chargingVoucher',
     component: Layout,
@@ -66,11 +66,31 @@ export const constantRoutes = [
     children: [
       {
         path: 'voucherManage',
-        component: () => import('@/views/chargingVoucher/voucherManage'),
+        component: () => import('@/views/chargingVoucher/voucherManageOnePark'),
         name: 'voucherManage',
         meta: {
           title: '凭证打印',
           icon: 'printer',
+          roles: 'admin',
+          noCache: true
+        }
+      }
+    ]
+  },
+  // 尚郡收费凭证
+  {
+    path: '/chargingVoucher',
+    component: Layout,
+    // redirect: '/guide/index',
+    children: [
+      {
+        path: 'voucherManage',
+        component: () => import('@/views/chargingVoucher/voucherManageShangJun'),
+        name: 'voucherManage',
+        meta: {
+          title: '凭证打印',
+          icon: 'printer',
+          roles: 'editor',
           noCache: true
         }
       }
