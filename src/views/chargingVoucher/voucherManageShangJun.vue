@@ -153,7 +153,7 @@
             </div>
             <ul class="invoicetFooter" style="margin-top:20px">
               <li>
-                <label>单位盖章：</label>
+                <label style="margin-left: 20px">单位盖章：</label>
               </li>
               <li>
                 <label>收款人：</label><span>{{ operatorName }}</span>
@@ -408,6 +408,8 @@ ul,
     }
 
     label {
+        font-weight: 100;
+        font-size: 20px;
         color: #9c5223;
     }
 
@@ -426,6 +428,7 @@ ul,
     }
 
     .fontbox .rightText {
+        font-weight: 100;
         width: 1px;
         height: 100%;
         margin-left: 10px;
