@@ -60,7 +60,8 @@
               </div>
               <ul class="headerRight">
                 <li>
-                  <label style="margin-right: 150px"> 收据号： </label>
+                  <label style="margin-left: 50px"> 收据号： </label>
+                  <span>{{ receiptNumber }}</span>
                 </li>
               </ul>
             </div>
@@ -170,7 +171,7 @@
 
       </div>
       <!-- 打印按钮 -->
-      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId)">打印</el-button>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId, receiptNumber)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
 
@@ -202,9 +203,8 @@ export default {
         houseName: null,
         adminId: this.$store.getters.adminId
       },
-      tableData: [],
+      tableData: null,
       dialogPrint: false,
-      dialogAllPrint: false,
       printObj: {
         id: 'printVoucher'
       },
@@ -221,6 +221,7 @@ export default {
         houseId: null,
         adminId: this.$store.getters.adminId
       },
+      receiptNumber: null,
       // 打印完成之后把打印的项目参数
       printedHouIds: {
         voucherId1: null,
@@ -229,6 +230,7 @@ export default {
         voucherId4: null,
         voucherId5: null,
         houseId: null,
+        receiptNumber: null,
         adminId: this.$store.getters.adminId
       },
       // 打印字段定义
@@ -273,26 +275,32 @@ export default {
   },
   methods: {
     // 单一项目打印
-    handlePrintPost(houseId) {
+    handlePrintPost(houseId, receiptNumber) {
       this.printedHouIds.houseId = houseId
+      this.printedHouIds.receiptNumber = receiptNumber
       singleVoucherIdPost(this.printedHouIds).then(response => {
         if (response.codeStatus === 200) {
-          this.$notify({
+          // this.$notify({
+          //   title: '注意！',
+          //   message: '打印成功',
+          //   type: 'success',
+          //   duration: 8000
+          // })
+          var that = this
+          that.$notify({
             title: '注意！',
             message: '还有5s该条数据就无法打印',
             type: 'error',
-            duration: 5000
+            duration: 8000
           })
 
-          var that = this
           setTimeout(function() {
             that.dialogPrint = false
             fetchAllCharging(that.listQuery_all).then(response => {
-              this.tableData = response.data.items
-              this.total = response.total
+              that.tableData = response.data.items
+              that.total = response.total
             })
-          }, 5000)
-          // this.dialogAllPrint = false
+          }, 8000)
         } else {
           this.$notify({
             title: 'Failure',
@@ -305,12 +313,12 @@ export default {
     },
     cancelPrint() {
       this.dialogPrint = false
-      this.dialogAllPrint = false
     },
     // 每行末尾针对单一项目的收费模态框
     printDialog(houseId) {
       this.getHouseIdPrintQuery.houseId = houseId
       getVoucherByHouseId(this.getHouseIdPrintQuery).then(response => {
+        this.receiptNumber = response.data.receiptNumber
         this.panNum = response.data.panNum
         this.houseId = response.data.houseId
         this.houseName = response.data.houseName
@@ -343,6 +351,7 @@ export default {
         this.printedHouIds.voucherId3 = response.data.items.voucherId3
         this.printedHouIds.voucherId4 = response.data.items.voucherId4
         this.printedHouIds.voucherId5 = response.data.items.voucherId5
+        this.printedHouIds.receiptNumber = response.data.receiptNumber
       })
 
       this.dialogPrint = true

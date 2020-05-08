@@ -60,7 +60,7 @@ export const constantRoutes = [
   },
   // 壹号院收费凭证
   {
-    path: '/chargingVoucher',
+    path: '/chargingVoucherOnePark',
     component: Layout,
     // redirect: '/guide/index',
     children: [
@@ -79,7 +79,7 @@ export const constantRoutes = [
   },
   // 尚郡收费凭证
   {
-    path: '/chargingVoucher',
+    path: '/chargingVoucherShangjun',
     component: Layout,
     // redirect: '/guide/index',
     children: [
