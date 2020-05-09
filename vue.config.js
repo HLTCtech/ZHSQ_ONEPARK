@@ -23,7 +23,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -47,7 +47,8 @@ module.exports = {
       //   }
       // }
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://192.168.0.115:8080/hlProertyManage_war',
+        target: 'http://121.41.28.29:8080/hlProertyManage',
+        // target: 'http://192.168.0.115:8080/hlProertyManage_war',
         // target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
         changeOrigin: true,
         pathRewrite: {
