@@ -158,7 +158,7 @@
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
-            <el-form-item label="房间号" label-width="100px" prop="houseId">
+            <el-form-item label="业主姓名" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
             </el-form-item>
             <el-form-item label="支付宝" label-width="100px">
