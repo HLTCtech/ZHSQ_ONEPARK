@@ -93,7 +93,10 @@
         <div v-if="payPattern==1" label="单一缴费" label-width="100px">
           <el-form ref="singleDataForm" :rules="singleformRules" :model="singleFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
-              <el-input id="houseId1" v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+              <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            </el-form-item>
+            <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+              <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
               <el-date-picker
@@ -138,6 +141,9 @@
           <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            </el-form-item>
+            <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+              <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="mixPayDateRange">
               <el-date-picker
@@ -446,7 +452,6 @@ export default {
     },
     // 点击收费按钮
     handleMoneyGet(houseId, houseName) {
-      console.log(houseId)
       this.singleFormPost.houseId = houseId
       this.mixFormPost.houseId = houseId
       this.singleFormPost.houseName = houseName

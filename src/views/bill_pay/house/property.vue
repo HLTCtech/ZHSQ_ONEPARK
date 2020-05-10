@@ -95,6 +95,9 @@
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
+            <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+              <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
+            </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
               <el-date-picker
                 v-model="singleFormPost.singlePayDateRange"
@@ -138,6 +141,9 @@
           <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            </el-form-item>
+            <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+              <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
             </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="mixPayDateRange">
               <el-date-picker
