@@ -59,7 +59,7 @@
       <!-- 费用收缴按钮 -->
       <el-table-column label="费用收缴" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleMoneyGet(scope.row.houseId, scope.row.electricMeterId)">
+          <el-button type="success" size="mini" @click="handleMoneyGet(scope.row.houseId, scope.row.houseName, scope.row.electricMeterId)">
             收缴
           </el-button>
         </template>
@@ -118,6 +118,9 @@
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
+            <el-form-item label="业主姓名" label-width="100px" prop="houseId">
+              <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
+            </el-form-item>
             <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
               <el-date-picker
                 v-model="singleFormPost.singlePayDateRange"
@@ -154,6 +157,9 @@
           <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
               <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            </el-form-item>
+            <el-form-item label="房间号" label-width="100px" prop="houseId">
+              <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
             </el-form-item>
             <el-form-item label="支付宝" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
@@ -336,6 +342,7 @@ export default {
       // 单一缴费表单提交项目
       singleFormPost: {
         houseId: null,
+        houseName: null,
         singlePayType: null,
         singlePayMoney: null,
         remark: null,
@@ -348,6 +355,7 @@ export default {
       // 复合缴费表单提交项目
       mixFormPost: {
         houseId: null,
+        houseName: null,
         mixPayType: [{
           name: '支付宝', value: null
         },
@@ -492,10 +500,11 @@ export default {
       })
     },
     // 收费按钮绑定的处理事件
-    handleMoneyGet(houseId, electricMeterId) {
-      console.log(houseId)
+    handleMoneyGet(houseId, houseName, electricMeterId) {
       this.singleFormPost.houseId = houseId
       this.mixFormPost.houseId = houseId
+      this.singleFormPost.houseName = houseName
+      this.mixFormPost.houseName = houseName
       this.singleFormPost.electricMeterId = electricMeterId
       this.mixFormPost.electricMeterId = electricMeterId
       fetchPreViewAll(houseId, electricMeterId).then(response => {
