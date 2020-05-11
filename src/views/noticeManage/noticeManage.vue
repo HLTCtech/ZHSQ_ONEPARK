@@ -1,5 +1,5 @@
 <template>
-  <!-- 权限管理 -->
+  <!-- 通知公告管理 -->
   <div class="app-container">
 
     <!-- 顶部搜索框 -->
@@ -11,7 +11,7 @@
     </div>
 
     <el-button v-waves class="filter-item" type="success" icon="el-icon-coin" @click="handleNewAdminUser">
-      新增操作员信息
+      新增通知公告
     </el-button>
     <br>
     <br>

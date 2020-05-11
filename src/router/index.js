@@ -506,6 +506,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    // 通知公告
+    path: '/noticeManage',
+    component: Layout,
+    children: [
+      {
+        path: 'noticeManage',
+        component: () => import('@/views/noticeManage/noticeManage'),
+        name: 'noticeManage',
+        meta: { title: '通知公告', icon: 'repair', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     // 报修管理
     path: '/repairManage',
     component: Layout,
