@@ -258,28 +258,12 @@ export const constantRoutes = [
     // 物业流水
     path: '/waterBill',
     component: Layout,
-    // redirect: '/bill_all/electric',
-    name: 'waterBill',
-    meta: {
-      title: '流水管理',
-      icon: 'waterbill'
-    },
     children: [
       {
-        path: 'propertyWaterBill',
-        component: () => import('@/views/waterBill/propertyWaterBill'),
-        name: 'propertyWaterBill',
-        meta: {
-          title: '物业流水总览'
-        }
-      },
-      {
-        path: 'exportPropertyWaterBill',
+        path: 'waterBill',
         component: () => import('@/views/waterBill/exportPropertyWaterBill'),
-        name: 'exportPropertyWaterBill',
-        meta: {
-          title: '物业流水导出'
-        }
+        name: 'waterBill',
+        meta: { title: '物业流水导出', icon: 'waterbill' }
       }
     ]
   },
