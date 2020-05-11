@@ -51,17 +51,18 @@
             <div class="invoiceHeader">
               <ul class="headerLeft">
                 <li>
-                  <label>收费日期：</label><span>{{ payDate }}</span>
+                  <!-- <label>收费日期：</label> -->
+                  <span style="margin-left:100px">{{ payDate }}</span>
                 </li>
               </ul>
-              <div class="headerMiddle" style="margin-left:100px">
-                <h1>院子物业服务有限公司收据</h1>
+              <div class="headerMiddle" style="margin-left:20px">
+                <!-- <h1>院子物业服务有限公司收据</h1> -->
                 <div class="line" />
               </div>
               <ul class="headerRight">
                 <li>
-                  <label style="margin-left: 50px"> 收据号： </label>
-                  <span>{{ receiptNumber }}</span>
+                  <!-- <label style="margin-left: 20px"> 收据号： </label> -->
+                  <span style="margin-right:50px">{{ receiptNumber }}</span>
                 </li>
               </ul>
             </div>
@@ -69,7 +70,8 @@
               <div class="userInfo" style="height:60px">
                 <ul style="width:46%">
                   <li>
-                    <label>项目名称：</label><span>{{ panNum }}</span>
+                    <!-- <label>项目名称：</label> -->
+                    <span>{{ panNum }}</span>
                   </li>
                 </ul>
                 <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
