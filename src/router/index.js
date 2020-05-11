@@ -514,7 +514,7 @@ export const asyncRoutes = [
         path: 'noticeManage',
         component: () => import('@/views/noticeManage/noticeManage'),
         name: 'noticeManage',
-        meta: { title: '通知公告', icon: 'repair', roles: ['admin'] }
+        meta: { title: '通知公告', icon: 'notice', roles: ['admin'] }
       }
     ]
   },
