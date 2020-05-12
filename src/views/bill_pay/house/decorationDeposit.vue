@@ -261,7 +261,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
 export default {
-  name: 'DecorationDepositPay',
+  name: 'DecorationDepositPayHouse',
   components: { Pagination },
   directives: { waves, permission },
   data() {
