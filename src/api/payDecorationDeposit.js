@@ -73,3 +73,12 @@ export function returnMoney(formReturn) {
     data: { formReturn }
   })
 }
+
+// 申请退款
+export function applyReturnMoney(applyMoneyReturn) {
+  return request({
+    url: '/pay/decorationDeposit/applyMoneyReturn',
+    method: 'post',
+    data: { applyMoneyReturn }
+  })
+}
