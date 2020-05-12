@@ -67,7 +67,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="printedTotal>0" :total="printedTotal" :page.sync="listQuery_all.page" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
 
   </div>
 </template>
@@ -88,7 +88,6 @@ export default {
       count: '',
       downloadLoading: false,
       listLoading: true,
-      printedTotal: 0,
       total: 0,
       listQuery_all: {
         page: 1,
