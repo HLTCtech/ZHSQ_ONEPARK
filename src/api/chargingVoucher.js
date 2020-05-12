@@ -53,3 +53,12 @@ export function receiptReprintPost(reprintForm) {
     data: { reprintForm }
   })
 }
+
+// 指定收据号表单提交
+export function assignReceiptPost(assignReceiptNumQuery) {
+  return request({
+    url: '/chargingVoucher/assignReceiptNum',
+    method: 'post',
+    data: { assignReceiptNumQuery }
+  })
+}

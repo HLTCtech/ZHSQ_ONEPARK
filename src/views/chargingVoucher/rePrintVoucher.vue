@@ -37,7 +37,7 @@
         <el-table-column label="操作人" prop="operatorName" align="center" />
         <el-table-column label="重新打印" align="center" width="100" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="printDialog(row)">
+            <el-button type="primary" size="medium" @click="printDialog(row)">
               重新打印
             </el-button>
           </template>

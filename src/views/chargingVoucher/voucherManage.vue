@@ -6,6 +6,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery_all.houseId" type="text" placeholder="输入房号" style="width: 200px" class="filter-item" clearable />
       <el-input v-model="listQuery_all.houseName" type="text" placeholder="输入业主姓名" style="width: 200px" class="filter-item" clearable />
+      <el-input v-model="listQuery_all.receiptNumber" type="text" placeholder="输入收据号" style="width: 200px" class="filter-item" clearable />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList(listQuery_all.page=1)">
         搜索
       </el-button>
@@ -26,6 +27,7 @@
     <div id="printMe" class="printTable">
       <el-table ref="multipleSelection" :data="tableData" highlight-current-row border fit max-height="900px">
         <el-table-column label="收费项目id" prop="voucherId" width="50px" align="center" />
+        <el-table-column label="收据号" prop="receiptNumber" align="center" />
         <el-table-column label="房号" prop="houseId" align="center" />
         <el-table-column label="业主姓名" prop="houseName" align="center" />
         <el-table-column label="收费项目" prop="item" align="center" />
@@ -39,15 +41,31 @@
         <el-table-column label="备注" prop="remark" align="center" />
         <!-- <el-table-column prop="payNumAllChinese" align="center" /> -->
         <el-table-column label="操作人" prop="operatorName" align="center" />
+        <el-table-column label="指定收据号" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+          <template slot-scope="{row}">
+            <el-button type="info" size="medium" @click="inputReceiptNum(row)">
+              指定收据号
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="打印" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="printDialog(row.houseId)">
+            <el-button type="primary" size="medium" @click="printDialog(row)">
               打印
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+
+    <!-- 指定收据号模态框 -->
+    <el-dialog width="40%" title="指定收据号" style="top: 20%" :visible.sync="dialogReceiptNumVisible" append-to-body>
+      <el-input v-model="assignReceiptForm.receiptNumber" type="text" placeholder="输入收据号" style="width: 500px" class="filter-item" clearable />
+      <br>
+      <br>
+      <el-button type="success" @click="handleAsignReceiptPost(assignReceiptForm)">确定提交</el-button>
+      <el-button @click="handleCleanReceiptNumForm()">取消</el-button>
+    </el-dialog>
 
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
@@ -333,6 +351,7 @@
         </div>
 
       </div>
+
       <!-- 打印按钮 -->
       <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId, receiptNumber)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
@@ -343,7 +362,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchAllCharging, getVoucherByHouseId, singleVoucherIdPost } from '@/api/chargingVoucher'
+import { fetchAllCharging, getVoucherByHouseId, singleVoucherIdPost, assignReceiptPost } from '@/api/chargingVoucher'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -361,6 +380,7 @@ export default {
       listQuery_all: {
         page: 1,
         houseId: null,
+        receiptNumber: null,
         houseName: null,
         adminId: this.$store.getters.adminId
       },
@@ -381,6 +401,7 @@ export default {
       // 点击打印按钮时的请求参数
       getHouseIdPrintQuery: {
         houseId: null,
+        receiptNumber: null,
         adminId: this.$store.getters.adminId
       },
       receiptNumber: null,
@@ -424,7 +445,15 @@ export default {
       moneyGet5: null,
       payTypesItem5: null,
       // 打印测试页模态框
-      dialogPrintTest: null
+      dialogPrintTest: null,
+      // 指定收据号模态框
+      dialogReceiptNumVisible: false,
+      // 指定收据号表单
+      assignReceiptForm: {
+        voucherId: null,
+        receiptNumber: null,
+        adminId: this.$store.getters.adminId
+      }
     }
   },
   computed: {
@@ -484,8 +513,9 @@ export default {
       this.dialogPrintTest = false
     },
     // 每行末尾针对单一项目的收费模态框
-    printDialog(houseId) {
-      this.getHouseIdPrintQuery.houseId = houseId
+    printDialog(row) {
+      this.getHouseIdPrintQuery.houseId = row.houseId
+      this.getHouseIdPrintQuery.receiptNumber = row.receiptNumber
       getVoucherByHouseId(this.getHouseIdPrintQuery).then(response => {
         this.receiptNumber = response.data.receiptNumber
         this.panNum = response.data.panNum
@@ -522,8 +552,39 @@ export default {
         this.printedHouIds.voucherId5 = response.data.items.voucherId5
         this.printedHouIds.receiptNumber = response.data.receiptNumber
       })
-
       this.dialogPrint = true
+    },
+    // 指定收据号按钮
+    inputReceiptNum(row) {
+      this.assignReceiptForm.voucherId = row.voucherId
+      this.dialogReceiptNumVisible = true
+    },
+    // 指定收据号取消按钮
+    handleCleanReceiptNumForm() {
+      this.getHouseIdPrintQuery.receiptNumber = ''
+      this.dialogReceiptNumVisible = false
+    },
+    // 指定收据号表单提交
+    handleAsignReceiptPost(assignReceiptForm) {
+      assignReceiptPost(assignReceiptForm).then(response => {
+        if (response.codeStatus === 200) {
+          this.$notify({
+            title: 'Success',
+            message: '提交成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.assignReceiptForm.receiptNumber = ''
+          this.dialogReceiptNumVisible = false
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
+      })
     },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
