@@ -93,7 +93,7 @@
         <div v-if="payPattern==1" label="单一缴费" label-width="100px">
           <el-form ref="singleDataForm" :rules="singleformRules" :model="singleFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
-              <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+              <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" disabled />
             </el-form-item>
             <el-form-item label="业主姓名" label-width="100px" prop="houseName">
               <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
@@ -111,6 +111,8 @@
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
+            <el-tag size="large" type="info" style="width: 100px;text-align:center;margin-left: 100px;margin-bottom:20px;" class="payType-item" disabled>应缴金额</el-tag>
+            <el-tag size="large" type="primary" style="width: 200px;text-align:center;" class="payType-item" disabled>{{ singlePropertyShallPay }}</el-tag>
             <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
                 <el-option v-for="item in singlePayOptions" :key="item.value" :label="item.label" :value="item.value" />
@@ -119,7 +121,6 @@
             <el-form-item label="缴费金额" label-width="100px" prop="singlePayMoney">
               <el-input v-model.number="singleFormPost.singlePayMoney" type="number" style="width: 200px" placeholder="请输入金额" />
             </el-form-item>
-
             <el-form-item label="代金券金额" label-width="100px" prop="voucher">
               <el-input v-model="singleFormPost.voucher" placeholder="请输入代金券金额" />
             </el-form-item>
@@ -140,7 +141,7 @@
         <div v-if="payPattern==0" label="复合缴费" label-width="100px">
           <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
-              <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+              <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" disabled />
             </el-form-item>
             <el-form-item label="业主姓名" label-width="100px" prop="houseName">
               <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
@@ -158,6 +159,8 @@
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
+            <el-tag size="large" type="info" style="width: 100px;text-align:center;margin-left: 100px;margin-bottom:20px;" class="payType-item" disabled>应缴金额</el-tag>
+            <el-tag size="large" type="primary" style="width: 200px;text-align:center;" class="payType-item" disabled>{{ mixPropertyShallPay }}</el-tag>
             <el-form-item label="支付宝" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
@@ -213,7 +216,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseListAll, fetchHouseSearch, singleMoneyPost, mixMoneyPost, getPropertySMS, fetchSearchByHouseId, fetchPreViewAll } from '@/api/payProperty'
+import { fetchHouseListAll, fetchHouseSearch, singleMoneyPost, mixMoneyPost, getPropertySMS, fetchSearchByHouseId, fetchPreViewAll, getRealtimeProperty } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -336,7 +339,14 @@ export default {
       dialogSMSVisible: false,
       // 收费页面模态框
       dialogMoneyPost: false,
-      dialogHouseLog: false
+      dialogHouseLog: false,
+      // 监听周期计算应交金额
+      singlePropertyShallPay: 0,
+      mixPropertyShallPay: 0,
+      getProperty: {
+        houseId: null,
+        propertyDateRange: null
+      }
     }
   },
   computed: {
@@ -380,10 +390,29 @@ export default {
     payPatternChange(val) {
       if (this.$refs['singleDataForm'] !== undefined) {
         this.$refs['singleDataForm'].clearValidate()
+        this.singlePropertyShallPay = 0
+        this.mixPropertyShallPay = 0
       }
       if (this.$refs['mixDataForm'] !== undefined) {
         this.$refs['mixDataForm'].clearValidate()
+        this.singlePropertyShallPay = 0
+        this.mixPropertyShallPay = 0
       }
+    },
+    // 监听前端周期变化
+    // 单一缴费
+    'singleFormPost.singlePayDateRange': function() {
+      if (this.singleFormPost.singlePayDateRange !== null) {
+        this.getSinglePayRealtimeProperty()
+      }
+      this.singlePropertyShallPay = 0
+    },
+    // 复合缴费
+    'mixFormPost.mixPayDateRange': function() {
+      if (this.mixFormPost.mixPayDateRange !== null) {
+        this.getMixPayRealtimeProperty()
+      }
+      this.mixPropertyShallPay = 0
     }
   },
   created() {
@@ -413,6 +442,24 @@ export default {
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
+      })
+    },
+    // 根据前端周期监听返回相应的金额
+    // 单一缴费
+    getSinglePayRealtimeProperty() {
+      this.getProperty.houseId = this.singleFormPost.houseId
+      this.getProperty.propertyDateRange = this.singleFormPost.singlePayDateRange
+      getRealtimeProperty(this.getProperty).then(response => {
+        this.singlePropertyShallPay = response.propertyShallPay
+        this.mixPropertyShallPay = response.propertyShallPay
+      })
+    },
+    // 复合缴费
+    getMixPayRealtimeProperty() {
+      this.getProperty.houseId = this.mixFormPost.houseId
+      this.getProperty.propertyDateRange = this.mixFormPost.mixPayDateRange
+      getRealtimeProperty(this.getProperty).then(response => {
+        this.mixPropertyShallPay = response.propertyShallPay
       })
     },
     // 返回表尾部数据合计行

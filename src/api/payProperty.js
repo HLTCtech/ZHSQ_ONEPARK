@@ -82,3 +82,12 @@ export function fetchSearchByHouseId(houseId) {
     data: { houseId }
   })
 }
+
+// 监听前端物业费周期并返回对应金额
+export function getRealtimeProperty(query) {
+  return request({
+    url: '/pay/property/getRealtimeProperty',
+    method: 'post',
+    data: { query }
+  })
+}
