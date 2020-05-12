@@ -186,6 +186,31 @@
       </el-card>
     </el-dialog>
 
+    <!-- 审核通过 -->
+    <el-dialog :visible.sync="dialogVerifyMoneyReturn" title="通过审核">
+      <!-- 定义表单提交项 -->
+      <el-card class="box-card">
+        <el-form ref="verifyMoneyReturnForm" :model="verifyMoneyReturn" label-width="80px">
+          <el-form-item label="房号" label-width="100px" prop="houseId">
+            <el-input v-model="verifyMoneyReturn.houseId" placeholder="请输入房号（多个房间请用'/'间隔；如16-101/16-102" disabled />
+          </el-form-item>
+          <el-form-item label="客户姓名" label-width="100px" prop="houseName">
+            <el-input v-model="verifyMoneyReturn.houseName" disabled />
+          </el-form-item>
+          <el-form-item label="退款金额" label-width="100px" prop="moneyReturn">
+            <el-input v-model.number="verifyMoneyReturn.moneyReturn" disabled />
+          </el-form-item>
+          <el-form-item label="备注" label-width="100px" prop="remark">
+            <el-input v-model="verifyMoneyReturn.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="handleVerifyFormReturn(verifyMoneyReturn)">提交</el-button>
+            <el-button @click="handleCleanDataFormReturn()">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-dialog>
+
     <!-- 退款按钮的模态框 -->
     <el-dialog :visible.sync="dialogMoneyReturn" title="退款">
       <!-- 定义表单提交项 -->
@@ -228,7 +253,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney } from '@/api/payDecorationDeposit'
+import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney, verifyReturnMoney } from '@/api/payDecorationDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -322,6 +347,14 @@ export default {
         remark: null,
         adminId: this.$store.getters.adminId
       },
+      // 审核通过表单
+      verifyMoneyReturn: {
+        houseId: null,
+        houseName: null,
+        moneyReturn: null,
+        remark: null,
+        adminId: this.$store.getters.adminId
+      },
       // 调取短信验证码提交项目
       SMSPost: {
         houseId: null,
@@ -340,6 +373,7 @@ export default {
         paidDate: [{ required: true, message: '请选择交款日期', trigger: 'blur' }],
         payType: [{ required: true, message: '请选择费用收缴方式', trigger: 'blur' }]
       },
+      // 退款表单规则
       formRulesReturn: {
         moneyReturn: [{ required: true, message: '请输入退款金额(纯数字)', type: 'number', trigger: 'blur' }],
         returnDate: [{ required: true, message: '请选择退款日期', trigger: 'blur' }],
@@ -358,7 +392,8 @@ export default {
       // 声明下api变量
       tableData: [],
       pvData_all: [],
-      dialogApplyMoneyReturn: false
+      dialogApplyMoneyReturn: false,
+      dialogVerifyMoneyReturn: false
     }
   },
   computed: {
@@ -412,6 +447,13 @@ export default {
       this.applyMoneyReturn.houseId = row.houseId
       this.applyMoneyReturn.houseName = row.houseName
       this.dialogApplyMoneyReturn = true
+    },
+    // 审核通过按钮
+    handleVerifyMoneyReturn(row) {
+      this.verifyMoneyReturn.houseId = row.houseId
+      this.verifyMoneyReturn.houseName = row.houseName
+      this.verifyMoneyReturn.moneyReturn = row.moneyReturnNum
+      this.dialogVerifyMoneyReturn = true
     },
     // 获取验证码按钮
     getSmsCode(SMSPost) {
@@ -559,6 +601,45 @@ export default {
         }
       })
     },
+    // 审核通过退款表单
+    handleVerifyFormReturn(verifyMoneyReturn) {
+      // 表单项规则验证
+      this.$refs['verifyMoneyReturnForm'].validate((valid) => {
+        if (valid) {
+        // 操作确认框
+          this.$confirm('确定提交么？', '审核通过', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            verifyReturnMoney(verifyMoneyReturn).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.$nextTick(() => {
+                  this.$refs['verifyMoneyReturnForm'].resetFields()
+                })
+                this.dialogVerifyMoneyReturn = false
+                fetchSearchByHouseId(verifyMoneyReturn.houseId).then(response => {
+                  this.tableData = response.data.items
+                })
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+          })
+        }
+      })
+    },
     // 退款表单
     handleSubmitFormReturn(formReturn) {
       // 表单项规则验证
@@ -625,9 +706,15 @@ export default {
           this.$refs['applyMoneyReturnForm'].resetFields()
         })
       }
+      if (this.$refs['verifyMoneyReturnForm'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['verifyMoneyReturnForm'].resetFields()
+        })
+      }
       this.dialogMoneyGetFormVisible = false
       this.dialogMoneyReturn = false
       this.dialogApplyMoneyReturn = false
+      this.dialogVerifyMoneyReturn = false
     },
     // 点击houseId获取房间变更历史
     getHouseLog(houseId) {

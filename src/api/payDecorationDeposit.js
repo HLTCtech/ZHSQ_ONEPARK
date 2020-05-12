@@ -82,3 +82,12 @@ export function applyReturnMoney(applyMoneyReturn) {
     data: { applyMoneyReturn }
   })
 }
+
+// 审核通过
+export function verifyReturnMoney(verifyMoneyReturn) {
+  return request({
+    url: '/pay/decorationDeposit/verifyMoneyReturn',
+    method: 'post',
+    data: { verifyMoneyReturn }
+  })
+}
