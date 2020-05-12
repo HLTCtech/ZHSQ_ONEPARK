@@ -58,40 +58,68 @@ export const constantRoutes = [
       }
     ]
   },
-  // 壹号院收费凭证
+  // // 壹号院收费凭证
+  // {
+  //   path: '/chargingVoucherOnePark',
+  //   component: Layout,
+  //   // redirect: '/guide/index',
+  //   children: [
+  //     {
+  //       path: 'voucherManage',
+  //       component: () => import('@/views/chargingVoucher/voucherManageOnePark'),
+  //       name: 'voucherManage',
+  //       meta: {
+  //         title: '凭证打印',
+  //         icon: 'printer',
+  //         roles: 'admin',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
+  // // 尚郡收费凭证
+  // {
+  //   path: '/chargingVoucherShangjun',
+  //   component: Layout,
+  //   // redirect: '/guide/index',
+  //   children: [
+  //     {
+  //       path: 'voucherManage',
+  //       component: () => import('@/views/chargingVoucher/voucherManageShangJun'),
+  //       name: 'voucherManage',
+  //       meta: {
+  //         title: '凭证打印',
+  //         icon: 'printer',
+  //         roles: 'editor',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    path: '/chargingVoucherOnePark',
+    // 尚郡收费凭证
+    path: '/chargingVoucher',
     component: Layout,
-    // redirect: '/guide/index',
+    meta: {
+      title: '凭证打印',
+      icon: 'printer',
+      roles: 'admin'
+    },
     children: [
       {
         path: 'voucherManage',
-        component: () => import('@/views/chargingVoucher/voucherManageOnePark'),
+        component: () => import('@/views/chargingVoucher/voucherManage'),
         name: 'voucherManage',
         meta: {
-          title: '凭证打印',
-          icon: 'printer',
-          roles: 'admin',
-          noCache: true
+          title: '凭证打印'
         }
-      }
-    ]
-  },
-  // 尚郡收费凭证
-  {
-    path: '/chargingVoucherShangjun',
-    component: Layout,
-    // redirect: '/guide/index',
-    children: [
+      },
       {
-        path: 'voucherManage',
-        component: () => import('@/views/chargingVoucher/voucherManageShangJun'),
-        name: 'voucherManage',
+        path: 'rePrintVoucher',
+        component: () => import('@/views/chargingVoucher/rePrintVoucher'),
+        name: 'rePrintVoucher',
         meta: {
-          title: '凭证打印',
-          icon: 'printer',
-          roles: 'editor',
-          noCache: true
+          title: '已打印凭证'
         }
       }
     ]

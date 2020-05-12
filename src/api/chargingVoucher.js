@@ -1,9 +1,18 @@
 import request from '@/utils/request'
 
-// 查询当前登录的操作人所有的收费记录
+// 查询当前登录的操作人所有的收费记录(可打印)
 export function fetchAllCharging(listQuery) {
   return request({
     url: '/chargingVoucher/allByAdminId',
+    method: 'post',
+    data: { listQuery }
+  })
+}
+
+// 查询当前登录的操作人所有的收费记录(已打印)
+export function fetchAllPrinted(listQuery) {
+  return request({
+    url: '/chargingVoucher/allPrintedByAdminId',
     method: 'post',
     data: { listQuery }
   })
@@ -27,3 +36,20 @@ export function singleVoucherIdPost(voucherId) {
   })
 }
 
+// 申请重新打印获取验证码
+export function getReprintSMS(reprintForm) {
+  return request({
+    url: '/chargingVoucher/getReprintSMS',
+    method: 'post',
+    data: { reprintForm }
+  })
+}
+
+// 提交重新打印表单
+export function receiptReprintPost(reprintForm) {
+  return request({
+    url: '/chargingVoucher/receiptReprintPost',
+    method: 'post',
+    data: { reprintForm }
+  })
+}

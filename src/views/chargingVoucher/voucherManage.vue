@@ -11,7 +11,13 @@
       </el-button>
     </div>
 
-    <!-- 表格 -->
+    <el-button v-waves class="filter-item" type="success" icon="el-icon-coin" @click="handlePrintTest">
+      打印测试页
+    </el-button>
+    <br>
+    <br>
+
+    <!-- 可打印项目表格 -->
     <el-card style="margin-top: 20px; height: 50px;width:300px; text-align:center; vertical-align:middle">
       可打印的收费项目清单
     </el-card>
@@ -43,6 +49,154 @@
       </el-table>
     </div>
 
+    <!-- 分页功能实现标签 -->
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
+
+    <!-- 打印测试页 -->
+    <el-dialog :visible.sync="dialogPrintTest" title="打印测试页">
+      <div id="printVoucher">
+        <div class="fontbox">
+          <div class="invoicMain">
+            <div class="invoiceHeader">
+              <ul class="headerLeft">
+                <li>
+                  <!-- <label>收费日期：</label> -->
+                  <span style="margin-left:100px">2020-05-20 10:04:50</span>
+                </li>
+              </ul>
+              <div class="headerMiddle" style="margin-left:20px">
+                <!-- <h1>院子物业服务有限公司收据</h1> -->
+                <div class="line" />
+              </div>
+              <ul class="headerRight">
+                <li>
+                  <!-- <label style="margin-left: 20px"> 收据号： </label> -->
+                  <span style="margin-right:50px">20200520123</span>
+                </li>
+              </ul>
+            </div>
+            <div class="invoiceBody">
+              <div class="userInfo" style="height:60px">
+                <div class="houseId" style="width:46%">
+                  <span style="color:black;margin:0 auto">华龙壹号院</span>
+                </div>
+                <div class="houseId">
+                  <!-- <label>缴费房号：</label> -->
+                  <span style="color:black;margin:0 auto">16-02-01</span>
+                </div>
+                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223">
+                  <!-- <label>业主姓名：</label> -->
+                  <span style="color:black;margin:0 auto">张三三</span>
+                </div>
+              </div>
+              <div class="userInfo" style="height:60px">
+                <div class="moneyType" style="width: 15%">
+                  <!-- <label style="margin:auto auto">收费项目</label> -->
+                </div>
+                <div class="houseId" style="width:35%">
+                  <!-- <label style="margin:auto auto">费用周期</label> -->
+                </div>
+                <div class="password" style="width:20%">
+                  <!-- <label style="margin:auto auto">实收金额</label> -->
+                </div>
+                <div class="mixpayType" style="width:25%">
+                  <!-- <label style="margin:auto auto">缴费方式</label> -->
+                </div>
+              <!-- <div style="width: 100%;flex-flow: column;height: 60px">
+                <div class="payTypes" style="width:100%;height: 30px">
+                  <label style="margin:auto auto">缴费方式</label>
+                </div>
+              </div> -->
+              </div>
+              <div>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">电费</td>
+                    <td style="width: 35%;color: black;">2020-05-20至2020-06-20</td>
+                    <td style="width: 20%;color: black;">三百</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">现金</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">水费</td>
+                    <td style="width: 35%;color: black;">-</td>
+                    <td style="width: 20%;color: black;">500</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">物业费</td>
+                    <td style="width: 35%;color: black;">2020-5-20至2020-11-20</td>
+                    <td style="width: 20%;color: black;">500</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">代金券</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">电动车充电</td>
+                    <td style="width: 35%;color: black;">-</td>
+                    <td style="width: 20%;color: black;">200</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">微信</td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 15%;color: black;">装修保证金</td>
+                    <td style="width: 35%;color: black;">-</td>
+                    <td style="width: 20%;color: black;">1500</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝</td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr class="GoodsTotal">
+                    <td style="width: 273px">
+                      <!-- <label>合计人民币(大写)：</label> -->
+                    </td>
+                    <td colspan="2" style="border-right: 0px solid #9c5223">
+                      <div style="width: 100%;display:flex">
+                        <div type="text" style="margin-left: 40%;color: black">壹仟捌佰元</div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
+                  <ul style="margin-top:10px">
+                    <li>
+                      <!-- <label>备注:</label> -->
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span style="margin-left:80px">电表3月读数9240,3月用量129；4月读数9420,4月用量162</span>
+                    </li>
+                  </ul>
+                </table>
+              </div>
+            </div>
+            <ul class="invoicetFooter" style="margin-top:20px">
+              <li>
+                <!-- <label style="margin-left: 20px">单位盖章：</label> -->
+              </li>
+              <li>
+                <!-- <label>收款人：</label> -->
+                <span>李四</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <!-- 打印按钮 -->
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId, receiptNumber)">打印</el-button>
+      <el-button @click="cancelPrint()">取消</el-button>
+    </el-dialog>
+
+    <!-- ************************************************************************
+    *****************************************************************************
+    ***************************************************************************** -->
+
     <!-- 指定行的收费模态框 -->
     <el-dialog :visible.sync="dialogPrint" title="收据打印">
       <div id="printVoucher">
@@ -68,22 +222,31 @@
             </div>
             <div class="invoiceBody">
               <div class="userInfo" style="height:60px">
-                <ul style="width:46%">
-                  <li>
-                    <!-- <label>项目名称：</label> -->
-                    <span>{{ panNum }}</span>
-                  </li>
-                </ul>
-                <div class="houseId"><label>缴费房号：</label><span style="color:black">{{ houseId }}</span></div>
-                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223"><label>业主姓名：</label><span style="color:black">{{ houseName }}</span></div>
+                <div class="houseId" style="width:46%">
+                  <span style="color:black;margin:0 auto">{{ panNum }}</span>
+                </div>
+                <div class="houseId">
+                  <!-- <label>缴费房号：</label> -->
+                  <span style="color:black;margin:0 auto">{{ houseId }}</span>
+                </div>
+                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223">
+                  <!-- <label>业主姓名：</label> -->
+                  <span style="color:black;margin:0 auto">{{ houseName }}</span>
+                </div>
               </div>
               <div class="userInfo" style="height:60px">
                 <div class="moneyType" style="width: 15%">
-                  <label style="margin:auto auto">收费项目</label>
+                  <!-- <label style="margin:auto auto">收费项目</label> -->
                 </div>
-                <div class="houseId" style="width:35%"><label style="margin:auto auto">费用周期</label></div>
-                <div class="password" style="width:20%"><label style="margin:auto auto">实收金额</label></div>
-                <div class="mixpayType" style="width:25%"><label style="margin:auto auto">缴费方式</label></div>
+                <div class="houseId" style="width:35%">
+                  <!-- <label style="margin:auto auto">费用周期</label> -->
+                </div>
+                <div class="password" style="width:20%">
+                  <!-- <label style="margin:auto auto">实收金额</label> -->
+                </div>
+                <div class="mixpayType" style="width:25%">
+                  <!-- <label style="margin:auto auto">缴费方式</label> -->
+                </div>
               <!-- <div style="width: 100%;flex-flow: column;height: 60px">
                 <div class="payTypes" style="width:100%;height: 30px">
                   <label style="margin:auto auto">缴费方式</label>
@@ -137,7 +300,9 @@
                 </table>
                 <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
                   <tr class="GoodsTotal">
-                    <td style="width: 273px"><label>合计人民币(大写)：</label></td>
+                    <td style="width: 273px">
+                      <!-- <label>合计人民币(大写)：</label> -->
+                    </td>
                     <td colspan="2" style="border-right: 0px solid #9c5223">
                       <div style="width: 100%;display:flex">
                         <div type="text" style="margin-left: 40%;color: black">{{ payNumAllChinese }}</div>
@@ -148,7 +313,8 @@
                 <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
                   <ul style="margin-top:10px">
                     <li>
-                      <label>备注:</label>&nbsp;&nbsp;&nbsp;&nbsp;<span>{{ electricNumsRemark }}</span>
+                      <!-- <label>备注:</label> -->
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span style="margin-left:80px">{{ electricNumsRemark }}</span>
                     </li>
                   </ul>
                 </table>
@@ -156,18 +322,13 @@
             </div>
             <ul class="invoicetFooter" style="margin-top:20px">
               <li>
-                <label style="margin-left: 20px">单位盖章：</label>
+                <!-- <label style="margin-left: 20px">单位盖章：</label> -->
               </li>
               <li>
-                <label>收款人：</label><span>{{ operatorName }}</span>
+                <!-- <label>收款人：</label> -->
+                <span>{{ operatorName }}</span>
               </li>
             </ul>
-          </div>
-
-          <div class="rightText" style="padding-left: 0">
-            <span>
-              <br><br><br><br><br>第一联存根 <br><br>第二联客户联 <br><br>第三联记账联<br><br> 第四联客服
-            </span>
           </div>
         </div>
 
@@ -176,9 +337,6 @@
       <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId, receiptNumber)">打印</el-button>
       <el-button @click="cancelPrint()">取消</el-button>
     </el-dialog>
-
-    <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
 
   </div>
 </template>
@@ -198,6 +356,7 @@ export default {
     return {
       downloadLoading: false,
       listLoading: true,
+      printedTotal: 0,
       total: 0,
       listQuery_all: {
         page: 1,
@@ -205,6 +364,7 @@ export default {
         houseName: null,
         adminId: this.$store.getters.adminId
       },
+      printedTableData: null,
       tableData: null,
       dialogPrint: false,
       printObj: {
@@ -262,7 +422,9 @@ export default {
       item5: null,
       dateRange5: null,
       moneyGet5: null,
-      payTypesItem5: null
+      payTypesItem5: null,
+      // 打印测试页模态框
+      dialogPrintTest: null
     }
   },
   computed: {
@@ -276,6 +438,10 @@ export default {
     this.getList()
   },
   methods: {
+    // 打印测试页
+    handlePrintTest() {
+      this.dialogPrintTest = true
+    },
     // 单一项目打印
     handlePrintPost(houseId, receiptNumber) {
       this.printedHouIds.houseId = houseId
@@ -315,6 +481,7 @@ export default {
     },
     cancelPrint() {
       this.dialogPrint = false
+      this.dialogPrintTest = false
     },
     // 每行末尾针对单一项目的收费模态框
     printDialog(houseId) {
@@ -472,7 +639,7 @@ ul,
     .line {
         height: 2px;
         // border-top: #9c5223 1px solid;
-        border-bottom: #9c5223 1px solid;
+        // border-bottom: #9c5223 1px solid;
     }
 
     .headerRight li {
@@ -481,7 +648,7 @@ ul,
     }
 
     .invoiceBody {
-        border: 1px solid #9c5223;
+        // border: 1px solid #9c5223;
     }
 
     .userInfo {
@@ -489,7 +656,7 @@ ul,
         display: flex;
         align-items: center;
         height: 96px;
-        border-bottom: 1px solid #9c5223;
+        // border-bottom: 1px solid #9c5223;
     }
 
     .userInfo ul {
@@ -505,7 +672,7 @@ ul,
 
     .buy {
         width: 20px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
         padding: 0 10px;
         text-align: center;
         height: 100%;
@@ -527,7 +694,7 @@ ul,
     .houseId {
         padding: 0 10px;
         width: 60%;
-        border-left: 1px solid #9c5223;
+        // border-left: 1px solid #9c5223;
         text-align: left;
         height: 100%;
         display: flex;
@@ -538,8 +705,8 @@ ul,
     .password {
         padding: 0 10px;
         width: 50%;
-        border-left: 1px solid #9c5223;
-        border-right: 1px solid #9c5223;
+        // border-left: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
         text-align: center;
         height: 100%;
         display: flex;
@@ -561,7 +728,7 @@ ul,
         padding: 0 10px;
         height: 100%;
         text-align: center;
-        border-bottom: 1px solid #9c5223;
+        // border-bottom: 1px solid #9c5223;
         text-align: center;
         vertical-align: top;
         display: flex;
@@ -571,11 +738,11 @@ ul,
     .payItems {
         height: 100%;
         width: 100%;
-        border-collapse: collapse;
+        // border-collapse: collapse;
     }
 
     .payItems td {
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
         color: #9c5223;
         width: 30px;
         text-align: center;
@@ -601,34 +768,34 @@ ul,
 
     .name {
         width: 260px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .spec {
         width: 140px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .qty {
         width: 108px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .unit,
     .taxRate {
         width: 65px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .qty,
     .price {
         width: 160px;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .money {
         flex: 1;
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
     }
 
     .taxAmount {
@@ -638,11 +805,11 @@ ul,
     .GoodsTable {
         height: 210px;
         width: 100%;
-        border-collapse: collapse;
+        // border-collapse: collapse;
     }
 
     .GoodsTable td {
-        border-right: 1px solid #9c5223;
+        // border-right: 1px solid #9c5223;
         color: #9c5223;
     }
 
@@ -660,8 +827,8 @@ ul,
     }
 
     .GoodsTotal {
-        border-top: 1px solid #9c5223;
-        border-bottom: 1px solid #9c5223;
+        // border-top: 1px solid #9c5223;
+        // border-bottom: 1px solid #9c5223;
     }
 
     .total td:nth-child(1) {
