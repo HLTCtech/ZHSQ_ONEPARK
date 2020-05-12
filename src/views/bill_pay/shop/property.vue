@@ -111,6 +111,8 @@
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
+            <el-tag size="large" type="info" style="width: 100px;text-align:center;margin-left: 100px;margin-bottom:20px;" class="payType-item" disabled>应缴金额</el-tag>
+            <el-tag size="large" type="primary" style="width: 200px;text-align:center;" class="payType-item" disabled>{{ singlePropertyShallPay }}</el-tag>
             <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
                 <el-option v-for="item in singlePayOptions" :key="item.value" :label="item.label" :value="item.value" />
@@ -158,6 +160,8 @@
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
+            <el-tag size="large" type="info" style="width: 100px;text-align:center;margin-left: 100px;margin-bottom:20px;" class="payType-item" disabled>应缴金额</el-tag>
+            <el-tag size="large" type="primary" style="width: 200px;text-align:center;" class="payType-item" disabled>{{ mixPropertyShallPay }}</el-tag>
             <el-form-item label="支付宝" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
@@ -213,7 +217,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchShopListAll, fetchShopSearch, singleMoneyPost, mixMoneyPost, getPropertySMS, fetchSearchByHouseId, fetchPreViewAll } from '@/api/payProperty'
+import { fetchShopListAll, fetchShopSearch, singleMoneyPost, mixMoneyPost, getPropertySMS, fetchSearchByHouseId, fetchPreViewAll, getRealtimeProperty } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -336,7 +340,14 @@ export default {
       dialogSMSVisible: false,
       // 收费页面模态框
       dialogMoneyPost: false,
-      dialogHouseLog: false
+      dialogHouseLog: false,
+      // 监听周期计算应交金额
+      singlePropertyShallPay: 0,
+      mixPropertyShallPay: 0,
+      getProperty: {
+        houseId: null,
+        propertyDateRange: null
+      }
     }
   },
   computed: {
@@ -380,10 +391,29 @@ export default {
     payPatternChange(val) {
       if (this.$refs['singleDataForm'] !== undefined) {
         this.$refs['singleDataForm'].clearValidate()
+        this.singlePropertyShallPay = 0
+        this.mixPropertyShallPay = 0
       }
       if (this.$refs['mixDataForm'] !== undefined) {
         this.$refs['mixDataForm'].clearValidate()
+        this.singlePropertyShallPay = 0
+        this.mixPropertyShallPay = 0
       }
+    },
+    // 监听前端周期变化
+    // 单一缴费
+    'singleFormPost.singlePayDateRange': function() {
+      if (this.singleFormPost.singlePayDateRange !== null) {
+        this.getSinglePayRealtimeProperty()
+      }
+      this.singlePropertyShallPay = 0
+    },
+    // 复合缴费
+    'mixFormPost.mixPayDateRange': function() {
+      if (this.mixFormPost.mixPayDateRange !== null) {
+        this.getMixPayRealtimeProperty()
+      }
+      this.mixPropertyShallPay = 0
     }
   },
   created() {
@@ -413,6 +443,24 @@ export default {
       fetchShopSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
+      })
+    },
+    // 根据前端周期监听返回相应的金额
+    // 单一缴费
+    getSinglePayRealtimeProperty() {
+      this.getProperty.houseId = this.singleFormPost.houseId
+      this.getProperty.propertyDateRange = this.singleFormPost.singlePayDateRange
+      getRealtimeProperty(this.getProperty).then(response => {
+        this.singlePropertyShallPay = response.propertyShallPay
+        this.mixPropertyShallPay = response.propertyShallPay
+      })
+    },
+    // 复合缴费
+    getMixPayRealtimeProperty() {
+      this.getProperty.houseId = this.mixFormPost.houseId
+      this.getProperty.propertyDateRange = this.mixFormPost.mixPayDateRange
+      getRealtimeProperty(this.getProperty).then(response => {
+        this.mixPropertyShallPay = response.propertyShallPay
       })
     },
     // 返回表尾部数据合计行
