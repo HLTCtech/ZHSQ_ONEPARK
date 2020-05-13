@@ -54,3 +54,38 @@ export function getHeatSMS(singleSMSPost) {
   })
 }
 
+// 退款
+export function returnMoney(formReturn) {
+  return request({
+    url: '/pay/heat/moneyReturn',
+    method: 'post',
+    data: { formReturn }
+  })
+}
+
+// 申请退款
+export function applyReturnMoney(applyMoneyReturn) {
+  return request({
+    url: '/pay/heat/applyMoneyReturn',
+    method: 'post',
+    data: { applyMoneyReturn }
+  })
+}
+
+// 审核通过
+export function verifyReturnMoney(verifyMoneyReturn) {
+  return request({
+    url: '/pay/heat/verifyMoneyReturn',
+    method: 'post',
+    data: { verifyMoneyReturn }
+  })
+}
+
+// 驳回申请
+export function refuseVerifyReturnMoney(verifyMoneyReturn) {
+  return request({
+    url: '/pay/heat/refuseVerifyMoneyReturn',
+    method: 'post',
+    data: { verifyMoneyReturn }
+  })
+}
