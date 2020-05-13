@@ -37,8 +37,8 @@ export function fetchHouseDecorationDepositSearch(query) {
   })
 }
 
-// 住宅接口-----------------------------------------------------------
-// 查询所有的住宅装修保证金信息
+// 商铺接口-----------------------------------------------------------
+// 查询所有的商铺装修保证金信息
 export function fetchShopDecorationDepositListAll(query) {
   return request({
     url: '/pay/decorationDeposit/shop/all',
@@ -87,6 +87,15 @@ export function applyReturnMoney(applyMoneyReturn) {
 export function verifyReturnMoney(verifyMoneyReturn) {
   return request({
     url: '/pay/decorationDeposit/verifyMoneyReturn',
+    method: 'post',
+    data: { verifyMoneyReturn }
+  })
+}
+
+// 驳回申请
+export function refuseVerifyReturnMoney(verifyMoneyReturn) {
+  return request({
+    url: '/pay/decorationDeposit/refuseVerifyMoneyReturn',
     method: 'post',
     data: { verifyMoneyReturn }
   })
