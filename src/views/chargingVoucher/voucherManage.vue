@@ -687,7 +687,7 @@ ul,
     }
 
     .headerLeft li {
-        margin-top: 100px;
+        // margin-top: 100px;
     }
 
     .headerMiddle h1 {
@@ -705,7 +705,7 @@ ul,
 
     .headerRight li {
         line-height: 24px;
-        margin-top: 100px;
+        // margin-top: 100px;
     }
 
     .invoiceBody {
