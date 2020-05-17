@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function fetchShopRentList(listQuery_all) {
   return request({
     url: '/pay/shopRent/all',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
@@ -13,8 +13,8 @@ export function fetchShopRentList(listQuery_all) {
 export function fetchShopRentSearch(listQuery_search) {
   return request({
     url: '/pay/shopRent/search',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
 
@@ -22,8 +22,8 @@ export function fetchShopRentSearch(listQuery_search) {
 export function getRentShallPay(shopId) {
   return request({
     url: '/pay/shopRent/rentShallPayByShopId',
-    method: 'get',
-    params: { shopId }
+    method: 'post',
+    data: { shopId }
   })
 }
 
@@ -32,7 +32,7 @@ export function getSMS(formPost) {
   return request({
     url: '/pay/shopRent/getSMS',
     method: 'post',
-    params: { formPost }
+    data: { formPost }
   })
 }
 
@@ -41,7 +41,7 @@ export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/pay/shopRent/singleMoneyPost',
     method: 'post',
-    params: { singleFormPost }
+    data: { singleFormPost }
   })
 }
 
@@ -58,8 +58,8 @@ export function mixMoneyPost(mixFormPost) {
 export function fetchShopRentListTest(listQuery_all) {
   return request({
     url: '/pay/shopRent/allTest',
-    method: 'get',
-    params: { listQuery_all }
+    method: 'post',
+    data: { listQuery_all }
   })
 }
 
@@ -67,7 +67,7 @@ export function fetchShopRentListTest(listQuery_all) {
 export function fetchShopRentSearchTest(listQuery_search) {
   return request({
     url: '/pay/shopRent/searchTest',
-    method: 'get',
-    params: { listQuery_search }
+    method: 'post',
+    data: { listQuery_search }
   })
 }
