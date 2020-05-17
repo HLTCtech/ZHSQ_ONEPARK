@@ -3,26 +3,14 @@
   <div class="app-container">
 
     <!-- 顶部搜索框 -->
-    <div class="filter-container">
+    <!-- <div class="filter-container">
       <el-input v-model="listQuery_search.shopId" type="text" placeholder="输入房号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.shopOwner" type="text" placeholder="输入店面" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.shopRenter" type="text" placeholder="输入租赁人" style="width: 130px" class="filter-item" clearable />
-      <!-- <el-date-picker
-        v-model="listQuery_search.dateRange"
-        class="filter-item"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        value-format="yyyy-MM-dd"
-      /> -->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">
         搜索
       </el-button>
-    </div>
+    </div> -->
 
     <!-- 缴款记录表格 -->
     <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
