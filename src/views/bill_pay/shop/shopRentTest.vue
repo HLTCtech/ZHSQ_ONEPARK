@@ -37,35 +37,17 @@
       <el-table-column label="租赁人" prop="shopRenter" align="center" width="100" />
       <el-table-column label="联系方式" prop="shopPhone" align="center" />
       <el-table-column label="租期" prop="rentDaterange" align="center" />
+      <el-table-column label="收费方式" prop="rentType" align="center" />
       <el-table-column label="收费标准" prop="rentRate" align="center" />
       <el-table-column label="保证金" prop="shopDeposit" align="center" />
-      <el-table-column label="2018" align="center">
-        <el-table-column label="缴费周期" prop="moneyDateRange2018" align="center" />
-        <el-table-column label="租金" prop="rentNum2018" align="center" />
-        <el-table-column label="是否缴纳" prop="isPaid2018" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.isPaid2018 !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaid2018 }}</el-tag>
-          </template>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="2019" align="center">
-        <el-table-column label="缴费周期" prop="moneyDateRange2019" align="center" />
-        <el-table-column label="租金" prop="rentNum2019" align="center" />
-        <el-table-column label="是否缴纳" prop="isPaid2019" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.isPaid2019 !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaid2019 }}</el-tag>
-          </template>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="近期费用记录" align="center">
-        <el-table-column label="缴费周期" prop="moneyDateRangeNearest" align="center" />
-        <el-table-column label="租金" prop="rentNumNearest" align="center" />
-        <el-table-column label="是否缴纳" prop="isPaidNearest" align="center">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.isPaidNearest !== '已交' ? 'danger' : 'success'" disable-transitions>{{ scope.row.isPaidNearest }}</el-tag>
-          </template>
-        </el-table-column>
-      </el-table-column>
+      <el-table-column label="应交日期" prop="shallPayDate" align="center" />
+      <el-table-column label="交款日期" prop="paidDate" align="center" />
+      <el-table-column label="逾期天数" prop="overdueDays" align="center" />
+      <el-table-column label="滞纳金" prop="overdueMoney" align="center" />
+      <el-table-column label="缴费周期" prop="payDateRange" align="center" />
+      <el-table-column label="应收租金" prop="rentMoneyGet" align="center" />
+      <el-table-column label="已交租金" prop="rentMoneyPaid" align="center" />
+      <el-table-column label="剩余逾期未缴合计" prop="moneyShallPayOverall" align="center" />
       <el-table-column label="收费" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
@@ -200,7 +182,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchShopRentList, fetchShopRentSearch, getRentShallPay, singleMoneyPost, mixMoneyPost, getSMS } from '@/api/shopRent'
+import { fetchShopRentListTest, fetchShopRentSearchTest, getRentShallPay, singleMoneyPost, mixMoneyPost, getSMS } from '@/api/shopRent'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 import permission from '@/directive/permission/index.js' // 权限判断指令
@@ -208,11 +190,12 @@ import permission from '@/directive/permission/index.js' // 权限判断指令
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'ShopRent',
+  name: 'ShopRentTest',
   directives: { waves, permission },
   // components: { Pagination },
   data() {
     return {
+      listLoading: true,
       show: true,
       count: '',
       payPattern: true,
@@ -265,7 +248,6 @@ export default {
       },
       // 单一缴费时的选项
       singlePayOptions: [{ value: '现金', label: '现金' }, { value: '刷卡', label: '刷卡' }, { value: '转账', label: '转账' }, { value: '其他', label: '其他' }],
-      listLoading: true,
       // 调取短信验证码提交项目
       singleSMSPost: {
         shopId: null,
@@ -362,7 +344,7 @@ export default {
     // 获取表格数据
     getList() {
       this.listLoading = true
-      fetchShopRentList().then(response => {
+      fetchShopRentListTest().then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -371,7 +353,7 @@ export default {
     // 搜索记录
     handleSearch() {
       this.listLoading = true
-      fetchShopRentSearch(this.listQuery_search).then(response => {
+      fetchShopRentSearchTest(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -448,7 +430,7 @@ export default {
             this.mixFormPost.mixPayType[2].value = ''
             this.mixFormPost.mixPayType[3].value = ''
             this.mixFormPost.remark = ''
-            fetchShopRentList().then(response => {
+            fetchShopRentListTest().then(response => {
               this.tableData = response.data.items
               this.total = response.total
             })
@@ -498,7 +480,7 @@ export default {
                   this.mixFormPost.mixPayType[3].value = ''
                   this.mixFormPost.remark = ''
                   this.dialogMoneyPost = false
-                  fetchShopRentList().then(response => {
+                  fetchShopRentListTest().then(response => {
                     this.tableData = response.data.items
                     this.total = response.total
                   })
@@ -557,7 +539,7 @@ export default {
                     this.mixFormPost.mixPayType[3].value = ''
                     this.mixFormPost.remark = ''
                     this.dialogMoneyPost = false
-                    fetchShopRentList().then(response => {
+                    fetchShopRentListTest().then(response => {
                       this.tableData = response.data.items
                       this.total = response.total
                     })
@@ -602,7 +584,7 @@ export default {
                 this.mixFormPost.mixPayType[3].value = ''
                 this.mixFormPost.remark = ''
                 this.dialogMoneyPost = false
-                fetchShopRentList().then(response => {
+                fetchShopRentListTest().then(response => {
                   this.tableData = response.data.items
                   this.total = response.total
                 })

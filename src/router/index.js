@@ -261,6 +261,14 @@ export const constantRoutes = [
         meta: {
           title: '商铺租金'
         }
+      },
+      {
+        path: 'shopRentTest',
+        component: () => import('@/views/bill_pay/shop/shopRentTest'),
+        name: 'shopRentTest',
+        meta: {
+          title: '商铺租金测试'
+        }
       }
     ]
   },

@@ -31,8 +31,8 @@ export function fetchDecorationDepositListAll(query) {
 export function fetchDecorationDepositSearch(query) {
   return request({
     url: '/billOverall/decorationDeposit/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 

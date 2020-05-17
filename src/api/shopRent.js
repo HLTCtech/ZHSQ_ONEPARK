@@ -54,3 +54,20 @@ export function mixMoneyPost(mixFormPost) {
   })
 }
 
+// TEST----------所有租金的list
+export function fetchShopRentListTest(listQuery_all) {
+  return request({
+    url: '/pay/shopRent/allTest',
+    method: 'get',
+    params: { listQuery_all }
+  })
+}
+
+// TEST----------搜索租金search
+export function fetchShopRentSearchTest(listQuery_search) {
+  return request({
+    url: '/pay/shopRent/searchTest',
+    method: 'get',
+    params: { listQuery_search }
+  })
+}
