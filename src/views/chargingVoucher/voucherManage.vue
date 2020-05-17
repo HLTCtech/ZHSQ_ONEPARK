@@ -60,7 +60,7 @@
 
     <!-- 指定收据号模态框 -->
     <el-dialog width="40%" title="指定收据号" style="top: 20%" :visible.sync="dialogReceiptNumVisible" append-to-body>
-      <el-input v-model="assignReceiptForm.receiptNumber" type="text" placeholder="输入收据号" style="width: 500px" class="filter-item" clearable />
+      <el-input v-model="assignReceiptForm.receiptNumber" type="number" placeholder="输入收据号" style="width: 500px" class="filter-item" clearable />
       <br>
       <br>
       <el-button type="success" @click="handleAsignReceiptPost(assignReceiptForm)">确定提交</el-button>
@@ -566,25 +566,34 @@ export default {
     },
     // 指定收据号表单提交
     handleAsignReceiptPost(assignReceiptForm) {
-      assignReceiptPost(assignReceiptForm).then(response => {
-        if (response.codeStatus === 200) {
-          this.$notify({
-            title: 'Success',
-            message: '提交成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.assignReceiptForm.receiptNumber = ''
-          this.dialogReceiptNumVisible = false
-        } else {
-          this.$notify({
-            title: 'Failure',
-            message: '提交失败，请联系系统管理员',
-            type: 'error',
-            duration: 3000
-          })
-        }
-      })
+      if (assignReceiptForm.receiptNumber === '') {
+        this.$notify({
+          title: 'error',
+          message: '请输入收据号',
+          type: 'error',
+          duration: 2000
+        })
+      } else {
+        assignReceiptPost(assignReceiptForm).then(response => {
+          if (response.codeStatus === 200) {
+            this.$notify({
+              title: 'Success',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.assignReceiptForm.receiptNumber = ''
+            this.dialogReceiptNumVisible = false
+          } else {
+            this.$notify({
+              title: 'Failure',
+              message: '提交失败，请联系系统管理员',
+              type: 'error',
+              duration: 3000
+            })
+          }
+        })
+      }
     },
     getList() {
       fetchAllCharging(this.listQuery_all).then(response => {
