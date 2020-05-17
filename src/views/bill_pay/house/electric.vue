@@ -328,7 +328,8 @@ export default {
         unitNum: null,
         houseNum: null,
         datePicker: null,
-        houseName: null
+        houseName: null,
+        year: '2020'
       },
       // 单一缴费时的选项
       singlePayOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
