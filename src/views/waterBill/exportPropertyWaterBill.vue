@@ -135,8 +135,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', '房号', '业主姓名', '缴费项目', '周期开始', '周期结束', '缴费方式1', '缴费金额1', '缴费方式2', '缴费金额2', '备注']
-        const filterVal = ['id', 'houseId', 'houseName', 'payItem', 'dateRangeStart', 'dateRangeEnd', 'payType1', 'payNum1', 'payType2', 'payNum2', 'remark']
+        const tHeader = ['Id', '房号', '业主姓名', '缴费项目', '周期开始', '周期结束', '支付宝', '微信', '现金', '代金券', '其他', '特批', '缴费时间', '备注']
+        const filterVal = ['id', 'houseId', 'houseName', 'payItem', 'dateRangeStart', 'dateRangeEnd', 'alipayNum', 'wechatNum', 'cashNum', 'voucherNum', 'otherNum', 'specialNum', 'paidDate', 'remark']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
