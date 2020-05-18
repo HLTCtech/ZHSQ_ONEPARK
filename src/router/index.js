@@ -216,6 +216,14 @@ export const constantRoutes = [
         meta: {
           title: '垃圾清运费'
         }
+      },
+      {
+        path: 'passDeposit',
+        component: () => import('@/views/bill_pay/house/passDeposit'),
+        name: 'passDeposit',
+        meta: {
+          title: '出入证押金'
+        }
       }
     ]
   },
