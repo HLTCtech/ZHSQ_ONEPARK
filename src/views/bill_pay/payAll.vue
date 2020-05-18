@@ -154,6 +154,18 @@
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.trashMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
+      <!-- 出入证押金缴纳 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证押金</el-tag>
+        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input v-model="ItemsPay.passMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+      </div>
+      <!-- 出入证工本费缴纳 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证工本费</el-tag>
+        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input v-model="ItemsPay.passCostMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+      </div>
       <!-- 杂项费用缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>杂项费用</el-tag>
@@ -355,6 +367,8 @@ export default {
         parkingMoneyNum: null,
         parkingVoucherNum: null,
         electricDateRange: null,
+        passMoneyNum: null,
+        passCostMoneyNum: null,
         electricMoneyNum: '',
         waterMoneyNum: '',
         heatMoneyNum: '',
