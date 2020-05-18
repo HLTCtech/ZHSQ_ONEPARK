@@ -71,7 +71,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="getList" />
 
     <!-- 打印测试页 -->
-    <el-dialog :visible.sync="dialogPrintTest" title="打印测试页">
+    <!-- <el-dialog :visible.sync="dialogPrintTest" title="打印测试页">
       <div id="printVoucher">
         <div class="fontbox">
           <div class="invoicMain">
@@ -121,11 +121,6 @@
                 <div class="mixpayType" style="width:25%">
                   <label style="margin:auto auto">缴费方式</label>
                 </div>
-              <!-- <div style="width: 100%;flex-flow: column;height: 60px">
-                <div class="payTypes" style="width:100%;height: 30px">
-                  <label style="margin:auto auto">缴费方式</label>
-                </div>
-              </div> -->
               </div>
               <div>
                 <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
@@ -199,10 +194,164 @@
                 <label style="margin-left: 20px">单位盖章：</label>
               </li>
               <li>
+                <label style="margin-right: 120px">收款人：</label>
+                <span></span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="rightText" style="padding-left: 0">
+            <span>
+              <br><br><br><br><br>第一联存根 <br><br>第二联客户联 <br><br>第三联记账联<br><br> 第四联客服
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+      <el-button v-print="printObj" style="margin-top:50px" type="success" @click="handlePrintPost(houseId, receiptNumber)">打印</el-button>
+      <el-button @click="cancelPrint()">取消</el-button>
+    </el-dialog> -->
+
+    <!-- 打印测试页 -->
+    <el-dialog :visible.sync="dialogPrintTest" title="打印测试页">
+      <div id="printVoucher">
+        <div class="fontbox">
+          <div class="invoicMain">
+            <div class="invoiceHeader">
+              <ul class="headerLeft">
+                <li>
+                  <label>收费日期：</label>
+                  <!-- <span>2020-05-20 10:04:50</span> -->
+                </li>
+              </ul>
+              <div class="headerMiddle" style="margin-left:20px">
+                <h1>华美物业服务有限公司收据</h1>
+                <div class="titleLine" />
+              </div>
+              <ul class="headerRight">
+                <li>
+                  <label style="margin-right: 90px;"> 收据号： </label>
+                  <!-- <span style="margin-right:20px;">20200520123</span> -->
+                </li>
+              </ul>
+            </div>
+            <div class="invoiceBody">
+              <div class="userInfo" style="height:60px">
+                <div class="houseName" style="width:46%">
+                  <label>项目名称：</label>
+                  <!-- <span style="color:black;margin:0 auto;">华龙壹号院</span> -->
+                </div>
+                <div class="houseId">
+                  <label>缴费房号：</label>
+                  <!-- <span style="color:black;margin:0 auto">16-02-01</span> -->
+                </div>
+                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223">
+                  <label>业主姓名：</label>
+                  <!-- <span style="color:black;margin:0 auto">张三三</span> -->
+                </div>
+              </div>
+              <div class="userInfo" style="height:60px">
+                <div class="moneyType" style="width: 18%">
+                  <label style="margin:auto auto">收费项目</label>
+                </div>
+                <div class="houseId" style="width:35%">
+                  <label style="margin:auto auto">费用周期</label>
+                </div>
+                <div class="password" style="width:20%">
+                  <label style="margin:auto auto">实收金额</label>
+                </div>
+                <div class="mixpayType" style="width:25%">
+                  <label style="margin:auto auto">缴费方式</label>
+                </div>
+              <!-- <div style="width: 100%;flex-flow: column;height: 60px">
+                <div class="payTypes" style="width:100%;height: 30px">
+                  <label style="margin:auto auto">缴费方式</label>
+                </div>
+              </div> -->
+              </div>
+              <div>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 18%;color: black;"></td>
+                    <td style="width: 35%;color: black;"></td>
+                    <td style="width: 20%;color: black;"></td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223"></td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 18%;color: black;"></td>
+                    <td style="width: 35%;color: black;"></td>
+                    <td style="width: 20%;color: black;"></td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223"></td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 18%;color: black;"></td>
+                    <td style="width: 35%;color: black;"></td>
+                    <td style="width: 20%;color: black;"></td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223"></td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 18%;color: black;"></td>
+                    <td style="width: 35%;color: black;"></td>
+                    <td style="width: 20%;color: black;"></td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223"></td>
+                  </tr>
+                </table>
+                <div class="line" />
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 18%;color: black;"></td>
+                    <td style="width: 35%;color: black;"></td>
+                    <td style="width: 20%;color: black;"></td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223"></td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                  <tr class="GoodsTotal">
+                    <td style="width: 273px">
+                      <label>合计人民币(大写)：</label>
+                    </td>
+                    <td colspan="2" style="border-right: 0px solid #9c5223">
+                      <div style="width: 100%;display:flex">
+                        <div type="text" style="margin-left: 40%;color: black"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <table class="GoodsTable" style="height: 30px" cellpadding="0" cellspacing="0">
+                  <ul style="margin-top:10px">
+                    <li>
+                      <label>备注:</label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span style="margin-left:80px"></span>
+                    </li>
+                  </ul>
+                </table>
+              </div>
+            </div>
+            <ul class="invoicetFooter" style="margin-top:20px">
+              <li>
+                <label style="margin-left: 20px">单位盖章：</label>
+              </li>
+              <li>
                 <label>收款人：</label>
                 <span></span>
               </li>
             </ul>
+          </div>
+
+          <div class="rightText" style="padding-left: 0">
+            <span>
+              <br><br><br><br><br>第一联存根 <br><br>第二联客户联 <br><br>第三联记账联<br><br> 第四联客服
+            </span>
           </div>
         </div>
 
@@ -235,7 +384,7 @@
               <ul class="headerRight">
                 <li>
                   <label style="margin-left: 20px"> 收据号： </label>
-                  <span style="margin-right:50px">{{ receiptNumber }}</span>
+                  <span style="margin-right:80px">{{ receiptNumber }}</span>
                 </li>
               </ul>
             </div>
@@ -644,7 +793,7 @@ ul,
 
     label {
         font-weight: 100;
-        font-size: 20px;
+        font-size: 19px;
         color: #9c5223;
     }
 
@@ -696,7 +845,13 @@ ul,
     .line {
         height: 2px;
         border-top: #9c5223 1px solid;
-        border-bottom: #9c5223 1px solid;
+        // border-bottom: #9c5223 1px solid;
+    }
+
+    .titleLine {
+        height: 2px;
+        border-top: #9c5223 1px solid;
+        // border-bottom: #9c5223 1px solid;
     }
 
     .headerRight li {
@@ -752,6 +907,17 @@ ul,
         padding: 0 10px;
         width: 60%;
         border-left: 1px solid #9c5223;
+        text-align: left;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: #9c5223;
+    }
+
+    .houseName {
+        padding: 0 10px;
+        width: 60%;
+        // border-left: 1px solid #9c5223;
         text-align: left;
         height: 100%;
         display: flex;

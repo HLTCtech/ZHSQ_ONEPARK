@@ -76,7 +76,7 @@
         <div class="fontbox">
           <div class="invoicMain">
             <div class="invoiceHeader">
-              <ul class="headerLeft">
+              <ul class="headerLeft" style="margin-top:80px">
                 <li>
                   <!-- <label>收费日期：</label> -->
                   <span style="margin-left:100px">2020-05-20 10:04:50</span>
@@ -86,7 +86,7 @@
                 <!-- <h1>院子物业服务有限公司收据</h1> -->
                 <div class="line" />
               </div>
-              <ul class="headerRight">
+              <ul class="headerRight" style="margin-top:80px">
                 <li>
                   <!-- <label style="margin-left: 20px"> 收据号： </label> -->
                   <span style="margin-right:50px">20200520123</span>
@@ -96,7 +96,7 @@
             <div class="invoiceBody">
               <div class="userInfo" style="height:60px">
                 <div class="houseId" style="width:46%">
-                  <span style="color:black;margin:0 auto">华龙壹号院</span>
+                  <span style="color:black;margin:0 auto;padding-left:100px;">华龙壹号院</span>
                 </div>
                 <div class="houseId">
                   <!-- <label>缴费房号：</label> -->

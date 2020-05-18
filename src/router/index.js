@@ -121,15 +121,15 @@ export const constantRoutes = [
         meta: {
           title: '已打印凭证'
         }
-      },
-      {
-        path: 'voucherManageTest',
-        component: () => import('@/views/chargingVoucher/voucherManageTest'),
-        name: 'voucherManageTest',
-        meta: {
-          title: '测试'
-        }
       }
+      // {
+      //   path: 'voucherManageTest',
+      //   component: () => import('@/views/chargingVoucher/voucherManageTest'),
+      //   name: 'voucherManageTest',
+      //   meta: {
+      //     title: '测试'
+      //   }
+      // }
     ]
   },
   // 费用清缴
