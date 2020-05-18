@@ -369,7 +369,7 @@ export default {
       SMSPost: {
         houseId: null,
         adminId: this.$store.getters.adminId,
-        payItem: '住宅装修保证金'
+        payItem: '出入证押金'
       },
       // 单一缴费时的选项
       payOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
