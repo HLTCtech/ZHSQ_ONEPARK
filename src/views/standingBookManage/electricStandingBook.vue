@@ -39,7 +39,19 @@
 
     <!-- 表格 -->
     <div class="printTable">
-      <el-table highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800" :summary-method="getSummaries" show-summary>
+      <el-table
+        v-loading="listLoading"
+        highlight-current-row
+        stripe
+        border
+        fit
+        :data="tableColumns"
+        style="width: 100%"
+        align="center"
+        height="800"
+        :summary-method="getSummaries"
+        show-summary
+      >
         <!-- 左侧固定列 -->
         <el-table-column fixed prop="id" label="ID" width="80" align="center" style="background-color: green" />
         <el-table-column label="房号" prop="houseId" align="center" fixed>
@@ -169,6 +181,7 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchStandingBookListAll(this.listQuery_all).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
@@ -190,10 +203,12 @@ export default {
         this.$delete(this.titleData, titleLengthLast4)
         // 将处理过的表头数组返回
         this.titleDataFiltered = this.titleData
+        this.listLoading = false
       })
     },
     // 根据选定信息搜索
     fetchListSearch() {
+      this.listLoading = true
       fetchElectricStandingBookSearch(this.listQuery_search).then(response => {
         this.titleData = response.data.titles
         this.tableColumns = response.data.items
@@ -215,6 +230,7 @@ export default {
         this.$delete(this.titleData, titleLengthLast4)
         // 将处理过的表头数组返回
         this.titleDataFiltered = this.titleData
+        this.listLoading = false
       })
     },
     handleFilter() {

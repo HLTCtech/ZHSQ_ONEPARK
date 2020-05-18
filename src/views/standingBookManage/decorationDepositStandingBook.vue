@@ -26,7 +26,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
+    <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
@@ -133,15 +133,19 @@ export default {
   },
   methods: {
     getList() {
+      this.listLoading = true
       fetchDecorationDepositListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
+        this.listLoading = false
       })
     },
     // 根据选定信息搜索
     fetchListSearch() {
+      this.listLoading = true
       fetchDecorationDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.listLoading = false
       })
     },
     handleFilter() {

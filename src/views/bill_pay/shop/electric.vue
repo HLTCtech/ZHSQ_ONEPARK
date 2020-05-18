@@ -31,7 +31,7 @@
           <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
           <span v-else-if="scope.column.property=='electricMeterId'">{{ scope.row[scope.column.property] }}</span>
-          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'success' : 'danger'" @click="handleFetchPv_all(scope.row.houseId, scope.row.electricMeterId)">
+          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'danger' : 'success'" @click="handleFetchPv_all(scope.row.houseId, scope.row.electricMeterId)">
             <!-- <el-tag :type="scope.column.status === 'yes' ? 'success' : 'danger'" disable-transitions> -->
             {{ scope.row[scope.column.property] }}
             <!-- </el-tag> -->
