@@ -169,14 +169,14 @@ export const constantRoutes = [
           title: '住宅电费'
         }
       },
-      {
-        path: 'water',
-        component: () => import('@/views/bill_pay/house/water'),
-        name: 'water',
-        meta: {
-          title: '住宅水费'
-        }
-      },
+      // {
+      //   path: 'water',
+      //   component: () => import('@/views/bill_pay/house/water'),
+      //   name: 'water',
+      //   meta: {
+      //     title: '住宅水费'
+      //   }
+      // },
       {
         path: 'property',
         component: () => import('@/views/bill_pay/house/property'),
@@ -390,26 +390,26 @@ export const constantRoutes = [
     ]
   },
   // Excel表格管理
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'Excel管理',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/upload-excel'),
-        name: 'UploadExcel',
-        meta: {
-          title: '上传电表读数Excel'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/excel',
+  //   component: Layout,
+  //   redirect: '/excel/export-excel',
+  //   name: 'Excel',
+  //   meta: {
+  //     title: 'Excel管理',
+  //     icon: 'excel'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'upload-excel',
+  //       component: () => import('@/views/excel/upload-excel'),
+  //       name: 'UploadExcel',
+  //       meta: {
+  //         title: '上传电表读数Excel'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     // 费用提醒
     path: '/billRemind',
