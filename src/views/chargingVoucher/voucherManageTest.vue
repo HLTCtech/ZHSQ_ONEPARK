@@ -246,7 +246,7 @@
                   <label>缴费房号：</label>
                   <!-- <span style="color:black;margin:0 auto">16-02-01</span> -->
                 </div>
-                <div class="password" style="margin-left:58px;border-right: 0px solid #9c5223">
+                <div class="password" style="width:43%;margin-left:58px;border-right: 0px solid #9c5223">
                   <label>业主姓名：</label>
                   <!-- <span style="color:black;margin:0 auto">张三三</span> -->
                 </div>

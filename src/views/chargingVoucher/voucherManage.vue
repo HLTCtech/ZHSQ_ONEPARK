@@ -561,7 +561,7 @@ export default {
     },
     // 指定收据号取消按钮
     handleCleanReceiptNumForm() {
-      this.getHouseIdPrintQuery.receiptNumber = ''
+      this.assignReceiptForm.receiptNumber = ''
       this.dialogReceiptNumVisible = false
     },
     // 指定收据号表单提交
