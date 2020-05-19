@@ -109,6 +109,18 @@
 
     <!-- 信息变更按钮：定义表单提交项 -->
     <el-dialog :visible.sync="dialogParkingInfoChangeFormVisible" title="信息变更/续费">
+      <!-- 展示当前房间的费用状态统计 -->
+      <el-table :data="tableDataPvAll" border fit highlight-current-row style="width: 100%" align="center">
+        <el-table-column prop="houseId" label="房间号" align="center" />
+        <el-table-column prop="carLoc" label="车位号" align="center" />
+        <el-table-column prop="carShallPayDate" label="应缴费日期" align="center" />
+        <el-table-column prop="carDeadline" label="截止日期" align="center" />
+        <el-table-column prop="carOverdueDays" label="逾期天数" align="center" />
+        <el-table-column prop="carMonths" label="月数" align="center" />
+        <el-table-column prop="carShallPayParking" label="应交费用" align="center" />
+      </el-table>
+      <br>
+
       <el-card class="box-card">
         <el-form ref="infoChangeData" :model="infoChangeFormPost" label-width="80px">
           <el-form-item label="房号" label-width="100px" prop="houseId">
@@ -336,7 +348,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode } from '@/api/payParking'
+import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode, fetchParkingPreViewAll } from '@/api/payParking'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -349,6 +361,7 @@ export default {
   data() {
     return {
       listLoading: true,
+      tableDataPvAll: [],
       total: 0,
       pvData_all: [],
       // 定义搜索按钮的query字段
@@ -565,7 +578,14 @@ export default {
     },
     // 费用收缴按钮绑定的处理事件
     handleCarInfoChange(row) {
+      this.infoChangeFormPost.houseId = row.houseId
+      this.infoChangeFormPost.houseName = row.houseName
+      this.infoChangeFormPost.housePhone = row.housePhone
+      this.infoChangeFormPost.carNum = row.carNum
       this.infoChangeFormPost.carLoc = row.carLoc
+      fetchParkingPreViewAll(row.houseId).then(response => {
+        this.tableDataPvAll = response.data.pvData
+      })
       this.dialogParkingInfoChangeFormVisible = true
     },
     // 新增信息---获取验证码按钮

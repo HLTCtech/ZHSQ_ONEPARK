@@ -54,3 +54,11 @@ export function getSMSCode(newInfoFormPost) {
   })
 }
 
+// 收费页面上方显示指定房间费用信息
+export function fetchParkingPreViewAll(houseId) {
+  return request({
+    url: '/pay/parking/pv/all',
+    method: 'post',
+    data: { houseId }
+  })
+}

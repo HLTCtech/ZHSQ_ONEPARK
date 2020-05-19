@@ -89,3 +89,12 @@ export function refuseVerifyReturnMoney(verifyMoneyReturn) {
     data: { verifyMoneyReturn }
   })
 }
+
+// 根据houseId返回业主姓名和应缴金额
+export function getHouseNameMoneyShallPay(houseId) {
+  return request({
+    url: '/pay/heat/getHouseNameMoneyShallPay',
+    method: 'post',
+    data: { houseId }
+  })
+}

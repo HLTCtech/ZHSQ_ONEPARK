@@ -210,10 +210,19 @@
         <div v-if="payPattern==1" label="单一缴费" label-width="100px">
           <el-form ref="singleDataForm" :rules="singleformRules" :model="singleFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
-              <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+              <el-input ref="searchByHouseId" v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
+            <el-button v-waves class="filter-item" style="margin-left:100px;" type="info" icon="el-icon-search" @click="fetchHouseNameMoneyShallPay">
+              获取姓名及应缴金额
+            </el-button>
+            <br>
+            <br>
+
             <el-form-item label="业主姓名" label-width="100px" prop="houseName">
               <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
+            </el-form-item>
+            <el-form-item label="应缴金额" label-width="100px" prop="houseName">
+              <el-input v-model="singleFormPost.moneyShallPay" disabled />
             </el-form-item>
             <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
@@ -237,10 +246,19 @@
         <div v-if="payPattern==0" label="复合缴费" label-width="100px">
           <el-form ref="mixDataForm" :rules="mixformRules" :model="mixFormPost" label-width="80px">
             <el-form-item label="房间号" label-width="100px" prop="houseId">
-              <el-input v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+              <el-input ref="searchByHouseId" v-model="mixFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
             </el-form-item>
+            <el-button v-waves class="filter-item" style="margin-left:100px;" type="info" icon="el-icon-search" @click="fetchHouseNameMoneyShallPay">
+              获取姓名及应缴金额
+            </el-button>
+            <br>
+            <br>
+
             <el-form-item label="业主姓名" label-width="100px" prop="houseName">
               <el-input v-model="mixFormPost.houseName" placeholder="请输入业主姓名" />
+            </el-form-item>
+            <el-form-item label="应缴金额" label-width="100px" prop="houseName">
+              <el-input v-model="mixFormPost.moneyShallPay" disabled />
             </el-form-item>
             <el-form-item label="支付宝" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[0].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
@@ -298,7 +316,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHeatLogList, fetchHeatLogSearch, singleMoneyPost, mixMoneyPost, getHeatSMS, fetchSearchByHouseId, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney, returnMoney } from '@/api/payHeat'
+import { fetchHeatLogList, fetchHeatLogSearch, singleMoneyPost, mixMoneyPost, getHeatSMS, fetchSearchByHouseId, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney, returnMoney, getHouseNameMoneyShallPay } from '@/api/payHeat'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -313,6 +331,8 @@ export default {
     return {
       show: true,
       count: '',
+      searchByHouseId: null,
+      moneyPayHouseName: null,
       payPattern: true,
       props: { multiple: true },
       dialogApproveSmsVisible: false,
@@ -375,6 +395,7 @@ export default {
       singleFormPost: {
         houseId: null,
         houseName: null,
+        moneyShallPay: null,
         singlePayType: null,
         singlePayMoney: null,
         remark: null,
@@ -386,6 +407,7 @@ export default {
       mixFormPost: {
         houseId: null,
         houseName: null,
+        moneyShallPay: null,
         mixPayType: [{
           name: '支付宝', value: null
         },
@@ -496,6 +518,12 @@ export default {
       if (this.$refs['mixDataForm'] !== undefined) {
         this.$refs['mixDataForm'].clearValidate()
       }
+      // if (this.$refs.searchByHouseId.value !== undefined) {
+      //   this.mixFormPost.houseId = this.singleFormPost.houseId
+      // }
+      // if (this.$refs['mixDataForm'].houseId !== undefined) {
+      //   this.singleFormPost.houseId = this.mixFormPost.houseId
+      // }
     }
   },
   created() {
@@ -515,6 +543,18 @@ export default {
     handleMoneyGetOutter() {
       this.singleFormPost.houseId = ''
       this.dialogMoneyPost = true
+    },
+    // 收费模态框根据houseId获取业主姓名和应缴金额
+    fetchHouseNameMoneyShallPay() {
+      // console.log(this.$refs.searchByHouseId.value)
+      getHouseNameMoneyShallPay(this.$refs.searchByHouseId.value).then(response => {
+        this.singleFormPost.houseName = response.data.houseName
+        this.singleFormPost.moneyShallPay = response.data.moneyShallPay
+        this.mixFormPost.houseName = response.data.houseName
+        this.mixFormPost.moneyShallPay = response.data.moneyShallPay
+        // console.log(response.data.houseName)
+        // console.log(this.singleFormPost.houseName)
+      })
     },
     // 搜索记录
     handleSearch() {
@@ -955,6 +995,12 @@ export default {
           this.$refs['singleDataForm'].resetFields()
         })
       }
+      this.singleFormPost.houseId = null
+      this.singleFormPost.houseName = null
+      this.singleFormPost.moneyShallPay = null
+      this.mixFormPost.houseId = null
+      this.mixFormPost.houseName = null
+      this.mixFormPost.moneyShallPay = null
       this.mixFormPost.mixPayTotalNum = 0
       this.mixFormPost.mixPayType[0].value = null
       this.mixFormPost.mixPayType[1].value = null
