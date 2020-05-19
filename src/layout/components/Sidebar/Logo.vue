@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '华龙综合业务平台',
+      title: '壹號院综合业务平台',
       logo: 'http://zhsq-vue.oss-cn-beijing.aliyuncs.com/120-120.png'
       // logo: require('../../../logo.png')
     }

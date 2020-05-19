@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(loginForm) {
   return request({
-    url: '/onepark/admin/login',
+    url: '/admin/login',
     method: 'post',
     params: loginForm
   })
@@ -10,7 +10,7 @@ export function login(loginForm) {
 
 export function getInfo(token) {
   return request({
-    url: '/onepark/admin/info',
+    url: '/admin/info',
     method: 'get',
     params: { token }
   })
@@ -18,7 +18,7 @@ export function getInfo(token) {
 
 export function logout(token) {
   return request({
-    url: '/onepark/admin/logout',
+    url: '/logout',
     method: 'post',
     params: { token }
   })
@@ -26,7 +26,7 @@ export function logout(token) {
 
 export function getSMS(loginForm) {
   return request({
-    url: '/onepark/admin/getSMS',
+    url: '/getSMS',
     method: 'post',
     params: loginForm
   })
@@ -34,7 +34,7 @@ export function getSMS(loginForm) {
 
 export function getUserLog(adminId) {
   return request({
-    url: '/onepark/admin/getLog',
+    url: '/getLog',
     method: 'get',
     params: { adminId }
   })
@@ -43,7 +43,7 @@ export function getUserLog(adminId) {
 // 获取所有的操作员信息
 export function fetchOperatorList(query) {
   return request({
-    url: '/onepark/admin/operator/list',
+    url: '/operator/list',
     method: 'post',
     data: { query }
   })
@@ -52,7 +52,7 @@ export function fetchOperatorList(query) {
 // 搜索指定操作员信息
 export function fetchOperatorSearch(query) {
   return request({
-    url: '/onepark/admin/operator/search',
+    url: '/operator/search',
     method: 'post',
     data: { query }
   })
@@ -61,7 +61,7 @@ export function fetchOperatorSearch(query) {
 // 提交新的操作员信息
 export function newOperatorPost(newAdminForm) {
   return request({
-    url: '/onepark/admin/operator/new',
+    url: '/operator/new',
     method: 'post',
     data: { newAdminForm }
   })
@@ -70,7 +70,7 @@ export function newOperatorPost(newAdminForm) {
 // 变更操作员信息提交
 export function infoChangeOperatorPost(operatorInfoChangeForm) {
   return request({
-    url: '/onepark/admin/operator/infoChange',
+    url: '/operator/infoChange',
     method: 'post',
     data: { operatorInfoChangeForm }
   })
@@ -79,7 +79,7 @@ export function infoChangeOperatorPost(operatorInfoChangeForm) {
 // 根据operatorId获取信息
 export function fetchSearchByOperatorId(operatorId) {
   return request({
-    url: '/onepark/admin/operator/searchById',
+    url: '/operator/searchById',
     method: 'post',
     data: { operatorId }
   })

@@ -96,7 +96,7 @@
             <div class="invoiceBody">
               <div class="userInfo" style="height:60px">
                 <div class="houseId" style="width:46%">
-                  <span style="color:black;margin:0 auto;padding-left:100px;">华龙壹号院</span>
+                  <span style="color:black;margin:0 auto;padding-left:100px;">壹號院综合业务平台</span>
                 </div>
                 <div class="houseId">
                   <!-- <label>缴费房号：</label> -->

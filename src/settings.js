@@ -1,6 +1,6 @@
 // 定义标题以及设置侧边栏的默认样式
 module.exports = {
-  title: '华龙综合业务平台',
+  title: '综合业务平台——壹號院',
 
   /**
    * @type {boolean} true | false

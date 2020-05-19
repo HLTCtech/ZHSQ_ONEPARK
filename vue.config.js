@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '华龙综合业务平台' // page title
+const name = defaultSettings.title || '华龙综合业务平台---壹號院' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -49,7 +49,7 @@ module.exports = {
       [process.env.VUE_APP_BASE_API]: {
         // target: 'http://121.41.28.29:8080/hlProertyManage',
         // target: 'http://192.168.0.115:8080/hlProertyManage_war',
-        // target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
+        target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
