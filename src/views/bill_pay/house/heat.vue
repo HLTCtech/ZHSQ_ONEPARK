@@ -810,6 +810,12 @@ export default {
               this.singleFormPost.smsCode = ''
             })
             // 同时清空复合缴费表单
+            this.singleFormPost.houseId = null
+            this.singleFormPost.houseName = null
+            this.singleFormPost.moneyShallPay = null
+            this.mixFormPost.houseId = null
+            this.mixFormPost.houseName = null
+            this.mixFormPost.moneyShallPay = null
             this.mixFormPost.mixPayTotalNum = 0
             this.mixFormPost.mixPayType[0].value = ''
             this.mixFormPost.mixPayType[1].value = ''
@@ -858,6 +864,12 @@ export default {
                     this.singleFormPost.smsCode = ''
                   })
                   // 同时清空复合缴费表单
+                  this.singleFormPost.houseId = null
+                  this.singleFormPost.houseName = null
+                  this.singleFormPost.moneyShallPay = null
+                  this.mixFormPost.houseId = null
+                  this.mixFormPost.houseName = null
+                  this.mixFormPost.moneyShallPay = null
                   this.mixFormPost.mixPayTotalNum = 0
                   this.mixFormPost.mixPayType[0].value = ''
                   this.mixFormPost.mixPayType[1].value = ''
@@ -916,6 +928,12 @@ export default {
                         this.$refs['singleDataForm'].resetFields()
                       })
                     }
+                    this.singleFormPost.houseId = null
+                    this.singleFormPost.houseName = null
+                    this.singleFormPost.moneyShallPay = null
+                    this.mixFormPost.houseId = null
+                    this.mixFormPost.houseName = null
+                    this.mixFormPost.moneyShallPay = null
                     this.mixFormPost.mixPayTotalNum = 0
                     this.mixFormPost.mixPayType[0].value = ''
                     this.mixFormPost.mixPayType[1].value = ''
@@ -960,6 +978,12 @@ export default {
                     this.$refs['singleDataForm'].resetFields()
                   })
                 }
+                this.singleFormPost.houseId = null
+                this.singleFormPost.houseName = null
+                this.singleFormPost.moneyShallPay = null
+                this.mixFormPost.houseId = null
+                this.mixFormPost.houseName = null
+                this.mixFormPost.moneyShallPay = null
                 this.mixFormPost.mixPayTotalNum = 0
                 this.mixFormPost.mixPayType[0].value = ''
                 this.mixFormPost.mixPayType[1].value = ''
