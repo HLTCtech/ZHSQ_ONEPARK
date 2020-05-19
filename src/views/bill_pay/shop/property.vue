@@ -108,6 +108,7 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                :picker-options="nextPickerOptions"
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
@@ -157,6 +158,7 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                :picker-options="nextPickerOptions"
                 value-format="yyyy-MM-dd"
               />
             </el-form-item>
@@ -277,6 +279,46 @@ export default {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
+      // 往后推算的时间选择器
+      nextPickerOptions: {
+        shortcuts: [{
+          text: '一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+            end.setMonth(start.getMonth() + 1)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            end.setMonth(start.getMonth() + 3)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '半年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 180)
+            end.setMonth(start.getMonth() + 6)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '一年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 360)
+            end.setMonth(start.getMonth() + 12)
             picker.$emit('pick', [start, end])
           }
         }]

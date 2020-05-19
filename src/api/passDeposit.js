@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 向后台提交表单（费用收缴）
 export function postMoney(formPost) {
   return request({
-    url: '/onepark/pay/passDeposit/moneypost',
+    url: '/pay/passDeposit/moneypost',
     method: 'post',
     data: { formPost }
   })
@@ -12,7 +12,7 @@ export function postMoney(formPost) {
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId) {
   return request({
-    url: '/onepark/pay/passDeposit/searchById',
+    url: '/pay/passDeposit/searchById',
     method: 'post',
     data: { houseId }
   })
@@ -22,7 +22,7 @@ export function fetchSearchByHouseId(houseId) {
 // list
 export function fetchPassDepositListAll(query) {
   return request({
-    url: '/onepark/pay/passDeposit/house/all',
+    url: '/pay/passDeposit/house/all',
     method: 'post',
     data: query
   })
@@ -31,7 +31,7 @@ export function fetchPassDepositListAll(query) {
 // 搜索
 export function fetchPassDepositSearch(query) {
   return request({
-    url: '/onepark/pay/passDeposit/house/search',
+    url: '/pay/passDeposit/house/search',
     method: 'post',
     data: { query }
   })
@@ -40,7 +40,7 @@ export function fetchPassDepositSearch(query) {
 // 当缴费方式为“特批”，调取sms
 export function getSMS(formPost) {
   return request({
-    url: '/onepark/pay/passDeposit/getSMS',
+    url: '/pay/passDeposit/getSMS',
     method: 'post',
     data: { formPost }
   })
@@ -49,7 +49,7 @@ export function getSMS(formPost) {
 // 退款
 export function returnMoney(formReturn) {
   return request({
-    url: '/onepark/pay/passDeposit/moneyReturn',
+    url: '/pay/passDeposit/moneyReturn',
     method: 'post',
     data: { formReturn }
   })
@@ -58,7 +58,7 @@ export function returnMoney(formReturn) {
 // 申请退款
 export function applyReturnMoney(applyMoneyReturn) {
   return request({
-    url: '/onepark/pay/passDeposit/applyMoneyReturn',
+    url: '/pay/passDeposit/applyMoneyReturn',
     method: 'post',
     data: { applyMoneyReturn }
   })
@@ -67,7 +67,7 @@ export function applyReturnMoney(applyMoneyReturn) {
 // 审核通过
 export function verifyReturnMoney(verifyMoneyReturn) {
   return request({
-    url: '/onepark/pay/passDeposit/verifyMoneyReturn',
+    url: '/pay/passDeposit/verifyMoneyReturn',
     method: 'post',
     data: { verifyMoneyReturn }
   })
@@ -76,7 +76,7 @@ export function verifyReturnMoney(verifyMoneyReturn) {
 // 驳回申请
 export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   return request({
-    url: '/onepark/pay/passDeposit/refuseVerifyMoneyReturn',
+    url: '/pay/passDeposit/refuseVerifyMoneyReturn',
     method: 'post',
     data: { verifyMoneyReturn }
   })

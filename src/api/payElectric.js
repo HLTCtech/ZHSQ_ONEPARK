@@ -5,7 +5,7 @@ import request from '@/utils/request'
 // 根据选定字段查询指定的住宅信息
 export function fetchHouseSearch(query) {
   return request({
-    url: '/onepark/pay/electric/house/search',
+    url: '/pay/electric/house/search',
     method: 'post',
     data: { query }
   })
@@ -14,7 +14,7 @@ export function fetchHouseSearch(query) {
 // 住宅收费---获取经理验证码
 export function getElectricSMS(singleSMSPost) {
   return request({
-    url: '/onepark/pay/electric/house/getSMS',
+    url: '/pay/electric/house/getSMS',
     method: 'post',
     data: { singleSMSPost }
   })
@@ -25,7 +25,7 @@ export function getElectricSMS(singleSMSPost) {
 // 根据选定字段查询指定的商铺信息
 export function fetchShopSearch(query) {
   return request({
-    url: '/onepark/pay/electric/shop/search',
+    url: '/pay/electric/shop/search',
     method: 'post',
     data: { query }
   })
@@ -35,7 +35,7 @@ export function fetchShopSearch(query) {
 // 根据选定字段查询指定的台账信息
 export function fetchElectricStandingBookSearch(query) {
   return request({
-    url: '/onepark/pay/electric/standingBook/search',
+    url: '/pay/electric/standingBook/search',
     method: 'post',
     data: { query }
   })
@@ -45,7 +45,7 @@ export function fetchElectricStandingBookSearch(query) {
 // 展示电费台账所有信息
 export function fetchStandingBookListAll(query) {
   return request({
-    url: '/onepark/pay/electric/standingBook/all',
+    url: '/pay/electric/standingBook/all',
     method: 'get',
     params: query
   })
@@ -55,7 +55,7 @@ export function fetchStandingBookListAll(query) {
 // 根据选定字段查询指定的通知单信息
 export function fetchElectricNotificationSearch(query) {
   return request({
-    url: '/onepark/pay/electric/notification/search',
+    url: '/pay/electric/notification/search',
     method: 'post',
     data: { query }
   })
@@ -65,7 +65,7 @@ export function fetchElectricNotificationSearch(query) {
 // 展示电费通知单所有信息
 export function fetchNotificationListAll(query) {
   return request({
-    url: '/onepark/pay/electric/notification/all',
+    url: '/pay/electric/notification/all',
     method: 'get',
     params: query
   })
@@ -75,7 +75,7 @@ export function fetchNotificationListAll(query) {
 // 指定房号--电费状态统计的弹出模态框
 export function fetchPreViewAll(houseId, electricMeterId) {
   return request({
-    url: '/onepark/pay/electric/pv/all',
+    url: '/pay/electric/pv/all',
     method: 'get',
     params: { houseId, electricMeterId }
   })
@@ -84,7 +84,7 @@ export function fetchPreViewAll(houseId, electricMeterId) {
 // 指定月份--具体月份费用详情的弹出模态框
 export function fetchPreViewSingle(pv, houseId, electricMeterId) {
   return request({
-    url: '/onepark/pay/electric/pv/single',
+    url: '/pay/electric/pv/single',
     method: 'get',
     params: { pv, houseId, electricMeterId }
   })
@@ -93,7 +93,7 @@ export function fetchPreViewSingle(pv, houseId, electricMeterId) {
 // 展示所有月份的电表读数及费用信息
 export function fetchAllDetailByMonth(houseId, electricMeterId) {
   return request({
-    url: '/onepark/pay/electric/details',
+    url: '/pay/electric/details',
     method: 'get',
     params: { houseId, electricMeterId }
   })
@@ -102,7 +102,7 @@ export function fetchAllDetailByMonth(houseId, electricMeterId) {
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId, electricMeterId) {
   return request({
-    url: '/onepark/pay/electric/searchById',
+    url: '/pay/electric/searchById',
     method: 'get',
     params: { houseId, electricMeterId }
   })
@@ -111,7 +111,7 @@ export function fetchSearchByHouseId(houseId, electricMeterId) {
 // 单一收费详情表单
 export function singleMoneyPost(singleFormPost) {
   return request({
-    url: '/onepark/pay/electric/singleMoneyPost',
+    url: '/pay/electric/singleMoneyPost',
     method: 'post',
     data: { singleFormPost }
   })
@@ -120,7 +120,7 @@ export function singleMoneyPost(singleFormPost) {
 // 复合收费详情表单
 export function mixMoneyPost(mixFormPost) {
   return request({
-    url: '/onepark/pay/electric/mixMoneyPost',
+    url: '/pay/electric/mixMoneyPost',
     method: 'post',
     data: { mixFormPost }
   })

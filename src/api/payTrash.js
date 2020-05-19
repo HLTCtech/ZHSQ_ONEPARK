@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 所有记录的list
 export function fetchTrashLogList(listQuery_all) {
   return request({
-    url: '/onepark/pay/trash/log/all',
+    url: '/pay/trash/log/all',
     method: 'post',
     data: { listQuery_all }
   })
@@ -12,7 +12,7 @@ export function fetchTrashLogList(listQuery_all) {
 // 搜索记录search
 export function fetchTrashLogSearch(listQuery_search) {
   return request({
-    url: '/onepark/pay/trash/log/search',
+    url: '/pay/trash/log/search',
     method: 'post',
     data: { listQuery_search }
   })
@@ -21,7 +21,7 @@ export function fetchTrashLogSearch(listQuery_search) {
 // 缴费成功后查询指定id的操作记录
 export function fetchSearchByHouseId(houseId) {
   return request({
-    url: '/onepark/pay/trash/log/searchById',
+    url: '/pay/trash/log/searchById',
     method: 'post',
     data: { houseId }
   })
@@ -30,7 +30,7 @@ export function fetchSearchByHouseId(houseId) {
 // 单一收费详情表单
 export function singleMoneyPost(singleFormPost) {
   return request({
-    url: '/onepark/pay/trash/singleMoneyPost',
+    url: '/pay/trash/singleMoneyPost',
     method: 'post',
     data: { singleFormPost }
   })
@@ -39,7 +39,7 @@ export function singleMoneyPost(singleFormPost) {
 // 当缴费方式为“特批”，调取sms
 export function getTrashSMS(singleSMSPost) {
   return request({
-    url: '/onepark/pay/trash/getSMS',
+    url: '/pay/trash/getSMS',
     method: 'post',
     data: { singleSMSPost }
   })

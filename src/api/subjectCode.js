@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询所有科目编码
 export function fetchExportList() {
   return request({
-    url: '/onepark/subjectCode/all',
+    url: '/subjectCode/all',
     method: 'get'
   })
 }
@@ -11,7 +11,7 @@ export function fetchExportList() {
 // 查询科目编码
 export function fetchExportSearch(query) {
   return request({
-    url: '/onepark/subjectCode/search',
+    url: '/subjectCode/search',
     method: 'get',
     params: { query }
   })
