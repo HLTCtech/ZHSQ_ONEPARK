@@ -75,10 +75,18 @@
         <!-- 选择单一缴费时的提交表单 -->
         <el-form ref="singleDataForm" :rules="singleformRules" :model="singleFormPost" label-width="80px">
           <el-form-item label="房间号" label-width="100px" prop="houseId">
-            <el-input v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
+            <el-input ref="searchByHouseId" v-model="singleFormPost.houseId" placeholder="请输入单一完整房号（不要输入多个房号）" />
           </el-form-item>
+          <el-button v-waves class="filter-item" style="margin-left:100px;" type="info" icon="el-icon-search" @click="fetchHouseNameMoneyShallPay">
+            获取姓名及应缴金额
+          </el-button>
+          <br>
+          <br>
           <el-form-item label="业主姓名" label-width="100px" prop="houseId">
             <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
+          </el-form-item>
+          <el-form-item label="应缴金额" label-width="100px" prop="houseName">
+            <el-input v-model="singleFormPost.moneyShallPay" disabled />
           </el-form-item>
           <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
             <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
@@ -128,7 +136,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchTrashLogList, fetchTrashLogSearch, singleMoneyPost, getTrashSMS, fetchSearchByHouseId } from '@/api/payTrash'
+import { fetchTrashLogList, fetchTrashLogSearch, singleMoneyPost, getTrashSMS, fetchSearchByHouseId, getHouseNameMoneyShallPay } from '@/api/payTrash'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -142,6 +150,7 @@ export default {
     return {
       show: true,
       count: '',
+      searchByHouseId: null,
       payPattern: true,
       props: { multiple: true },
       dialogApproveSmsVisible: false,
@@ -250,7 +259,18 @@ export default {
     // 搜索框下面的收费按钮
     handleMoneyGetOutter() {
       this.singleFormPost.houseId = ''
+      this.singleFormPost.houseName = ''
       this.dialogMoneyPost = true
+    },
+    // 收费模态框根据houseId获取业主姓名和应缴金额
+    fetchHouseNameMoneyShallPay() {
+      // console.log(this.$refs.searchByHouseId.value)
+      getHouseNameMoneyShallPay(this.$refs.searchByHouseId.value).then(response => {
+        this.singleFormPost.houseName = response.data.houseName
+        this.singleFormPost.moneyShallPay = response.data.moneyShallPay
+        // console.log(response.data.houseName)
+        // console.log(this.singleFormPost.houseName)
+      })
     },
     // 点击收费按钮
     handleMoneyGet(houseId, houseName) {
@@ -303,6 +323,9 @@ export default {
             this.dialogMoneyPost = false
             this.$nextTick(() => {
               this.$refs['singleDataForm'].resetFields()
+              this.singleFormPost.houseId = ''
+              this.singleFormPost.houseName = ''
+              this.singleFormPost.moneyShallPay = ''
               this.singleFormPost.smsCode = ''
             })
             fetchSearchByHouseId(singleFormPost.houseId).then(response => {
@@ -376,6 +399,8 @@ export default {
           this.$refs['singleDataForm'].resetFields()
         })
       }
+      this.singleFormPost.houseName = null
+      this.singleFormPost.moneyShallPay = null
       this.dialogMoneyPost = false
     },
     // 点击houseId获取房间变更历史

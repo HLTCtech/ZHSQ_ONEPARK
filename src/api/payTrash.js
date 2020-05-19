@@ -45,3 +45,12 @@ export function getTrashSMS(singleSMSPost) {
   })
 }
 
+// 根据houseId返回业主姓名和应缴金额
+export function getHouseNameMoneyShallPay(houseId) {
+  return request({
+    url: '/pay/trash/getHouseNameMoneyShallPay',
+    method: 'post',
+    data: { houseId }
+  })
+}
+
