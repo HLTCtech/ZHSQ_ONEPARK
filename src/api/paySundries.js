@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 所有记录的list
 export function fetchSundriesLogList(listQuery_all) {
   return request({
-    url: '/pay/sundries/log/all',
+    url: '/onepark/pay/sundries/log/all',
     method: 'post',
     data: { listQuery_all }
   })
@@ -12,7 +12,7 @@ export function fetchSundriesLogList(listQuery_all) {
 // 搜索记录search
 export function fetchSundriesLogSearch(listQuery_search) {
   return request({
-    url: '/pay/sundries/log/search',
+    url: '/onepark/pay/sundries/log/search',
     method: 'post',
     data: { listQuery_search }
   })
@@ -21,7 +21,7 @@ export function fetchSundriesLogSearch(listQuery_search) {
 // 缴费成功后查询指定id的操作记录
 export function fetchSearchByHouseId(houseId) {
   return request({
-    url: '/pay/sundries/log/searchById',
+    url: '/onepark/pay/sundries/log/searchById',
     method: 'post',
     data: { houseId }
   })
@@ -30,7 +30,7 @@ export function fetchSearchByHouseId(houseId) {
 // 单一收费详情表单
 export function singleMoneyPost(singleFormPost) {
   return request({
-    url: '/pay/sundries/singleMoneyPost',
+    url: '/onepark/pay/sundries/singleMoneyPost',
     method: 'post',
     data: { singleFormPost }
   })
@@ -39,7 +39,7 @@ export function singleMoneyPost(singleFormPost) {
 // 当缴费方式为“特批”，调取sms
 export function getSundriesSMS(singleSMSPost) {
   return request({
-    url: '/pay/sundries/getSMS',
+    url: '/onepark/pay/sundries/getSMS',
     method: 'post',
     data: { singleSMSPost }
   })

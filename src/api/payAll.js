@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 搜索指定房间的所有费用信息
 export function fetchBillInfoSearch(listQuery) {
   return request({
-    url: '/pay/bill/infoSearch',
+    url: '/onepark/pay/bill/infoSearch',
     method: 'post',
     data: { listQuery }
   })
@@ -12,7 +12,7 @@ export function fetchBillInfoSearch(listQuery) {
 // 获取所有的应缴费用账单
 export function fetchBillAllList(listQuery) {
   return request({
-    url: '/pay/bill/all',
+    url: '/onepark/pay/bill/all',
     method: 'post',
     data: { listQuery }
   })
@@ -21,7 +21,7 @@ export function fetchBillAllList(listQuery) {
 // 清缴提交
 export function moneyCleanPostAll(moneyAllPost) {
   return request({
-    url: '/pay/bill/moneyCleanPostAll',
+    url: '/onepark/pay/bill/moneyCleanPostAll',
     method: 'post',
     data: { moneyAllPost }
   })
@@ -30,7 +30,7 @@ export function moneyCleanPostAll(moneyAllPost) {
 // 收缴提交
 export function moneyPayPostAll(moneyAllPost) {
   return request({
-    url: '/pay/bill/moneyPayPostAll',
+    url: '/onepark/pay/bill/moneyPayPostAll',
     method: 'post',
     data: { moneyAllPost }
   })
@@ -39,7 +39,7 @@ export function moneyPayPostAll(moneyAllPost) {
 // 监听前端物业费周期并返回对应金额
 export function getRealtimeProperty(query) {
   return request({
-    url: '/pay/bill/getRealtimeProperty',
+    url: '/onepark/pay/bill/getRealtimeProperty',
     method: 'post',
     data: { query }
   })
@@ -48,7 +48,7 @@ export function getRealtimeProperty(query) {
 // 监听前端停车管理费周期并返回对应金额
 export function getRealtimeParking(parkingDateRange) {
   return request({
-    url: '/pay/bill/getRealtimeParking',
+    url: '/onepark/pay/bill/getRealtimeParking',
     method: 'post',
     data: { parkingDateRange }
   })
@@ -57,7 +57,7 @@ export function getRealtimeParking(parkingDateRange) {
 // 监听前端电费周期并返回对应金额
 export function getRealtimeElectric(electricDateRange) {
   return request({
-    url: '/pay/bill/getRealtimeElectric',
+    url: '/onepark/pay/bill/getRealtimeElectric',
     method: 'post',
     data: { electricDateRange }
   })

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 向后台提交表单（费用收缴）
 export function postMoney(formPost) {
   return request({
-    url: '/pay/decorationDeposit/moneypost',
+    url: '/onepark/pay/decorationDeposit/moneypost',
     method: 'post',
     data: { formPost }
   })
@@ -12,7 +12,7 @@ export function postMoney(formPost) {
 // 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId) {
   return request({
-    url: '/pay/decorationDeposit/searchById',
+    url: '/onepark/pay/decorationDeposit/searchById',
     method: 'post',
     data: { houseId }
   })
@@ -22,7 +22,7 @@ export function fetchSearchByHouseId(houseId) {
 // 查询所有的住宅装修保证金信息
 export function fetchHouseDecorationDepositListAll(query) {
   return request({
-    url: '/pay/decorationDeposit/house/all',
+    url: '/onepark/pay/decorationDeposit/house/all',
     method: 'post',
     data: query
   })
@@ -31,7 +31,7 @@ export function fetchHouseDecorationDepositListAll(query) {
 // 根据选定字段查询指定的物业收费流水信息
 export function fetchHouseDecorationDepositSearch(query) {
   return request({
-    url: '/pay/decorationDeposit/house/search',
+    url: '/onepark/pay/decorationDeposit/house/search',
     method: 'post',
     data: { query }
   })
@@ -41,7 +41,7 @@ export function fetchHouseDecorationDepositSearch(query) {
 // 查询所有的商铺装修保证金信息
 export function fetchShopDecorationDepositListAll(query) {
   return request({
-    url: '/pay/decorationDeposit/shop/all',
+    url: '/onepark/pay/decorationDeposit/shop/all',
     method: 'post',
     data: query
   })
@@ -50,7 +50,7 @@ export function fetchShopDecorationDepositListAll(query) {
 // 根据选定字段查询指定的物业收费流水信息
 export function fetchShopDecorationDepositSearch(query) {
   return request({
-    url: '/pay/decorationDeposit/shop/search',
+    url: '/onepark/pay/decorationDeposit/shop/search',
     method: 'post',
     data: { query }
   })
@@ -59,7 +59,7 @@ export function fetchShopDecorationDepositSearch(query) {
 // 当缴费方式为“特批”，调取sms
 export function getSMS(formPost) {
   return request({
-    url: '/pay/decorationDeposit/getSMS',
+    url: '/onepark/pay/decorationDeposit/getSMS',
     method: 'post',
     data: { formPost }
   })
@@ -68,7 +68,7 @@ export function getSMS(formPost) {
 // 退款
 export function returnMoney(formReturn) {
   return request({
-    url: '/pay/decorationDeposit/moneyReturn',
+    url: '/onepark/pay/decorationDeposit/moneyReturn',
     method: 'post',
     data: { formReturn }
   })
@@ -77,7 +77,7 @@ export function returnMoney(formReturn) {
 // 申请退款
 export function applyReturnMoney(applyMoneyReturn) {
   return request({
-    url: '/pay/decorationDeposit/applyMoneyReturn',
+    url: '/onepark/pay/decorationDeposit/applyMoneyReturn',
     method: 'post',
     data: { applyMoneyReturn }
   })
@@ -86,7 +86,7 @@ export function applyReturnMoney(applyMoneyReturn) {
 // 审核通过
 export function verifyReturnMoney(verifyMoneyReturn) {
   return request({
-    url: '/pay/decorationDeposit/verifyMoneyReturn',
+    url: '/onepark/pay/decorationDeposit/verifyMoneyReturn',
     method: 'post',
     data: { verifyMoneyReturn }
   })
@@ -95,7 +95,7 @@ export function verifyReturnMoney(verifyMoneyReturn) {
 // 驳回申请
 export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   return request({
-    url: '/pay/decorationDeposit/refuseVerifyMoneyReturn',
+    url: '/onepark/pay/decorationDeposit/refuseVerifyMoneyReturn',
     method: 'post',
     data: { verifyMoneyReturn }
   })
