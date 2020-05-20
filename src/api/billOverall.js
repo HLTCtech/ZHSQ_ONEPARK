@@ -22,8 +22,8 @@ export function fetchPropertyWaterBillSearch(query) {
 export function fetchDecorationDepositListAll(query) {
   return request({
     url: '/billOverall/decorationDeposit/all',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 

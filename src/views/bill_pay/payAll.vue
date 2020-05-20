@@ -573,7 +573,7 @@ export default {
           type: 'info'
         }).then(() => {
           this.mixFormPost.mixPayTotalNum = this.mixPayTotal
-          this.mixFormPost.finalSelection = this.finalSelection
+          this.mixFormPost.finalSelection = this.finalSelection.join(',')
           moneyCleanPostAll(mixFormPost).then(response => {
             if (response.codeStatus === 200) {
               this.$notify({
