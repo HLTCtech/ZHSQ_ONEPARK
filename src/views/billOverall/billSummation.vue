@@ -78,7 +78,7 @@ export default {
       autoWidth: true,
       // list接口请求参数
       listQuery: {
-        dateRange: []
+        dateRange: null
       },
       // 声明下api变量
       tableData: [],
