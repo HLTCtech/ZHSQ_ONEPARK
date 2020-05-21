@@ -261,23 +261,23 @@ export const constantRoutes = [
         meta: {
           title: '商铺装修保证金'
         }
-      },
-      {
-        path: 'shopRent',
-        component: () => import('@/views/bill_pay/shop/shopRent'),
-        name: 'shopRent',
-        meta: {
-          title: '商铺租金'
-        }
-      },
-      {
-        path: 'shopRentTest',
-        component: () => import('@/views/bill_pay/shop/shopRentTest'),
-        name: 'shopRentTest',
-        meta: {
-          title: '商铺租金测试'
-        }
       }
+      // {
+      //   path: 'shopRent',
+      //   component: () => import('@/views/bill_pay/shop/shopRent'),
+      //   name: 'shopRent',
+      //   meta: {
+      //     title: '商铺租金'
+      //   }
+      // },
+      // {
+      //   path: 'shopRentTest',
+      //   component: () => import('@/views/bill_pay/shop/shopRentTest'),
+      //   name: 'shopRentTest',
+      //   meta: {
+      //     title: '商铺租金测试'
+      //   }
+      // }
     ]
   },
   {
@@ -410,19 +410,19 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  {
-    // 费用提醒
-    path: '/billRemind',
-    component: Layout,
-    children: [
-      {
-        path: 'billRemind',
-        component: () => import('@/views/billRemind/billRemind'),
-        name: 'billRemind',
-        meta: { title: '费用提醒', icon: 'billRemind', roles: ['admin'] }
-      }
-    ]
-  },
+  // {
+  //   // 费用提醒
+  //   path: '/billRemind',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'billRemind',
+  //       component: () => import('@/views/billRemind/billRemind'),
+  //       name: 'billRemind',
+  //       meta: { title: '费用提醒', icon: 'billRemind', roles: ['admin'] }
+  //     }
+  //   ]
+  // },
   // 图表管理
   chartsRouter,
   {
