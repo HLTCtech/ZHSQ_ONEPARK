@@ -18,7 +18,7 @@ export function getInfo(token) {
 
 export function logout(token) {
   return request({
-    url: '/onepark/logout',
+    url: '/onepark/admin/logout',
     method: 'post',
     params: { token }
   })
@@ -26,7 +26,7 @@ export function logout(token) {
 
 export function getSMS(loginForm) {
   return request({
-    url: '/onepark/getSMS',
+    url: '/onepark/admin/getSMS',
     method: 'post',
     params: loginForm
   })
@@ -34,7 +34,7 @@ export function getSMS(loginForm) {
 
 export function getUserLog(adminId) {
   return request({
-    url: '/onepark/getLog',
+    url: '/onepark/admin/getLog',
     method: 'get',
     params: { adminId }
   })
