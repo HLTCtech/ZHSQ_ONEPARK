@@ -343,6 +343,7 @@ export default {
       },
       // 退款表单
       formReturn: {
+        id: null,
         houseId: null,
         houseName: null,
         moneyGet: null,
@@ -355,6 +356,7 @@ export default {
       },
       // 申请退款表单
       applyMoneyReturn: {
+        id: null,
         houseId: null,
         houseName: null,
         payTypeReturn: null,
@@ -365,6 +367,7 @@ export default {
       },
       // 审核通过表单
       verifyMoneyReturn: {
+        id: null,
         houseId: null,
         houseName: null,
         moneyReturn: null,
@@ -461,6 +464,7 @@ export default {
     },
     // 退款按钮
     handleMoneyReturn(row) {
+      this.formReturn.id = row.id
       this.formReturn.houseId = row.houseId
       this.formReturn.houseName = row.houseName
       this.formReturn.moneyGet = row.moneyGet
@@ -468,12 +472,14 @@ export default {
     },
     // 申请退款按钮
     handleApplyMoneyReturn(row) {
+      this.applyMoneyReturn.id = row.id
       this.applyMoneyReturn.houseId = row.houseId
       this.applyMoneyReturn.houseName = row.houseName
       this.dialogApplyMoneyReturn = true
     },
     // 审核通过按钮
     handleVerifyMoneyReturn(row) {
+      this.verifyMoneyReturn.id = row.id
       this.verifyMoneyReturn.houseId = row.houseId
       this.verifyMoneyReturn.houseName = row.houseName
       this.verifyMoneyReturn.moneyReturn = row.applyMoneyReturn
