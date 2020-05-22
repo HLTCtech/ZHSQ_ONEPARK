@@ -100,3 +100,13 @@ export function refuseVerifyReturnMoney(verifyMoneyReturn) {
     data: { verifyMoneyReturn }
   })
 }
+
+// 驳回申请
+export function getHouseNameMoneyShallPay(houseId) {
+  return request({
+    url: '/onepark/pay/decorationDeposit/getHouseNameMoneyShallPay',
+    method: 'post',
+    data: { houseId }
+  })
+}
+
