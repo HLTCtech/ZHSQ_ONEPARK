@@ -242,11 +242,6 @@
           <el-form-item label="扣款金额" label-width="100px" prop="moneyWithhold">
             <el-input v-model.number="formReturn.moneyWithhold" />
           </el-form-item>
-          <el-form-item label="退款日期" label-width="100px" prop="returnDate">
-            <div class="block">
-              <el-date-picker v-model="formReturn.returnDate" align="right" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
-            </div>
-          </el-form-item>
           <el-form-item label="备注" label-width="100px" prop="remark">
             <el-input v-model="formReturn.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
