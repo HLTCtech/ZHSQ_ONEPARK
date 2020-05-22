@@ -378,7 +378,7 @@ export default {
       // 单一缴费时的选项
       payOptions: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '特批', label: '特批' }],
       // 退款时的选项
-      payOptionsReturn: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }],
+      payOptionsReturn: [{ value: '支付宝', label: '支付宝' }, { value: '微信', label: '微信' }, { value: '现金', label: '现金' }, { value: '其他', label: '其他' }, { value: '转存电费', label: '转存电费' }, { value: '转存物业费', label: '转存物业费' }],
       // 定义表单提交项目规则
       formRules: {
         houseId: [{ required: true, message: '请输入房号（多个房间请用"/"间隔；如16-101/16-102）', trigger: 'blur' }],
