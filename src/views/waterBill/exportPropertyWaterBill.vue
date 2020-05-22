@@ -77,6 +77,7 @@ export default {
       // 定义搜索按钮的query字段
       listQuery_search: {
         houseId: null,
+        moneyType: '',
         houseName: null,
         dateRange: null
       },
