@@ -152,6 +152,14 @@
               <el-option v-for="item in houseStatusOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
+          <el-form-item label="物业费日期" prop="houseStatus">
+            <el-date-picker
+              v-model="formPost.propertyDate"
+              type="date"
+              placeholder="选择物业费日期"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
           <el-form-item label="业主姓名" prop="houseName">
             <el-input v-model="formPost.houseName" width="100px" disabled />
           </el-form-item>
@@ -286,6 +294,7 @@ export default {
         houseName: null,
         housePhone: null,
         area: null,
+        propertyDate: '',
         houseAttribute: null,
         electricRate: null,
         propertyRate: null,
@@ -310,10 +319,50 @@ export default {
       dialogHouseInfoVisibleStatus: false,
       dialogHouseInfoVisibleRate: false,
       // 房间状态选择
-      houseStatusOptions: [{ value: '未售', label: '未售' }, { value: '未交房', label: '未交房' }, { value: '已交未装', label: '已交未装' }, { value: '已交在装', label: '已交在装' }, { value: '入住', label: '入住' }],
+      houseStatusOptions: [{ value: '未售', label: '未售' }, { value: '未交房', label: '未交房' }, { value: '已交未装', label: '已交未装' }],
       // list接口请求参数
       listQuery_all: {
         page: 1
+      },
+      // 往后推算的时间选择器
+      nextPickerOptions: {
+        shortcuts: [{
+          text: '一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+            end.setMonth(start.getMonth() + 1)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            end.setMonth(start.getMonth() + 3)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '半年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 180)
+            end.setMonth(start.getMonth() + 6)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '一年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 360)
+            end.setMonth(start.getMonth() + 12)
+            picker.$emit('pick', [start, end])
+          }
+        }]
       },
       formRules: {
         houseId: [{ required: true, message: '请输入房号（只输入一个）', trigger: 'blur' }],
@@ -522,6 +571,9 @@ export default {
         cancelButtonText: '取消',
         type: 'info'
       }).then(() => {
+        if (formPost.propertyDate == null) {
+          formPost.propertyDate = ''
+        }
         postHouseInfoStatus(formPost).then(response => {
           if (response.codeStatus === 200) {
             this.$notify({
