@@ -21,11 +21,11 @@
             <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="houseStatus" label="房间状态" align="center" />
+        <el-table-column label="房间状态" prop="houseCurrentStatus" align="center" />
+        <el-table-column prop="houseStatus" label="房间类型" align="center" />
         <el-table-column prop="houseName" label="业主姓名" align="center" />
         <el-table-column prop="housePhone" label="业主手机号" align="center" />
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
-        <el-table-column label="地下室面积" prop="basementArea" align="center" />
         <el-table-column prop="carNum" label="车牌号" align="center" />
         <el-table-column prop="carLoc" label="停车场位置" align="center" />
       </el-table>

@@ -43,6 +43,7 @@
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="房间状态" prop="houseCurrentStatus" align="center" fixed />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="实收金额" prop="moneyGet" align="center" />
