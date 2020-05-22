@@ -401,7 +401,8 @@ export default {
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            end.setMonth(start.getMonth() + 1)
             picker.$emit('pick', [start, end])
           }
         }, {
@@ -409,7 +410,8 @@ export default {
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+            end.setMonth(start.getMonth() + 3)
             picker.$emit('pick', [start, end])
           }
         }, {
@@ -417,7 +419,17 @@ export default {
           onClick(picker) {
             const end = new Date()
             const start = new Date()
-            end.setTime(start.getTime() + 3600 * 1000 * 24 * 180)
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 180)
+            end.setMonth(start.getMonth() + 6)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '一年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            // end.setTime(start.getTime() + 3600 * 1000 * 24 * 360)
+            end.setMonth(start.getMonth() + 12)
             picker.$emit('pick', [start, end])
           }
         }]

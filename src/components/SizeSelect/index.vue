@@ -17,10 +17,10 @@ export default {
   data() {
     return {
       sizeOptions: [
-        { label: 'Default', value: 'default' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Small', value: 'small' },
-        { label: 'Mini', value: 'mini' }
+        { label: '默认大小', value: '默认大小' },
+        { label: '中等', value: '中等' },
+        { label: '小', value: '小' },
+        { label: '大', value: '大' }
       ]
     }
   },
