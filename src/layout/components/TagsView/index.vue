@@ -196,7 +196,7 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
+  height: 50px;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d8dce5;
@@ -206,15 +206,15 @@ export default {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: 26px;
+      height: 50px;
       line-height: 26px;
       border: 1px solid #d8dce5;
       color: #495060;
       background: #fff;
       padding: 0 8px;
-      font-size: 12px;
+      font-size: 20px;
       margin-left: 5px;
-      margin-top: 4px;
+      margin-top: 8px;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -229,7 +229,7 @@ export default {
           content: '';
           background: #fff;
           display: inline-block;
-          width: 8px;
+          width: 12px;
           height: 8px;
           border-radius: 50%;
           position: relative;
@@ -246,7 +246,7 @@ export default {
     list-style-type: none;
     padding: 5px 0;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 400;
     color: #333;
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
@@ -267,8 +267,8 @@ export default {
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       vertical-align: 2px;
       border-radius: 50%;
       text-align: center;

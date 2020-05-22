@@ -48,8 +48,8 @@ module.exports = {
       // }
       [process.env.VUE_APP_BASE_API]: {
         // target: 'http://121.41.28.29:8080/hlOneParkProertyManage',
-        // target: 'http://192.168.0.115:8080/hlOneParkProertyManage',
-        target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
+        target: 'http://192.168.0.115:8080/hlOneParkProertyManage',
+        // target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
