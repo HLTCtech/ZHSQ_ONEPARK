@@ -2,6 +2,9 @@
   <!-- 导出物业流水 -->
   <div class="app-container">
     <div class="filter-container">
+      <el-select v-model="listQuery_search.moneyType" placeholder="选择费用类型" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in moneyTypeOptions" :key="item" :label="item" :value="item" />
+      </el-select>
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
       <!-- 时间选择器 -->
@@ -66,6 +69,7 @@ export default {
   data() {
     return {
       downloadLoading: false,
+      moneyTypeOptions: ['物业费', '暖气费', '暖气费退款', '装修保证金', '装修保证金退款', '垃圾清运费', '出入证押金', '出入证押金退款', '出入证工本费', '地下车位', '住宅物业费', '住宅暖气'],
       listLoading: true,
       // 定义导出excel默认选项
       filename: '',
