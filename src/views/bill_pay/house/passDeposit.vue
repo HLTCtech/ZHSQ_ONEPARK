@@ -105,10 +105,19 @@
       <el-card class="box-card">
         <el-form ref="dataForm" :rules="formRules" :model="formPost" label-width="80px">
           <el-form-item label="房号" label-width="100px" prop="houseId">
-            <el-input v-model="formPost.houseId" placeholder="请输入房号（多个房间请用'/'间隔；如16-101/16-102" />
+            <el-input ref="searchByHouseId" v-model="formPost.houseId" placeholder="请输入房号（多个房间请用'/'间隔；如16-101/16-102" />
           </el-form-item>
-          <el-form-item label="客户姓名" label-width="100px" prop="houseName">
-            <el-input v-model="formPost.houseName" />
+          <el-button v-waves class="filter-item" style="margin-left:100px;" type="info" icon="el-icon-search" @click="fetchHouseNameMoneyShallPay">
+            获取姓名及应缴金额
+          </el-button>
+          <br>
+          <br>
+
+          <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+            <el-input v-model="formPost.houseName" placeholder="请输入业主姓名" />
+          </el-form-item>
+          <el-form-item label="应缴金额" label-width="100px" prop="houseName">
+            <el-input v-model="formPost.moneyShallPay" disabled />
           </el-form-item>
           <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
             <el-select v-model="formPost.payType" placeholder="请选择">
@@ -117,11 +126,6 @@
           </el-form-item>
           <el-form-item label="缴费金额" label-width="100px" prop="moneyGet">
             <el-input v-model.number="formPost.moneyGet" />
-          </el-form-item>
-          <el-form-item label="交款日期" label-width="100px" prop="paidDate">
-            <div class="block">
-              <el-date-picker v-model="formPost.paidDate" align="right" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
-            </div>
           </el-form-item>
           <el-form-item label="差额" label-width="100px" prop="gap">
             <el-input v-model="formPost.moneyGet" disabled />
@@ -260,7 +264,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchPassDepositListAll, fetchPassDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney } from '@/api/passDeposit'
+import { fetchPassDepositListAll, fetchPassDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney, getHouseNameMoneyShallPay } from '@/api/passDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -327,6 +331,7 @@ export default {
         houseId: null,
         houseName: null,
         paidDate: null,
+        moneyShallPay: null,
         moneyGet: null,
         payType: null,
         remark: null,
@@ -443,6 +448,14 @@ export default {
     },
     handleMoneyGet() {
       this.dialogMoneyGetFormVisible = true
+    },
+    // 收费模态框根据houseId获取业主姓名和应缴金额
+    fetchHouseNameMoneyShallPay() {
+      // console.log(this.$refs.searchByHouseId.value)
+      getHouseNameMoneyShallPay(this.$refs.searchByHouseId.value).then(response => {
+        this.formPost.houseName = response.data.houseName
+        this.formPost.moneyShallPay = response.data.moneyShallPay
+      })
     },
     // 退款按钮
     handleMoneyReturn(row) {
