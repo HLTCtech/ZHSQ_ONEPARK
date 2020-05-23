@@ -294,6 +294,19 @@ export const constantRoutes = [
     ]
   },
   {
+    // 费率变更
+    path: '/pay/moneyRate',
+    component: Layout,
+    children: [
+      {
+        path: 'moneyRate',
+        component: () => import('@/views/bill_pay/moneyRate'),
+        name: 'moneyRate',
+        meta: { title: '费率变更', icon: 'bill' }
+      }
+    ]
+  },
+  {
     // 费用总览
     path: '/billOverall',
     component: Layout,
