@@ -2,18 +2,10 @@
   <!-- 住宅电费收费界面 -->
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-input v-model="listQuery.lou_num" placeholder="楼号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
-      <el-select v-model="listQuery_search.buildingNum" placeholder="选择楼号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in lou_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery_search.unitNum" placeholder="选择单元号" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in danyuan_numOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <el-input v-model="listQuery_search.houseNum" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-
       <!-- 时间选择器 -->
-      <el-date-picker
+      <!-- <el-date-picker
         v-model="listQuery_search.datePicker"
         class="filter-item"
         type="daterange"
@@ -24,42 +16,30 @@
         end-placeholder="结束日期"
         :picker-options="pickerOptions"
         value-format="yyyy-MM-dd"
-      />
+      /> -->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter()">
         搜索
       </el-button>
     </div>
 
-    <!-- 动态加载表头以及内容 -->
-    <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableColumns" style="width: 100%" align="center" height="800">
-      <el-table-column v-for="(item,key) in titleData" :key="key" :prop="item.value" :label="item.name" align="center">
+    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
+      <el-table-column label="ID" prop="id" align="center" fixed />
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
-          <el-tag v-if="scope.column.property=='houseId'" align="center" @click="getHouseLog(scope.row.houseId)">{{ scope.row[scope.column.property] }}</el-tag>
-          <span v-else-if="scope.column.property=='id'">{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='houseName'">{{ scope.row[scope.column.property] }}</span>
-          <span v-else-if="scope.column.property=='electricMeterId'">{{ scope.row[scope.column.property] }}</span>
-          <el-tag v-else-if="scope.column.property=='payStatus'" :type="scope.row[scope.column.property] > 0 ? 'danger' : 'success'" @click="handleFetchPv_all(scope.row.houseId, scope.row.electricMeterId)">
-            <!-- <el-tag :type="scope.column.status === 'yes' ? 'success' : 'danger'" disable-transitions> -->
-            {{ scope.row[scope.column.property] }}
-            <!-- </el-tag> -->
-          </el-tag>
-          <span v-else class="link-type" @click="handleFetchPv_single(scope.column.property, scope.row.houseId, scope.row.electricMeterId)">{{ scope.row[scope.column.property] }}</span>
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
-
-      <!-- 费用详情按钮 -->
-      <el-table-column label="月度费用详情" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleFetchAllDetailByMonth(scope.row.houseId, scope.row.electricMeterId)">
-            详情
-          </el-button>
-        </template>
-      </el-table-column>
-
-      <!-- 费用收缴按钮 -->
-      <el-table-column label="费用收缴" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="handleMoneyGet(scope.row.houseId, scope.row.houseName, scope.row.electricMeterId)">
+      <el-table-column label="房间状态" prop="houseStatus" align="center" fixed />
+      <el-table-column label="房间类型" prop="houseType" align="center" fixed />
+      <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
+      <el-table-column label="业主手机号" prop="housePhone" align="center" fixed />
+      <el-table-column label="电表号" prop="electricMeterId" align="center" />
+      <el-table-column label="当前余额" prop="currentMoney" align="center" />
+      <el-table-column label="备注" prop="remark" align="center" />
+      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+        <template slot-scope="{row}">
+          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
+          <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.houseName)">
             收缴
           </el-button>
         </template>
@@ -72,38 +52,9 @@
       <el-table :data="pvData_all" border fit highlight-current-row style="width: 100%" align="center">
         <el-table-column prop="houseId" label="房间号" align="center" />
         <el-table-column prop="electricMeterId" label="电表号" align="center" />
-        <el-table-column prop="prestore" label="预存余额" align="center" />
-        <el-table-column prop="shallPayAll" label="应收金额总计" align="center" />
-        <el-table-column prop="receivedPayAll" label="实收金额总计" align="center" />
-        <el-table-column prop="notPayAll" label="未缴金额总计" align="center" />
+        <el-table-column prop="currentMoney" label="当前余额" align="center" />
       </el-table>
       <br>
-      <!-- 具体月度读数等信息的弹出框 -->
-      <el-popover placement="right" width="400" trigger="click">
-        <el-table :data="pvData_details">
-          <el-table-column label="日期" prop="date" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row.date }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="读数" prop="meterReading" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row.meterReading }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="应收" prop="shallPay" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row.shallPay }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="未收" prop="notPay" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row.notPay }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-button slot="reference" type="primary">查看月度费用详情</el-button>
-      </el-popover>
 
       <!-- 定义表单提交项 -->
       <el-card class="box-card">
@@ -120,20 +71,6 @@
             </el-form-item>
             <el-form-item label="业主姓名" label-width="100px" prop="houseName">
               <el-input v-model="singleFormPost.houseName" placeholder="请输入业主姓名" />
-            </el-form-item>
-            <el-form-item label="缴费周期" label-width="100px" prop="singlePayDateRange">
-              <el-date-picker
-                v-model="singleFormPost.singlePayDateRange"
-                class="filter-item"
-                type="daterange"
-                align="right"
-                unlink-panels
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :picker-options="nextPickerOptions"
-                value-format="yyyy-MM-dd"
-              />
             </el-form-item>
             <el-form-item label="缴费方式" label-width="100px" prop="singlePayType">
               <el-select v-model="singleFormPost.singlePayType" placeholder="请选择">
@@ -173,20 +110,6 @@
             </el-form-item>
             <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
-            </el-form-item>
-            <el-form-item label="缴费周期" label-width="100px" prop="mixPayDateRange">
-              <el-date-picker
-                v-model="mixFormPost.mixPayDateRange"
-                class="filter-item"
-                type="daterange"
-                align="right"
-                unlink-panels
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :picker-options="nextPickerOptions"
-                value-format="yyyy-MM-dd"
-              />
             </el-form-item>
             <el-form-item label="总金额" label-width="100px">
               <el-input v-model.number="mixPayTotal" width="100px" disabled />
@@ -305,7 +228,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, fetchAllDetailByMonth, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
+import { fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
 import { getLogByHouseId } from '@/api/operationLog'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -415,6 +338,7 @@ export default {
       dialogApproveSmsVisible: false,
       dialogHouseLog: false,
       checkBoxData: [],
+      tableData: [],
       // 时间选择器返回数据
       pickerOptions: {
         shortcuts: [{
@@ -526,8 +450,7 @@ export default {
     fetchListSearch() {
       this.listLoading = true
       fetchHouseSearch(this.listQuery_search).then(response => {
-        this.titleData = response.data.titles
-        this.tableColumns = response.data.items
+        this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
       })
@@ -536,8 +459,7 @@ export default {
       this.listLoading = true
       this.listQuery_search.page = 1
       fetchHouseSearch(this.listQuery_search).then(response => {
-        this.titleData = response.data.titles
-        this.tableColumns = response.data.items
+        this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
       })
@@ -553,18 +475,7 @@ export default {
       fetchPreViewAll(houseId, electricMeterId).then(response => {
         this.pvData_all = response.data.pvData
       })
-      // 访问获取具体每月的电表读数等费用信息
-      fetchAllDetailByMonth(houseId, electricMeterId).then(response => {
-        this.pvData_details = response.data.items
-      })
       this.dialogMoneyGetFormVisible = true
-    },
-    // 获取月度费用详情
-    handleFetchAllDetailByMonth(houseId, electricMeterId) {
-      fetchAllDetailByMonth(houseId, electricMeterId).then(response => {
-        this.pvData_details = response.data.items
-        this.dialogPvVisibleDetailByMonth = true
-      })
     },
     // 获取费用状态统计
     handleFetchPv_all(houseId, electricMeterId) {

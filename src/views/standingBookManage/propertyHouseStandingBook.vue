@@ -22,6 +22,14 @@
       </el-button>
     </div>
 
+    <!-- excel导出功能 -->
+    <!-- <div>
+      <FilenameOption v-model="filename" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        导出Excel
+      </el-button>
+    </div> -->
+
     <!-- 表格 -->
     <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
@@ -141,6 +149,36 @@ export default {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
+      })
+    },
+    // excel导出
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const headerChinese = []
+        const headerVar = []
+        for (let i = 0; i < this.titleDataFiltered.length; i++) {
+          headerChinese[i] = this.titleDataFiltered[i].name
+        }
+        for (let i = 0; i < this.titleDataFiltered.length; i++) {
+          headerVar[i] = this.titleDataFiltered[i].value
+        }
+        headerChinese.unshift('序号', '房号', '业主姓名')
+        headerChinese.push('应交合计', '已交合计', '未交合计', '预存电费')
+        headerVar.unshift('id', 'houseId', 'houseName')
+        headerVar.push('shallPayAll', 'moneyPaidAll', 'notPayAll', 'prestore')
+        const data = this.formatJson(headerVar, this.tableColumns)
+        console.log('123123123')
+        console.log(this.sumAll)
+        console.log(data.push(this.sumAll))
+        excel.export_json_to_excel({
+          header: headerChinese,
+          data,
+          filename: this.filename,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+        this.downloadLoading = false
       })
     },
     // 绑定分页
