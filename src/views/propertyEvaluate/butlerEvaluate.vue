@@ -38,7 +38,7 @@
       <el-table-column label="总体评分" prop="overallRate" align="center" fixed />
       <el-table-column label="意见建议" prop="suggest" align="center" width="200px" fixed>
         <template slot-scope="scope">
-          <el-tag @click="getSuggestAll(scope.row.houseId, scope.row.suggestTime)">{{ scope.row.suggest }}</el-tag>
+          <el-tag @click="getSuggestAll(scope.row.id)">{{ scope.row.suggest }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="业主房号" prop="houseId" align="center" fixed>
@@ -235,8 +235,8 @@ export default {
       })
     },
     // 点击意见建议获取详情
-    getSuggestAll(houseId, suggestTime) {
-      getBulterSuggestDetail(houseId, suggestTime).then(response => {
+    getSuggestAll(id) {
+      getBulterSuggestDetail(id).then(response => {
         this.suggestDetail = response.data.suggestDetail
         this.dialogSuggestDetail = true
       })

@@ -24,7 +24,7 @@
       </el-button>
     </div>
 
-    <!-- 缴款记录表格 -->
+    <!-- 服务评价表格 -->
     <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="物业服务态度" prop="attitudeRate" align="center" fixed />
@@ -33,7 +33,7 @@
       <el-table-column label="物业总体评分" prop="overallRate" align="center" fixed />
       <el-table-column label="意见建议" prop="suggest" align="center" width="200px" fixed>
         <template slot-scope="scope">
-          <el-tag @click="getSuggestAll(scope.row.houseId, scope.row.suggestTime)">{{ scope.row.suggest }}</el-tag>
+          <el-tag @click="getSuggestAll(scope.row.id)">{{ scope.row.suggest }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="业主房号" prop="houseId" align="center" fixed>
@@ -267,8 +267,8 @@ export default {
       })
     },
     // 点击意见建议获取详情
-    getSuggestAll(houseId, suggestTime) {
-      getServiceSuggestDetail(houseId, suggestTime).then(response => {
+    getSuggestAll(id) {
+      getServiceSuggestDetail(id).then(response => {
         this.suggestDetail = response.data.suggestDetail
         this.dialogSuggestDetail = true
       })

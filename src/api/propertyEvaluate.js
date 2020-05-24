@@ -19,11 +19,11 @@ export function serviceRateSearch(listQuery_search) {
 }
 
 // 服务评价获取建议内容
-export function getServiceSuggestDetail(houseId, suggestTime) {
+export function getServiceSuggestDetail(id) {
   return request({
     url: '/onepark/property/serviceRate/serviceSuggestDetail',
     method: 'post',
-    data: { houseId, suggestTime }
+    data: { id }
   })
 }
 
@@ -46,11 +46,11 @@ export function bulterRateSearch(listQuery_search) {
 }
 
 // 管家评价获取建议内容
-export function getBulterSuggestDetail(houseId, suggestTime) {
+export function getBulterSuggestDetail(id) {
   return request({
     url: '/onepark/property/bulterRate/bulterSuggestDetail',
     method: 'post',
-    data: { houseId, suggestTime }
+    data: { id }
   })
 }
 
@@ -73,10 +73,10 @@ export function repairRateSearch(listQuery_search) {
 }
 
 // 报修评价获取建议内容
-export function getRepairSuggestDetail(houseId, suggestTime) {
+export function getRepairSuggestDetail(id) {
   return request({
     url: '/onepark/property/repairRate/repairSuggestDetail',
     method: 'post',
-    data: { houseId, suggestTime }
+    data: { id }
   })
 }
