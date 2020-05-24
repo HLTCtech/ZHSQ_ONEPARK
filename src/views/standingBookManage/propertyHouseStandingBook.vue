@@ -23,12 +23,12 @@
     </div>
 
     <!-- excel导出功能 -->
-    <!-- <div>
+    <div>
       <FilenameOption v-model="filename" />
       <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
         导出Excel
       </el-button>
-    </div> -->
+    </div>
 
     <!-- 表格 -->
     <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
@@ -79,12 +79,13 @@
 import { fetchHouseListAll, fetchHouseSearch } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
-// import { parseTime } from '@/utils'
+import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import FilenameOption from '@/views/excel/components/FilenameOption'
 
 export default {
   name: 'HouseStandingBook',
-  components: { Pagination },
+  components: { Pagination, FilenameOption },
   directives: { waves },
   data() {
     return {
@@ -97,6 +98,10 @@ export default {
         houseName: null,
         datePicker: null
       },
+      // 定义导出excel默认选项
+      filename: '',
+      autoWidth: true,
+      downloadLoading: false,
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
@@ -151,36 +156,6 @@ export default {
         this.listLoading = false
       })
     },
-    // excel导出
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const headerChinese = []
-        const headerVar = []
-        for (let i = 0; i < this.titleDataFiltered.length; i++) {
-          headerChinese[i] = this.titleDataFiltered[i].name
-        }
-        for (let i = 0; i < this.titleDataFiltered.length; i++) {
-          headerVar[i] = this.titleDataFiltered[i].value
-        }
-        headerChinese.unshift('序号', '房号', '业主姓名')
-        headerChinese.push('应交合计', '已交合计', '未交合计', '预存电费')
-        headerVar.unshift('id', 'houseId', 'houseName')
-        headerVar.push('shallPayAll', 'moneyPaidAll', 'notPayAll', 'prestore')
-        const data = this.formatJson(headerVar, this.tableColumns)
-        console.log('123123123')
-        console.log(this.sumAll)
-        console.log(data.push(this.sumAll))
-        excel.export_json_to_excel({
-          header: headerChinese,
-          data,
-          filename: this.filename,
-          autoWidth: true,
-          bookType: 'xlsx'
-        })
-        this.downloadLoading = false
-      })
-    },
     // 绑定分页
     fetchListSearch() {
       this.listLoading = true
@@ -204,6 +179,35 @@ export default {
         this.pvData_all = response.data.pvData
         this.dialogHouseLog = true
       })
+    },
+    // excel导出
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['Id', '房号', '类型', '业主姓名', '房屋状况', '交款日期', '面积', '收费标准(元/㎡)', '应缴费日期', '截止日期', '到期验证', '逾期天数', '备注']
+        const filterVal = ['id', 'houseId', 'houseType', 'houseName', 'houseStatus', 'paidDate', 'area', 'chargingStandard', 'houseShallPayDate', 'houseDeadline', 'houseClosingVerify', 'houseOverdueDays', 'remark']
+        const list = this.tableData
+        console.log(list)
+        const data = this.formatJson(filterVal, list)
+        console.log(data)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
