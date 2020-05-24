@@ -19,11 +19,11 @@ export function repairSearch(listQuery_search) {
 }
 
 // 获取报修详情
-export function getRepairContent(houseId, repairAddDate) {
+export function getRepairContent(id) {
   return request({
     url: '/onepark/property/repairManage/getRepairContent',
     method: 'post',
-    data: { houseId, repairAddDate }
+    data: { id }
   })
 }
 

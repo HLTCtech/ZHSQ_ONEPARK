@@ -54,7 +54,7 @@
       </el-table-column>
       <el-table-column label="报修内容" prop="repairContent" align="center" style="max-width: 100px" fixed>
         <template slot-scope="scope">
-          <el-tag @click="getContentAll(scope.row.houseId, scope.row.repairAddDate)">{{ scope.row.repairContent }}</el-tag>
+          <el-tag @click="getContentAll(scope.row.id)">{{ scope.row.repairContent }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="期望上门时间" prop="repairWishDate" align="center" fixed />
@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column label="状态变更" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleStatusChange(row.houseId, row.houseName, row.housePhone, row.repairContent, row.repairWishDate, row.repairAddDate, row.currentStatus)">
+          <el-button type="primary" size="mini" @click="handleStatusChange(row.id, row.houseId, row.houseName, row.housePhone, row.repairContent, row.repairWishDate, row.repairAddDate, row.currentStatus)">
             变更
           </el-button>
         </template>
@@ -255,6 +255,7 @@ export default {
       dialogRepairStatus: false,
       currentStatusOptions: ['已提交报修', '已分配维修员', '已维修完成', '业主已确认'],
       repairStatusForm: {
+        id: null,
         houseId: null,
         houseName: null,
         housePhone: null,
@@ -328,14 +329,15 @@ export default {
       })
     },
     // 点击报修内容获取详情
-    getContentAll(houseId, repairAddDate) {
-      getRepairContent(houseId, repairAddDate).then(response => {
+    getContentAll(id) {
+      getRepairContent(id).then(response => {
         this.repairContent = response.data.repairContent
         this.dialogRepairContent = true
       })
     },
     // 报修状态变更
-    handleStatusChange(houseId, houseName, housePhone, repairContent, repairWishDate, repairAddDate, currentStatus) {
+    handleStatusChange(id, houseId, houseName, housePhone, repairContent, repairWishDate, repairAddDate, currentStatus) {
+      this.repairStatusForm.id = id
       this.repairStatusForm.houseId = houseId
       this.repairStatusForm.houseName = houseName
       this.repairStatusForm.housePhone = housePhone
