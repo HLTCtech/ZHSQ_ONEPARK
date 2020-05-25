@@ -43,7 +43,7 @@ export function getUserLog(adminId) {
 // 获取所有的操作员信息
 export function fetchOperatorList(query) {
   return request({
-    url: '/onepark/operator/list',
+    url: '/onepark/admin/operator/list',
     method: 'post',
     data: { query }
   })
@@ -52,7 +52,7 @@ export function fetchOperatorList(query) {
 // 搜索指定操作员信息
 export function fetchOperatorSearch(query) {
   return request({
-    url: '/onepark/operator/search',
+    url: '/onepark/admin/operator/search',
     method: 'post',
     data: { query }
   })
@@ -61,7 +61,7 @@ export function fetchOperatorSearch(query) {
 // 提交新的操作员信息
 export function newOperatorPost(newAdminForm) {
   return request({
-    url: '/onepark/operator/new',
+    url: '/onepark/admin/operator/new',
     method: 'post',
     data: { newAdminForm }
   })
@@ -70,7 +70,7 @@ export function newOperatorPost(newAdminForm) {
 // 变更操作员信息提交
 export function infoChangeOperatorPost(operatorInfoChangeForm) {
   return request({
-    url: '/onepark/operator/infoChange',
+    url: '/onepark/admin/operator/infoChange',
     method: 'post',
     data: { operatorInfoChangeForm }
   })
@@ -79,7 +79,7 @@ export function infoChangeOperatorPost(operatorInfoChangeForm) {
 // 根据operatorId获取信息
 export function fetchSearchByOperatorId(operatorId) {
   return request({
-    url: '/onepark/operator/searchById',
+    url: '/onepark/admin/operator/searchById',
     method: 'post',
     data: { operatorId }
   })

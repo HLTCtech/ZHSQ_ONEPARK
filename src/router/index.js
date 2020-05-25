@@ -238,14 +238,14 @@ export const constantRoutes = [
       icon: 'shop'
     },
     children: [
-      {
-        path: 'electric',
-        component: () => import('@/views/bill_pay/shop/electric'),
-        name: 'electric',
-        meta: {
-          title: '商铺电费'
-        }
-      },
+      // {
+      //   path: 'electric',
+      //   component: () => import('@/views/bill_pay/shop/electric'),
+      //   name: 'electric',
+      //   meta: {
+      //     title: '商铺电费'
+      //   }
+      // },
       {
         path: 'property',
         component: () => import('@/views/bill_pay/shop/property'),
@@ -293,19 +293,19 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    // 费率变更
-    path: '/pay/moneyRate',
-    component: Layout,
-    children: [
-      {
-        path: 'moneyRate',
-        component: () => import('@/views/bill_pay/moneyRate'),
-        name: 'moneyRate',
-        meta: { title: '费率变更', icon: 'bill' }
-      }
-    ]
-  },
+  // {
+  //   // 费率变更
+  //   path: '/pay/moneyRate',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'moneyRate',
+  //       component: () => import('@/views/bill_pay/moneyRate'),
+  //       name: 'moneyRate',
+  //       meta: { title: '费率变更', icon: 'bill' }
+  //     }
+  //   ]
+  // },
   {
     // 费用总览
     path: '/billOverall',
@@ -468,25 +468,25 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: false,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: {
-          title: '个人资料',
-          icon: 'user',
-          noCache: true
-        }
-      }
-    ]
   }
+  // {
+  //   path: '/profile',
+  //   component: Layout,
+  //   redirect: '/profile/index',
+  //   hidden: false,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/profile/index'),
+  //       name: 'Profile',
+  //       meta: {
+  //         title: '个人资料',
+  //         icon: 'user',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // }
 ]
 
 /**

@@ -25,7 +25,7 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">
-            <el-dropdown-item>资料</el-dropdown-item>
+            <!-- <el-dropdown-item>资料</el-dropdown-item> -->
           </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
