@@ -343,22 +343,22 @@ export const constantRoutes = [
       icon: 'standingbook'
     },
     children: [
-      {
-        path: 'electricStandingBook',
-        component: () => import('@/views/standingBookManage/electricStandingBook'),
-        name: 'electricStandingBook',
-        meta: {
-          title: '电费台账管理'
-        }
-      },
-      {
-        path: 'electricNotification',
-        component: () => import('@/views/standingBookManage/electricNotification'),
-        name: 'electricNotification',
-        meta: {
-          title: '电费通知单'
-        }
-      },
+      // {
+      //   path: 'electricStandingBook',
+      //   component: () => import('@/views/standingBookManage/electricStandingBook'),
+      //   name: 'electricStandingBook',
+      //   meta: {
+      //     title: '电费台账管理'
+      //   }
+      // },
+      // {
+      //   path: 'electricNotification',
+      //   component: () => import('@/views/standingBookManage/electricNotification'),
+      //   name: 'electricNotification',
+      //   meta: {
+      //     title: '电费通知单'
+      //   }
+      // },
       {
         path: 'propertyHouseStandingBook',
         component: () => import('@/views/standingBookManage/propertyHouseStandingBook'),
