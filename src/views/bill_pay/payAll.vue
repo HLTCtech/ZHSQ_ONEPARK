@@ -28,6 +28,10 @@
         <el-table-column label="住宅面积" prop="houseArea" align="center" />
         <el-table-column prop="carNum" label="车牌号" align="center" />
         <el-table-column prop="carLoc" label="停车场位置" align="center" />
+        <el-table-column prop="propertyRate" label="物业费费率" align="center" />
+        <el-table-column prop="heatRate" label="暖气费费率" align="center" />
+        <el-table-column prop="decorationRate" label="装修保证金费率" align="center" />
+        <el-table-column prop="trashRate" label="垃圾清运费费率" align="center" />
       </el-table>
     </el-card>
     <br>
