@@ -155,11 +155,11 @@
         <el-input v-model="ItemsPay.trashMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 出入证押金缴纳 -->
-      <!-- <div class="payType-container" style="padding:0 0 0 0">
+      <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证押金</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.passMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
-      </div> -->
+      </div>
       <!-- 出入证工本费缴纳 -->
       <!-- <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证工本费</el-tag>
@@ -629,7 +629,7 @@ export default {
       }
       this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
       this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
-        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum)
+        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
       this.dialogMoneyPostAllItems = true
     },
     // 收缴费用表单
