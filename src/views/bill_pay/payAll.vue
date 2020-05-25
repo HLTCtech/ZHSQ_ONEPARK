@@ -201,9 +201,9 @@
             <el-form-item label="现金" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
-            <!-- <el-form-item label="其他" label-width="100px">
+            <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item label="实收总金额" label-width="100px">
               <el-input v-model.number="mixPayTotal" width="100px" disabled />
             </el-form-item>
@@ -240,9 +240,9 @@
             <el-form-item label="现金" label-width="100px">
               <el-input v-model.number="ItemsPay.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
-            <!-- <el-form-item label="其他" label-width="100px">
+            <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="ItemsPay.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item label="实收总金额" label-width="100px">
               <el-input v-model.number="payAllItemsMixPayTotal" width="100px" disabled />
             </el-form-item>
@@ -326,6 +326,8 @@ export default {
         { name: '微信', value: null
         },
         { name: '现金', value: null
+        },
+        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
@@ -351,6 +353,8 @@ export default {
         { name: '微信', value: null
         },
         { name: '现金', value: null
+        },
+        { name: '其他', value: null
         }],
         shallPay: null,
         payAllItemsMixPayTotal: null,
@@ -600,7 +604,7 @@ export default {
               this.mixFormPost.mixPayType[0].value = ''
               this.mixFormPost.mixPayType[1].value = ''
               this.mixFormPost.mixPayType[2].value = ''
-              // this.mixFormPost.mixPayType[3].value = ''
+              this.mixFormPost.mixPayType[3].value = ''
               this.mixFormPost.remark = ''
               this.dialogMoneyPost = false
               fetchBillAllList(this.listQuery).then(response => {
@@ -672,7 +676,7 @@ export default {
                 this.ItemsPay.mixPayType[0].value = ''
                 this.ItemsPay.mixPayType[1].value = ''
                 this.ItemsPay.mixPayType[2].value = ''
-                // this.ItemsPay.mixPayType[3].value = ''
+                this.ItemsPay.mixPayType[3].value = ''
                 this.ItemsPay.remark = ''
                 this.ItemsPay.propertyDateRange = ''
                 this.ItemsPay.propertyMoneyNum = ''
@@ -740,7 +744,7 @@ export default {
       this.mixFormPost.mixPayType[0].value = null
       this.mixFormPost.mixPayType[1].value = null
       this.mixFormPost.mixPayType[2].value = null
-      // this.mixFormPost.mixPayType[3].value = null
+      this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
       if (this.$refs['ItemsPayForm'] !== undefined) {
         this.$nextTick(() => {
@@ -751,7 +755,7 @@ export default {
       this.ItemsPay.mixPayType[0].value = null
       this.ItemsPay.mixPayType[1].value = null
       this.ItemsPay.mixPayType[2].value = null
-      // this.ItemsPay.mixPayType[3].value = null
+      this.ItemsPay.mixPayType[3].value = null
       this.ItemsPay.remark = ''
       this.dialogMoneyPost = false
       this.dialogMoneyPostAllItems = false
