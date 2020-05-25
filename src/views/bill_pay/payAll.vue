@@ -155,17 +155,17 @@
         <el-input v-model="ItemsPay.trashMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 出入证押金缴纳 -->
-      <div class="payType-container" style="padding:0 0 0 0">
+      <!-- <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证押金</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.passMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
-      </div>
+      </div> -->
       <!-- 出入证工本费缴纳 -->
-      <div class="payType-container" style="padding:0 0 0 0">
+      <!-- <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>出入证工本费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.passCostMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
-      </div>
+      </div> -->
       <!-- 杂项费用缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>杂项费用</el-tag>
@@ -201,9 +201,9 @@
             <el-form-item label="现金" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
-            <el-form-item label="其他" label-width="100px">
+            <!-- <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="mixFormPost.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="实收总金额" label-width="100px">
               <el-input v-model.number="mixPayTotal" width="100px" disabled />
             </el-form-item>
@@ -240,9 +240,9 @@
             <el-form-item label="现金" label-width="100px">
               <el-input v-model.number="ItemsPay.mixPayType[2].value" type="number" style="width: 200px" placeholder="请输入金额" /><br>
             </el-form-item>
-            <el-form-item label="其他" label-width="100px">
+            <!-- <el-form-item label="其他" label-width="100px">
               <el-input v-model.number="ItemsPay.mixPayType[3].value" type="number" style="width: 200px" placeholder="请输入金额" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="实收总金额" label-width="100px">
               <el-input v-model.number="payAllItemsMixPayTotal" width="100px" disabled />
             </el-form-item>
@@ -600,7 +600,7 @@ export default {
               this.mixFormPost.mixPayType[0].value = ''
               this.mixFormPost.mixPayType[1].value = ''
               this.mixFormPost.mixPayType[2].value = ''
-              this.mixFormPost.mixPayType[3].value = ''
+              // this.mixFormPost.mixPayType[3].value = ''
               this.mixFormPost.remark = ''
               this.dialogMoneyPost = false
               fetchBillAllList(this.listQuery).then(response => {
@@ -672,7 +672,7 @@ export default {
                 this.ItemsPay.mixPayType[0].value = ''
                 this.ItemsPay.mixPayType[1].value = ''
                 this.ItemsPay.mixPayType[2].value = ''
-                this.ItemsPay.mixPayType[3].value = ''
+                // this.ItemsPay.mixPayType[3].value = ''
                 this.ItemsPay.remark = ''
                 this.ItemsPay.propertyDateRange = ''
                 this.ItemsPay.propertyMoneyNum = ''
@@ -740,7 +740,7 @@ export default {
       this.mixFormPost.mixPayType[0].value = null
       this.mixFormPost.mixPayType[1].value = null
       this.mixFormPost.mixPayType[2].value = null
-      this.mixFormPost.mixPayType[3].value = null
+      // this.mixFormPost.mixPayType[3].value = null
       this.mixFormPost.remark = ''
       if (this.$refs['ItemsPayForm'] !== undefined) {
         this.$nextTick(() => {
@@ -751,7 +751,7 @@ export default {
       this.ItemsPay.mixPayType[0].value = null
       this.ItemsPay.mixPayType[1].value = null
       this.ItemsPay.mixPayType[2].value = null
-      this.ItemsPay.mixPayType[3].value = null
+      // this.ItemsPay.mixPayType[3].value = null
       this.ItemsPay.remark = ''
       this.dialogMoneyPost = false
       this.dialogMoneyPostAllItems = false
