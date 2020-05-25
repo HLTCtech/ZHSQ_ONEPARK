@@ -326,8 +326,6 @@ export default {
         { name: '微信', value: null
         },
         { name: '现金', value: null
-        },
-        { name: '其他', value: null
         }],
         mixPayTotalNum: null,
         remark: null,
@@ -353,8 +351,6 @@ export default {
         { name: '微信', value: null
         },
         { name: '现金', value: null
-        },
-        { name: '其他', value: null
         }],
         shallPay: null,
         payAllItemsMixPayTotal: null,
