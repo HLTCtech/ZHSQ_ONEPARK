@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
 // 查询所有科目编码
-export function fetchExportList() {
+export function fetchExportList(query) {
   return request({
     url: '/onepark/subjectCode/all',
-    method: 'get'
+    method: 'post',
+    data: { query }
   })
 }
 
@@ -12,8 +13,8 @@ export function fetchExportList() {
 export function fetchExportSearch(query) {
   return request({
     url: '/onepark/subjectCode/search',
-    method: 'get',
-    params: { query }
+    method: 'post',
+    data: { query }
   })
 }
 

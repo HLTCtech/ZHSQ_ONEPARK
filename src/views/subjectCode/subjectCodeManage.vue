@@ -31,9 +31,15 @@
     <div class="printTable">
       <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">
         <el-table-column label="ID" prop="id" align="center" />
-        <el-table-column label="摘要" prop="billSummary" align="center" />
-        <el-table-column label="科目编码" prop="billSubjectCode" align="center" />
-        <el-table-column label="金额" prop="billNum" align="center" />
+        <el-table-column label="制单日期" prop="billsMadeDate" align="center" />
+        <el-table-column label="凭证类别" prop="voucherType" align="center" />
+        <el-table-column label="凭证编号" prop="voucherId" align="center" />
+        <el-table-column label="摘要" prop="abstract" align="center" />
+        <el-table-column label="科目编码" prop="subjectCode" align="center" />
+        <el-table-column label="币种" prop="moneyType" align="center" />
+        <el-table-column label="借贷方向" prop="lendingDirection" align="center" />
+        <el-table-column label="本币" prop="localCurrency" align="center" />
+        <el-table-column label="往来单位编码" prop="contactUnitCode" align="center" />
       </el-table>
     </div>
 
@@ -88,8 +94,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', '摘要', '科目编码', '金额']
-        const filterVal = ['id', 'billSummary', 'billSubjectCode', 'billNum']
+        const tHeader = ['Id', '制单日期', '凭证类别', '凭证编号', '摘要', '科目编码', '币种', '借贷方向', '本币', '往来单位编码']
+        const filterVal = ['id', 'billsMadeDate', 'voucherType', 'voucherId', 'abstract', 'subjectCode', 'moneyType', 'lendingDirection', 'contactUnitCode', 'voucherId']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
