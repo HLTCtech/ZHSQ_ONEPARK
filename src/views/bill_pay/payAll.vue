@@ -134,29 +134,35 @@
         <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ electricShallPay }}</el-tag>
       </div>
-      <!-- 水费缴纳 -->
-      <div class="payType-container" style="padding:0 0 0 0">
-        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>水费</el-tag>
-        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
-        <el-input v-model="ItemsPay.waterMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
-      </div>
       <!-- 暖气费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>暖气费</el-tag>
         <el-input placeholder="11月15号至3月15号" type="text" style="width: 350px;" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.heatMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ heatShallPay }}</el-tag>
       </div>
       <!-- 装修保证金缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>装修保证金</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.decorationMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ decorationShallPay }}</el-tag>
       </div>
       <!-- 垃圾清运费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>垃圾清运费</el-tag>
         <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
         <el-input v-model="ItemsPay.trashMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ trashShallPay }}</el-tag>
+      </div>
+      <!-- 水费缴纳 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>水费</el-tag>
+        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input v-model="ItemsPay.waterMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
       </div>
       <!-- 出入证押金缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
@@ -378,7 +384,7 @@ export default {
         heatMoneyNum: '',
         decorationMoneyNum: '',
         trashMoneyNum: '',
-        sundriesType: null,
+        sundriesType: '',
         sundriesMoneyNum: ''
       },
       propertyMoneyNum: null,
@@ -443,7 +449,10 @@ export default {
       // 根据前端选择的时间周期显示应缴金额
       propertyShallPay: null,
       parkingShallPay: null,
-      electricShallPay: null
+      electricShallPay: null,
+      heatShallPay: null,
+      decorationShallPay: null,
+      trashShallPay: null
     }
   },
   computed: {
@@ -552,6 +561,9 @@ export default {
       this.listLoading = true
       fetchBillInfoSearch(this.listQuery).then(response => {
         this.tableDataHouseInfo = response.data.items
+        this.heatShallPay = response.data.heatShallPay
+        this.decorationShallPay = response.data.decorationShallPay
+        this.trashShallPay = response.data.trashShallPay
         this.listLoading = false
       })
       fetchBillAllList(this.listQuery).then(response => {
@@ -634,14 +646,36 @@ export default {
           message: '请先输入房号',
           type: 'warning'
         })
-      }
-      this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
-      this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
+      } else if (((this.ItemsPay.sundriesMoneyNum !== '') && (this.ItemsPay.sundriesType === '')) === true) {
+        this.$alert('请选择杂项费用类型', '注意', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `请选择杂项费用类型`
+            })
+          }
+        })
+      } else if (((this.ItemsPay.sundriesMoneyNum === '') && (this.ItemsPay.sundriesType !== '')) === true) {
+        this.$alert('请输入杂项费用金额', '注意', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `请输入杂项费用金额`
+            })
+          }
+        })
+      } else {
+        this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
+        this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
         Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
-      this.dialogMoneyPostAllItems = true
+        this.dialogMoneyPostAllItems = true
+      }
     },
     // 收缴费用表单
     allItemsFormPost(ItemsPay) {
+      console.log(this.ItemsPay.sundriesMoneyNum)
       // 表单项规则验证
       this.$refs['ItemsPayForm'].validate((valid) => {
         if ((this.payAllItemsMixPayTotal !== this.ItemsPay.shallPay) === true) {
