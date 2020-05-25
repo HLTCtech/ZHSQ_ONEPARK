@@ -27,7 +27,7 @@
       <el-table-column label="面积" prop="area" align="center" />
       <el-table-column label="业主姓名" prop="houseName" align="center" />
       <el-table-column label="业主电话" prop="housePhone" align="center" />
-      <el-table-column label="电费费率" prop="electricRate" align="center" />
+      <!-- <el-table-column label="电费费率" prop="electricRate" align="center" /> -->
       <el-table-column label="物业费费率" prop="propertyRate" align="center" />
       <el-table-column label="变更面积" align="center" style="width:120px" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{ row }">
@@ -43,13 +43,13 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="变更费率" align="center" style="width:120px" class-name="small-padding fixed-width" fixed="right">
+      <!-- <el-table-column label="变更费率" align="center" style="width:120px" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{ row }">
           <el-button type="primary" style="width:80px" size="mini" @click="handleHouseInfoRate(row)">
             变更费率
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="变更状态" align="center" style="width:120px" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{ row }">
           <el-button type="primary" style="width:80px" size="mini" @click="handleHouseInfoStatus(row)">
