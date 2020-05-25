@@ -65,7 +65,9 @@
       highlight-current-row
     >
       <el-table-column label="ID" prop="id" align="center" fixed />
-      <el-table-column label="房号" prop="houseId" align="center" fixed>
+      <el-table-column label="车位号" prop="carLoc" align="center" />
+      <el-table-column label="销售状态" prop="isSold" align="center" />
+      <el-table-column label="房号" prop="houseId" align="center">
         <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{ scope.row.houseId }}</el-tag>
         </template>
@@ -73,11 +75,9 @@
       <el-table-column label="业主姓名" prop="houseName" align="center" />
       <el-table-column label="联系电话" prop="housePhone" align="center" />
       <el-table-column label="车牌号" prop="carNum" align="center" />
-      <el-table-column label="车辆品牌" prop="carBrand" align="center" />
-      <el-table-column label="颜色" prop="carColor" align="center" />
-      <el-table-column label="指定位置" prop="carLoc" align="center" />
-      <el-table-column label="有效期" prop="carValidRange" align="center" />
-      <el-table-column label="备注" prop="remark" align="center" />
+      <el-table-column label="应缴日期" prop="shallpayDate" align="center" />
+      <el-table-column label="截止日期" prop="deadlineDate" align="center" />
+      <el-table-column label="逾期天数" prop="overdueDays" align="center" />
 
       <el-table-column
         label="操作"
