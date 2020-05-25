@@ -39,7 +39,7 @@
       <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.houseName)">
+          <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.houseName, row.electricMeterId, row.currentMoney)">
             收缴
           </el-button>
         </template>
@@ -465,14 +465,14 @@ export default {
       })
     },
     // 收费按钮绑定的处理事件
-    handleMoneyGet(houseId, houseName, electricMeterId) {
+    handleMoneyGet(houseId, houseName, electricMeterId, currentMoney) {
       this.singleFormPost.houseId = houseId
       this.mixFormPost.houseId = houseId
       this.singleFormPost.houseName = houseName
       this.mixFormPost.houseName = houseName
       this.singleFormPost.electricMeterId = electricMeterId
       this.mixFormPost.electricMeterId = electricMeterId
-      fetchPreViewAll(houseId, electricMeterId).then(response => {
+      fetchPreViewAll(houseId, electricMeterId, currentMoney).then(response => {
         this.pvData_all = response.data.pvData
       })
       this.dialogMoneyGetFormVisible = true

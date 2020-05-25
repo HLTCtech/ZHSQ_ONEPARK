@@ -22,6 +22,14 @@
       </el-button>
     </div>
 
+    <!-- excel导出功能 -->
+    <div>
+      <FilenameOption v-model="filename" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        导出Excel
+      </el-button>
+    </div>
+
     <!-- 表格 -->
     <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
@@ -45,14 +53,13 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark" align="center" />
-      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+      <!-- <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
-          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId)">
             收缴
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <!-- 点击houseId弹出信息变更历史模态框 -->
@@ -79,12 +86,13 @@
 import { fetchShopListAll, fetchShopSearch } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
-// import { parseTime } from '@/utils'
+import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import FilenameOption from '@/views/excel/components/FilenameOption'
 
 export default {
   name: 'ShopStandingBook',
-  components: { Pagination },
+  components: { Pagination, FilenameOption },
   directives: { waves },
   data() {
     return {
@@ -99,6 +107,10 @@ export default {
         houseName: null,
         datePicker: null
       },
+      // 定义导出excel默认选项
+      filename: '',
+      autoWidth: true,
+      downloadLoading: false,
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
@@ -174,6 +186,35 @@ export default {
         this.pvData_all = response.data.pvData
         this.dialogHouseLog = true
       })
+    },
+    // excel导出
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['Id', '房号', '类型', '业主姓名', '房屋状况', '交款日期', '面积', '收费标准(元/㎡)', '应缴费日期', '截止日期', '到期验证', '逾期天数', '备注']
+        const filterVal = ['id', 'houseId', 'houseType', 'houseName', 'houseStatus', 'paidDate', 'area', 'chargingStandard', 'houseShallPayDate', 'houseDeadline', 'houseClosingVerify', 'houseOverdueDays', 'remark']
+        const list = this.tableData
+        console.log(list)
+        const data = this.formatJson(filterVal, list)
+        console.log(data)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }

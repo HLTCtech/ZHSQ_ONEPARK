@@ -73,11 +73,11 @@ export function fetchNotificationListAll(query) {
 
 // 住宅商铺通用api
 // 指定房号--电费状态统计的弹出模态框
-export function fetchPreViewAll(houseId, electricMeterId) {
+export function fetchPreViewAll(houseId, electricMeterId, currentMoney) {
   return request({
     url: '/onepark/pay/electric/pv/all',
     method: 'get',
-    params: { houseId, electricMeterId }
+    params: { houseId, electricMeterId, currentMoney }
   })
 }
 

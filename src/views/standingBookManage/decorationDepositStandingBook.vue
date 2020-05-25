@@ -25,6 +25,14 @@
       </el-button>
     </div>
 
+    <!-- excel导出功能 -->
+    <div>
+      <FilenameOption v-model="filename" />
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        导出Excel
+      </el-button>
+    </div>
+
     <!-- 表格 -->
     <el-table v-loading="listLoading" highlight-current-row stripe border fit :data="tableData" style="width: 100%" height="800">
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
@@ -66,12 +74,13 @@
 import { fetchDecorationDepositListAll, fetchDecorationDepositSearch } from '@/api/billOverall'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
-// import { parseTime } from '@/utils'
+import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import FilenameOption from '@/views/excel/components/FilenameOption'
 
 export default {
   name: 'DecorationDepositStandingBook',
-  components: { Pagination },
+  components: { Pagination, FilenameOption },
   directives: { waves },
   data() {
     return {
@@ -85,6 +94,10 @@ export default {
         houseName: null,
         datePicker: null
       },
+      // 定义导出excel默认选项
+      filename: '',
+      autoWidth: true,
+      downloadLoading: false,
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
@@ -162,6 +175,35 @@ export default {
           this.dialogHouseLog = true
         })
       }
+    },
+    // excel导出
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['Id', '房号', '交款日期', '业主姓名', '实收金额', '退款日期', '退款金额', '差额', '备注']
+        const filterVal = ['id', 'houseId', 'paidDate', 'houseName', 'moneyGet', 'moneyReturnDate', 'moneyReturnNum', 'gap', 'remark']
+        const list = this.tableData
+        console.log(list)
+        const data = this.formatJson(filterVal, list)
+        console.log(data)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
