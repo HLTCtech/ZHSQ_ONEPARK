@@ -49,7 +49,7 @@
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button type="primary" size="mini" @click="handleRangeStart(row.houseId)">
-            变更
+            指定日期
           </el-button>
         </template>
       </el-table-column>
@@ -415,9 +415,11 @@ export default {
         houseId: null,
         propertyDateRange: null
       },
+      // 费用周期指定表单
       dateRangeStartForm: {
         houseId: '',
-        dateRangeStart: ''
+        dateRangeStart: '',
+        adminId: this.$store.getters.adminId
       },
       dialogRangeStart: false
     }

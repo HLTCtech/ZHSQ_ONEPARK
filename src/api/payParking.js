@@ -62,3 +62,12 @@ export function fetchParkingPreViewAll(houseId) {
     data: { houseId }
   })
 }
+
+// 指定费用开始时间周期
+export function postDaterangeStart(query) {
+  return request({
+    url: '/onepark/pay/parking/postDaterangeStart',
+    method: 'post',
+    data: { query }
+  })
+}

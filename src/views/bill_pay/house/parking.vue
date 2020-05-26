@@ -79,6 +79,14 @@
       <el-table-column label="截止日期" prop="deadlineDate" align="center" />
       <el-table-column label="逾期天数" prop="overdueDays" align="center" />
 
+      <el-table-column label="指定开始费用周期" align="center" width="100" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
+          <el-button type="primary" size="mini" @click="handleRangeStart(row.houseId)">
+            指定日期
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column
         label="操作"
         align="center"
@@ -91,6 +99,24 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 指定停车场维护费周期开始日期 -->
+    <el-dialog :visible.sync="dialogRangeStart" title="指定停车场维护费周期开始日期" width="40%">
+      <el-form :model="dateRangeStartForm" label-width="80px">
+        <el-form-item label="开始日期" label-width="100px" prop="dateRangeStart">
+          <el-date-picker
+            v-model="dateRangeStartForm.dateRangeStart"
+            class="filter-item"
+            type="date"
+            align="right"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          />
+        </el-form-item>
+      </el-form>
+      <el-button type="primary" style="margin-left:50px" @click="daterangeStartPost(dateRangeStartForm)">提交</el-button>
+      <el-button @click="handleCleandaterangeStartPost()">取消</el-button>
+    </el-dialog>
 
     <!-- 点击houseId弹出信息变更历史模态框 -->
     <el-dialog :visible.sync="dialogHouseLog" title="房屋信息变更历史">
@@ -348,7 +374,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode, fetchParkingPreViewAll } from '@/api/payParking'
+import { fetchListAll, fetchSearch, fetchSearchByCarLoc, postNewCarInfo, postChangeInfo, getSMSCode, fetchParkingPreViewAll, postDaterangeStart } from '@/api/payParking'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -507,7 +533,14 @@ export default {
             picker.$emit('pick', [start, end])
           }
         }]
-      }
+      },
+      // 费用周期指定表单
+      dateRangeStartForm: {
+        houseId: '',
+        dateRangeStart: '',
+        adminId: this.$store.getters.adminId
+      },
+      dialogRangeStart: false
     }
   },
   computed: {
@@ -575,6 +608,34 @@ export default {
         this.tableData = response.data.items
         this.listLoading = false
       })
+    },
+    // 指定费用周期开始
+    handleRangeStart(houseId) {
+      this.dateRangeStartForm.houseId = houseId
+      console.log(this.dateRangeStartForm.houseId)
+      this.dialogRangeStart = true
+    },
+    // 提交费用周期开始
+    daterangeStartPost(dateRangeStartForm) {
+      console.log(this.dateRangeStartForm)
+      if (dateRangeStartForm.dateRangeStart === '') {
+        this.$notify({
+          title: 'error',
+          message: '请选择日期',
+          type: 'error',
+          duration: 2000
+        })
+      } else {
+        postDaterangeStart(dateRangeStartForm).then(response => {
+          if (response.codeStatus === 200) {
+            this.dialogRangeStart = false
+            this.dateRangeStartForm.dateRangeStart = null
+            this.$message({ message: '提交成功', type: 'success' })
+          } else {
+            this.$message({ message: '提交失败，请联系系统管理员', type: 'error' })
+          }
+        })
+      }
     },
     // 费用收缴按钮绑定的处理事件
     handleCarInfoChange(row) {
@@ -794,6 +855,11 @@ export default {
     handleChangeInfoCleanSMSDataForm() {
       this.infoChangeFormPost.smsCode = ''
       this.changeInfoDialogApproveSmsVisible = false
+    },
+    // 取消指定费用周期
+    handleCleandaterangeStartPost() {
+      this.dialogRangeStart = false
+      this.dateRangeStartForm.dateRangeStart = null
     },
     // 点击houseId获取房间变更历史
     getHouseLog(houseId) {
