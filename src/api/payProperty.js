@@ -91,3 +91,12 @@ export function getRealtimeProperty(query) {
     data: { query }
   })
 }
+
+// 指定物业费开始时间周期
+export function postDaterangeStart(query) {
+  return request({
+    url: '/onepark/pay/property/postDaterangeStart',
+    method: 'post',
+    data: { query }
+  })
+}
