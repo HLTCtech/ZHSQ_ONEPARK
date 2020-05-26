@@ -82,7 +82,7 @@
       <el-table-column label="指定开始费用周期" align="center" width="100" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button type="primary" size="mini" @click="handleRangeStart(row.houseId)">
+          <el-button type="primary" size="mini" @click="handleRangeStart(row.carLoc)">
             指定日期
           </el-button>
         </template>
@@ -536,7 +536,7 @@ export default {
       },
       // 费用周期指定表单
       dateRangeStartForm: {
-        houseId: '',
+        carLoc: '',
         dateRangeStart: '',
         adminId: this.$store.getters.adminId
       },
@@ -610,9 +610,8 @@ export default {
       })
     },
     // 指定费用周期开始
-    handleRangeStart(houseId) {
-      this.dateRangeStartForm.houseId = houseId
-      console.log(this.dateRangeStartForm.houseId)
+    handleRangeStart(carLoc) {
+      this.dateRangeStartForm.carLoc = carLoc
       this.dialogRangeStart = true
     },
     // 提交费用周期开始
