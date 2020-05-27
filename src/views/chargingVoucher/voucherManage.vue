@@ -79,7 +79,7 @@
               <ul class="headerLeft" style="margin-top:100px">
                 <li>
                   <!-- <label>收费日期：</label> -->
-                  <span style="margin-left:100px">2020-05-20 10:04:50</span>
+                  <span style="margin-left:110px">2020-05-20 10:04:50</span>
                 </li>
               </ul>
               <div class="headerMiddle" style="margin-left:20px">
@@ -127,7 +127,7 @@
               </div> -->
               </div>
               <div>
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">电费</td>
                     <td style="width: 35%;color: black;">2020-05-20至2020-06-20</td>
@@ -136,7 +136,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">水费</td>
                     <td style="width: 35%;color: black;">-</td>
@@ -145,7 +145,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">物业费</td>
                     <td style="width: 35%;color: black;">2020-5-20至2020-11-20</td>
@@ -154,7 +154,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">电动车充电</td>
                     <td style="width: 35%;color: black;">-</td>
@@ -163,7 +163,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">装修保证金</td>
                     <td style="width: 35%;color: black;">-</td>
@@ -171,7 +171,7 @@
                     <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝</td>
                   </tr>
                 </table>
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 45px" cellpadding="0" cellspacing="0">
                   <tr class="GoodsTotal">
                     <td style="width: 273px">
                       <!-- <label>合计人民币(大写)：</label> -->
@@ -193,7 +193,7 @@
                 </table>
               </div>
             </div>
-            <ul class="invoicetFooter" style="margin-top:20px">
+            <ul class="invoicetFooter" style="margin-top:10px">
               <li>
                 <!-- <label style="margin-left: 20px">单位盖章：</label> -->
               </li>
@@ -221,17 +221,17 @@
         <div class="fontbox">
           <div class="invoicMain">
             <div class="invoiceHeader">
-              <ul class="headerLeft">
+              <ul class="headerLeft" style="margin-top:100px">
                 <li>
                   <!-- <label>收费日期：</label> -->
-                  <span style="margin-left:100px">{{ payDate }}</span>
+                  <span style="margin-left:110px">{{ payDate }}</span>
                 </li>
               </ul>
               <div class="headerMiddle" style="margin-left:20px">
                 <!-- <h1>院子物业服务有限公司收据</h1> -->
                 <div class="line" />
               </div>
-              <ul class="headerRight">
+              <ul class="headerRight" style="margin-top:100px">
                 <li>
                   <!-- <label style="margin-left: 20px"> 收据号： </label> -->
                   <span style="margin-right:50px">{{ receiptNumber }}</span>
@@ -241,7 +241,7 @@
             <div class="invoiceBody">
               <div class="userInfo" style="height:60px">
                 <div class="houseId" style="width:46%">
-                  <span style="color:black;margin:0 auto">{{ panNum }}</span>
+                  <span style="color:black;margin:0 auto;padding-left:100px;">{{ panNum }}</span>
                 </div>
                 <div class="houseId">
                   <!-- <label>缴费房号：</label> -->
@@ -272,7 +272,7 @@
               </div> -->
               </div>
               <div>
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">{{ item1 }}</td>
                     <td style="width: 35%;color: black;">{{ dateRange1 }}</td>
@@ -281,7 +281,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">{{ item2 }}</td>
                     <td style="width: 35%;color: black;">{{ dateRange2 }}</td>
@@ -290,7 +290,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">{{ item3 }}</td>
                     <td style="width: 35%;color: black;">{{ dateRange3 }}</td>
@@ -299,7 +299,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">{{ item4 }}</td>
                     <td style="width: 35%;color: black;">{{ dateRange4 }}</td>
@@ -308,7 +308,7 @@
                   </tr>
                 </table>
                 <div class="line" />
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 47px" cellpadding="0" cellspacing="0">
                   <tr>
                     <td style="width: 15%;color: black;">{{ item5 }}</td>
                     <td style="width: 35%;color: black;">{{ dateRange5 }}</td>
@@ -316,7 +316,7 @@
                     <td style="width: 30%;color: black;border-right: 0px solid #9c5223">{{ payTypesItem5 }}</td>
                   </tr>
                 </table>
-                <table class="GoodsTable" style="height: 50px" cellpadding="0" cellspacing="0">
+                <table class="GoodsTable" style="height: 45px" cellpadding="0" cellspacing="0">
                   <tr class="GoodsTotal">
                     <td style="width: 273px">
                       <!-- <label>合计人民币(大写)：</label> -->
@@ -338,13 +338,13 @@
                 </table>
               </div>
             </div>
-            <ul class="invoicetFooter" style="margin-top:20px">
+            <ul class="invoicetFooter" style="margin-top:10px">
               <li>
                 <!-- <label style="margin-left: 20px">单位盖章：</label> -->
               </li>
               <li>
                 <!-- <label>收款人：</label> -->
-                <span>{{ operatorName }}</span>
+                <span style="margin-left:120px">{{ operatorName }}</span>
               </li>
             </ul>
           </div>
