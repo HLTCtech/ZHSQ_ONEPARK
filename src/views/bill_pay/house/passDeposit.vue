@@ -60,7 +60,7 @@
       <el-table-column label="退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button v-permission="['admin', 'workers', 'propertyFinancial']" type="primary" size="mini" @click="handleMoneyReturn(row)">
+          <el-button v-permission="['admin']" type="primary" size="mini" @click="handleMoneyReturn(row)">
             退款
           </el-button>
         </template>
@@ -68,7 +68,7 @@
       <el-table-column label="申请退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button v-permission="['workers', 'admin', 'propertyFinancial']" type="primary" size="mini" @click="handleApplyMoneyReturn(row)">
+          <el-button v-permission="['editor']" type="primary" size="mini" @click="handleApplyMoneyReturn(row)">
             申请退款
           </el-button>
         </template>
@@ -76,7 +76,7 @@
       <el-table-column label="审核通过" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button v-permission="['propertyFinancial', 'admin', 'workers']" type="primary" size="mini" @click="handleVerifyMoneyReturn(row)">
+          <el-button v-permission="['admin']" type="primary" size="mini" @click="handleVerifyMoneyReturn(row)">
             审核通过
           </el-button>
         </template>

@@ -516,8 +516,7 @@ export const asyncRoutes = [
     name: 'operationLog',
     meta: {
       title: '操作记录',
-      icon: 'log',
-      roles: ['admin']
+      icon: 'log'
     },
     children: [
       {
@@ -576,7 +575,7 @@ export const asyncRoutes = [
         path: 'repairManage',
         component: () => import('@/views/repairManage/repairManage'),
         name: 'repairManage',
-        meta: { title: '报修管理', icon: 'repair', roles: ['admin'] }
+        meta: { title: '报修管理', icon: 'repair' }
       }
     ]
   },
