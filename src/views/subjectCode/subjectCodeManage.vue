@@ -95,7 +95,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['Id', '制单日期', '凭证类别', '凭证编号', '摘要', '科目编码', '币种', '借贷方向', '本币', '往来单位编码']
-        const filterVal = ['id', 'billsMadeDate', 'voucherType', 'voucherId', 'abstract', 'subjectCode', 'moneyType', 'lendingDirection', 'contactUnitCode', 'voucherId']
+        const filterVal = ['id', 'billsMadeDate', 'voucherType', 'voucherId', 'abstract', 'subjectCode', 'moneyType', 'lendingDirection', 'localCurrency', 'contactUnitCode']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
