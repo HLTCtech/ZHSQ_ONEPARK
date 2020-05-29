@@ -319,7 +319,7 @@ export default {
       dialogHouseInfoVisibleStatus: false,
       dialogHouseInfoVisibleRate: false,
       // 房间状态选择
-      houseStatusOptions: [{ value: '未售', label: '未售' }, { value: '未交房', label: '未交房' }, { value: '已交未装', label: '已交未装' }],
+      houseStatusOptions: [{ value: '未售', label: '未售' }, { value: '未交房', label: '未交房' }, { value: '可交房', label: '可交房' }, { value: '已交未装', label: '已交未装' }],
       // list接口请求参数
       listQuery_all: {
         page: 1
