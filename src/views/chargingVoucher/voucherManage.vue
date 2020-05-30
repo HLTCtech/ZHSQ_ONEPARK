@@ -141,7 +141,7 @@
                     <td style="width: 15%;color: black;">水费</td>
                     <td style="width: 35%;color: black;">-</td>
                     <td style="width: 20%;color: black;">500</td>
-                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝/微信/现金/转账</td>
                   </tr>
                 </table>
                 <div class="line" />
@@ -150,7 +150,7 @@
                     <td style="width: 15%;color: black;">物业费</td>
                     <td style="width: 35%;color: black;">2020-5-20至2020-11-20</td>
                     <td style="width: 20%;color: black;">500</td>
-                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">代金券</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝/微信</td>
                   </tr>
                 </table>
                 <div class="line" />
@@ -159,7 +159,7 @@
                     <td style="width: 15%;color: black;">电动车充电</td>
                     <td style="width: 35%;color: black;">-</td>
                     <td style="width: 20%;color: black;">200</td>
-                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">微信</td>
+                    <td style="width: 30%;color: black;border-right: 0px solid #9c5223">支付宝/现金/转账</td>
                   </tr>
                 </table>
                 <div class="line" />
