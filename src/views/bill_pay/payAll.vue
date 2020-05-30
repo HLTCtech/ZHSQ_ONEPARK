@@ -616,6 +616,12 @@ export default {
                   this.$refs['singleDataForm'].resetFields()
                 })
               }
+              this.propertyShallPay = ''
+              this.parkingShallPay = ''
+              this.electricShallPay = ''
+              this.heatShallPay = ''
+              this.decorationShallPay = ''
+              this.trashShallPay = ''
               this.mixFormPost.mixPayTotalNum = 0
               this.mixFormPost.mixPayType[0].value = ''
               this.mixFormPost.mixPayType[1].value = ''
@@ -710,6 +716,12 @@ export default {
                     this.$refs['singleDataForm'].resetFields()
                   })
                 }
+                this.propertyShallPay = ''
+                this.parkingShallPay = ''
+                this.electricShallPay = ''
+                this.heatShallPay = ''
+                this.decorationShallPay = ''
+                this.trashShallPay = ''
                 this.ItemsPay.payAllItemsMixPayTotal = 0
                 this.ItemsPay.mixPayType[0].value = ''
                 this.ItemsPay.mixPayType[1].value = ''
@@ -731,10 +743,13 @@ export default {
                 this.ItemsPay.sundriesType = ''
                 this.ItemsPay.sundriesMoneyNum = ''
                 this.dialogMoneyPostAllItems = false
-                fetchBillAllList(this.listQuery).then(response => {
-                  this.tableDataShallPayAll = response.data.items
-                  this.billStatus = response.billStatus
-                })
+                // fetchBillAllList(this.listQuery).then(response => {
+                //   this.tableDataShallPayAll = response.data.items
+                //   this.billStatus = response.billStatus
+                // })
+                setTimeout(() => {
+                  location.reload()
+                }, 1500)
               } else {
                 this.$notify({
                   title: 'Failure',
