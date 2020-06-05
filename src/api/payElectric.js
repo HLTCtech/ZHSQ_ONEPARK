@@ -125,3 +125,12 @@ export function mixMoneyPost(mixFormPost) {
     data: { mixFormPost }
   })
 }
+
+// 开户
+export function openAccount(accountOpenForm) {
+  return request({
+    url: '/onepark/pay/electric/openAccount',
+    method: 'post',
+    data: { accountOpenForm }
+  })
+}

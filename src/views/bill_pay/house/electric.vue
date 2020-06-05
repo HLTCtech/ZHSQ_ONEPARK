@@ -36,11 +36,17 @@
       <el-table-column label="电表号" prop="electricMeterId" align="center" />
       <el-table-column label="当前余额" prop="currentMoney" align="center" />
       <el-table-column label="备注" prop="remark" align="center" />
-      <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+      <!-- <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
-          <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button type="primary" size="mini" @click="handleMoneyGet(row.houseId, row.houseName, row.electricMeterId, row.currentMoney)">
             收缴
+          </el-button>
+        </template>
+      </el-table-column> -->
+      <el-table-column label="开户" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
+        <template slot-scope="{row}">
+          <el-button type="primary" size="mini" @click="accountOpen(row.houseId)">
+            开户
           </el-button>
         </template>
       </el-table-column>
@@ -221,6 +227,12 @@
       </span>
     </el-dialog>
 
+    <!-- 开户模态框 -->
+    <el-dialog :visible.sync="dialogAccountOpen" title="开户">
+      <el-button type="success" @click="handleAccountOpen(accountOpenForm)">确定开户</el-button>
+      <el-button @click="handleCancleAccountOpen()">取消</el-button>
+    </el-dialog>
+
     <!-- 分页功能实现标签 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
   </div>
@@ -228,7 +240,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS } from '@/api/payElectric'
+import { fetchHouseSearch, fetchPreViewSingle, fetchPreViewAll, singleMoneyPost, mixMoneyPost, fetchSearchByHouseId, getElectricSMS, openAccount } from '@/api/payElectric'
 import { getLogByHouseId } from '@/api/operationLog'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -240,6 +252,12 @@ export default {
   directives: { waves },
   data() {
     return {
+      dialogAccountOpen: false,
+      // 开户提交
+      accountOpenForm: {
+        houseId: null,
+        adminId: this.$store.getters.adminId
+      },
       show: true,
       count: '',
       payPattern: true,
@@ -749,6 +767,36 @@ export default {
       getLogByHouseId(houseId).then(response => {
         this.pvData_HouseLog = response.data.pvData
         this.dialogHouseLog = true
+      })
+    },
+    // 开户
+    accountOpen(houseId) {
+      this.dialogAccountOpen = true
+      this.accountOpenForm.houseId = houseId
+    },
+    // 取消开户模态框
+    handleCancleAccountOpen() {
+      this.dialogAccountOpen = false
+    },
+    // 开户按钮
+    handleAccountOpen(accountOpenForm) {
+      openAccount(accountOpenForm).then(response => {
+        if (response.code === 200) {
+          this.$notify({
+            title: 'Success',
+            message: '提交成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.dialogAccountOpen = false
+        } else {
+          this.$notify({
+            title: 'Failure',
+            message: '提交失败，请联系系统管理员',
+            type: 'error',
+            duration: 3000
+          })
+        }
       })
     }
   }
