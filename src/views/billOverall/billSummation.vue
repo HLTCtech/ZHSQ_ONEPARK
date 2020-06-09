@@ -44,6 +44,7 @@
       <div class="printTable">
         <el-table :data="tableData" highlight-current-row border fit max-height="900px" style="width:800px">
           <el-table-column label="费用\周期" prop="billItem" align="center" />
+          <el-table-column label="个数" prop="nums" align="center" />
           <el-table-column label="本周" prop="billByWeek" align="center" />
           <el-table-column label="本周代金券" prop="voucherByWeek" align="center" />
           <el-table-column label="本月" prop="billByMonth" align="center" />
@@ -113,8 +114,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['费用\周期', '本周', '本周代金券', '本月', '本月代金券', '本年', '本年代金券']
-        const filterVal = ['billItem', 'billByWeek', 'voucherByWeek', 'billByMonth', 'voucherByMonth', 'billByYear', 'voucherByYear']
+        const tHeader = ['费用\周期', '个数', '本周', '本周代金券', '本月', '本月代金券', '本年', '本年代金券']
+        const filterVal = ['billItem', 'nums', 'billByWeek', 'voucherByWeek', 'billByMonth', 'voucherByMonth', 'billByYear', 'voucherByYear']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
