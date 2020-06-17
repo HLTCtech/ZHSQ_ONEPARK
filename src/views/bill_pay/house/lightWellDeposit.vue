@@ -260,7 +260,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchHouseDecorationDepositListAll, fetchHouseDecorationDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney, getHouseNameMoneyShallPay } from '@/api/payDecorationDeposit'
+import { fetchLightWellDepositListAll, fetchLightWellDepositSearch, postMoney, returnMoney, fetchSearchByHouseId, getSMS, applyReturnMoney, verifyReturnMoney, refuseVerifyReturnMoney, getHouseNameMoneyShallPay } from '@/api/payLightWellDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -423,7 +423,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
+      fetchLightWellDepositListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -432,7 +432,7 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       this.listLoading = true
-      fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
+      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
       })
@@ -449,7 +449,7 @@ export default {
       this.listLoading = true
       // 搜索功能调用
       this.listQuery_search.page = 1
-      fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
+      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
       })
