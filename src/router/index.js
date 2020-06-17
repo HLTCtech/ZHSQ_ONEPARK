@@ -202,6 +202,14 @@ export const constantRoutes = [
         }
       },
       {
+        path: 'lightWellDeposit',
+        component: () => import('@/views/bill_pay/house/lightWellDeposit'),
+        name: 'lightWellDeposit',
+        meta: {
+          title: '采光井施工保证金'
+        }
+      },
+      {
         path: 'heat',
         component: () => import('@/views/bill_pay/house/heat'),
         name: 'heat',

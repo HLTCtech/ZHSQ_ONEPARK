@@ -19,7 +19,7 @@ export function fetchSearchByHouseId(houseId) {
 }
 
 // 住宅接口-----------------------------------------------------------
-// 查询所有的住宅装修保证金信息
+// 查询所有的采光井施工保证金信息
 export function fetchHouseDecorationDepositListAll(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/all',
@@ -28,29 +28,10 @@ export function fetchHouseDecorationDepositListAll(query) {
   })
 }
 
-// 根据选定字段查询指定的物业收费流水信息
+// 根据选定字段查询指定的采光井施工保证金
 export function fetchHouseDecorationDepositSearch(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/search',
-    method: 'post',
-    data: { query }
-  })
-}
-
-// 商铺接口-----------------------------------------------------------
-// 查询所有的商铺装修保证金信息
-export function fetchShopDecorationDepositListAll(query) {
-  return request({
-    url: '/onepark/pay/decorationDeposit/shop/all',
-    method: 'post',
-    data: query
-  })
-}
-
-// 根据选定字段查询指定的物业收费流水信息
-export function fetchShopDecorationDepositSearch(query) {
-  return request({
-    url: '/onepark/pay/decorationDeposit/shop/search',
     method: 'post',
     data: { query }
   })
