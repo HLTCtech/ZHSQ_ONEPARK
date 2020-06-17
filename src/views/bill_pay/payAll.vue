@@ -166,6 +166,14 @@
         <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ trashShallPay }}</el-tag>
       </div>
+      <!-- 拆改废料处理费 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>拆改废料处理费</el-tag>
+        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input v-model="ItemsPay.wasteCleanMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ wasteCleanShallPay }}</el-tag>
+      </div>
       <!-- 水费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>水费</el-tag>
@@ -394,7 +402,8 @@ export default {
         trashMoneyNum: '',
         sundriesType: '',
         sundriesMoneyNum: '',
-        lightWellDecorationMoneyNum: ''
+        lightWellDecorationMoneyNum: '',
+        wasteCleanMoneyNum: ''
       },
       propertyMoneyNum: null,
       propertyVoucherNum: null,
@@ -454,7 +463,7 @@ export default {
         }]
       },
       // 定义杂项费用类型
-      sundriesOptions: ['出入证工本费', '出入证押金', '拆改废料处理费', '有限电视', '智能卡工本费', '蓝牙卡工本费', '对外保洁', '电动车充电', '温泉水卡补卡', '车位锁工本费', '室内开荒', '蓝牙卡电池', '营业外收入', '电梯广告费', '自动售货机'],
+      sundriesOptions: ['出入证工本费', '出入证押金', '有限电视', '智能卡工本费', '蓝牙卡工本费', '对外保洁', '电动车充电', '温泉水卡补卡', '车位锁工本费', '室内开荒', '蓝牙卡电池', '营业外收入', '电梯广告费', '自动售货机'],
       // 根据前端选择的时间周期显示应缴金额
       propertyShallPay: null,
       parkingShallPay: null,
@@ -462,7 +471,8 @@ export default {
       heatShallPay: null,
       decorationShallPay: null,
       trashShallPay: null,
-      lightWellShallPay: null
+      lightWellShallPay: null,
+      wasteCleanShallPay: null
     }
   },
   computed: {
@@ -574,6 +584,7 @@ export default {
         this.heatShallPay = response.data.heatShallPay
         this.decorationShallPay = response.data.decorationShallPay
         this.lightWellShallPay = response.data.lightWellShallPay
+        this.wasteCleanShallPay = response.data.wasteCleanShallPay
         this.trashShallPay = response.data.trashShallPay
         this.listLoading = false
       })
@@ -633,6 +644,7 @@ export default {
               this.heatShallPay = ''
               this.decorationShallPay = ''
               this.lightWellShallPay = ''
+              this.wasteCleanShallPay = ''
               this.trashShallPay = ''
               this.mixFormPost.mixPayTotalNum = 0
               this.mixFormPost.mixPayType[0].value = ''
@@ -687,7 +699,7 @@ export default {
       } else {
         this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
         this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
-        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.lightWellDecorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
+        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.lightWellDecorationMoneyNum) + Number(this.ItemsPay.wasteCleanMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
         this.dialogMoneyPostAllItems = true
       }
     },
@@ -734,6 +746,7 @@ export default {
                 this.heatShallPay = ''
                 this.decorationShallPay = ''
                 this.lightWellShallPay = ''
+                this.wasteCleanShallPay = ''
                 this.trashShallPay = ''
                 this.ItemsPay.payAllItemsMixPayTotal = 0
                 this.ItemsPay.mixPayType[0].value = ''
@@ -756,14 +769,15 @@ export default {
                 this.ItemsPay.sundriesType = ''
                 this.ItemsPay.sundriesMoneyNum = ''
                 this.ItemsPay.lightWellDecorationMoneyNum = ''
+                this.ItemsPay.wasteCleanMoneyNum = ''
                 this.dialogMoneyPostAllItems = false
                 // fetchBillAllList(this.listQuery).then(response => {
                 //   this.tableDataShallPayAll = response.data.items
                 //   this.billStatus = response.billStatus
                 // })
-                setTimeout(() => {
-                  location.reload()
-                }, 1500)
+                // setTimeout(() => {
+                //   location.reload()
+                // }, 1500)
               } else {
                 this.$notify({
                   title: 'Failure',
