@@ -150,6 +150,14 @@
         <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
         <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ decorationShallPay }}</el-tag>
       </div>
+      <!-- 采光井施工保证金 -->
+      <div class="payType-container" style="padding:0 0 0 0">
+        <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>采光井施工保证金</el-tag>
+        <el-input placeholder="" type="text" style="width: 350px" class="filter-item" disabled clearable />
+        <el-input v-model="ItemsPay.lightWellDecorationMoneyNum" type="number" style="width: 200px" class="filter-item" clearable />
+        <el-input type="text" style="width: 200px" class="filter-item" clearable disabled />
+        <el-tag size="large" type="warning" style="width: 200px;text-align:center" class="payType-item" disabled>{{ lightWellShallPay }}</el-tag>
+      </div>
       <!-- 垃圾清运费缴纳 -->
       <div class="payType-container" style="padding:0 0 0 0">
         <el-tag size="large" style="width: 200px;text-align:center" class="payType-item" disabled>垃圾清运费</el-tag>
@@ -385,7 +393,8 @@ export default {
         decorationMoneyNum: '',
         trashMoneyNum: '',
         sundriesType: '',
-        sundriesMoneyNum: ''
+        sundriesMoneyNum: '',
+        lightWellDecorationMoneyNum: ''
       },
       propertyMoneyNum: null,
       propertyVoucherNum: null,
@@ -452,7 +461,8 @@ export default {
       electricShallPay: null,
       heatShallPay: null,
       decorationShallPay: null,
-      trashShallPay: null
+      trashShallPay: null,
+      lightWellShallPay: null
     }
   },
   computed: {
@@ -563,6 +573,7 @@ export default {
         this.tableDataHouseInfo = response.data.items
         this.heatShallPay = response.data.heatShallPay
         this.decorationShallPay = response.data.decorationShallPay
+        this.lightWellShallPay = response.data.lightWellShallPay
         this.trashShallPay = response.data.trashShallPay
         this.listLoading = false
       })
@@ -621,6 +632,7 @@ export default {
               this.electricShallPay = ''
               this.heatShallPay = ''
               this.decorationShallPay = ''
+              this.lightWellShallPay = ''
               this.trashShallPay = ''
               this.mixFormPost.mixPayTotalNum = 0
               this.mixFormPost.mixPayType[0].value = ''
@@ -675,7 +687,7 @@ export default {
       } else {
         this.ItemsPay.houseId = this.tableDataHouseInfo[0].houseId
         this.ItemsPay.shallPay = Number(this.ItemsPay.propertyMoneyNum) + Number(this.ItemsPay.parkingMoneyNum) + Number(this.ItemsPay.electricMoneyNum) +
-        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
+        Number(this.ItemsPay.waterMoneyNum) + Number(this.ItemsPay.heatMoneyNum) + Number(this.ItemsPay.decorationMoneyNum) + Number(this.ItemsPay.lightWellDecorationMoneyNum) + Number(this.ItemsPay.trashMoneyNum) + Number(this.ItemsPay.sundriesMoneyNum) + Number(this.ItemsPay.passMoneyNum)
         this.dialogMoneyPostAllItems = true
       }
     },
@@ -721,6 +733,7 @@ export default {
                 this.electricShallPay = ''
                 this.heatShallPay = ''
                 this.decorationShallPay = ''
+                this.lightWellShallPay = ''
                 this.trashShallPay = ''
                 this.ItemsPay.payAllItemsMixPayTotal = 0
                 this.ItemsPay.mixPayType[0].value = ''
@@ -742,6 +755,7 @@ export default {
                 this.ItemsPay.trashMoneyNum = ''
                 this.ItemsPay.sundriesType = ''
                 this.ItemsPay.sundriesMoneyNum = ''
+                this.ItemsPay.lightWellDecorationMoneyNum = ''
                 this.dialogMoneyPostAllItems = false
                 // fetchBillAllList(this.listQuery).then(response => {
                 //   this.tableDataShallPayAll = response.data.items
