@@ -71,7 +71,7 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_all.page" @pagination="fetchListSearch" />
   </div>
 </template>
 
@@ -159,8 +159,13 @@ export default {
     // 绑定分页
     fetchListSearch() {
       this.listLoading = true
-      fetchHouseSearch(this.listQuery_search).then(response => {
+      // fetchHouseSearch(this.listQuery_search).then(response => {
+      //   this.tableData = response.data.items
+      //   this.listLoading = false
+      // })
+      fetchHouseListAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -170,6 +175,7 @@ export default {
       this.listQuery_search.page = 1
       fetchHouseSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = 0
         this.listLoading = false
       })
     },
