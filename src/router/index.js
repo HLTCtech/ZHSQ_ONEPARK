@@ -235,72 +235,63 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    // 商铺费用收缴端口
-    path: '/pay/shop',
-    component: Layout,
-    // redirect: '/pay',
-    name: 'pay_shop',
-    meta: {
-      title: '费用收缴--商铺',
-      icon: 'shop'
-    },
-    children: [
-      // {
-      //   path: 'electric',
-      //   component: () => import('@/views/bill_pay/shop/electric'),
-      //   name: 'electric',
-      //   meta: {
-      //     title: '商铺电费'
-      //   }
-      // },
-      {
-        path: 'property',
-        component: () => import('@/views/bill_pay/shop/property'),
-        name: 'property',
-        meta: {
-          title: '商铺物业费'
-        }
-      },
-      {
-        path: 'decorationDeposit',
-        component: () => import('@/views/bill_pay/shop/decorationDeposit'),
-        name: 'decorationDeposit',
-        meta: {
-          title: '商铺装修保证金'
-        }
-      }
-      // {
-      //   path: 'shopRent',
-      //   component: () => import('@/views/bill_pay/shop/shopRent'),
-      //   name: 'shopRent',
-      //   meta: {
-      //     title: '商铺租金'
-      //   }
-      // },
-      // {
-      //   path: 'shopRentTest',
-      //   component: () => import('@/views/bill_pay/shop/shopRentTest'),
-      //   name: 'shopRentTest',
-      //   meta: {
-      //     title: '商铺租金测试'
-      //   }
-      // }
-    ]
-  },
-  {
-    // 杂项费用收缴端口
-    path: '/pay/sundries',
-    component: Layout,
-    children: [
-      {
-        path: 'paySundries',
-        component: () => import('@/views/bill_pay/sundries'),
-        name: 'Sundries',
-        meta: { title: '费用收缴--杂项', icon: 'bill' }
-      }
-    ]
-  },
+  // {
+  //   // 商铺费用收缴端口
+  //   path: '/pay/shop',
+  //   component: Layout,
+  //   name: 'pay_shop',
+  //   meta: {
+  //     title: '费用收缴--商铺',
+  //     icon: 'shop'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'electric',
+  //       component: () => import('@/views/bill_pay/shop/electric'),
+  //       name: 'electric',
+  //       meta: {
+  //         title: '商铺电费'
+  //       }
+  //     },
+  //     {
+  //       path: 'property',
+  //       component: () => import('@/views/bill_pay/shop/property'),
+  //       name: 'property',
+  //       meta: {
+  //         title: '商铺物业费'
+  //       }
+  //     },
+  //     {
+  //       path: 'decorationDeposit',
+  //       component: () => import('@/views/bill_pay/shop/decorationDeposit'),
+  //       name: 'decorationDeposit',
+  //       meta: {
+  //         title: '商铺装修保证金'
+  //       }
+  //     },
+  //     {
+  //       path: 'shopRent',
+  //       component: () => import('@/views/bill_pay/shop/shopRent'),
+  //       name: 'shopRent',
+  //       meta: {
+  //         title: '商铺租金'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   // 杂项费用收缴端口
+  //   path: '/pay/sundries',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'paySundries',
+  //       component: () => import('@/views/bill_pay/sundries'),
+  //       name: 'Sundries',
+  //       meta: { title: '费用收缴--杂项', icon: 'bill' }
+  //     }
+  //   ]
+  // },
   // {
   //   // 费率变更
   //   path: '/pay/moneyRate',
@@ -375,14 +366,14 @@ export const constantRoutes = [
           title: '住宅物业费台账'
         }
       },
-      {
-        path: 'propertyShopStandingBook',
-        component: () => import('@/views/standingBookManage/propertyShopStandingBook'),
-        name: 'propertyShopStandingBook',
-        meta: {
-          title: '商铺物业费台账'
-        }
-      },
+      // {
+      //   path: 'propertyShopStandingBook',
+      //   component: () => import('@/views/standingBookManage/propertyShopStandingBook'),
+      //   name: 'propertyShopStandingBook',
+      //   meta: {
+      //     title: '商铺物业费台账'
+      //   }
+      // },
       {
         path: 'decorationDepositStandingBook',
         component: () => import('@/views/standingBookManage/decorationDepositStandingBook'),
