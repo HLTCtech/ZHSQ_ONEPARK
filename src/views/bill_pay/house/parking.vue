@@ -75,6 +75,9 @@
       <el-table-column label="业主姓名" prop="houseName" align="center" />
       <el-table-column label="联系电话" prop="housePhone" align="center" />
       <el-table-column label="车牌号" prop="carNum" align="center" />
+      <el-table-column label="购买日期" prop="paidDate" align="center" />
+      <el-table-column label="销售状态" prop="salingStatus" align="center" />
+      <el-table-column label="车位属性" prop="parkingStatus" align="center" />
       <el-table-column label="应缴日期" prop="shallpayDate" align="center" />
       <el-table-column label="截止日期" prop="deadlineDate" align="center" />
       <el-table-column label="逾期天数" prop="overdueDays" align="center" />
