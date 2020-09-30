@@ -169,6 +169,14 @@ export const constantRoutes = [
           title: '住宅电费'
         }
       },
+      {
+        path: 'electricExport',
+        component: () => import('@/views/bill_pay/house/electricExport'),
+        name: 'electricExport',
+        meta: {
+          title: '电费导出'
+        }
+      },
       // {
       //   path: 'water',
       //   component: () => import('@/views/bill_pay/house/water'),
