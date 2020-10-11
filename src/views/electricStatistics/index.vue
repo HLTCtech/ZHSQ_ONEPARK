@@ -32,7 +32,7 @@
         >导出Excel</el-button>
       </div>
     </div>
-    <el-table :data="tableData" highlight-current-row border fit v-loading='tableLoading'>
+    <el-table v-loading="tableLoading" :data="tableData" highlight-current-row border fit>
       <el-table-column label="id" prop="id" align="center" />
       <el-table-column label="电表号" prop="houseId" align="center" />
       <el-table-column label="采集器编号" prop="collectorId" align="center" />
@@ -70,9 +70,9 @@ export default {
     return {
       filename: '',
       downloadLoading: false,
-      tableLoading:false,
+      tableLoading: false,
       listQuery_search: { date: null, page: 1 },
-      total: 0,
+			total: 0,
       tableData: []
     }
   },
@@ -96,9 +96,9 @@ export default {
       })
     },
     getList() {
-      this.tableLoading=true
+      this.tableLoading = true
       electricStatisticsAll(this.listQuery_search).then(res => {
-        this.tableLoading=false
+        this.tableLoading = false
         this.tableData = res.data
         // this.total = res.total
       })
@@ -107,9 +107,9 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then((excel) => {
         const multiHeader = [['', '', '', '', '', '', '正向有功总电能 开始', '', '正向有功总电能 结束', '', '正向有功总电能 统计结果', '', '', '']] // 前一行的表头数据，二维数组，不够的用空白补全
-        const tHeader = ['id', '电表号', '采集器编号', '通讯地址', '用户姓名', '备注', '时间', '总', '时间', '总', '总(差值)', '倍率', '单位','月份']
+        const tHeader = ['id', '电表号', '采集器编号', '通讯地址', '用户姓名', '备注', '时间', '总', '时间', '总', '总(差值)', '倍率', '单位', '月份']
 
-        const filterVal = ['id', 'houseId', 'collectorId', 'address', 'userName', 'remark', 'startTime', 'startElect', 'endTime', 'endElect', 'totalElect', 'rate', 'sign','yearMonth']
+        const filterVal = ['id', 'houseId', 'collectorId', 'address', 'userName', 'remark', 'startTime', 'startElect', 'endTime', 'endElect', 'totalElect', 'rate', 'sign', 'yearMonth']
         const list = this.tableData
         const merges = ['G1:H1', 'I1:J1', 'K1:M1']// 合并单元格
         const data = this.formatJson(filterVal, list)
