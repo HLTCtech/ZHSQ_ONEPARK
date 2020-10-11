@@ -340,6 +340,19 @@ export const constantRoutes = [
     ]
   },
   {
+    // 电量统计数据
+    path: '/electricStatistics',
+    component: Layout,
+    children: [
+      {
+        path: 'electricStatistics',
+        component: () => import('@/views/electricStatistics'),
+        name: 'electricStatistics',
+        meta: { title: '电量统计数据', icon: 'subjectCode' }
+      }
+    ]
+  },
+  {
     // 台账管理
     path: '/standingBook',
     component: Layout,
