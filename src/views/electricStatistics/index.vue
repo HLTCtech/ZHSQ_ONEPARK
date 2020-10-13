@@ -55,7 +55,6 @@
       <el-table-column label="月份" prop="yearMonth" align="center" />
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="getList" />
-
   </div>
 </template>
 
@@ -88,10 +87,10 @@ export default {
       form.append('file', fileObj)
       upload(form).then((res) => {
         console.log(res)
-        if (res.code == 200 && res.msg == '上传成功') {
+        if (res.code == 200 && res.msg != '重复上传') {
           this.$message.success('上传成功')
         } else {
-          this.$message.error('上传失败')
+          this.$message.error(res.msg)
         }
       })
     },

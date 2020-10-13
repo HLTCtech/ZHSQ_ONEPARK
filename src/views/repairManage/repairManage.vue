@@ -59,6 +59,8 @@
       </el-table-column>
       <el-table-column label="期望上门时间" prop="repairWishDate" align="center" fixed />
       <el-table-column label="提交报修时间" prop="repairAddDate" align="center" fixed />
+      <el-table-column label="管家" prop="stewardName" align="center" fixed />
+      <el-table-column label="管家手机号" prop="stewardPhone" align="center" fixed />
       <el-table-column label="报修状态" prop="currentStatus" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.currentStatus === '业主已确认' ? 'success' : 'danger'" disable-transitions>{{ scope.row.currentStatus }}</el-tag>
