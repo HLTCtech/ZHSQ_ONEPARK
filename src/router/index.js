@@ -573,92 +573,92 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    // 通知公告
-    path: '/noticeManage',
-    component: Layout,
-    children: [
-      {
-        path: 'noticeManage',
-        component: () => import('@/views/noticeManage/noticeManage'),
-        name: 'noticeManage',
-        meta: { title: '通知公告', icon: 'notice', roles: ['admin'] }
-      }
-    ]
-  },
-  {
-    // 报修管理
-    path: '/repairManage',
-    component: Layout,
-    children: [
-      {
-        path: 'repairManage',
-        component: () => import('@/views/repairManage/repairManage'),
-        name: 'repairManage',
-        meta: { title: '报修管理', icon: 'repair' }
-      }
-    ]
-  },
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    // alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: '权限管理',
-      icon: 'lock',
-      roles: ['admin'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/permission/permissionChange'),
-        name: 'RolePermission',
-        meta: {
-          title: '权限管理',
-          roles: ['admin'] // 只有admin权限的人才能看见
-        }
-      }
-    ]
-  },
-  {
-    // 物业评价
-    path: '/propertyEvaluate',
-    component: Layout,
-    // redirect: '/bill_all/electric',
-    name: 'propertyEvaluate',
-    meta: {
-      title: '物业评价',
-      icon: 'suggest'
-    },
-    children: [
-      {
-        path: 'serviceEvaluate',
-        component: () => import('@/views/propertyEvaluate/serviceEvaluate'),
-        name: 'serviceEvaluate',
-        meta: {
-          title: '服务评价'
-        }
-      },
-      {
-        path: 'butlerEvaluate',
-        component: () => import('@/views/propertyEvaluate/butlerEvaluate'),
-        name: 'butlerEvaluate',
-        meta: {
-          title: '管家评价'
-        }
-      },
-      {
-        path: 'repairEvaluate',
-        component: () => import('@/views/propertyEvaluate/repairEvaluate'),
-        name: 'repairEvaluate',
-        meta: {
-          title: '报修评价'
-        }
-      }
-    ]
-  },
+  // {
+  //   // 通知公告
+  //   path: '/noticeManage',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'noticeManage',
+  //       component: () => import('@/views/noticeManage/noticeManage'),
+  //       name: 'noticeManage',
+  //       meta: { title: '通知公告', icon: 'notice', roles: ['admin'] }
+  //     }
+  //   ]
+  // },
+  // {
+  //   // 报修管理
+  //   path: '/repairManage',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'repairManage',
+  //       component: () => import('@/views/repairManage/repairManage'),
+  //       name: 'repairManage',
+  //       meta: { title: '报修管理', icon: 'repair' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/page',
+  //   // alwaysShow: true, // will always show the root menu
+  //   name: 'Permission',
+  //   meta: {
+  //     title: '权限管理',
+  //     icon: 'lock',
+  //     roles: ['admin'] // you can set roles in root nav
+  //   },
+  //   children: [
+  //     {
+  //       path: 'role',
+  //       component: () => import('@/views/permission/permissionChange'),
+  //       name: 'RolePermission',
+  //       meta: {
+  //         title: '权限管理',
+  //         roles: ['admin'] // 只有admin权限的人才能看见
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   // 物业评价
+  //   path: '/propertyEvaluate',
+  //   component: Layout,
+  //   // redirect: '/bill_all/electric',
+  //   name: 'propertyEvaluate',
+  //   meta: {
+  //     title: '物业评价',
+  //     icon: 'suggest'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'serviceEvaluate',
+  //       component: () => import('@/views/propertyEvaluate/serviceEvaluate'),
+  //       name: 'serviceEvaluate',
+  //       meta: {
+  //         title: '服务评价'
+  //       }
+  //     },
+  //     {
+  //       path: 'butlerEvaluate',
+  //       component: () => import('@/views/propertyEvaluate/butlerEvaluate'),
+  //       name: 'butlerEvaluate',
+  //       meta: {
+  //         title: '管家评价'
+  //       }
+  //     },
+  //     {
+  //       path: 'repairEvaluate',
+  //       component: () => import('@/views/propertyEvaluate/repairEvaluate'),
+  //       name: 'repairEvaluate',
+  //       meta: {
+  //         title: '报修评价'
+  //       }
+  //     }
+  //   ]
+  // },
 
   /** when your routing map is too long, you can split it into small modules **/
   // 直接导入modules下面的路由模块
