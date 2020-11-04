@@ -231,6 +231,14 @@
           <el-form-item label="客户姓名" label-width="100px" prop="houseName">
             <el-input v-model="formReturn.houseName" disabled />
           </el-form-item>
+          <el-form-item label="退款时间" label-width="100px" prop="returnDate">
+             <el-date-picker
+                v-model="formReturn.returnDate"
+                type="date"
+                placeholder="选择日期" 
+                value-format="yyyy-MM-dd"
+                />
+          </el-form-item>
           <el-form-item label="退款方式" label-width="100px" prop="payTypeReturn">
             <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
               <el-option v-for="item in payOptionsReturn" :key="item.value" :label="item.label" :value="item.value" />
@@ -318,7 +326,7 @@ export default {
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
-      moneyStatusOptions: ['申请中', '核对通过', '申请驳回', '已退款'],
+      moneyStatusOptions: ['已退款', '未退款', '审核通过', '申请中'],
       // list接口请求参数
       listQuery_all: {
         page: 1,
@@ -434,6 +442,7 @@ export default {
       this.listLoading = true
       fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -451,6 +460,7 @@ export default {
       this.listQuery_search.page = 1
       fetchHouseDecorationDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -529,6 +539,7 @@ export default {
             })
             fetchSearchByHouseId(formPost.houseId).then(response => {
               this.tableData = response.data.items
+              this.total = response.total
             })
           } else {
             this.$notify({
@@ -573,6 +584,7 @@ export default {
                   this.dialogMoneyGetFormVisible = false
                   fetchSearchByHouseId(formPost.houseId).then(response => {
                     this.tableData = response.data.items
+                    this.total = response.total
                   })
                 } else {
                   this.$notify({
@@ -613,6 +625,7 @@ export default {
                 this.dialogApplyMoneyReturn = false
                 fetchSearchByHouseId(applyMoneyReturn.houseId).then(response => {
                   this.tableData = response.data.items
+                  this.total = response.total
                 })
               } else {
                 this.$notify({
@@ -653,6 +666,7 @@ export default {
                 this.dialogVerifyMoneyReturn = false
                 fetchSearchByHouseId(verifyMoneyReturn.houseId).then(response => {
                   this.tableData = response.data.items
+                  this.total = response.total
                 })
               } else {
                 this.$notify({
@@ -692,6 +706,7 @@ export default {
                 this.dialogVerifyMoneyReturn = false
                 fetchSearchByHouseId(verifyMoneyReturn.houseId).then(response => {
                   this.tableData = response.data.items
+                  this.total = response.total
                 })
               } else {
                 this.$notify({
@@ -731,6 +746,7 @@ export default {
                 this.dialogMoneyReturn = false
                 fetchSearchByHouseId(formReturn.houseId).then(response => {
                   this.tableData = response.data.items
+                  this.total = response.total
                 })
               } else {
                 this.$notify({

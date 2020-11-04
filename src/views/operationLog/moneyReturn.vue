@@ -36,7 +36,7 @@
       <el-table-column label="ID" prop="id" align="center" />
       <el-table-column label="房号" prop="houseId" align="center" />
       <el-table-column label="业主姓名" prop="houseName" align="center" />
-      <el-table-column label="退款类型" prop="returnType" align="center" />
+      <el-table-column label="费用类型" prop="costType" align="center" />
       <el-table-column label="退款金额" prop="moneyReturnNum" align="center" />
       <el-table-column label="退款日期" prop="moneyReturnDate" align="center" />
       <el-table-column label="退款方式" prop="moneyReturnType" align="center" />
@@ -135,8 +135,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', '房号', '业主姓名', '退款类型', '退款金额', '退款日期', '退款方式', '操作时间', '操作人']
-        const filterVal = ['id', 'houseId', 'houseName', 'returnType', 'moneyReturnNum', 'moneyReturnDate', 'moneyReturnType', 'operatDate', 'operator']
+        const tHeader = ['Id', '房号', '业主姓名', '费用类型', '退款金额', '退款日期', '退款方式', '操作时间', '操作人']
+        const filterVal = ['id', 'houseId', 'houseName', 'costType', 'moneyReturnNum', 'moneyReturnDate', 'moneyReturnType', 'operatDate', 'operator']
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
