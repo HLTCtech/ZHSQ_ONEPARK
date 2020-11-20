@@ -317,13 +317,53 @@ export const constantRoutes = [
     // 费用总览
     path: '/billOverall',
     component: Layout,
+    meta: {
+      title: '数据统计',
+      icon: 'overall'
+    },
     children: [
       {
         path: 'summation',
         component: () => import('@/views/billOverall/billSummation'),
         name: 'summation',
-        meta: { title: '费用总览', icon: 'overall' }
-      }
+        meta: { title: '费用总览', }
+      },
+      {
+        path: 'property/chargeRateHouse',
+        component: () => import('@/views/billOverall/chargeRate'),
+        name: '/chargeRateProperty/house',
+        meta: { title: '物业费收费率--住宅' }
+      },
+      // {
+      //   path: 'property/chargeRateShop',
+      //   component: () => import('@/views/billOverall/chargeRate'),
+      //   name: '/chargeRateProperty/shop',
+      //   meta: { title: '物业费收费率--商铺' }
+      // },
+      {
+        path: 'thisYearElectric/chargeRateHouse',
+        component: () => import('@/views/billOverall/chargeRate'),
+        name: '/chargeRateThisYearElectric/house',
+        meta: { title: '本年电费收费率--住宅' }
+      },
+      // {
+      //   path: 'thisYearElectric/chargeRateShop',
+      //   component: () => import('@/views/billOverall/chargeRate'),
+      //   name: '/chargeRateThisYearElectric/shop',
+      //   meta: { title: '本年电费收费率--商铺' }
+      // },
+      // {
+      //   path: 'beforeYearElectric/chargeRateHouse',
+      //   component: () => import('@/views/billOverall/chargeRate'),
+      //   name: '/chargeRateBeforeYearElectric/house',
+      //   meta: { title: '往年电费收费率--住宅' }
+      // },
+      // {
+      //   path: 'beforeYearElectric/chargeRateShop',
+      //   component: () => import('@/views/billOverall/chargeRate'),
+      //   name: '/chargeRateBeforeYearElectric/shop',
+      //   meta: { title: '往年电费收费率--商铺' }
+      // }
     ]
   },
   {

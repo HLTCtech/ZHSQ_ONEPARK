@@ -30,6 +30,13 @@
           icon="el-icon-document"
           @click="handleDownload"
         >导出Excel</el-button>
+        <el-button
+          :loading="downloadLoading"
+          style="margin:0 0 20px 20px;"
+          type="primary"
+          icon="el-icon-document"
+          @click="handleDownload('muban')"
+        >导出模板</el-button>
       </div>
     </div>
     <el-table v-loading="tableLoading" :data="tableData" highlight-current-row border fit>
@@ -102,14 +109,14 @@ export default {
         // this.total = res.total
       })
     },
-    handleDownload() {
+    handleDownload(type) {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then((excel) => {
         const multiHeader = [['', '', '', '', '', '', '正向有功总电能 开始', '', '正向有功总电能 结束', '', '正向有功总电能 统计结果', '', '', '']] // 前一行的表头数据，二维数组，不够的用空白补全
         const tHeader = ['id', '电表号', '采集器编号', '通讯地址', '用户姓名', '备注', '时间', '总', '时间', '总', '总(差值)', '倍率', '单位', '月份']
 
         const filterVal = ['id', 'houseId', 'collectorId', 'address', 'userName', 'remark', 'startTime', 'startElect', 'endTime', 'endElect', 'totalElect', 'rate', 'sign', 'yearMonth']
-        const list = this.tableData
+        const list = type=='muban'?[]: this.tableData
         const merges = ['G1:H1', 'I1:J1', 'K1:M1']// 合并单元格
         const data = this.formatJson(filterVal, list)
         excel.export_json_to_excel({

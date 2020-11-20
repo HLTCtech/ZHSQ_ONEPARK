@@ -41,23 +41,25 @@
       </el-table-column>
       <el-table-column
         label="房间状态"
-        prop="houseStatus"
+        prop="saleStatus"
         align="center"
         fixed
       />
-      <el-table-column label="房间类型" prop="houseType" align="center" fixed />
-      <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
+      <el-table-column label="房间类型" prop="houseAttribute" align="center" fixed />
+      <el-table-column label="业主姓名" prop="userName" align="center" fixed />
       <el-table-column
         label="业主手机号"
-        prop="housePhone"
+        prop="userPhone"
         align="center"
         fixed
       />
       <el-table-column label="电表号" prop="electricMeterId" align="center" />
-      <el-table-column label="当前余额" prop="currentMoney" align="center" />
-      <el-table-column label="抄表日期" prop="date" align="center" />
+      <el-table-column label="当前余额" prop="account" align="center" />
+      <el-table-column label="抄表日期" prop="watchStartTime" align="center" />
       <el-table-column label="备注" prop="remark" align="center" />
     </el-table>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="getList" />
+
   </div>
 </template>
 
@@ -68,16 +70,19 @@ import {
 } from '@/api/electricExport'
 import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  components: { FilenameOption },
+  components: { FilenameOption ,Pagination},
   data() {
     return {
       downloadLoading: false,
       meterLoading: false,
       filename: '',
       tableData: [],
-      listLoading: false
+      listLoading: false,
+      listQuery_search:{page:1},
+      total:0
     }
   },
   created() {
@@ -86,10 +91,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      electricExportAll()
+      electricExportAll(this.listQuery_search)
         .then((res) => {
           this.listLoading = false
-          this.tableData = res.data.items
+          this.tableData = res.data
+          this.total=res.total
         })
         .catch(() => {
           this.listLoading = false
@@ -126,13 +132,13 @@ export default {
         const filterVal = [
           'id',
           'houseId',
-          'houseStatus',
-          'houseType',
-          'houseName',
-          'housePhone',
+          'saleStatus',
+          'houseAttribute',
+          'userName',
+          'userPhone',
           'electricMeterId',
-          'currentMoney',
-          'date',
+          'account',
+          'watchStartTime',
           'remark'
         ]
         const list = this.tableData
