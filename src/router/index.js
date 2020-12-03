@@ -177,7 +177,15 @@ export const constantRoutes = [
           title: '电费导出'
         }
       },
-      // {
+      {
+        path: 'electricitycharge',
+        component: () => import('@/views/bill_pay/house/electricitycharge'),
+        name: 'electricitycharge',
+        meta: {
+          title: '电费欠费系统'
+        }
+      },
+      // { 
       //   path: 'water',
       //   component: () => import('@/views/bill_pay/house/water'),
       //   name: 'water',
