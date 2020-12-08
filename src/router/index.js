@@ -182,7 +182,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/electricitycharge'),
         name: 'electricitycharge',
         meta: {
-          title: '电费欠费系统'
+          title: '电费欠费'
         }
       },
       // { 
@@ -600,7 +600,7 @@ export const asyncRoutes = [
         component: () => import('@/views/operationLog/moneyReturn'),
         name: 'moneyReturn',
         meta: {
-          title: '装修保证金退款记录'
+          title: '退款记录'
         }
       },
       {

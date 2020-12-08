@@ -4,9 +4,9 @@
     <div class="filter-container">
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-      <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
+      <!-- <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in yearOptions" :key="item" :label="item" :value="item" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery_search.moneyStatus" placeholder="选择退款状态" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in moneyStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -446,6 +446,7 @@ export default {
       this.listQuery_search.page = 1
       fetchPassDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -721,7 +722,7 @@ export default {
             type: 'info'
           }).then(() => {
             returnMoney(formReturn).then(response => {
-              if (response.codeStatus === 200) {
+              if (response.codeStatus === 200 && response.msg !== '总退款金额大于保证金') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',

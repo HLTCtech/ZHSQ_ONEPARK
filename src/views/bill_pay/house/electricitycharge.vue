@@ -12,14 +12,14 @@
       >
         导出Excel
       </el-button>
-      <el-button
+      <!-- <el-button
         :loading="meterLoading"
         style="margin: 0 0 20px 20px"
         type="primary"
         @click="handleStartMeter"
       >
         开始抄表
-      </el-button>
+      </el-button> -->
     </div>
 
     <el-table
@@ -64,6 +64,9 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="getList" />
+    
+    <!-- 分页功能实现标签 -->
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="fetchListSearch" /> -->
 
   </div>
 </template>
@@ -102,9 +105,7 @@ export default {
           this.listLoading = false
           // console.log(res.data)
           this.tableData = res.data 
-          
-          
-          // this.total=res.total
+          this.total=res.total
         })
         .catch(() => {
           this.listLoading = false

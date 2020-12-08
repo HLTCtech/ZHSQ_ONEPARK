@@ -56,9 +56,14 @@
       <el-table-column label="电表号" prop="electricMeterId" align="center" />
       <el-table-column label="当前余额" prop="account" align="center" />
       <el-table-column label="抄表日期" prop="watchStartTime" align="center" />
+      <el-table-column label="用电次数" prop="electricNum" align="center" />
+      <el-table-column label="总用电金额" prop="electricMoney" align="center" />
+      <el-table-column label="剩余金额" prop="electricSurMoney" align="center" />
+      <el-table-column label="总用电量" prop="electricTotal" align="center" />
+      <!-- <el-table-column label="用电信息" prop="dsp" align="center" /> -->
       <el-table-column label="备注" prop="remark" align="center" />
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="getList" />
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery_search.page" @pagination="getList" /> -->
 
   </div>
 </template>
@@ -127,6 +132,10 @@ export default {
           '电表号',
           '当前余额',
           '抄表日期',
+          '用电次数',
+          '总用电金额',
+          '剩余金额',
+          '总用电量',
           '备注'
         ]
         const filterVal = [
@@ -139,6 +148,10 @@ export default {
           'electricMeterId',
           'account',
           'watchStartTime',
+          'electricNum',
+          'electricMoney',
+          'electricSurMoney',
+          'electricTotal',
           'remark'
         ]
         const list = this.tableData

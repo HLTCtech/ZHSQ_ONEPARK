@@ -4,15 +4,15 @@
     <div class="filter-container">
       <el-input v-model="listQuery_search.houseId" type="text" placeholder="输入房间号" style="width: 130px" class="filter-item" clearable />
       <el-input v-model="listQuery_search.houseName" type="text" placeholder="输入业主姓名" style="width: 130px" class="filter-item" clearable />
-      <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
+      <!-- <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in yearOptions" :key="item" :label="item" :value="item" />
-      </el-select>
+      </el-select> -->
       <el-select v-model="listQuery_search.moneyStatus" placeholder="选择退款状态" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in moneyStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <!-- 时间选择器 -->
       <el-date-picker
-        v-model="listQuery_search.datePicker"
+        v-model="listQuery_search.dateRange"
         class="filter-item"
         type="daterange"
         align="right"
@@ -242,6 +242,11 @@
           <el-form-item label="扣款金额" label-width="100px" prop="moneyWithhold">
             <el-input v-model.number="formReturn.moneyWithhold" />
           </el-form-item>
+          <el-form-item label="退款日期" label-width="100px" prop="returnDate">
+            <div class="block">
+              <el-date-picker v-model="formReturn.returnDate" align="right" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
+            </div>
+          </el-form-item>
           <el-form-item label="备注" label-width="100px" prop="remark">
             <el-input v-model="formReturn.remark" type="textarea" placeholder="如有需要请输入不多于30字的备注" />
           </el-form-item>
@@ -285,7 +290,7 @@ export default {
         year: null,
         moneyStatus: null,
         houseName: null,
-        datePicker: null
+        dateRange: null
       },
       // 时间选择器返回数据
       pickerOptions: {
@@ -718,7 +723,7 @@ export default {
             type: 'info'
           }).then(() => {
             returnMoney(formReturn).then(response => {
-              if (response.codeStatus === 200) {
+              if (response.codeStatus === 200 && response.msg !== '总退款金额大于保证金') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',

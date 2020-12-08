@@ -733,7 +733,7 @@ export default {
             type: 'info'
           }).then(() => {
             returnMoney(formReturn).then(response => {
-              if (response.codeStatus === 200) {
+              if (response.codeStatus === 200 && response.msg !== '总退款金额大于保证金') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',
