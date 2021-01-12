@@ -321,7 +321,7 @@ export default {
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
-      moneyStatusOptions: ['申请中', '核对通过', '申请驳回', '已退款'],
+      moneyStatusOptions: ['已退款', '审核通过', '未退款'],
       // list接口请求参数
       listQuery_all: {
         page: 1,

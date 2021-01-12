@@ -331,6 +331,12 @@ export const constantRoutes = [
     },
     children: [
       {
+        path: 'electric',
+        component: () => import('@/views/billOverall/electric'),
+        name: 'Electric',
+        meta: { title: '电费', }
+      },
+      {
         path: 'summation',
         component: () => import('@/views/billOverall/billSummation'),
         name: 'summation',
@@ -587,6 +593,7 @@ export const asyncRoutes = [
       icon: 'log'
     },
     children: [
+      
       {
         path: 'moneyGet',
         component: () => import('@/views/operationLog/moneyGet'),
@@ -619,6 +626,36 @@ export const asyncRoutes = [
           title: '车辆信息变更记录'
         }
       }
+    ]
+  },
+  {
+    // 台账导出
+    path: '/parameterExport',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'ParameterExport',
+    alwaysShow:true,
+    meta: {
+      title: '台账导出',
+      icon: 'log'
+    },
+    children:[
+      {
+        path: 'property',
+        component: () => import('@/views/parameterExport/property'),
+        name: 'Property',
+        meta: {
+          title: '住宅物业费'
+        }
+      },
+      {
+        path: 'houseChange',
+        component: () => import('@/views/parameterExport/houseChange'),
+        name: 'HouseChange',
+        meta: {
+          title: '房源信息变更'
+        }
+      },
     ]
   },
   // {
