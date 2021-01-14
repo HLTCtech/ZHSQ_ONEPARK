@@ -425,6 +425,7 @@ export default {
   directives: { waves },
   data() {
     return {
+      filename:'',
       listLoading: true,
       total: 0,
       // 定义搜索按钮的query字段

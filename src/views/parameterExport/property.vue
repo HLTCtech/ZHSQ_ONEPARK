@@ -533,6 +533,7 @@ export default {
   directives: { waves },
   data() {
     return {
+      filename:'',
       show: true,
       count: '',
       payPattern: true,

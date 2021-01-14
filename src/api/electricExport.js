@@ -16,3 +16,11 @@ export function electricExportStartMeter(data) {
     data
   })
 }
+// 电费月度统计按月份搜索
+export function getWatchElectricByMonth(data) {
+  return request({
+    url: '/onepark/electricExport/getWatchElectricByMonth',
+    method: 'post',
+    data
+  })
+}

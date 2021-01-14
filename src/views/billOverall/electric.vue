@@ -57,16 +57,39 @@
       </div>
     </div>
     <div v-else>
-      <FilenameOption v-model="filename" />
-      <el-button
-        :loading="downloadLoading"
-        style="margin:0 0 20px 20px;"
-        type="primary"
-        icon="el-icon-document"
-        @click="handleDownload"
-        >导出Excel</el-button
+      <!-- 月度电费统计时间选择 -->
+      <div
+        v-if="searchType === 'export'"
+        class="choose-month"
+        style="margin-bottom:10px"
       >
+        <el-date-picker
+          v-model="electricMonthForm.month"
+          type="month"
+          placeholder="选择月"
+          value-format="yyyy-MM"
+        >
+        </el-date-picker>
+        <el-button
+          @click="searchElectricMonth"
+          type="primary"
+          icon="el-icon-search"
+          >搜索</el-button
+        >
+      </div>
+      <div class="download-file">
+        <FilenameOption v-model="filename" />
+        <el-button
+          :loading="downloadLoading"
+          style="margin:0 0 20px 20px;"
+          type="primary"
+          icon="el-icon-document"
+          @click="handleDownload"
+          >导出Excel</el-button
+        >
+      </div>
     </div>
+    <!-- 电费统计数据表格 -->
     <el-table
       v-loading="tableLoading"
       :data="tableData"
@@ -150,7 +173,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 电费统计数据表格 -->
+    <!-- 月度电费统计表格 -->
     <el-table
       v-loading="tableLoading"
       :data="tableData"
@@ -161,68 +184,59 @@
       highlight-current-row
       v-else
     >
-      <template>
-        <el-table-column label="ID" prop="id" align="center" fixed />
-        <el-table-column label="房号" prop="houseId" align="center" fixed>
-          <template slot-scope="scope">
-            <el-tag @click="getHouseLog(scope.row.houseId)">{{
-              scope.row.houseId
-            }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="房间状态"
-          prop="saleStatus"
-          align="center"
-          fixed
-        />
-        <el-table-column
-          label="房间类型"
-          prop="houseAttribute"
-          align="center"
-          fixed
-        />
-        <el-table-column
-          label="业主姓名"
-          prop="userName"
-          align="center"
-          fixed
-        />
-        <el-table-column
-          label="业主手机号"
-          prop="userPhone"
-          align="center"
-          fixed
-        />
-        <el-table-column label="电表号" prop="electricMeterId" align="center" />
-        <el-table-column label="当前余额" prop="account" align="center" />
-        <el-table-column
-          label="抄表日期"
-          prop="watchStartTime"
-          align="center"
-        />
-        <el-table-column label="用电次数" prop="electricNum" align="center" />
-        <el-table-column
-          label="总用电金额"
-          prop="electricMoney"
-          align="center"
-        />
-        <el-table-column
-          label="剩余金额"
-          prop="electricSurMoney"
-          align="center"
-        />
-        <el-table-column label="总用电量" prop="electricTotal" align="center" />
-        <!-- <el-table-column label="用电信息" prop="dsp" align="center" /> -->
-        <el-table-column label="备注" prop="remark" align="center" />
-      </template>
+      <el-table-column label="ID" prop="id" align="center" fixed  width="50"/>
+      <el-table-column label="房号" prop="houseId" align="center" fixed>
+        <template slot-scope="scope">
+          <el-tag @click="getHouseLog(scope.row.houseId)">{{
+            scope.row.houseId
+          }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="房间状态"
+        prop="saleStatus"
+        align="center"
+        fixed
+      />
+      <el-table-column
+        label="房间类型"
+        prop="houseAttribute"
+        align="center"
+        fixed
+      />
+      <el-table-column label="业主姓名" prop="userName" align="center" fixed />
+      <el-table-column
+        label="业主手机号"
+        prop="userPhone"
+        align="center"
+        fixed
+      />
+      <el-table-column label="电表号" prop="electricMeterId" align="center" width="60"/>
+      <el-table-column label="月份" prop="month" align="center" width="75" />
+      <el-table-column label="首次购电日期" prop="firstDate" align="center" />
+      <!-- <el-table-column label="当前余额" prop="account" align="center" /> -->
+      <el-table-column label="本月抄表日期" prop="watchStartTime" align="center" />
+      <el-table-column label="本月用电量" prop="thisMonth" align="center" />
+      <el-table-column label="下月抄表日期" prop="endTime" align="center" />
+      <el-table-column label="下月用电量" prop="lastMonth" align="center" />
+      <el-table-column label="差值" prop="difference" align="center" />
+      <el-table-column label="用电次数" prop="electricNum" align="center" />
+      <el-table-column label="总用电金额" prop="electricMoney" align="center" />
+      <el-table-column
+        label="剩余金额"
+        prop="electricSurMoney"
+        align="center"
+      />
+      <el-table-column label="总用电量" prop="electricTotal" align="center" />
+      <!-- <el-table-column label="用电信息" prop="dsp" align="center" /> -->
+      <el-table-column label="备注" prop="remark" align="center" />
     </el-table>
-    <pagination
+    <!-- <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery_search.page"
       @pagination="getList"
-    />
+    /> -->
   </div>
 </template>
 
@@ -231,13 +245,16 @@ import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
 import { upload, electricStatisticsAll } from '@/api/electricStatistics'
 import { electricBlance } from '@/api/electricitycharge'
-import { electricExportAll } from '@/api/electricExport'
+import {
+  electricExportAll,
+  getWatchElectricByMonth
+} from '@/api/electricExport'
 import Pagination from '@/components/Pagination'
 export default {
   components: { Pagination, FilenameOption },
   data() {
     return {
-      searchType: 'statistical',
+      searchType: 'export',
       option: [
         {
           label: '电费统计数据',
@@ -257,6 +274,10 @@ export default {
       tableLoading: false,
       listQuery: { page: 1 },
       listQuery_search: { date: null, page: 1 },
+      electricMonthForm: {
+        page: 1,
+        month: null
+      },
       total: 0,
       tableData: []
     }
@@ -270,6 +291,27 @@ export default {
     }
   },
   methods: {
+    searchElectricMonth() {
+      this.tableLoading = true
+      this.tableData = []
+      if (this.electricMonthForm.month === null) {
+        this.getList()
+      } else {
+        getWatchElectricByMonth(this.electricMonthForm)
+          .then(res => {
+            console.log(res)
+            this.tableLoading = false
+            this.tableData = res.data
+            if (res.total || res.total === 0) {
+              this.total = res.total
+              this.tableLoading = false
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
     handleRequest(param) {
       const fileObj = param.file
       // FormData 对象
@@ -278,7 +320,7 @@ export default {
       form.append('file', fileObj)
       upload(form).then(res => {
         console.log(res)
-        if (res.code == 200 && res.msg != '重复上传') {
+        if (res.code === 200 && res.msg !== '重复上传') {
           this.$message.success('上传成功')
         } else {
           this.$message.error(res.msg)
@@ -297,16 +339,22 @@ export default {
         api = electricBlance
         data = this.listQuery
       } else {
+        // api = getWatchElectricByMonth
+        // data = this.electricMonthForm
         api = electricExportAll
         data = this.listQuery
       }
-      api(data).then(res => {
-        this.tableLoading = false
-        this.tableData = res.data
-        if (res.total) {
-          this.total = res.total
-        }
-      })
+      api(data)
+        .then(res => {
+          this.tableLoading = false
+          this.tableData = res.data
+          if (res.total || res.total === 0) {
+            this.total = res.total
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     handleDownload(type) {
       this.downloadLoading = true

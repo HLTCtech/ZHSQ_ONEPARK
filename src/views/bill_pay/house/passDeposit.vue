@@ -173,6 +173,9 @@
           <el-form-item label="客户姓名" label-width="100px" prop="houseName">
             <el-input v-model="applyMoneyReturn.houseName" disabled />
           </el-form-item>
+          <el-form-item label="实收金额" label-width="100px">
+            <el-input disabled v-model.number="nowMoney" />
+          </el-form-item>
           <el-form-item label="退款金额" label-width="100px" prop="moneyReturn">
             <el-input v-model.number="applyMoneyReturn.moneyReturn" />
           </el-form-item>
@@ -235,6 +238,9 @@
               <el-option v-for="item in payOptionsReturn" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
+          <el-form-item label="实收金额" label-width="100px">
+            <el-input disabled v-model.number="nowMoney" />
+          </el-form-item>
           <el-form-item label="退款金额" label-width="100px" prop="moneyReturn">
             <el-input v-model.number="formReturn.moneyReturn" />
           </el-form-item>
@@ -277,6 +283,7 @@ export default {
   directives: { waves, permission },
   data() {
     return {
+      nowMoney:0,
       show: true,
       count: '',
       listLoading: true,
@@ -321,7 +328,13 @@ export default {
       titles: [{ 'ID': 'id' }, { '房号': 'houseId' }, { '业主姓名': 'houseName' }],
       // 年份选择
       yearOptions: ['2020', '2019', '2018', '2017', '2016', '2015'],
-      moneyStatusOptions: ['已退款', '审核通过', '未退款'],
+      moneyStatusOptions: [
+        '申请中',
+        '已退款',
+        '未退款',
+        '审核通过',
+        '驳回退款'
+      ],
       // list接口请求参数
       listQuery_all: {
         page: 1,
@@ -358,6 +371,7 @@ export default {
         houseId: null,
         houseName: null,
         payTypeReturn: null,
+        payNum:null,
         moneyReturn: null,
         moneyWithhold: null,
         remark: null,
@@ -467,6 +481,7 @@ export default {
       this.formReturn.houseId = row.houseId
       this.formReturn.houseName = row.houseName
       this.formReturn.moneyGet = row.moneyGet
+      this.nowMoney = row.moneyGet
       this.dialogMoneyReturn = true
     },
     // 申请退款按钮
@@ -474,6 +489,8 @@ export default {
       this.applyMoneyReturn.id = row.id
       this.applyMoneyReturn.houseId = row.houseId
       this.applyMoneyReturn.houseName = row.houseName
+      this.applyMoneyReturn.payNum = row.moneyGet
+      this.nowMoney = row.moneyGet
       this.dialogApplyMoneyReturn = true
     },
     // 审核通过按钮
@@ -597,6 +614,20 @@ export default {
       // 表单项规则验证
       this.$refs['applyMoneyReturnForm'].validate((valid) => {
         if (valid) {
+          //判断退款和扣款是否大于实收金额
+          let money =
+            this.applyMoneyReturn.moneyReturn === null
+              ? 0
+              : Number(this.applyMoneyReturn.moneyReturn)
+          let moneyHold =
+            this.applyMoneyReturn.moneyWithhold === null
+              ? 0
+              : Number(this.applyMoneyReturn.moneyWithhold)
+          if (money + moneyHold > this.nowMoney) {
+            console.log(money, moneyHold)
+            this.$message.error('退款金额加扣款金额不能大于实收金额!')
+            return
+          }
         // 操作确认框
           this.$confirm('确定提交么？', '申请退款', {
             confirmButtonText: '确定',
@@ -715,6 +746,20 @@ export default {
       // 表单项规则验证
       this.$refs['dataFormReturn'].validate((valid) => {
         if (valid) {
+          //判断退款和扣款是否大于实收金额
+          let money =
+            this.formReturn.moneyReturn === null
+              ? 0
+              : Number(this.formReturn.moneyReturn)
+          let moneyHold =
+            this.formReturn.moneyWithhold === null
+              ? 0
+              : Number(this.formReturn.moneyWithhold)
+          if (money + moneyHold > this.nowMoney) {
+            console.log(money, moneyHold)
+            this.$message.error('退款金额加扣款金额不能大于实收金额!')
+            return
+          }
         // 操作确认框
           this.$confirm('确定提交么？', '费用收缴', {
             confirmButtonText: '确定',
