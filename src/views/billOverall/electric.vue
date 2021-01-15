@@ -77,6 +77,27 @@
           >搜索</el-button
         >
       </div>
+      <!-- 电费欠费搜索条件 -->
+      <div v-else-if="searchType === 'owe'" style="margin-bottom:10px">
+        <el-input
+          v-model="oweForm.houseId"
+          placeholder="输入房间号"
+          style="width:200px"
+          clearable
+        ></el-input>
+        <el-input
+          v-model="oweForm.userName"
+          placeholder="输入姓名"
+          style="width:200px"
+          clearable
+        ></el-input>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          @click="searchElectricBlance"
+          >搜索</el-button
+        >
+      </div>
       <div class="download-file">
         <FilenameOption v-model="filename" />
         <el-button
@@ -134,10 +155,13 @@
     >
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{
             scope.row.houseId
           }}</el-tag>
+        </template> -->
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -184,12 +208,15 @@
       highlight-current-row
       v-else
     >
-      <el-table-column label="ID" prop="id" align="center" fixed  width="50"/>
+      <el-table-column label="ID" prop="id" align="center" fixed width="50" />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <el-tag @click="getHouseLog(scope.row.houseId)">{{
             scope.row.houseId
           }}</el-tag>
+        </template> -->
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.houseId }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -211,11 +238,20 @@
         align="center"
         fixed
       />
-      <el-table-column label="电表号" prop="electricMeterId" align="center" width="60"/>
+      <el-table-column
+        label="电表号"
+        prop="electricMeterId"
+        align="center"
+        width="60"
+      />
       <el-table-column label="月份" prop="month" align="center" width="75" />
       <el-table-column label="首次购电日期" prop="firstDate" align="center" />
       <!-- <el-table-column label="当前余额" prop="account" align="center" /> -->
-      <el-table-column label="本月抄表日期" prop="watchStartTime" align="center" />
+      <el-table-column
+        label="本月抄表日期"
+        prop="watchStartTime"
+        align="center"
+      />
       <el-table-column label="本月用电量" prop="thisMonth" align="center" />
       <el-table-column label="下月抄表日期" prop="endTime" align="center" />
       <el-table-column label="下月用电量" prop="lastMonth" align="center" />
@@ -244,7 +280,7 @@
 import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
 import { upload, electricStatisticsAll } from '@/api/electricStatistics'
-import { electricBlance } from '@/api/electricitycharge'
+import { electricBlance, getElectricBlance } from '@/api/electricitycharge'
 import {
   electricExportAll,
   getWatchElectricByMonth
@@ -278,6 +314,12 @@ export default {
         page: 1,
         month: null
       },
+      //欠费搜索表单
+      oweForm: {
+        page: 1,
+        houseId: '',
+        userName: ''
+      },
       total: 0,
       tableData: []
     }
@@ -291,6 +333,30 @@ export default {
     }
   },
   methods: {
+    /* 电费欠费搜索 */
+    searchElectricBlance() {
+      this.tableLoading = true
+      this.tableData = []
+      /* 如果搜索条件都为空 */
+      if (this.oweForm.houseId === '' && this.oweForm.userName === '') {
+        this.getList()
+      } else {
+        getElectricBlance(this.oweForm)
+          .then(res => {
+            console.log(res)
+            this.tableLoading = false
+            this.tableData = res.data
+            if (res.total || res.total === 0) {
+              this.total = res.total
+            }
+          })
+          .catch(err => {
+            console.log(err)
+            this.tableLoading = false
+          })
+      }
+    },
+    /* 电费月度统计搜索 */
     searchElectricMonth() {
       this.tableLoading = true
       this.tableData = []
@@ -304,11 +370,11 @@ export default {
             this.tableData = res.data
             if (res.total || res.total === 0) {
               this.total = res.total
-              this.tableLoading = false
             }
           })
           .catch(err => {
             console.log(err)
+            this.tableLoading = false
           })
       }
     },
@@ -432,13 +498,18 @@ export default {
             '业主姓名',
             '业主手机号',
             '电表号',
-            '当前余额',
-            '抄表日期',
+            '月份',
+            '首次购电日期',
+            '本月抄表日期',
+            '本月用电量',
+            '下月抄表日期',
+            '下月用电量',
+            '差值',
             '用电次数',
             '总用电金额',
             '剩余金额',
             '总用电量',
-            '备注'
+            '备注',
           ]
           filterVal = [
             'id',
@@ -448,13 +519,18 @@ export default {
             'userName',
             'userPhone',
             'electricMeterId',
-            'account',
+            'month',
+            'firstDate',
             'watchStartTime',
+            'thisMonth',
+            'endTime',
+            'lastMonth',
+            'difference',
             'electricNum',
             'electricMoney',
             'electricSurMoney',
             'electricTotal',
-            'remark'
+            'remark',
           ]
         }
         const list = type == 'muban' ? [] : this.tableData

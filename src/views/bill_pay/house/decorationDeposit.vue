@@ -152,6 +152,7 @@
             v-permission="['admin']"
             type="primary"
             size="mini"
+            :disabled="row.moneyStatus !== '审核通过'"
             @click="handleMoneyReturn(row)"
           >
             退款
@@ -171,6 +172,7 @@
             v-permission="['editor']"
             type="primary"
             size="mini"
+            :disabled="checkApply(row)"
             @click="handleApplyMoneyReturn(row)"
           >
             申请退款
@@ -532,7 +534,8 @@ import {
   applyReturnMoney,
   verifyReturnMoney,
   refuseVerifyReturnMoney,
-  getHouseNameMoneyShallPay
+  getHouseNameMoneyShallPay,
+  getDecorationToProperty
 } from '@/api/payDecorationDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
@@ -601,7 +604,7 @@ export default {
         '已退款',
         '未退款',
         '审核通过',
-        '驳回退款'
+        '审核驳回'
       ],
       // list接口请求参数
       listQuery_all: {
@@ -750,6 +753,19 @@ export default {
     this.getList()
   },
   methods: {
+    //检查是否可申请退款
+    checkApply(row) {
+      if (row.moneyStatus === '未退款') {
+        return false
+      } else if (
+        row.moneyStatus === '已退款' &&
+        row.moneyReturnNum < row.moneyGet
+      ) {
+        return false
+      } else {
+        return true
+      }
+    },
     getList() {
       this.listLoading = true
       fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
@@ -906,7 +922,7 @@ export default {
             }).then(() => {
               // this.formPost.paidTotalNum = this.singlePayTotal
               postMoney(formPost).then(response => {
-                if (response.codeStatus === 200) {
+                if (response.msg === 200) {
                   this.$notify({
                     title: 'Success',
                     message: '提交成功',
@@ -1102,11 +1118,14 @@ export default {
             cancelButtonText: '取消',
             type: 'info'
           }).then(() => {
-            returnMoney(formReturn).then(response => {
-              if (
-                response.codeStatus === 200 &&
-                response.msg !== '总退款金额大于保证金'
-              ) {
+            let api=null
+            if(this.formReturn.payTypeReturn==='转存物业费'){
+              api=getDecorationToProperty
+            }else{
+              api=returnMoney
+            }
+            api(formReturn).then(response => {
+              if (response.msg === '退款成功') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',
@@ -1124,7 +1143,7 @@ export default {
               } else {
                 this.$notify({
                   title: 'Failure',
-                  message: '提交失败，请联系系统管理员',
+                  message: `${response.msg}`,
                   type: 'error',
                   duration: 3000
                 })

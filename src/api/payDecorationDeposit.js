@@ -109,4 +109,11 @@ export function getHouseNameMoneyShallPay(houseId) {
     data: { houseId }
   })
 }
-
+//退款方式为转存物业费时
+export function getDecorationToProperty(data) {
+  return request({
+    url: '/onepark/pay/decorationDeposit/getDecorationToProperty',
+    method: 'post',
+    data
+  })
+}

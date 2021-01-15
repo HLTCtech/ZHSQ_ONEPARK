@@ -61,7 +61,7 @@
       <el-table-column label="退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button v-permission="['admin']" type="primary" size="mini" @click="handleMoneyReturn(row)">
+          <el-button :disabled="row.moneyStatus!=='审核通过'" v-permission="['admin']" type="primary" size="mini" @click="handleMoneyReturn(row)">
             退款
           </el-button>
         </template>
@@ -69,7 +69,7 @@
       <el-table-column label="申请退款" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
-          <el-button v-permission="['editor']" type="primary" size="mini" @click="handleApplyMoneyReturn(row)">
+          <el-button :disabled="checkApply(row)" v-permission="['editor']" type="primary" size="mini" @click="handleApplyMoneyReturn(row)">
             申请退款
           </el-button>
         </template>
@@ -335,7 +335,7 @@ export default {
         '已退款',
         '未退款',
         '审核通过',
-        '驳回退款'
+        '审核驳回'
       ],
       // list接口请求参数
       listQuery_all: {
@@ -440,6 +440,19 @@ export default {
     this.getList()
   },
   methods: {
+    //检查是否可申请退款
+    checkApply(row) {
+      if (row.moneyStatus === '未退款') {
+        return false
+      } else if (
+        row.moneyStatus === '已退款' &&
+        row.moneyReturnNum < row.moneyGet
+      ) {
+        return false
+      } else {
+        return true
+      }
+    },
     getList() {
       this.listLoading = true
       fetchLightWellDepositListAll(this.listQuery_all).then(response => {
@@ -768,7 +781,7 @@ export default {
             type: 'info'
           }).then(() => {
             returnMoney(formReturn).then(response => {
-              if (response.codeStatus === 200 && response.msg !== '总退款金额大于保证金') {
+              if (response.msg === '退款成功') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',
@@ -785,7 +798,7 @@ export default {
               } else {
                 this.$notify({
                   title: 'Failure',
-                  message: '提交失败，请联系系统管理员',
+                  message: `${response.msg}`,
                   type: 'error',
                   duration: 3000
                 })

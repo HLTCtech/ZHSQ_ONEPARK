@@ -169,14 +169,14 @@ export const constantRoutes = [
           title: '住宅电费'
         }
       },
-      {
-        path: 'electricExport',
-        component: () => import('@/views/bill_pay/house/electricExport'),
-        name: 'electricExport',
-        meta: {
-          title: '电费导出'
-        }
-      },
+      // {
+      //   path: 'electricExport',
+      //   component: () => import('@/views/bill_pay/house/electricExport'),
+      //   name: 'electricExport',
+      //   meta: {
+      //     title: '电费导出'
+      //   }
+      // },
       {
         path: 'electricitycharge',
         component: () => import('@/views/bill_pay/house/electricitycharge'),
@@ -393,19 +393,19 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    // 电量统计数据
-    path: '/electricStatistics',
-    component: Layout,
-    children: [
-      {
-        path: 'electricStatistics',
-        component: () => import('@/views/electricStatistics'),
-        name: 'electricStatistics',
-        meta: { title: '电量统计数据', icon: 'subjectCode' }
-      }
-    ]
-  },
+  // {
+  //   // 电量统计数据
+  //   path: '/electricStatistics',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'electricStatistics',
+  //       component: () => import('@/views/electricStatistics'),
+  //       name: 'electricStatistics',
+  //       meta: { title: '电量统计数据', icon: 'subjectCode' }
+  //     }
+  //   ]
+  // },
   {
     // 台账管理
     path: '/standingBook',
