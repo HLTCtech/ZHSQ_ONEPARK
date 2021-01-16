@@ -14,7 +14,13 @@
         end-placeholder="结束日期"
         value-format="yyyy-MM-dd"
       />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
         搜索
       </el-button>
     </div>
@@ -22,14 +28,27 @@
     <!-- excel导出功能 -->
     <div>
       <FilenameOption v-model="filename" />
-      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+      <el-button
+        :loading="downloadLoading"
+        style="margin:0 0 20px 20px;"
+        type="primary"
+        icon="el-icon-document"
+        @click="handleDownload"
+      >
         导出Excel
       </el-button>
     </div>
 
     <!-- 表格 -->
     <div class="printTable">
-      <el-table :data="tableData" highlight-current-row stripe border fit max-height="900px">
+      <el-table
+        :data="tableData"
+        highlight-current-row
+        stripe
+        border
+        fit
+        max-height="800px"
+      >
         <el-table-column label="ID" prop="id" align="center" />
         <el-table-column label="制单日期" prop="billsMadeDate" align="center" />
         <el-table-column label="凭证类别" prop="voucherType" align="center" />
@@ -37,12 +56,19 @@
         <el-table-column label="摘要" prop="abstract" align="center" />
         <el-table-column label="科目编码" prop="subjectCode" align="center" />
         <el-table-column label="币种" prop="moneyType" align="center" />
-        <el-table-column label="借贷方向" prop="lendingDirection" align="center" />
+        <el-table-column
+          label="借贷方向"
+          prop="lendingDirection"
+          align="center"
+        />
         <el-table-column label="本币" prop="localCurrency" align="center" />
-        <el-table-column label="往来单位编码" prop="contactUnitCode" align="center" />
+        <el-table-column
+          label="往来单位编码"
+          prop="contactUnitCode"
+          align="center"
+        />
       </el-table>
     </div>
-
   </div>
 </template>
 
@@ -77,7 +103,7 @@ export default {
   methods: {
     getList() {
       fetchExportList().then(response => {
-        this.tableData = response.data.items
+        this.tableData = response.data
       })
     },
     // 根据选定信息搜索
@@ -94,8 +120,30 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', '制单日期', '凭证类别', '凭证编号', '摘要', '科目编码', '币种', '借贷方向', '本币', '往来单位编码']
-        const filterVal = ['id', 'billsMadeDate', 'voucherType', 'voucherId', 'abstract', 'subjectCode', 'moneyType', 'lendingDirection', 'localCurrency', 'contactUnitCode']
+        const tHeader = [
+          'Id',
+          '制单日期',
+          '凭证类别',
+          '凭证编号',
+          '摘要',
+          '科目编码',
+          '币种',
+          '借贷方向',
+          '本币',
+          '往来单位编码'
+        ]
+        const filterVal = [
+          'id',
+          'billsMadeDate',
+          'voucherType',
+          'voucherId',
+          'abstract',
+          'subjectCode',
+          'moneyType',
+          'lendingDirection',
+          'localCurrency',
+          'contactUnitCode'
+        ]
         const list = this.tableData
         console.log(list)
         const data = this.formatJson(filterVal, list)
@@ -111,13 +159,19 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'timestamp') {
+            return parseTime(v[j])
+          } else {
+            if (v === null) {
+              return ''
+            } else {
+              return v[j]
+            }
+          }
+        })
+      )
     },
     // 测试打印功能
     handelPrint() {
@@ -133,19 +187,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .show-sms {
-    position: absolute;
-    right: 10px;
-    top: 82px;
-    font-size: 15px;
-    color: $light_gray;
-    cursor: pointer;
-    user-select: none;
-  }
+  position: absolute;
+  right: 10px;
+  top: 82px;
+  font-size: 15px;
+  color: $light_gray;
+  cursor: pointer;
+  user-select: none;
+}
 
 body .el-table th.gutter {
   display: table-cell !important;
@@ -154,8 +208,7 @@ body .el-table th.gutter {
   th.gutter,
   colgroup.gutter {
     display: block !important;
-    width: 6px !important
+    width: 6px !important;
   }
 }
-
 </style>

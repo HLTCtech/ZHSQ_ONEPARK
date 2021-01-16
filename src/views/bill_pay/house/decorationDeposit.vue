@@ -32,14 +32,14 @@
           :value="item"
         />
       </el-select> -->
-      <el-date-picker
+      <!-- <el-date-picker
         class="filter-item"
         v-model="listQuery_search.year"
         type="year"
         placeholder="选择年份"
         value-format="yyyy"
       >
-      </el-date-picker>
+      </el-date-picker> -->
       <el-select
         v-model="listQuery_search.moneyStatus"
         placeholder="选择退款状态"
