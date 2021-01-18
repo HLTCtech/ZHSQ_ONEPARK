@@ -100,3 +100,19 @@ export function postDaterangeStart(query) {
     data: { query }
   })
 }
+//根据房号搜索物业费号
+export function searchProperty(data) {
+  return request({
+    url: '/onepark/pay/property/searchProperty',
+    method: 'post',
+    data
+  })
+}
+//根据房号搜索电费号
+export function electricCleanPaySearchElectricId(data) {
+  return request({
+    url: '/onepark/pay/electric/searchElectricId',
+    method: 'post',
+    data
+  })
+}

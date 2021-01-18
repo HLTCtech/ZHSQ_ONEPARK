@@ -471,14 +471,20 @@
             label-width="100px"
             prop="payTypeReturn"
           >
-            <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
+            <!-- <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
               <el-option
                 v-for="item in payOptionsReturn"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               />
-            </el-select>
+            </el-select> -->
+            <el-cascader
+              v-model="formReturn.payTypeReturn"
+              :options="payOptionsReturn"
+              @expand-change="handleChange"
+              separator="-"
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="实收金额" label-width="100px">
             <el-input disabled v-model.number="nowMoney" />
@@ -537,6 +543,10 @@ import {
   getHouseNameMoneyShallPay,
   getDecorationToProperty
 } from '@/api/payDecorationDeposit'
+import {
+  searchProperty,
+  electricCleanPaySearchElectricId
+} from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -678,8 +688,12 @@ export default {
         { value: '微信', label: '微信' },
         { value: '现金', label: '现金' },
         { value: '其他', label: '其他' },
-        { value: '转存电费', label: '转存电费' },
-        { value: '转存物业费', label: '转存物业费' }
+        {
+          value: '电费',
+          label: '电费',
+          children: []
+        },
+        { value: '物业费', label: '物业费', children: [] }
       ],
       // 定义表单提交项目规则
       formRules: {
@@ -753,6 +767,56 @@ export default {
     this.getList()
   },
   methods: {
+    //退款级联菜单发生变化
+    handleChange(e) {
+      let selected = e[0]
+      let api = null
+      console.log(selected)
+      switch (selected) {
+        case '电费':
+          api = electricCleanPaySearchElectricId
+          break
+        case '物业费':
+          api = searchProperty
+          break
+      }
+      api({
+        userName: this.formReturn.houseName,
+        houseId: this.formReturn.houseId
+      })
+        .then(res => {
+          console.log(res)
+          if (res.code == 200) {
+            let data = res.data.map(item => {
+              if (selected === '物业费') {
+                return {
+                  label: item.propertyId,
+                  value: item.propertyId
+                }
+              } else {
+                return {
+                  label: item.electricId,
+                  value: item.electricId
+                }
+              }
+            })
+            console.log(data)
+            this.payOptionsReturn.map((item, i) => {
+              if (item.label === selected) {
+                console.log(item)
+                // this.$set(this.payOptionsReturn[i], children, [])
+                // this.$set(this.payOptionsReturn[i], children, [...data])
+                item.children = []
+                item.children = [...data]
+              }
+            })
+            this.$forceUpdate()
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     //检查是否可申请退款
     checkApply(row) {
       if (row.moneyStatus === '未退款') {
@@ -816,6 +880,7 @@ export default {
       this.formReturn.houseId = row.houseId
       this.formReturn.houseName = row.houseName
       this.formReturn.moneyGet = row.moneyGet
+      this.formReturn.payTypeReturn = null
       this.nowMoney = row.moneyGet
       this.dialogMoneyReturn = true
     },
@@ -1118,13 +1183,15 @@ export default {
             cancelButtonText: '取消',
             type: 'info'
           }).then(() => {
-            let api=null
-            if(this.formReturn.payTypeReturn==='转存物业费'){
-              api=getDecorationToProperty
-            }else{
-              api=returnMoney
-            }
-            api(formReturn).then(response => {
+            // let api = null
+            // if (this.formReturn.payTypeReturn.indexOf('物业费') !== -1) {
+            //   api = getDecorationToProperty
+            // } else if (this.formReturn.payTypeReturn.indexOf('电费') !== -1) {
+            //   api = getDecorationToProperty
+            // } else {
+            //   api = returnMoney
+            // }
+            getDecorationToProperty(formReturn).then(response => {
               if (response.msg === '退款成功') {
                 this.$notify({
                   title: 'Success',
