@@ -89,9 +89,10 @@
       <el-table-column label="微信金额" prop="wechatNum" align="center" />
       <el-table-column label="现金金额" prop="cashNum" align="center" />
       <el-table-column label="代金券金额" prop="voucherNum" align="center" />
-      <el-table-column label="其他" prop="otherNum" align="center" />
+      <el-table-column label="其他" prop="othersNum" align="center" />
       <el-table-column label="特批" prop="specialNum" align="center" />
-      <el-table-column label="备注" prop="remark" align="center" />
+      <el-table-column label="转存" prop="turnNum" align="center" />
+      <!-- <el-table-column label="备注" prop="remark" align="center" /> -->
       <el-table-column label="缴费时间" prop="paidDate" align="center" />
       <el-table-column label="操作人" prop="operator" align="center" />
     </el-table>

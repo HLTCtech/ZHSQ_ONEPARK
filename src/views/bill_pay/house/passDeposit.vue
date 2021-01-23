@@ -58,7 +58,15 @@
         搜索
       </el-button>
     </div>
-
+    <!-- 表格导出功能 -->
+    <!-- <div style="margin-bottom:10px">
+      <el-input
+        v-model="filename"
+        style="width:250px"
+        placeholder="请输入导出文件的名称"
+      ></el-input>
+      <el-button @click="download" type="primary">导出Excel</el-button>
+    </div> -->
     <el-button
       v-waves
       class="filter-item"
@@ -515,7 +523,9 @@ import {
   applyReturnMoney,
   verifyReturnMoney,
   refuseVerifyReturnMoney,
-  getHouseNameMoneyShallPay
+  getHouseNameMoneyShallPay,
+  allNoPage,
+  searchNoPage
 } from '@/api/passDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
@@ -529,6 +539,7 @@ export default {
   directives: { waves, permission },
   data() {
     return {
+      filename:'',
       nowMoney: 0,
       show: true,
       count: '',
@@ -730,6 +741,56 @@ export default {
     this.getList()
   },
   methods: {
+    //表格导出
+    download(type) {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        let tHeader = [
+          'ID',
+          '房号',
+          '业主姓名',
+          '交款日期',
+          '实收金额',
+          '退款日期',
+          '退款金额',
+          '差额',
+          '退款状态',
+          '申请退款金额',
+          '申请扣款金额',
+          '备注',
+        ]
+        let filterVal = [
+          'id',
+          'houseId',
+          'houseName',
+          'paidDate',
+          'moneyGet',
+          'moneyReturnDate',
+          'moneyReturnNum',
+          'gap',
+          'moneyStatus',
+          'applyMoneyReturn',
+          'applyMoneyWithhold',
+          'remark'
+        ]
+        const list = type == 'muban' ? [] : this.tableData
+        const data = this.formatJson(filterVal, list)
+
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          return v[j]
+        })
+      )
+    },
     //检查是否可申请退款
     checkApply(row) {
       if (row.moneyStatus === '未退款') {
@@ -746,6 +807,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchPassDepositListAll(this.listQuery_all).then(response => {
+      // allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -764,6 +826,7 @@ export default {
       // 搜索功能调用
       this.listQuery_search.page = 1
       fetchPassDepositSearch(this.listQuery_search).then(response => {
+      // searchNoPage(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -1086,9 +1149,7 @@ export default {
             type: 'info'
           }).then(() => {
             returnMoney(formReturn).then(response => {
-              if (
-                response.msg === '退款成功'
-              ) {
+              if (response.msg === '退款成功') {
                 this.$notify({
                   title: 'Success',
                   message: '提交成功',

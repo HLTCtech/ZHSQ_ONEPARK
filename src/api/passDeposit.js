@@ -90,3 +90,19 @@ export function getHouseNameMoneyShallPay(houseId) {
     data: { houseId }
   })
 }
+// 出入证押金列表(无分页)
+export function allNoPage(query) {
+  return request({
+    url: '/onepark/pay/passDeposit/house/allNoPage',
+    method: 'post',
+    data: query
+  })
+}
+// 出入证押金搜索(无分页)
+export function searchNoPage(query) {
+  return request({
+    url: '/onepark/pay/passDeposit/house/house/searchNoPage',
+    method: 'post',
+    data: {query}
+  })
+}

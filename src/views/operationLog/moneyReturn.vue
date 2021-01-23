@@ -2,7 +2,6 @@
   <!-- 操作记录---退款记录 -->
   <div class="app-container">
     <div class="filter-container">
-      
       <el-input
         v-model="listQuery_search.houseId"
         type="text"
@@ -74,16 +73,33 @@
       <el-table-column label="退款日期" prop="moneyReturnDate" align="center" />
       <el-table-column label="退款方式" prop="moneyReturnType" align="center" />
       <el-table-column label="操作时间" prop="operatDate" align="center" />
+      <el-table-column label="备注" prop="remark" align="center" />
       <el-table-column label="操作人" prop="operator" align="center" />
     </el-table>
 
     <!-- 分页功能实现标签 -->
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="listQuery_all.page"
-      @pagination="getList"
-    />
+    <template
+      v-if="
+        listQuery_search.houseId ||
+          listQuery_search.operator ||
+          listQuery_search.dateRange
+      "
+    >
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="listQuery_search.page"
+        @pagination="fetchListSearch"
+      />
+    </template>
+    <template v-else>
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="listQuery_all.page"
+        @pagination="getList"
+      />
+    </template>
   </div>
 </template>
 
@@ -189,6 +205,7 @@ export default {
     fetchListSearch() {
       searchMoneyReturnLog(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
       })
     },
     // excel导出

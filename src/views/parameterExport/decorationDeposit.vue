@@ -1,5 +1,5 @@
 <template>
-  <!-- 采光井施工保证金收费界面 -->
+  <!-- 住宅装修保证金收费界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input
@@ -18,9 +18,28 @@
         class="filter-item"
         clearable
       />
-      <!-- <el-select v-model="listQuery_search.year" placeholder="选择年份" clearable style="width: 120px" class="filter-item">
-        <el-option v-for="item in yearOptions" :key="item" :label="item" :value="item" />
+      <!-- <el-select
+        v-model="listQuery_search.year"
+        placeholder="选择年份"
+        clearable
+        style="width: 120px"
+        class="filter-item"
+      >
+        <el-option
+          v-for="item in yearOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
       </el-select> -->
+      <!-- <el-date-picker
+        class="filter-item"
+        v-model="listQuery_search.year"
+        type="year"
+        placeholder="选择年份"
+        value-format="yyyy"
+      >
+      </el-date-picker> -->
       <el-select
         v-model="listQuery_search.moneyStatus"
         placeholder="选择退款状态"
@@ -37,7 +56,7 @@
       </el-select>
       <!-- 时间选择器 -->
       <el-date-picker
-        v-model="listQuery_search.dateRange"
+        v-model="listQuery_search.datePicker"
         class="filter-item"
         type="daterange"
         align="right"
@@ -68,7 +87,13 @@
     >
       费用收缴
     </el-button>
-
+    <el-input
+      v-model="filename"
+      class="filter-item"
+      placeholder="请输入导出的文件名称"
+      style="width:250px;margin-left:30px"
+    ></el-input>
+    <el-button type="primary" @click="download">导出Excel</el-button>
     <br />
     <br />
 
@@ -130,10 +155,10 @@
         <template slot-scope="{ row }">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button
-            :disabled="row.moneyStatus !== '审核通过'"
             v-permission="['admin']"
             type="primary"
             size="mini"
+            :disabled="row.moneyStatus !== '审核通过'"
             @click="handleMoneyReturn(row)"
           >
             退款
@@ -150,10 +175,10 @@
         <template slot-scope="{ row }">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button
-            :disabled="checkApply(row)"
             v-permission="['editor']"
             type="primary"
             size="mini"
+            :disabled="checkApply(row)"
             @click="handleApplyMoneyReturn(row)"
           >
             申请退款
@@ -439,6 +464,14 @@
           <el-form-item label="客户姓名" label-width="100px" prop="houseName">
             <el-input v-model="formReturn.houseName" disabled />
           </el-form-item>
+          <el-form-item label="退款时间" label-width="100px" prop="returnDate">
+            <el-date-picker
+              v-model="formReturn.returnDate"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
           <el-form-item
             label="退款方式"
             label-width="100px"
@@ -472,17 +505,6 @@
           >
             <el-input v-model.number="formReturn.moneyWithhold" />
           </el-form-item>
-          <el-form-item label="退款日期" label-width="100px" prop="returnDate">
-            <div class="block">
-              <el-date-picker
-                v-model="formReturn.returnDate"
-                align="right"
-                type="date"
-                placeholder="选择日期"
-                value-format="yyyy-MM-dd"
-              />
-            </div>
-          </el-form-item>
           <el-form-item label="备注" label-width="100px" prop="remark">
             <el-input
               v-model="formReturn.remark"
@@ -503,20 +525,20 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination
+    <!-- <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery_search.page"
       @pagination="fetchListSearch"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import {
-  fetchLightWellDepositListAll,
-  fetchLightWellDepositSearch,
+  fetchHouseDecorationDepositListAll,
+  fetchHouseDecorationDepositSearch,
   postMoney,
   returnMoney,
   fetchSearchByHouseId,
@@ -524,8 +546,11 @@ import {
   applyReturnMoney,
   verifyReturnMoney,
   refuseVerifyReturnMoney,
-  getHouseNameMoneyShallPay
-} from '@/api/payLightWellDeposit'
+  getHouseNameMoneyShallPay,
+  getDecorationToProperty,
+  allNoPage,
+  searchNopage
+} from '@/api/payDecorationDeposit'
 import {
   searchProperty,
   electricCleanPaySearchElectricId
@@ -537,11 +562,12 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
 export default {
-  name: 'LightWellDeposit',
+  name: 'DecorationDepositPayHouse',
   components: { Pagination },
   directives: { waves, permission },
   data() {
     return {
+      filename:'',
       nowMoney: 0,
       show: true,
       searchByHouseId: null,
@@ -555,7 +581,7 @@ export default {
         year: null,
         moneyStatus: null,
         houseName: null,
-        dateRange: null
+        datePicker: null
       },
       // 时间选择器返回数据
       pickerOptions: {
@@ -671,7 +697,11 @@ export default {
         { value: '微信', label: '微信' },
         { value: '现金', label: '现金' },
         { value: '其他', label: '其他' },
-        { value: '电费', label: '电费', children: [] },
+        {
+          value: '电费',
+          label: '电费',
+          children: []
+        },
         { value: '物业费', label: '物业费', children: [] }
       ],
       // 定义表单提交项目规则
@@ -746,6 +776,58 @@ export default {
     this.getList()
   },
   methods: {
+    //表格导出
+    download(type) {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        let tHeader = [
+          'ID',
+          '房号',
+          '房间状态',
+          '业主姓名',
+          '交款日期',
+          '实收金额',
+          '退款日期',
+          '退款金额',
+          '差额',
+          '退款状态',
+          '申请退款金额',
+          '申请扣款金额',
+          '备注'
+        ]
+        let filterVal = [
+          'id',
+          'houseId',
+          'houseCurrentStatus',
+          'houseName',
+          'paidDate',
+          'moneyGet',
+          'moneyReturnDate',
+          'moneyReturnNum',
+          'gap',
+          'moneyStatus',
+          'applyMoneyReturn',
+          'applyMoneyWithhold',
+          'remark'
+        ]
+        const list = type == 'muban' ? [] : this.tableData
+        const data = this.formatJson(filterVal, list)
+
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          return v[j]
+        })
+      )
+    },
     //退款级联菜单发生变化
     handleChange(e) {
       let selected = e[0]
@@ -776,28 +858,27 @@ export default {
             //     return {
             //       label: item[0]+'/'+item[1],
             //       value: item.propertyId
-                  
+
             //     }
             //   }
             // })
-            let data=[];
+            let data = []
             if (selected === '物业费') {
-              data=[]
-              data=res.data.map(item=>{
-                return{
+              data = []
+              data = res.data.map(item => {
+                return {
                   label: item.propertyId,
                   value: item.propertyId
                 }
               })
-            }else{
-              data=[]
+            } else {
+              data = []
               data = res.data.map(item => {
                 return {
                   label: item,
                   value: item
                 }
               })
-              
             }
             console.log(data)
             this.payOptionsReturn.map((item, i) => {
@@ -831,7 +912,8 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchLightWellDepositListAll(this.listQuery_all).then(response => {
+      // fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
+      allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -840,14 +922,17 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       this.listLoading = true
-      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
-        this.tableData = response.data.items
-        this.listLoading = false
-      })
+      fetchHouseDecorationDepositSearch(this.listQuery_search).then(
+        response => {
+          this.tableData = response.data.items
+          this.total = response.total
+          this.listLoading = false
+        }
+      )
     },
     // 收费模态框根据houseId获取业主姓名和应缴金额
     fetchHouseNameMoneyShallPay() {
-      // console.log(this.$refs.searchByHouseId.value)
+      console.log(this.$refs.searchByHouseId.value)
       getHouseNameMoneyShallPay(this.$refs.searchByHouseId.value).then(
         response => {
           this.formPost.houseName = response.data.houseName
@@ -859,8 +944,10 @@ export default {
       this.listLoading = true
       // 搜索功能调用
       this.listQuery_search.page = 1
-      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
+      // fetchHouseDecorationDepositSearch(this.listQuery_search).then(
+      searchNopage(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -949,6 +1036,7 @@ export default {
             })
             fetchSearchByHouseId(formPost.houseId).then(response => {
               this.tableData = response.data.items
+              this.total = response.total
             })
           } else {
             this.$notify({
@@ -979,7 +1067,7 @@ export default {
             }).then(() => {
               // this.formPost.paidTotalNum = this.singlePayTotal
               postMoney(formPost).then(response => {
-                if (response.codeStatus === 200) {
+                if (response.msg === 200) {
                   this.$notify({
                     title: 'Success',
                     message: '提交成功',
@@ -993,6 +1081,7 @@ export default {
                   this.dialogMoneyGetFormVisible = false
                   fetchSearchByHouseId(formPost.houseId).then(response => {
                     this.tableData = response.data.items
+                    this.total = response.total
                   })
                 } else {
                   this.$notify({
@@ -1048,6 +1137,7 @@ export default {
                 fetchSearchByHouseId(applyMoneyReturn.houseId).then(
                   response => {
                     this.tableData = response.data.items
+                    this.total = response.total
                   }
                 )
               } else {
@@ -1090,6 +1180,7 @@ export default {
                 fetchSearchByHouseId(verifyMoneyReturn.houseId).then(
                   response => {
                     this.tableData = response.data.items
+                    this.total = response.total
                   }
                 )
               } else {
@@ -1131,6 +1222,7 @@ export default {
                 fetchSearchByHouseId(verifyMoneyReturn.houseId).then(
                   response => {
                     this.tableData = response.data.items
+                    this.total = response.total
                   }
                 )
               } else {
@@ -1160,8 +1252,8 @@ export default {
             this.formReturn.moneyWithhold === null
               ? 0
               : Number(this.formReturn.moneyWithhold)
-          console.log(money, moneyHold)
           if (money + moneyHold > this.nowMoney) {
+            console.log(money, moneyHold)
             this.$message.error('退款金额加扣款金额不能大于实收金额!')
             return
           }
@@ -1171,7 +1263,15 @@ export default {
             cancelButtonText: '取消',
             type: 'info'
           }).then(() => {
-            returnMoney(formReturn).then(response => {
+            // let api = null
+            // if (this.formReturn.payTypeReturn.indexOf('物业费') !== -1) {
+            //   api = getDecorationToProperty
+            // } else if (this.formReturn.payTypeReturn.indexOf('电费') !== -1) {
+            //   api = getDecorationToProperty
+            // } else {
+            //   api = returnMoney
+            // }
+            getDecorationToProperty(formReturn).then(response => {
               if (response.msg === '退款成功') {
                 this.$notify({
                   title: 'Success',
@@ -1185,6 +1285,7 @@ export default {
                 this.dialogMoneyReturn = false
                 fetchSearchByHouseId(formReturn.houseId).then(response => {
                   this.tableData = response.data.items
+                  this.total = response.total
                 })
               } else {
                 this.$notify({

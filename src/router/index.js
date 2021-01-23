@@ -45,6 +45,11 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    // alwaysShow: true,
+    // meta: {
+    //   title: '控制台',
+    //   icon: 'dashboard'
+    // },
     children: [
       {
         path: 'dashboard',
@@ -137,6 +142,11 @@ export const constantRoutes = [
     path: '/payAll',
     component: Layout,
     // redirect: '/guide/index',
+    // alwaysShow: true,
+    // meta: {
+    //   title: '一键收费',
+    //   icon: 'money'
+    // },
     children: [
       {
         path: 'index',
@@ -157,7 +167,7 @@ export const constantRoutes = [
     // redirect: '/pay',
     name: 'pay_house',
     meta: {
-      title: '费用收缴--住宅',
+      title: '费用收缴',
       icon: 'house'
     },
     children: [
@@ -166,7 +176,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/electric'),
         name: 'electric',
         meta: {
-          title: '住宅电费'
+          title: '电费'
         }
       },
       // {
@@ -185,7 +195,7 @@ export const constantRoutes = [
           title: '电费欠费'
         }
       },
-      // { 
+      // {
       //   path: 'water',
       //   component: () => import('@/views/bill_pay/house/water'),
       //   name: 'water',
@@ -198,7 +208,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/property'),
         name: 'property',
         meta: {
-          title: '住宅物业费'
+          title: '物业费'
         }
       },
       {
@@ -214,7 +224,7 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/decorationDeposit'),
         name: 'decorationDeposit',
         meta: {
-          title: '住宅装修保证金'
+          title: '装修保证金'
         }
       },
       {
@@ -230,17 +240,17 @@ export const constantRoutes = [
         component: () => import('@/views/bill_pay/house/heat'),
         name: 'heat',
         meta: {
-          title: '住宅暖气费'
+          title: '暖气费'
         }
       },
-      {
-        path: 'trash',
-        component: () => import('@/views/bill_pay/house/trash'),
-        name: 'trash',
-        meta: {
-          title: '垃圾清运费'
-        }
-      },
+      // {
+      //   path: 'trash',
+      //   component: () => import('@/views/bill_pay/house/trash'),
+      //   name: 'trash',
+      //   meta: {
+      //     title: '垃圾清运费'
+      //   }
+      // },
       {
         path: 'passDeposit',
         component: () => import('@/views/bill_pay/house/passDeposit'),
@@ -334,13 +344,13 @@ export const constantRoutes = [
         path: 'electric',
         component: () => import('@/views/billOverall/electric'),
         name: 'Electric',
-        meta: { title: '电费', }
+        meta: { title: '电费' }
       },
       {
         path: 'summation',
         component: () => import('@/views/billOverall/billSummation'),
         name: 'summation',
-        meta: { title: '费用总览', }
+        meta: { title: '费用总览' }
       },
       {
         path: 'property/chargeRateHouse',
@@ -359,7 +369,7 @@ export const constantRoutes = [
         component: () => import('@/views/billOverall/chargeRate'),
         name: '/chargeRateThisYearElectric/house',
         meta: { title: '本年电费收费率--住宅' }
-      },
+      }
       // {
       //   path: 'thisYearElectric/chargeRateShop',
       //   component: () => import('@/views/billOverall/chargeRate'),
@@ -384,6 +394,8 @@ export const constantRoutes = [
     // 物业流水
     path: '/waterBill',
     component: Layout,
+    // alwaysShow: true,
+    // meta: { title: '物业流水导出', icon: 'waterbill' },
     children: [
       {
         path: 'waterBill',
@@ -406,63 +418,68 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  {
-    // 台账管理
-    path: '/standingBook',
-    component: Layout,
-    // redirect: '/bill_all/electric',
-    name: 'standingBook',
-    meta: {
-      title: '台账管理',
-      icon: 'standingbook'
-    },
-    children: [
-      // {
-      //   path: 'electricStandingBook',
-      //   component: () => import('@/views/standingBookManage/electricStandingBook'),
-      //   name: 'electricStandingBook',
-      //   meta: {
-      //     title: '电费台账管理'
-      //   }
-      // },
-      // {
-      //   path: 'electricNotification',
-      //   component: () => import('@/views/standingBookManage/electricNotification'),
-      //   name: 'electricNotification',
-      //   meta: {
-      //     title: '电费通知单'
-      //   }
-      // },
-      {
-        path: 'propertyHouseStandingBook',
-        component: () => import('@/views/standingBookManage/propertyHouseStandingBook'),
-        name: 'propertyHouseStandingBook',
-        meta: {
-          title: '住宅物业费台账'
-        }
-      },
-      // {
-      //   path: 'propertyShopStandingBook',
-      //   component: () => import('@/views/standingBookManage/propertyShopStandingBook'),
-      //   name: 'propertyShopStandingBook',
-      //   meta: {
-      //     title: '商铺物业费台账'
-      //   }
-      // },
-      {
-        path: 'decorationDepositStandingBook',
-        component: () => import('@/views/standingBookManage/decorationDepositStandingBook'),
-        name: 'decorationDepositStandingBook',
-        meta: {
-          title: '装修保证金台账'
-        }
-      }
-    ]
-  },
+  // {
+  //   // 台账管理
+  //   path: '/standingBook',
+  //   component: Layout,
+  //   // redirect: '/bill_all/electric',
+  //   name: 'standingBook',
+  //   meta: {
+  //     title: '台账管理',
+  //     icon: 'standingbook'
+  //   },
+  //   children: [
+  //     // {
+  //     //   path: 'electricStandingBook',
+  //     //   component: () => import('@/views/standingBookManage/electricStandingBook'),
+  //     //   name: 'electricStandingBook',
+  //     //   meta: {
+  //     //     title: '电费台账管理'
+  //     //   }
+  //     // },
+  //     // {
+  //     //   path: 'electricNotification',
+  //     //   component: () => import('@/views/standingBookManage/electricNotification'),
+  //     //   name: 'electricNotification',
+  //     //   meta: {
+  //     //     title: '电费通知单'
+  //     //   }
+  //     // },
+  //     {
+  //       path: 'propertyHouseStandingBook',
+  //       component: () => import('@/views/standingBookManage/propertyHouseStandingBook'),
+  //       name: 'propertyHouseStandingBook',
+  //       meta: {
+  //         title: '住宅物业费台账'
+  //       }
+  //     },
+  //     // {
+  //     //   path: 'propertyShopStandingBook',
+  //     //   component: () => import('@/views/standingBookManage/propertyShopStandingBook'),
+  //     //   name: 'propertyShopStandingBook',
+  //     //   meta: {
+  //     //     title: '商铺物业费台账'
+  //     //   }
+  //     // },
+  //     {
+  //       path: 'decorationDepositStandingBook',
+  //       component: () => import('@/views/standingBookManage/decorationDepositStandingBook'),
+  //       name: 'decorationDepositStandingBook',
+  //       meta: {
+  //         title: '装修保证金台账'
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/info',
     component: Layout,
     // redirect: '/info',
+    // alwaysShow: true,
+    // meta: {
+    //   title: '房源信息变更',
+    //   icon: 'housechange'
+    // },
     children: [
       {
         path: 'Housechange',
@@ -573,6 +590,8 @@ export const asyncRoutes = [
     // 科目编码
     path: '/subjectCode',
     component: Layout,
+    // alwaysShow: true,
+    // meta: { title: '科目编码', icon: 'subjectCode', roles: ['admin'] },
     children: [
       {
         path: 'subjectCode',
@@ -593,7 +612,6 @@ export const asyncRoutes = [
       icon: 'log'
     },
     children: [
-      
       {
         path: 'moneyGet',
         component: () => import('@/views/operationLog/moneyGet'),
@@ -634,30 +652,100 @@ export const asyncRoutes = [
     component: Layout,
     // redirect: '/bill_all/electric',
     name: 'ParameterExport',
-    alwaysShow:true,
+    alwaysShow: true,
     meta: {
       title: '台账导出',
-      icon: 'log'
+      icon: 'standingbook'
     },
-    children:[
-      {
-        path: 'property',
-        component: () => import('@/views/parameterExport/property'),
-        name: 'Property',
-        meta: {
-          title: '住宅物业费'
-        }
-      },
+    children: [
       {
         path: 'houseChange',
         component: () => import('@/views/parameterExport/houseChange'),
         name: 'HouseChange',
         meta: {
-          title: '房源信息变更'
+          title: '房源信息'
         }
       },
+      {
+        path: 'property',
+        component: () => import('@/views/parameterExport/property'),
+        name: 'Property',
+        meta: {
+          title: '物业费'
+        }
+      },
+      {
+        path: 'parking',
+        component: () => import('@/views/parameterExport/parking'),
+        name: 'Parking',
+        meta: {
+          title: '停车场维护费'
+        }
+      },
+      {
+        path: 'passDeposit',
+        component: () => import('@/views/parameterExport/passDeposit'),
+        name: 'PassDeposit',
+        meta: {
+          title: '出入证押金'
+        }
+      },
+      {
+        path: 'decorationDeposit',
+        component: () => import('@/views/parameterExport/decorationDeposit'),
+        name: 'DecorationDeposit',
+        meta: {
+          title: '装修保证金'
+        }
+      }
     ]
   },
+  // {
+  //   // 基础信息
+  //   path: '/information',
+  //   component: Layout,
+  //   // redirect: '/bill_all/electric',
+  //   name: 'Information',
+  //   alwaysShow: true,
+  //   meta: {
+  //     title: '基础信息',
+  //     icon: 'information'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'houseInfo',
+  //       component: () => import('@/views/information/houseInfo'),
+  //       name: 'HouseInfo',
+  //       meta: {
+  //         title: '房源信息'
+  //       }
+  //     },
+  //     {
+  //       path: 'projectRate',
+  //       component: () => import('@/views/information/projectRate'),
+  //       name: 'ProjectRate',
+  //       meta: {
+  //         title: '收费项目费率'
+  //       }
+  //     },
+  //     {
+  //       path: 'subjectCode',
+  //       component: () => import('@/views/information/subjectCode'),
+  //       name: 'SubjectCode',
+  //       meta: {
+  //         title: '科目编码'
+  //       }
+  //     },
+  //     {
+  //       path: 'currentCode',
+  //       component: () => import('@/views/information/currentCode'),
+  //       name: 'CurrentCode',
+  //       meta: {
+  //         title: '往来编码'
+  //       }
+  //     }
+  //   ]
+  // },
   // {
   //   // 通知公告
   //   path: '/noticeManage',

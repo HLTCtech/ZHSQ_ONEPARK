@@ -71,3 +71,15 @@ export function postNewHouseInfo(newInfoFormPost) {
     data: { newInfoFormPost }
   })
 }
+
+/* 上传文件 */
+export function upload(data) {
+  return request({
+    url: '/infoChange/upload',
+    method: 'post',
+    data,
+    headers:{
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

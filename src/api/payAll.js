@@ -62,4 +62,11 @@ export function getRealtimeElectric(electricDateRange) {
     data: { electricDateRange }
   })
 }
-
+// 一键收费特批获取验证码
+export function getSMS(data) {
+  return request({
+    url: '/onepark/pay/bill/moneyPayPostAll/getSMS',
+    method: 'post',
+    data
+  })
+}

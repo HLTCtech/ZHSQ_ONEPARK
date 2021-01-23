@@ -133,3 +133,19 @@ export function electricCleanPaySearchElectricId(data) {
     data
   })
 }
+//获取装修保证金列表(无分页)
+export function allNoPage(query) {
+  return request({
+    url: '/onepark/pay/decorationDeposit/house/allNoPage',
+    method: 'post',
+    data:query
+  })
+}
+//获取装修保证金列表(无分页)
+export function searchNopage(query) {
+  return request({
+    url: '/onepark/pay/decorationDeposit/house/searchNopage',
+    method: 'post',
+    data:{query}
+  })
+}

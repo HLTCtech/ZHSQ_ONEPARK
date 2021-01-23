@@ -22,7 +22,7 @@
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
+    <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="670" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
         <template slot-scope="scope">
@@ -34,7 +34,7 @@
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="业主手机号" prop="housePhone" align="center" fixed />
       <el-table-column label="电表号" prop="electricMeterId" align="center" />
-      <el-table-column label="当前余额" prop="currentMoney" align="center" />
+      <el-table-column label="当前余额" prop="currentMoney" align="center"  width="600"/>
       <el-table-column label="备注" prop="remark" align="center" />
       <!-- <el-table-column label="费用收缴" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">

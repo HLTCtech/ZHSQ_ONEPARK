@@ -69,6 +69,10 @@
       &:hover {
         background-color: $menuHover !important;
       }
+      /* 隐藏侧边栏下拉箭头 */
+      // .el-submenu__icon-arrow {
+      //   display: none;
+      // }
     }
 
     .is-active>.el-submenu__title {

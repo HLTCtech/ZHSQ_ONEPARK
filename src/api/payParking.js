@@ -71,3 +71,19 @@ export function postDaterangeStart(query) {
     data: { query }
   })
 }
+// 停车场维护费列表(无分页)
+export function allNoPage(query) {
+  return request({
+    url: '/onepark/pay/parking/allNoPage',
+    method: 'post',
+    data: query
+  })
+}
+// 停车场维护费搜索(无分页)
+export function listsearch(query) {
+  return request({
+    url: '/onepark/pay/parking/listsearch',
+    method: 'post',
+    data: {query}
+  })
+}

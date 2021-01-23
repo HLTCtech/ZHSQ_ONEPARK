@@ -1,7 +1,7 @@
 <template>
   <!-- 信息变更界面 -->
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container" style="display:flex">
       <el-input
         v-model="listQuery_search.houseName"
         type="text"
@@ -24,17 +24,43 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
+        style="margin-right:20px"
       >
         搜索
       </el-button>
+      <!-- <el-upload
+        style="display:inline-flex"
+        class="upload-demo"
+        action
+        :http-request="handleRequest"
+        :multiple="false"
+        :limit="1"
+        accept=".xls"
+      >
+        <el-button type="primary" class="filter-item">上传文件</el-button>
+        <el-tooltip effect="dark" placement="bottom">
+          <span
+            style="line-height:30px;color:#0aa1ed;margin-left:10px"
+            class="el-icon-info"
+          ></span>
+          <div slot="content">
+            文件名：业主基本信息开头，后面可以随便加，然后文件名称不能重复，要把上传的内容设置为文本格式，时间类型是yyyy-MM-dd的格式
+            <br />格式：.xls格式的文件才能上传成功。
+          </div>
+        </el-tooltip>
+      </el-upload> -->
     </div>
+    <!-- 导出模板 -->
     <div style="margin-bottom:10px">
       <el-input
         v-model="filename"
         style="width:250px"
-        placeholder="请输入导出文件的名称"
+        placeholder="输入导出的文件名称"
       ></el-input>
-      <el-button @click="download" type="primary">导出Excel</el-button>
+      <el-button type="primary" @click="handleDownload">导出Excel</el-button>
+      <!-- <el-button type="primary" @click="handleDownload('模板')" plain
+        >导出模板</el-button
+      > -->
     </div>
     <!-- <div class="filter-container">
       <el-button v-waves class="filter-item" type="success" icon="el-icon-search" @click="handleNewInfo">
@@ -63,7 +89,7 @@
       <el-table-column label="面积" prop="area" align="center" />
       <el-table-column label="业主姓名" prop="houseName" align="center" />
       <el-table-column label="业主电话" prop="housePhone" align="center" />
-      <!-- <el-table-column label="电费费率" prop="electricRate" align="center" /> -->
+      <el-table-column label="电费费率" prop="electricRate" align="center" />
       <el-table-column label="物业费费率" prop="propertyRate" align="center" />
       <el-table-column
         label="变更面积"
@@ -402,10 +428,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import {
-  houseChangeAllNotPage,
-  houseChangeSearchNotPage
-} from '@/api/parameterExport'
-import {
   fetchHouseInfoAll,
   fetchHouseInfoSearch,
   postHouseInfoArea,
@@ -413,7 +435,8 @@ import {
   postHouseInfoStatus,
   fetchHouseInfoByHouseId,
   postNewHouseInfo,
-  postHouseInfoRate
+  postHouseInfoRate,
+  upload
 } from '@/api/infoChange'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -425,7 +448,7 @@ export default {
   directives: { waves },
   data() {
     return {
-      filename:'',
+      filename: '',
       listLoading: true,
       total: 0,
       // 定义搜索按钮的query字段
@@ -553,21 +576,59 @@ export default {
     this.getList()
   },
   methods: {
-    //表格导出
-    download(type) {
+    /* 上传文件操作 */
+    handleRequest(param) {
+      let form = new FormData()
+      form.append('file', param.file)
+      upload(form).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          if (res.msg === '上传失败' || res.msg === '重复上传') {
+            this.$message.error(`${res.msg}`)
+          } else {
+            this.$message.success(`${res.msg}`)
+          }
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    /* 导出模板 || excel */
+    handleDownload(type) {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        let tHeader = [
-          'id',
-          '房号',
-          '房间类型',
-          '房间状态',
-          '房间属性',
-          '面积',
-          '业主姓名',
-          '业主电话',
-          '物业费费率'
-        ]
+        let tHeader = []
+        if (type === '模板') {
+          tHeader = [
+            'ID',
+            '房号',
+            '房间类型',
+            '房间状态',
+            '房间属性',
+            '面积',
+            '业主姓名',
+            '业主电话',
+            '电费费率',
+            '物业费费率',
+            '地上房号',
+            '开始日期',
+            '截止日期',
+            '往来科目代码'
+          ]
+        } else {
+          tHeader = [
+            'ID',
+            '房号',
+            '房间类型',
+            '房间状态',
+            '房间属性',
+            '面积',
+            '业主姓名',
+            '业主电话',
+            '电费费率',
+            '物业费费率'
+          ]
+        }
         let filterVal = [
           'id',
           'houseId',
@@ -577,15 +638,19 @@ export default {
           'area',
           'houseName',
           'housePhone',
-          'propertyRate',
+          'electricRate',
+          'propertyRate'
         ]
-        const list = type == 'muban' ? [] : this.tableData
+        const list = type === '模板' ? [] : this.tableData
+        console.log(list)
         const data = this.formatJson(filterVal, list)
-
+        console.log(data)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: this.filename
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
         })
         this.downloadLoading = false
       })
@@ -593,13 +658,17 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
-          return v[j]
+          if (j === 'timestamp') {
+            return parseTime(v[j])
+          } else {
+            return v[j]
+          }
         })
       )
     },
     getList() {
       this.listLoading = true
-      houseChangeAllNotPage(this.listQuery_all).then(response => {
+      fetchHouseInfoAll(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -617,13 +686,12 @@ export default {
     // 搜索按钮绑定
     handleFilter() {
       this.listLoading = true
-      houseChangeSearchNotPage({ query: this.listQuery_search }).then(
-        response => {
-          this.tableData = response.data.items
-          this.total = response.total
-          this.listLoading = false
-        }
-      )
+      this.listQuery_search.page = 1
+      fetchHouseInfoSearch(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
+        this.listLoading = false
+      })
     },
     // 变更面积按钮模态框
     handleHouseInfoArea(row) {

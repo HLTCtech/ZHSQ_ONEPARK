@@ -57,7 +57,7 @@
         style="width:250px"
         placeholder="输入导出的文件名称"
       ></el-input>
-      <!-- <el-button type="primary" @click="handleDownload">导出Excel</el-button> -->
+      <el-button type="primary" @click="handleDownload">导出Excel</el-button>
       <el-button type="primary" @click="handleDownload('模板')" plain
         >导出模板</el-button
       >

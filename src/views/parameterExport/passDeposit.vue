@@ -1,5 +1,5 @@
 <template>
-  <!-- 采光井施工保证金收费界面 -->
+  <!-- 出入证押金界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input
@@ -37,7 +37,7 @@
       </el-select>
       <!-- 时间选择器 -->
       <el-date-picker
-        v-model="listQuery_search.dateRange"
+        v-model="listQuery_search.datePicker"
         class="filter-item"
         type="daterange"
         align="right"
@@ -58,7 +58,14 @@
         搜索
       </el-button>
     </div>
-
+    <div style="margin-bottom:10px">
+      <el-input
+        v-model="filename"
+        style="width:250px"
+        placeholder="请输入导出文件的名称"
+      ></el-input>
+      <el-button @click="download" type="primary">导出Excel</el-button>
+    </div>
     <el-button
       v-waves
       class="filter-item"
@@ -90,12 +97,6 @@
           }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        label="房间状态"
-        prop="houseCurrentStatus"
-        align="center"
-        fixed
-      />
       <el-table-column label="业主姓名" prop="houseName" align="center" fixed />
       <el-table-column label="交款日期" prop="paidDate" align="center" />
       <el-table-column label="实收金额" prop="moneyGet" align="center" />
@@ -130,11 +131,11 @@
         <template slot-scope="{ row }">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button
-            :disabled="row.moneyStatus !== '审核通过'"
             v-permission="['admin']"
             type="primary"
             size="mini"
             @click="handleMoneyReturn(row)"
+            :disabled="row.moneyStatus !== '审核通过'"
           >
             退款
           </el-button>
@@ -233,8 +234,11 @@
           <br />
           <br />
 
-          <el-form-item label="客户姓名" label-width="100px" prop="houseName">
-            <el-input v-model="formPost.houseName" />
+          <el-form-item label="业主姓名" label-width="100px" prop="houseName">
+            <el-input
+              v-model="formPost.houseName"
+              placeholder="请输入业主姓名"
+            />
           </el-form-item>
           <el-form-item label="应缴金额" label-width="100px" prop="houseName">
             <el-input v-model="formPost.moneyShallPay" disabled />
@@ -444,20 +448,14 @@
             label-width="100px"
             prop="payTypeReturn"
           >
-            <!-- <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
+            <el-select v-model="formReturn.payTypeReturn" placeholder="请选择">
               <el-option
                 v-for="item in payOptionsReturn"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               />
-            </el-select> -->
-            <el-cascader
-              v-model="formReturn.payTypeReturn"
-              :options="payOptionsReturn"
-              @expand-change="handleChange"
-              separator="-"
-            ></el-cascader>
+            </el-select>
           </el-form-item>
           <el-form-item label="实收金额" label-width="100px">
             <el-input disabled v-model.number="nowMoney" />
@@ -503,20 +501,20 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination
+    <!-- <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery_search.page"
       @pagination="fetchListSearch"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import {
-  fetchLightWellDepositListAll,
-  fetchLightWellDepositSearch,
+  fetchPassDepositListAll,
+  fetchPassDepositSearch,
   postMoney,
   returnMoney,
   fetchSearchByHouseId,
@@ -524,12 +522,10 @@ import {
   applyReturnMoney,
   verifyReturnMoney,
   refuseVerifyReturnMoney,
-  getHouseNameMoneyShallPay
-} from '@/api/payLightWellDeposit'
-import {
-  searchProperty,
-  electricCleanPaySearchElectricId
-} from '@/api/payProperty'
+  getHouseNameMoneyShallPay,
+  allNoPage,
+  searchNoPage
+} from '@/api/passDeposit'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -537,14 +533,14 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
 export default {
-  name: 'LightWellDeposit',
+  name: 'PassDeposit',
   components: { Pagination },
   directives: { waves, permission },
   data() {
     return {
+      filename:'',
       nowMoney: 0,
       show: true,
-      searchByHouseId: null,
       count: '',
       listLoading: true,
       total: 0,
@@ -555,7 +551,7 @@ export default {
         year: null,
         moneyStatus: null,
         houseName: null,
-        dateRange: null
+        datePicker: null
       },
       // 时间选择器返回数据
       pickerOptions: {
@@ -607,8 +603,8 @@ export default {
       formPost: {
         houseId: null,
         houseName: null,
-        moneyShallPay: null,
         paidDate: null,
+        moneyShallPay: null,
         moneyGet: null,
         payType: null,
         remark: null,
@@ -655,7 +651,7 @@ export default {
       SMSPost: {
         houseId: null,
         adminId: this.$store.getters.adminId,
-        payItem: '住宅装修保证金'
+        payItem: '出入证押金'
       },
       // 单一缴费时的选项
       payOptions: [
@@ -670,9 +666,7 @@ export default {
         { value: '支付宝', label: '支付宝' },
         { value: '微信', label: '微信' },
         { value: '现金', label: '现金' },
-        { value: '其他', label: '其他' },
-        { value: '电费', label: '电费', children: [] },
-        { value: '物业费', label: '物业费', children: [] }
+        { value: '其他', label: '其他' }
       ],
       // 定义表单提交项目规则
       formRules: {
@@ -746,75 +740,55 @@ export default {
     this.getList()
   },
   methods: {
-    //退款级联菜单发生变化
-    handleChange(e) {
-      let selected = e[0]
-      let api = null
-      console.log(selected)
-      switch (selected) {
-        case '电费':
-          api = electricCleanPaySearchElectricId
-          break
-        case '物业费':
-          api = searchProperty
-          break
-      }
-      api({
-        userName: this.formReturn.houseName,
-        houseId: this.formReturn.houseId
+    //表格导出
+    download(type) {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        let tHeader = [
+          'ID',
+          '房号',
+          '业主姓名',
+          '交款日期',
+          '实收金额',
+          '退款日期',
+          '退款金额',
+          '差额',
+          '退款状态',
+          '申请退款金额',
+          '申请扣款金额',
+          '备注',
+        ]
+        let filterVal = [
+          'id',
+          'houseId',
+          'houseName',
+          'paidDate',
+          'moneyGet',
+          'moneyReturnDate',
+          'moneyReturnNum',
+          'gap',
+          'moneyStatus',
+          'applyMoneyReturn',
+          'applyMoneyWithhold',
+          'remark'
+        ]
+        const list = type == 'muban' ? [] : this.tableData
+        const data = this.formatJson(filterVal, list)
+
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename
+        })
+        this.downloadLoading = false
       })
-        .then(res => {
-          console.log(res)
-          if (res.code == 200) {
-            // let data = res.data.map(item => {
-            //   if (selected === '物业费') {
-            //     return {
-            //       label: item.electricId,
-            //       value: item.electricId
-            //     }
-            //   } else {
-            //     return {
-            //       label: item[0]+'/'+item[1],
-            //       value: item.propertyId
-                  
-            //     }
-            //   }
-            // })
-            let data=[];
-            if (selected === '物业费') {
-              data=[]
-              data=res.data.map(item=>{
-                return{
-                  label: item.propertyId,
-                  value: item.propertyId
-                }
-              })
-            }else{
-              data=[]
-              data = res.data.map(item => {
-                return {
-                  label: item,
-                  value: item
-                }
-              })
-              
-            }
-            console.log(data)
-            this.payOptionsReturn.map((item, i) => {
-              if (item.label === selected) {
-                console.log(item)
-                // this.$set(this.payOptionsReturn[i], children, [])
-                // this.$set(this.payOptionsReturn[i], children, [...data])
-                item.children = []
-                item.children = [...data]
-              }
-            })
-            this.$forceUpdate()
-          }
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          return v[j]
         })
-        .catch(err => {
-          console.log(err)
-        })
+      )
     },
     //检查是否可申请退款
     checkApply(row) {
@@ -831,7 +805,8 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchLightWellDepositListAll(this.listQuery_all).then(response => {
+      // fetchPassDepositListAll(this.listQuery_all).then(response => {
+      allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -840,10 +815,24 @@ export default {
     // 根据选定信息搜索
     fetchListSearch() {
       this.listLoading = true
-      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
+      fetchPassDepositSearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
       })
+    },
+    handleFilter() {
+      this.listLoading = true
+      // 搜索功能调用
+      this.listQuery_search.page = 1
+      // fetchPassDepositSearch(this.listQuery_search).then(response => {
+      searchNoPage(this.listQuery_search).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
+        this.listLoading = false
+      })
+    },
+    handleMoneyGet() {
+      this.dialogMoneyGetFormVisible = true
     },
     // 收费模态框根据houseId获取业主姓名和应缴金额
     fetchHouseNameMoneyShallPay() {
@@ -855,25 +844,12 @@ export default {
         }
       )
     },
-    handleFilter() {
-      this.listLoading = true
-      // 搜索功能调用
-      this.listQuery_search.page = 1
-      fetchLightWellDepositSearch(this.listQuery_search).then(response => {
-        this.tableData = response.data.items
-        this.listLoading = false
-      })
-    },
-    handleMoneyGet() {
-      this.dialogMoneyGetFormVisible = true
-    },
     // 退款按钮
     handleMoneyReturn(row) {
       this.formReturn.id = row.id
       this.formReturn.houseId = row.houseId
       this.formReturn.houseName = row.houseName
       this.formReturn.moneyGet = row.moneyGet
-      this.formReturn.payTypeReturn = null
       this.nowMoney = row.moneyGet
       this.dialogMoneyReturn = true
     },
@@ -1160,8 +1136,8 @@ export default {
             this.formReturn.moneyWithhold === null
               ? 0
               : Number(this.formReturn.moneyWithhold)
-          console.log(money, moneyHold)
           if (money + moneyHold > this.nowMoney) {
+            console.log(money, moneyHold)
             this.$message.error('退款金额加扣款金额不能大于实收金额!')
             return
           }
@@ -1231,7 +1207,6 @@ export default {
           this.$refs['verifyMoneyReturnForm'].resetFields()
         })
       }
-      this.formPost.moneyShallPay = ''
       this.dialogMoneyGetFormVisible = false
       this.dialogMoneyReturn = false
       this.dialogApplyMoneyReturn = false

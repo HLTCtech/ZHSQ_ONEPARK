@@ -1,5 +1,5 @@
 <template>
-  <!-- 住宅物业费台账导出页面 -->
+  <!-- 住宅物业费收费界面 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input
@@ -36,11 +36,12 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="search"
+        @click="handleFilter"
       >
         搜索
       </el-button>
     </div>
+    <!-- 表格导出 -->
     <div style="margin-bottom:10px">
       <el-input
         v-model="filename"
@@ -510,7 +511,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { propertyAllNotPage, propertyHouseSearch } from '@/api/parameterExport'
 import {
   fetchHouseListAll,
   fetchHouseSearch,
@@ -533,7 +533,7 @@ export default {
   directives: { waves },
   data() {
     return {
-      filename:'',
+      filename: '',
       show: true,
       count: '',
       payPattern: true,
@@ -542,9 +542,10 @@ export default {
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {
-        houseId: '',
-        houseName: '',
-        datePicker: ''
+        page: 1,
+        houseId: null,
+        houseName: null,
+        datePicker: null
       },
       titles: [{ ID: 'id' }, { 房号: 'houseId' }, { 业主姓名: 'houseName' }],
       // 年份选择
@@ -824,7 +825,7 @@ export default {
           '截止日期',
           '到期验证',
           '逾期天数',
-          '备注',
+          '备注'
         ]
         let filterVal = [
           'id',
@@ -839,7 +840,7 @@ export default {
           'houseDeadline',
           'houseClosingVerify',
           'houseOverdueDays',
-          'remark',
+          'remark'
         ]
         const list = type == 'muban' ? [] : this.tableData
         const data = this.formatJson(filterVal, list)
@@ -859,21 +860,11 @@ export default {
         })
       )
     },
-    search() {
-      this.listLoading = true
-      propertyHouseSearch({ query: this.listQuery_search }).then(res => {
-        this.tableData = res.data.items
-        this.total = res.total
-        console.log(res)
-        this.listLoading = false
-      })
-    },
     getList() {
       this.listLoading = true
-      propertyAllNotPage(this.listQuery_all).then(res => {
-        this.tableData = res.data.items
-        this.total = res.total
-        console.log(res)
+      fetchHouseListAll(this.listQuery_all).then(response => {
+        this.tableData = response.data.items
+        this.total = response.total
         this.listLoading = false
       })
     },

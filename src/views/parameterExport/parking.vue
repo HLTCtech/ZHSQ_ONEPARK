@@ -44,14 +44,14 @@
       >
     </div>
     <!-- 表格导出 -->
-    <!-- <div style="margin-bottom:10px">
+    <div style="margin-bottom:10px">
       <el-input
         v-model="filename"
         style="width:250px"
         placeholder="请输入导出文件的名称"
       ></el-input>
       <el-button @click="download" type="primary">导出Excel</el-button>
-    </div> -->
+    </div>
     <!-- 新增车位信息 -->
     <el-button
       v-waves
@@ -514,12 +514,12 @@
     </el-dialog>
 
     <!-- 分页功能实现标签 -->
-    <pagination
+    <!-- <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery_search.page"
       @pagination="fetchListSearch()"
-    />
+    /> -->
   </div>
 </template>
 
@@ -806,8 +806,8 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchListAll(this.listQuery_all).then(response => {
-      // allNoPage(this.listQuery_all).then(response => {
+      // fetchListAll(this.listQuery_all).then(response => {
+      allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -825,8 +825,8 @@ export default {
     handleFilter() {
       this.listLoading = true
       this.listQuery_search.page = 1
-      fetchSearch(this.listQuery_search).then(response => {
-      // listsearch(this.listQuery_search).then(response => {
+      // fetchSearch(this.listQuery_search).then(response => {
+      listsearch(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
       })

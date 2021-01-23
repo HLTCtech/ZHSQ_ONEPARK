@@ -133,6 +133,7 @@ export default {
     fetchListSearch() {
       searchHouseChangeLog(this.listQuery_search).then(response => {
         this.tableData = response.data.items
+        this.total = response.total
       })
     },
     handleFilter() {

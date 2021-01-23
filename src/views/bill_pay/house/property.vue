@@ -21,7 +21,15 @@
         搜索
       </el-button>
     </div>
-
+    <!-- 表格导出 -->
+    <!-- <div style="margin-bottom:10px">
+      <el-input
+        v-model="filename"
+        style="width:250px"
+        placeholder="请输入导出文件的名称"
+      ></el-input>
+      <el-button @click="download" type="primary">导出Excel</el-button>
+    </div> -->
     <!-- 表格 -->
     <el-table v-loading="listLoading" :data="tableData" style="width: 100%" height="1000" border stripe highlight-current-row>
       <el-table-column label="ID" prop="id" align="center" fixed />
@@ -256,6 +264,7 @@ export default {
   directives: { waves },
   data() {
     return {
+      filename:'',
       show: true,
       count: '',
       payPattern: true,
@@ -494,6 +503,58 @@ export default {
     this.getList()
   },
   methods: {
+    //表格导出
+    download(type) {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        let tHeader = [
+          'ID',
+          '房号',
+          '类型',
+          '业主姓名',
+          '房屋状况',
+          '交款日期',
+          '面积',
+          '收费标准(元/㎡)',
+          '应缴费日期',
+          '截止日期',
+          '到期验证',
+          '逾期天数',
+          '备注',
+        ]
+        let filterVal = [
+          'id',
+          'houseId',
+          'houseType',
+          'houseName',
+          'houseStatus',
+          'paidDate',
+          'area',
+          'chargingStandard',
+          'houseShallPayDate',
+          'houseDeadline',
+          'houseClosingVerify',
+          'houseOverdueDays',
+          'remark',
+        ]
+        const list = type == 'muban' ? [] : this.tableData
+        const data = this.formatJson(filterVal, list)
+
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          return v[j]
+        })
+      )
+    },
     getList() {
       this.listLoading = true
       fetchHouseListAll(this.listQuery_all).then(response => {

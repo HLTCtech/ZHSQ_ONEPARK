@@ -541,7 +541,9 @@ import {
   verifyReturnMoney,
   refuseVerifyReturnMoney,
   getHouseNameMoneyShallPay,
-  getDecorationToProperty
+  getDecorationToProperty,
+  allNoPage,
+  searchNopage
 } from '@/api/payDecorationDeposit'
 import {
   searchProperty,
@@ -787,19 +789,38 @@ export default {
         .then(res => {
           console.log(res)
           if (res.code == 200) {
-            let data = res.data.map(item => {
-              if (selected === '物业费') {
+            // let data = res.data.map(item => {
+            //   if (selected === '物业费') {
+            //     return {
+            //       label: item.electricId,
+            //       value: item.electricId
+            //     }
+            //   } else {
+            //     return {
+            //       label: item[0]+'/'+item[1],
+            //       value: item.propertyId
+
+            //     }
+            //   }
+            // })
+            let data = []
+            if (selected === '物业费') {
+              data = []
+              data = res.data.map(item => {
                 return {
                   label: item.propertyId,
                   value: item.propertyId
                 }
-              } else {
+              })
+            } else {
+              data = []
+              data = res.data.map(item => {
                 return {
-                  label: item.electricId,
-                  value: item.electricId
+                  label: item,
+                  value: item
                 }
-              }
-            })
+              })
+            }
             console.log(data)
             this.payOptionsReturn.map((item, i) => {
               if (item.label === selected) {
@@ -833,6 +854,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
+      // allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -851,7 +873,7 @@ export default {
     },
     // 收费模态框根据houseId获取业主姓名和应缴金额
     fetchHouseNameMoneyShallPay() {
-      // console.log(this.$refs.searchByHouseId.value)
+      console.log(this.$refs.searchByHouseId.value)
       getHouseNameMoneyShallPay(this.$refs.searchByHouseId.value).then(
         response => {
           this.formPost.houseName = response.data.houseName
@@ -864,6 +886,7 @@ export default {
       // 搜索功能调用
       this.listQuery_search.page = 1
       fetchHouseDecorationDepositSearch(this.listQuery_search).then(
+      // searchNopage(this.listQuery_search).then(
         response => {
           this.tableData = response.data.items
           this.total = response.total
