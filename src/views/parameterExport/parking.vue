@@ -49,18 +49,18 @@
         v-model="filename"
         style="width:250px"
         placeholder="请输入导出文件的名称"
-      ></el-input>
-      <el-button @click="download" type="primary">导出Excel</el-button>
+      />
+      <el-button type="primary" @click="download">导出Excel</el-button>
     </div>
     <!-- 新增车位信息 -->
-    <el-button
+    <!-- <el-button
       v-waves
       class="filter-item"
       type="primary"
       icon="el-icon-search"
       @click="handleNewParking()"
       >新增车位信息</el-button
-    >
+    > -->
     <br />
     <br />
 
@@ -548,7 +548,7 @@ export default {
   directives: { waves },
   data() {
     return {
-      filename:'',
+      filename: '',
       listLoading: true,
       tableDataPvAll: [],
       total: 0,
@@ -752,11 +752,11 @@ export default {
     this.getList()
   },
   methods: {
-    //表格导出
+    // 表格导出
     download(type) {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        let tHeader = [
+        const tHeader = [
           'ID',
           '车位号',
           '销售状态',
@@ -771,7 +771,7 @@ export default {
           '截止日期',
           '逾期天数'
         ]
-        let filterVal = [
+        const filterVal = [
           'id',
           'carLoc',
           'isSold',

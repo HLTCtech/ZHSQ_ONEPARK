@@ -78,7 +78,8 @@
       </el-button>
     </div>
 
-    <el-button
+    <!-- <el-button
+    style="margin-right:30px"
       v-waves
       class="filter-item"
       type="success"
@@ -86,12 +87,12 @@
       @click="handleMoneyGet"
     >
       费用收缴
-    </el-button>
+    </el-button> -->
     <el-input
       v-model="filename"
       class="filter-item"
       placeholder="请输入导出的文件名称"
-      style="width:250px;margin-left:30px"
+      style="width:250px"
     ></el-input>
     <el-button type="primary" @click="download">导出Excel</el-button>
     <br />
@@ -106,6 +107,7 @@
       :data="tableData"
       style="width: 100%"
       height="800"
+      v-loading="listLoading"
     >
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
@@ -567,12 +569,12 @@ export default {
   directives: { waves, permission },
   data() {
     return {
-      filename:'',
+      filename: '',
       nowMoney: 0,
       show: true,
       searchByHouseId: null,
       count: '',
-      listLoading: true,
+      listLoading: false,
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {

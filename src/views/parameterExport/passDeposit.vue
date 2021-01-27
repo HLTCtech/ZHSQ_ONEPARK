@@ -66,7 +66,7 @@
       ></el-input>
       <el-button @click="download" type="primary">导出Excel</el-button>
     </div>
-    <el-button
+    <!-- <el-button
       v-waves
       class="filter-item"
       type="success"
@@ -74,7 +74,7 @@
       @click="handleMoneyGet"
     >
       费用收缴
-    </el-button>
+    </el-button> -->
 
     <br />
     <br />
@@ -88,6 +88,7 @@
       :data="tableData"
       style="width: 100%"
       height="800"
+      v-loading="listLoading"
     >
       <el-table-column label="ID" prop="id" align="center" width="50" fixed />
       <el-table-column label="房号" prop="houseId" align="center" fixed>
@@ -542,7 +543,7 @@ export default {
       nowMoney: 0,
       show: true,
       count: '',
-      listLoading: true,
+      listLoading: false,
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {

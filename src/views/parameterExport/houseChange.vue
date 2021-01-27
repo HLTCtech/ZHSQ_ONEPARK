@@ -436,7 +436,9 @@ import {
   fetchHouseInfoByHouseId,
   postNewHouseInfo,
   postHouseInfoRate,
-  upload
+  upload,
+  allNotPage,
+  searchNoPage
 } from '@/api/infoChange'
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
@@ -668,7 +670,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchHouseInfoAll(this.listQuery_all).then(response => {
+      allNotPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -687,7 +689,7 @@ export default {
     handleFilter() {
       this.listLoading = true
       this.listQuery_search.page = 1
-      fetchHouseInfoSearch(this.listQuery_search).then(response => {
+      searchNoPage(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false

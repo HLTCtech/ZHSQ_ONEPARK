@@ -83,3 +83,19 @@ export function upload(data) {
     }
   })
 }
+//台账导出--房源信息(无分页)
+export function allNotPage(query) {
+  return request({
+    url: '/onepark/info/houseChange/allNotPage',
+    method: 'post',
+    data: { query }
+  })
+}
+//台账导出--房源信息搜索(无分页)
+export function searchNoPage(query) {
+  return request({
+    url: '/onepark/info/houseChange/searchNoPage ',
+    method: 'post',
+    data: { query }
+  })
+}

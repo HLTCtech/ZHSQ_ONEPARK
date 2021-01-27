@@ -643,7 +643,15 @@ export const asyncRoutes = [
         meta: {
           title: '车辆信息变更记录'
         }
-      }
+      },
+      {
+        path: 'flatAccount',
+        component: () => import('@/views/operationLog/flatAccount'),
+        name: 'FlatAccount',
+        meta: {
+          title: '平账记录'
+        }
+      },
     ]
   },
   {

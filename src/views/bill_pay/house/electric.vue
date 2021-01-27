@@ -45,7 +45,7 @@
       </el-table-column> -->
       <el-table-column label="开户" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="accountOpen(row.houseId)">
+          <el-button type="primary" size="mini" @click="accountOpen(row)">
             开户
           </el-button>
         </template>
@@ -770,9 +770,9 @@ export default {
       })
     },
     // 开户
-    accountOpen(houseId) {
+    accountOpen(row) {
       this.dialogAccountOpen = true
-      this.accountOpenForm.houseId = houseId
+      this.accountOpenForm.houseId = row.houseId
     },
     // 取消开户模态框
     handleCancleAccountOpen() {

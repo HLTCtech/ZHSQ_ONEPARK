@@ -520,7 +520,9 @@ import {
   fetchSearchByHouseId,
   fetchPreViewAll,
   getRealtimeProperty,
-  postDaterangeStart
+  postDaterangeStart,
+  allNotPage,
+  searchNoPage
 } from '@/api/payProperty'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
@@ -862,7 +864,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchHouseListAll(this.listQuery_all).then(response => {
+      allNotPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -880,7 +882,7 @@ export default {
     handleFilter() {
       this.listLoading = true
       this.listQuery_search.page = 1
-      fetchHouseSearch(this.listQuery_search).then(response => {
+      searchNoPage(this.listQuery_search).then(response => {
         this.tableData = response.data.items
         this.listLoading = false
       })

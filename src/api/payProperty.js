@@ -116,3 +116,20 @@ export function electricCleanPaySearchElectricId(data) {
     data
   })
 }
+
+//台账导出--物业费列表(无分页)
+export function allNotPage(data) {
+  return request({
+    url: '/onepark/pay/property/house/allNotPage',
+    method: 'post',
+    data
+  })
+}
+//台账导出--物业费搜索(无分页)
+export function searchNoPage(query) {
+  return request({
+    url: '/onepark/pay/property/house/search',
+    method: 'post',
+    data:{query}
+  })
+}

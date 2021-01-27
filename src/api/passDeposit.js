@@ -101,8 +101,8 @@ export function allNoPage(query) {
 // 出入证押金搜索(无分页)
 export function searchNoPage(query) {
   return request({
-    url: '/onepark/pay/passDeposit/house/house/searchNoPage',
+    url: '/onepark/pay/passDeposit/house/searchNoPage',
     method: 'post',
-    data: {query}
+    data: { query }
   })
 }
