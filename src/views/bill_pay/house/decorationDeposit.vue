@@ -152,7 +152,7 @@
             v-permission="['admin']"
             type="primary"
             size="mini"
-            :disabled="row.moneyStatus !== '审核通过'"
+            :disabled="checkReturn(row)"
             @click="handleMoneyReturn(row)"
           >
             退款
@@ -838,6 +838,16 @@ export default {
           console.log(err)
         })
     },
+    //检查是否可退款
+    checkReturn(row) {
+      if (row.moneyStatus === '已退款') {
+        return false
+      }
+      if (row.moneyStatus === '审核通过') {
+        return false
+      }
+      return true
+    },
     //检查是否可申请退款
     checkApply(row) {
       if (row.moneyStatus === '未退款') {
@@ -854,7 +864,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchHouseDecorationDepositListAll(this.listQuery_all).then(response => {
-      // allNoPage(this.listQuery_all).then(response => {
+        // allNoPage(this.listQuery_all).then(response => {
         this.tableData = response.data.items
         this.total = response.total
         this.listLoading = false
@@ -886,7 +896,7 @@ export default {
       // 搜索功能调用
       this.listQuery_search.page = 1
       fetchHouseDecorationDepositSearch(this.listQuery_search).then(
-      // searchNopage(this.listQuery_search).then(
+        // searchNopage(this.listQuery_search).then(
         response => {
           this.tableData = response.data.items
           this.total = response.total

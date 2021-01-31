@@ -282,8 +282,7 @@ import FilenameOption from '@/views/excel/components/FilenameOption'
 import { upload, electricStatisticsAll } from '@/api/electricStatistics'
 import { electricBlance, getElectricBlance } from '@/api/electricitycharge'
 import {
-  electricExportAll,
-  getWatchElectricByMonth
+  electricExportSearchall
 } from '@/api/electricExport'
 import Pagination from '@/components/Pagination'
 export default {
@@ -363,7 +362,7 @@ export default {
       if (this.electricMonthForm.month === null) {
         this.getList()
       } else {
-        getWatchElectricByMonth(this.electricMonthForm)
+        electricExportSearchall(this.electricMonthForm)
           .then(res => {
             console.log(res)
             this.tableLoading = false
@@ -407,7 +406,7 @@ export default {
       } else {
         // api = getWatchElectricByMonth
         // data = this.electricMonthForm
-        api = electricExportAll
+        api = electricExportSearchall
         data = this.listQuery
       }
       api(data)

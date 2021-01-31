@@ -87,6 +87,7 @@
         <el-table-column label="支付宝" prop="alipayNum" align="center" />
         <el-table-column label="微信" prop="wechatNum" align="center" />
         <el-table-column label="现金" prop="cashNum" align="center" />
+        <el-table-column label="其他" prop="otherNum" align="center" />
         <el-table-column label="特批" prop="specialNum" align="center" />
         <el-table-column
           label="代金券"

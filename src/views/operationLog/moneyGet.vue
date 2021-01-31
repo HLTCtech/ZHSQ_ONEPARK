@@ -92,6 +92,7 @@
       <el-table-column label="其他" prop="othersNum" align="center" />
       <el-table-column label="特批" prop="specialNum" align="center" />
       <el-table-column label="转存" prop="turnNum" align="center" />
+      <el-table-column label="总金额" prop="moneyGet" align="center" />
       <!-- <el-table-column label="备注" prop="remark" align="center" /> -->
       <el-table-column label="缴费时间" prop="paidDate" align="center" />
       <el-table-column label="操作人" prop="operator" align="center" />
@@ -103,14 +104,14 @@
 </template>
 
 <script>
-import { listMoneyGetLog, searchMoneyGetLog } from "@/api/operationLog";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
+import { listMoneyGetLog, searchMoneyGetLog } from '@/api/operationLog'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
 // import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import FilenameOption from "@/views/excel/components/FilenameOption";
+import FilenameOption from '@/views/excel/components/FilenameOption'
 
 export default {
-  name: "MoneyGetLog",
+  name: 'MoneyGetLog',
   // components: { Pagination },
   components: { FilenameOption },
   directives: { waves },
@@ -120,7 +121,7 @@ export default {
       listLoading: true,
       total: 0,
       // 定义导出excel默认选项
-      filename: "",
+      filename: '',
       autoWidth: true,
       // 定义搜索按钮的query字段
       listQuery_search: {
@@ -132,25 +133,25 @@ export default {
       },
       // 定义收费费用类型
       payItemOptions: [
-        "电费",
-        "水费",
-        "物业费",
-        "停车场维护费",
-        "装修保证金",
-        "暖气费",
-        "垃圾清运费",
-        "出入证工本费",
-        "出入证押金",
-        "有限电视",
-        "智能卡工本费",
-        "蓝牙卡工本费",
-        "对外保洁",
-        "电动车充电",
-        "温泉水卡补卡",
-        "车位锁工本费",
-        "室内开荒"
+        '电费',
+        '水费',
+        '物业费',
+        '停车场维护费',
+        '装修保证金',
+        '暖气费',
+        '垃圾清运费',
+        '出入证工本费',
+        '出入证押金',
+        '有限电视',
+        '智能卡工本费',
+        '蓝牙卡工本费',
+        '对外保洁',
+        '电动车充电',
+        '温泉水卡补卡',
+        '车位锁工本费',
+        '室内开荒'
       ],
-      titles: [{ ID: "id" }, { 房号: "houseId" }, { 业主姓名: "houseName" }],
+      titles: [{ ID: 'id' }, { 房号: 'houseId' }, { 业主姓名: 'houseName' }],
       // list接口请求参数
       listQuery_all: {
         page: 1
@@ -161,127 +162,127 @@ export default {
       pickerOptions: {
         shortcuts: [
           {
-            text: "最近一周",
+            text: '最近一周',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
             }
           },
           {
-            text: "最近一个月",
+            text: '最近一个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
             }
           },
           {
-            text: "最近三个月",
+            text: '最近三个月',
             onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
             }
           }
         ]
       }
       //   date_picker: ''
-    };
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       listMoneyGetLog(this.listQuery_all).then(response => {
-        this.tableData = response.data.items;
-        this.total = response.total;
-        this.listLoading = false;
-      });
+        this.tableData = response.data.items
+        this.total = response.total
+        this.listLoading = false
+      })
     },
     // 分页按钮绑定
     fetchListSearch() {
-      this.listLoading = true;
+      this.listLoading = true
       searchMoneyGetLog(this.listQuery_search).then(response => {
-        this.tableData = response.data.items;
-        this.listLoading = false;
-      });
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     // 搜索按钮绑定
     handleFilter() {
-      this.listLoading = true;
-      this.listQuery_search.page = 1;
+      this.listLoading = true
+      this.listQuery_search.page = 1
       searchMoneyGetLog(this.listQuery_search).then(response => {
-        this.tableData = response.data.items;
-        this.listLoading = false;
-      });
+        this.tableData = response.data.items
+        this.listLoading = false
+      })
     },
     // excel导出
     handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then(excel => {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
         const tHeader = [
-          "Id",
-          "房号",
-          "缴费项目",
-          "缴费周期",
-          "支付宝金额",
-          "微信金额",
-          "现金金额",
-          "代金券金额",
-          "其他",
-          "特批",
-          "备注",
-          "缴费时间",
-          "操作人"
-        ];
+          'Id',
+          '房号',
+          '缴费项目',
+          '缴费周期',
+          '支付宝金额',
+          '微信金额',
+          '现金金额',
+          '代金券金额',
+          '其他',
+          '特批',
+          '备注',
+          '缴费时间',
+          '操作人'
+        ]
         const filterVal = [
-          "id",
-          "houseId",
-          "payItem",
-          "payDateRange",
-          "alipayNum",
-          "wechatNum",
-          "cashNum",
-          "voucherNum",
-          "otherNum",
-          "specialNum",
-          "remark",
-          "paidDate",
-          "operator"
-        ];
-        const list = this.tableData;
-        console.log(list);
-        const data = this.formatJson(filterVal, list);
-        console.log(data);
+          'id',
+          'houseId',
+          'payItem',
+          'payDateRange',
+          'alipayNum',
+          'wechatNum',
+          'cashNum',
+          'voucherNum',
+          'otherNum',
+          'specialNum',
+          'remark',
+          'paidDate',
+          'operator'
+        ]
+        const list = this.tableData
+        console.log(list)
+        const data = this.formatJson(filterVal, list)
+        console.log(data)
         excel.export_json_to_excel({
           header: tHeader,
           data,
           filename: this.filename,
           autoWidth: this.autoWidth,
           bookType: this.bookType
-        });
-        this.downloadLoading = false;
-      });
+        })
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
+          if (j === 'timestamp') {
+            return parseTime(v[j])
           } else {
-            return v[j];
+            return v[j]
           }
         })
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

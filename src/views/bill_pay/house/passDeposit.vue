@@ -136,7 +136,7 @@
             type="primary"
             size="mini"
             @click="handleMoneyReturn(row)"
-            :disabled="row.moneyStatus !== '审核通过'"
+            :disabled="checkReturn(row)"
           >
             退款
           </el-button>
@@ -790,6 +790,16 @@ export default {
           return v[j]
         })
       )
+    },
+    //检查是否可退款
+    checkReturn(row) {
+      if (row.moneyStatus === '已退款') {
+        return false
+      }
+      if (row.moneyStatus === '审核通过') {
+        return false
+      }
+      return true
     },
     //检查是否可申请退款
     checkApply(row) {

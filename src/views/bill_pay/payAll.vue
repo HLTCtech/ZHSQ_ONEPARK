@@ -1182,10 +1182,10 @@ export default {
           this.mixFormPost.mixPayTotalNum = this.mixPayTotal
           this.mixFormPost.finalSelection = this.finalSelection.join(',')
           moneyCleanPostAll(mixFormPost).then(response => {
-            if (response.codeStatus === 200) {
+            if (response.message === '缴费成功') {
               this.$notify({
                 title: 'Success',
-                message: '提交成功',
+                message: '缴费成功',
                 type: 'success',
                 duration: 2000
               })
@@ -1217,7 +1217,7 @@ export default {
             } else {
               this.$notify({
                 title: 'Failure',
-                message: '提交失败，请联系系统管理员',
+                message: `${response.message}`,
                 type: 'error',
                 duration: 3000
               })
@@ -1347,10 +1347,10 @@ export default {
           }).then(() => {
             this.ItemsPay.payAllItemsMixPayTotal = this.payAllItemsMixPayTotal
             moneyPayPostAll(ItemsPay).then(response => {
-              if (response.codeStatus === 200) {
+              if (response.message === '缴费成功') {
                 this.$notify({
                   title: 'Success',
-                  message: '提交成功',
+                  message: '缴费成功',
                   type: 'success',
                   duration: 2000
                 })
@@ -1403,7 +1403,7 @@ export default {
               } else {
                 this.$notify({
                   title: 'Failure',
-                  message: '提交失败，请联系系统管理员',
+                  message: `${response.message}`,
                   type: 'error',
                   duration: 3000
                 })

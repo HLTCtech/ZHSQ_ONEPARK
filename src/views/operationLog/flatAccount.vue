@@ -24,6 +24,7 @@
       <el-table-column label="开户人电话" prop="openPhone"> </el-table-column>
       <el-table-column label="房间号" prop="houseId"> </el-table-column>
       <el-table-column label="电表号" prop="electriMeterID"> </el-table-column>
+      <el-table-column label="平账金额" prop="balanceamount"> </el-table-column>
       <el-table-column label="开户日期" prop="openTime"> </el-table-column>
       <el-table-column label="备注" prop="remark"> </el-table-column>
       <el-table-column label="操作人" prop="operatorName"> </el-table-column>
@@ -47,7 +48,7 @@ export default {
   data() {
     return {
       searchForm: {
-        adminId:this.$store.getters.adminId,
+        adminId: this.$store.getters.adminId,
         page: 1,
         limit: 20,
         houseId: '', //房间号

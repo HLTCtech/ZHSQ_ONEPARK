@@ -130,7 +130,7 @@
         <template slot-scope="{ row }">
           <!-- 收费按钮相对应的模态框以及函数暂未开发 -->
           <el-button
-            :disabled="row.moneyStatus !== '审核通过'"
+            :disabled="checkReturn(row)"
             v-permission="['admin']"
             type="primary"
             size="mini"
@@ -815,6 +815,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    //检查是否可退款
+    checkReturn(row) {
+      if (row.moneyStatus === '已退款') {
+        return false
+      }
+      if (row.moneyStatus === '审核通过') {
+        return false
+      }
+      return true
     },
     //检查是否可申请退款
     checkApply(row) {

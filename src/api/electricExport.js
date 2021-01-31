@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 电费导出列表
-export function electricExportAll(data) {
+export function electricExportSearchall(data) {
   return request({
-    url: '/onepark/electricExport/all',
+    url: '/onepark/electricExport/searchall',
     method: 'post',
     data
   })
