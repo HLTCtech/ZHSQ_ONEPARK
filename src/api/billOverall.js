@@ -76,3 +76,11 @@ export function getEchartMoneyGotWeekly() {
     method: 'get'
   })
 }
+//新增月度电费统计
+export function addElectric(data) {
+  return request({
+    url: '/onepark/electricExport/addElectric',
+    method: 'post',
+    data
+  })
+}

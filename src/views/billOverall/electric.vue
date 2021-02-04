@@ -76,6 +76,9 @@
           icon="el-icon-search"
           >搜索</el-button
         >
+        <el-button @click="HandleAddMonthElectric" type="success"
+          >新增</el-button
+        >
       </div>
       <!-- 电费欠费搜索条件 -->
       <div v-else-if="searchType === 'owe'" style="margin-bottom:10px">
@@ -248,13 +251,13 @@
       <el-table-column label="首次购电日期" prop="firstDate" align="center" />
       <!-- <el-table-column label="当前余额" prop="account" align="center" /> -->
       <el-table-column
-        label="本月抄表日期"
+        label="上月抄表日期"
         prop="watchStartTime"
         align="center"
       />
-      <el-table-column label="本月用电量" prop="thisMonth" align="center" />
-      <el-table-column label="下月抄表日期" prop="endTime" align="center" />
-      <el-table-column label="下月用电量" prop="lastMonth" align="center" />
+      <el-table-column label="上月用电量" prop="thisMonth" align="center" />
+      <el-table-column label="本月抄表日期" prop="endTime" align="center" />
+      <el-table-column label="本月用电量" prop="lastMonth" align="center" />
       <el-table-column label="差值" prop="difference" align="center" />
       <el-table-column label="用电次数" prop="electricNum" align="center" />
       <el-table-column label="总用电金额" prop="electricMoney" align="center" />
@@ -273,6 +276,7 @@
       :page.sync="listQuery_search.page"
       @pagination="getList"
     /> -->
+    <add-month-electric @getList="getList" ref="addMonthElectric"></add-month-electric>
   </div>
 </template>
 
@@ -281,12 +285,11 @@ import { parseTime } from '@/utils'
 import FilenameOption from '@/views/excel/components/FilenameOption'
 import { upload, electricStatisticsAll } from '@/api/electricStatistics'
 import { electricBlance, getElectricBlance } from '@/api/electricitycharge'
-import {
-  electricExportSearchall
-} from '@/api/electricExport'
+import { electricExportSearchall } from '@/api/electricExport'
+import AddMonthElectric from './components/addMonthElectric'
 import Pagination from '@/components/Pagination'
 export default {
-  components: { Pagination, FilenameOption },
+  components: { Pagination, FilenameOption, AddMonthElectric },
   data() {
     return {
       searchType: 'export',
@@ -332,6 +335,10 @@ export default {
     }
   },
   methods: {
+    /* 点击新增月度电费统计按钮 */
+    HandleAddMonthElectric() {
+      this.$refs.addMonthElectric.open()
+    },
     /* 电费欠费搜索 */
     searchElectricBlance() {
       this.tableLoading = true
@@ -508,7 +515,7 @@ export default {
             '总用电金额',
             '剩余金额',
             '总用电量',
-            '备注',
+            '备注'
           ]
           filterVal = [
             'id',
@@ -529,7 +536,7 @@ export default {
             'electricMoney',
             'electricSurMoney',
             'electricTotal',
-            'remark',
+            'remark'
           ]
         }
         const list = type == 'muban' ? [] : this.tableData
