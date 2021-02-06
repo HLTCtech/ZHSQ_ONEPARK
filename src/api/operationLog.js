@@ -80,5 +80,13 @@ export function searchParkingChangeLog(query) {
     data: { query }
   })
 }
+// 抄表记录
+export function electricExportsSearchall(data) {
+  return request({
+    url: '/onepark/electricExports/searchall',
+    method: 'post',
+    data
+  })
+}
 
 

@@ -652,6 +652,14 @@ export const asyncRoutes = [
           title: '平账记录'
         }
       },
+      {
+        path: 'electricRecord',
+        component: () => import('@/views/operationLog/electricRecord'),
+        name: 'ElectricRecord',
+        meta: {
+          title: '抄表记录'
+        }
+      }
     ]
   },
   {
@@ -708,52 +716,52 @@ export const asyncRoutes = [
       }
     ]
   },
-  // {
-  //   // 基础信息
-  //   path: '/information',
-  //   component: Layout,
-  //   // redirect: '/bill_all/electric',
-  //   name: 'Information',
-  //   alwaysShow: true,
-  //   meta: {
-  //     title: '基础信息',
-  //     icon: 'information'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'houseInfo',
-  //       component: () => import('@/views/information/houseInfo'),
-  //       name: 'HouseInfo',
-  //       meta: {
-  //         title: '房源信息'
-  //       }
-  //     },
-  //     {
-  //       path: 'projectRate',
-  //       component: () => import('@/views/information/projectRate'),
-  //       name: 'ProjectRate',
-  //       meta: {
-  //         title: '收费项目费率'
-  //       }
-  //     },
-  //     {
-  //       path: 'subjectCode',
-  //       component: () => import('@/views/information/subjectCode'),
-  //       name: 'SubjectCode',
-  //       meta: {
-  //         title: '科目编码'
-  //       }
-  //     },
-  //     {
-  //       path: 'currentCode',
-  //       component: () => import('@/views/information/currentCode'),
-  //       name: 'CurrentCode',
-  //       meta: {
-  //         title: '往来编码'
-  //       }
-  //     }
-  //   ]
-  // },
+  {
+    // 基础信息
+    path: '/information',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'Information',
+    alwaysShow: true,
+    meta: {
+      title: '基础信息',
+      icon: 'information'
+    },
+    children: [
+      // {
+      //   path: 'houseInfo',
+      //   component: () => import('@/views/information/houseInfo'),
+      //   name: 'HouseInfo',
+      //   meta: {
+      //     title: '房源信息'
+      //   }
+      // },
+      {
+        path: 'projectRate',
+        component: () => import('@/views/information/projectRate'),
+        name: 'ProjectRate',
+        meta: {
+          title: '新增杂费类型'
+        }
+      },
+      // {
+      //   path: 'subjectCode',
+      //   component: () => import('@/views/information/subjectCode'),
+      //   name: 'SubjectCode',
+      //   meta: {
+      //     title: '科目编码'
+      //   }
+      // },
+      {
+        path: 'currentCode',
+        component: () => import('@/views/information/currentCode'),
+        name: 'CurrentCode',
+        meta: {
+          title: '新增科目编码'
+        }
+      }
+    ]
+  },
   // {
   //   // 通知公告
   //   path: '/noticeManage',

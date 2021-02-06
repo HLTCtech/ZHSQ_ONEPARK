@@ -574,9 +574,9 @@
         >
           <el-option
             v-for="item in sundriesOptions"
-            :key="item"
-            :label="item"
-            :value="item"
+            :key="item.id"
+            :label="item.sundriesitem"
+            :value="item.sundriesitem"
           />
         </el-select>
         <el-input
@@ -820,6 +820,7 @@ import {
   getRealtimeElectric,
   getSMS
 } from '@/api/payAll'
+import { sundriesList } from '@/api/information'
 import waves from '@/directive/waves' // waves directive
 import { getLogByHouseId } from '@/api/operationLog'
 // import { parseTime } from '@/utils'
@@ -1020,10 +1021,10 @@ export default {
         // '营业外收入',
         // '电梯广告费',
         // '自动售货机'
-        '出入证工本费',
-        '智能卡工本费',
-        '电动车充电卡工本费',
-        '电动车充电',
+        // '出入证工本费',
+        // '智能卡工本费',
+        // '电动车充电卡工本费',
+        // '电动车充电'
       ],
       // 根据前端选择的时间周期显示应缴金额
       propertyShallPay: null,
@@ -1112,7 +1113,23 @@ export default {
   // created() {
   //   this.getList()
   // },
+  mounted() {
+    this.getSundriesList()
+  },
   methods: {
+    //获取所有杂费项
+    getSundriesList() {
+      sundriesList()
+        .then(res => {
+          console.log(res)
+          if(res.code===200){
+            this.sundriesOptions=res.data.items
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     // 根据前端周期监听返回相应的金额
     getRealtimeProperty() {
       this.getProperty.houseId = this.listQuery.houseId
