@@ -1,47 +1,127 @@
 <template>
-  <!-- 科目编码 -->
+  <!-- 新增科目编码 -->
   <div class="app-container">
+    <el-button
+      v-waves
+      class="filter-item"
+      style="width:150px;"
+      type="success"
+      icon="el-icon-coin"
+      @click="handleNewSubjectCode"
+      >新增科目编码</el-button
+    >
+    <br />
+    <br />
+
+    <!-- 新增科目编码模态框 -->
+    <el-dialog :visible.sync="dialogNewSubjectCode" title="新增科目编码">
+      <el-card class="box-card">
+        <!-- 新增科目编码表单提交 -->
+        <el-form
+          ref="newSubjectForm"
+          :rules="newSubjectFormRules"
+          :model="newSubjectFormPost"
+          label-width="80px"
+        >
+          <!-- <el-form-item label="费用类型" label-width="100px" prop="payItem">
+            <el-select v-model="newSubjectFormPost.payItem" placeholder="请选择">
+              <el-option
+                v-for="item in payItemOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
+          </el-form-item> -->
+          <!-- <el-form-item label="房间号" label-width="100px" prop="houseId">
+            <el-input v-model="newSubjectFormPost.houseId" placeholder="请输入完整房号（不要输入多个房号）" />
+          </el-form-item> -->
+          <el-form-item
+            label="电表号"
+            label-width="100px"
+            prop="electricMeterId"
+          >
+            <el-input
+              v-model="newSubjectFormPost.electricMeterId"
+              placeholder="请输入电表号"
+            />
+          </el-form-item>
+          <el-form-item label="地下车位号" label-width="100px" prop="parkingId">
+            <el-input
+              v-model="newSubjectFormPost.parkingId"
+              placeholder="请输入地下车位号"
+            />
+          </el-form-item>
+          <el-form-item label="地下室号" label-width="100px" prop="basementId">
+            <el-input
+              v-model="newSubjectFormPost.basementId"
+              placeholder="请输入地下室号"
+            />
+          </el-form-item>
+          <el-form-item label="科目编码" label-width="100px" prop="subjectCode">
+            <el-input
+              v-model="newSubjectFormPost.subjectCode"
+              placeholder="请输入科目编码"
+            />
+          </el-form-item>
+          <el-form-item label="科目名称" label-width="100px" prop="subjectName">
+            <el-input
+              v-model="newSubjectFormPost.subjectName"
+              placeholder="请输入科目名称"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="success"
+              @click="newSubjectCodePost(newSubjectFormPost)"
+              >提交</el-button
+            >
+            <el-button @click="CleanDataForm()">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-dialog>
     <div class="filter-container">
-      <!-- 时间选择器 -->
-      <el-date-picker
-        v-model="listQuery_search.dateRange"
+      <el-input
+        v-model="listQuery_search.subjectCode"
+        type="text"
+        placeholder="科目编码"
+        style="width: 130px"
         class="filter-item"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        value-format="yyyy-MM-dd"
+        clearable
       />
+      <el-input
+        v-model="listQuery_search.subjectName"
+        type="text"
+        placeholder="科目名称"
+        style="width: 130px"
+        class="filter-item"
+        clearable
+      />
+      <!-- <el-select
+        v-model="listQuery_search.Item"
+        placeholder="费用类别"
+        style="top: -4px;position: relative"
+      >
+        <el-option
+          v-for="item in payItemOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select> -->
       <el-button
         v-waves
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="handleFilter"
+        @click="getList"
+        >搜索</el-button
       >
-        搜索
-      </el-button>
     </div>
-
-    <!-- excel导出功能 -->
-    <div>
-      <FilenameOption v-model="filename" />
-      <el-button
-        :loading="downloadLoading"
-        style="margin:0 0 20px 20px;"
-        type="primary"
-        icon="el-icon-document"
-        @click="handleDownload"
-      >
-        导出Excel
-      </el-button>
-    </div>
-
-    <!-- 表格 -->
     <div class="printTable">
       <el-table
+        v-loading="tableLoading"
         :data="tableData"
         highlight-current-row
         stripe
@@ -49,138 +129,173 @@
         fit
         max-height="800px"
       >
-        <el-table-column label="ID" prop="id" align="center" />
-        <el-table-column label="制单日期" prop="billsMadeDate" align="center" />
-        <el-table-column label="凭证类别" prop="voucherType" align="center" />
-        <el-table-column label="凭证编号" prop="voucherId" align="center" />
-        <el-table-column label="摘要" prop="abstract" align="center" />
+        <el-table-column label="ID" prop="subjectCodeId" align="center" />
+        <el-table-column label="级次" prop="orderNum" align="center" />
         <el-table-column label="科目编码" prop="subjectCode" align="center" />
-        <el-table-column label="币种" prop="moneyType" align="center" />
+        <el-table-column label="科目名称" prop="subjectName" align="center" />
+        <el-table-column label="科目分类" prop="subjectKind" align="center" />
         <el-table-column
-          label="借贷方向"
-          prop="lendingDirection"
+          label="余额方向"
+          prop="accountDirection"
           align="center"
         />
-        <el-table-column label="本币" prop="localCurrency" align="center" />
-        <el-table-column
-          label="往来单位编码"
-          prop="contactUnitCode"
-          align="center"
-        />
+        <el-table-column label="账页格式" prop="pageForm" align="center" />
+        <el-table-column label="是否可用" prop="isStop" align="center" />
+        <el-table-column label="费用类别" prop="Item" align="center" />
       </el-table>
+      <!-- <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="listQuery_search.page"
+        @pagination="getList"
+      /> -->
     </div>
   </div>
 </template>
 
 <script>
-import { fetchExportList, fetchExportSearch } from '@/api/subjectCode'
+import { mapGetters } from 'vuex'
+// import { subjectNew, subjectList } from '@/api/subjectCode'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
-import FilenameOption from '@/views/excel/components/FilenameOption'
+import { subjectList, subjectNew, subjectCodeDelete } from '@/api/information'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'ExportSubjectCode',
-  components: { FilenameOption },
+  name: 'SubjectCodeNew',
+  components: { Pagination },
   directives: { waves },
   data() {
     return {
-      downloadLoading: false,
+      total: 0,
+      // 费用选项
+      payItemOptions: [],
       listLoading: true,
-      // 定义导出excel默认选项
-      filename: '',
-      autoWidth: true,
-      // 定义搜索按钮的query字段
-      listQuery_search: {
-        dateRange: null
+      // 新增科目编码表单项目
+      newSubjectFormPost: {
+        // houseId: null,
+        electricMeterId: null,
+        parkingId: null,
+        basementId: null,
+        subjectCode: null,
+        subjectName: null,
+        // payItem: null,
+        adminId: this.$store.getters.adminId
       },
-      // 声明下api变量
-      tableData: []
+      // 新增科目编码表单提交项目规则
+      newSubjectFormRules: {
+        payItem: [
+          { required: true, message: '请选择费用类型', trigger: 'change' }
+        ],
+        houseId: [
+          {
+            required: true,
+            message: '请输入单一的完整房间号',
+            trigger: 'change'
+          }
+        ],
+        subjectCode: [
+          { required: true, message: '请输入科目编码', trigger: 'change' }
+        ],
+        subjectName: [
+          { required: true, message: '请输入科目名称', trigger: 'blur' }
+        ]
+      },
+      // 收费页面模态框
+      dialogMoneyPost: false,
+      dialogNewSubjectCode: false,
+      listQuery_search: {
+        page: 1
+      },
+      tableData: [],
+      tableLoading: false
     }
   },
+  computed: {
+    ...mapGetters(['adminName', 'adminId', 'roles'])
+  },
+  //   watch: {
+  //     payPatternChange(val) {
+  //       if (this.$refs['singleDataForm'] !== undefined) {
+  //         this.$refs['singleDataForm'].clearValidate()
+  //       }
+  //       if (this.$refs['mixDataForm'] !== undefined) {
+  //         this.$refs['mixDataForm'].clearValidate()
+  //       }
+  //     }
+  //   },
   created() {
     this.getList()
+    // this.getSundriesOptions()
   },
   methods: {
+    // 点击收费按钮
+    handleNewSubjectCode() {
+      this.dialogNewSubjectCode = true
+    },
+    // 提交新增科目编码表单
+    newSubjectCodePost(newSubjectFormPost) {
+      // 表单项规则验证
+      this.$refs['newSubjectForm'].validate(valid => {
+        if (valid) {
+          // 操作确认框
+          this.$confirm('确定提交么？', '费用收缴', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            subjectNew(newSubjectFormPost).then(response => {
+              if (response.codeStatus === 200) {
+                this.$notify({
+                  title: 'Success',
+                  message: '提交成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.$nextTick(() => {
+                  this.$refs['newSubjectForm'].resetFields()
+                })
+                this.getList()
+                // this.getSundriesOptions()
+                this.dialogNewSubjectCode = false
+              } else {
+                this.$notify({
+                  title: 'Failure',
+                  message: '提交失败，请联系系统管理员',
+                  type: 'error',
+                  duration: 3000
+                })
+              }
+            })
+          })
+        }
+      })
+    },
+    // 收费页面取消按钮
+    CleanDataForm() {
+      if (this.$refs['newSubjectForm'] !== undefined) {
+        this.$nextTick(() => {
+          this.$refs['newSubjectForm'].resetFields()
+        })
+      }
+      this.dialogNewSubjectCode = false
+    },
+    getSundriesOptions() {
+      getSundriesListall({ sundries: '' }).then(res => {
+        this.payItemOptions = res.data.items.map(item => item.sundriesitem)
+      })
+    },
     getList() {
-      fetchExportList().then(response => {
-        this.tableData = response.data.items
-      })
-    },
-    // 根据选定信息搜索
-    fetchListSearch() {
-      fetchExportSearch(this.listQuery_search).then(response => {
-        this.tableData = response.data.items
-      })
-    },
-    handleFilter() {
-      // 搜索功能调用
-      this.fetchListSearch()
-    },
-    // excel导出
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = [
-          'Id',
-          '制单日期',
-          '凭证类别',
-          '凭证编号',
-          '摘要',
-          '科目编码',
-          '币种',
-          '借贷方向',
-          '本币',
-          '往来单位编码'
-        ]
-        const filterVal = [
-          'id',
-          'billsMadeDate',
-          'voucherType',
-          'voucherId',
-          'abstract',
-          'subjectCode',
-          'moneyType',
-          'lendingDirection',
-          'localCurrency',
-          'contactUnitCode'
-        ]
-        const list = this.tableData
-        console.log(list)
-        const data = this.formatJson(filterVal, list)
-        console.log(data)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: this.filename,
-          autoWidth: this.autoWidth,
-          bookType: this.bookType
+      this.tableLoading = true
+      console.log(this.listQuery_search)
+      subjectList(this.listQuery_search)
+        .then(res => {
+          this.tableLoading = false
+          this.tableData = res.data.items
+          this.total = res.total
         })
-        this.downloadLoading = false
-      })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v =>
-        filterVal.map(j => {
-          if (j === 'timestamp') {
-            return parseTime(v[j])
-          } else {
-            if (v === null) {
-              return ''
-            } else {
-              return v[j]
-            }
-          }
+        .catch(err => {
+          this.tableLoading = false
         })
-      )
-    },
-    // 测试打印功能
-    handelPrint() {
-      var newStr = document.getElementsByClassName('printTable')[0].innerHTML
-      document.body.innerHTML = newStr
-      // 调用打印功能
-      window.print()
-      // 点击取消后刷新页面
-      window.location.reload()
     }
   }
 }
@@ -199,16 +314,5 @@ $light_gray: #eee;
   color: $light_gray;
   cursor: pointer;
   user-select: none;
-}
-
-body .el-table th.gutter {
-  display: table-cell !important;
-}
-.el-table {
-  th.gutter,
-  colgroup.gutter {
-    display: block !important;
-    width: 6px !important;
-  }
 }
 </style>

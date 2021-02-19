@@ -471,28 +471,7 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  {
-    path: '/info',
-    component: Layout,
-    // redirect: '/info',
-    // alwaysShow: true,
-    // meta: {
-    //   title: '房源信息变更',
-    //   icon: 'housechange'
-    // },
-    children: [
-      {
-        path: 'Housechange',
-        component: () => import('@/views/infoChange/houseChange'),
-        name: 'infoChange',
-        meta: {
-          title: '房源信息变更',
-          icon: 'housechange',
-          noCache: true
-        }
-      }
-    ]
-  },
+
   // Excel表格管理
   // {
   //   path: '/excel',
@@ -744,24 +723,55 @@ export const asyncRoutes = [
           title: '新增杂费类型'
         }
       },
-      // {
-      //   path: 'subjectCode',
-      //   component: () => import('@/views/information/subjectCode'),
-      //   name: 'SubjectCode',
-      //   meta: {
-      //     title: '科目编码'
-      //   }
-      // },
+
+      {
+        path: 'subjectCode',
+        component: () => import('@/views/information/subjectCode'),
+        name: 'SubjectCode',
+        meta: {
+          title: '新增科目编码'
+        }
+      },
       {
         path: 'currentCode',
         component: () => import('@/views/information/currentCode'),
         name: 'CurrentCode',
         meta: {
-          title: '新增科目编码'
+          title: '往来编码'
+        }
+      },
+      {
+        path: 'Housechange',
+        component: () => import('@/views/information/houseChange'),
+        name: 'infoChange',
+        meta: {
+          title: '房源信息'
         }
       }
     ]
   },
+  // {
+  //   path: '/info',
+  //   component: Layout,
+  //   // redirect: '/info',
+  //   // alwaysShow: true,
+  //   // meta: {
+  //   //   title: '房源信息变更',
+  //   //   icon: 'housechange'
+  //   // },
+  //   children: [
+  //     {
+  //       path: 'Housechange',
+  //       component: () => import('@/views/infoChange/houseChange'),
+  //       name: 'infoChange',
+  //       meta: {
+  //         title: '房源信息变更',
+  //         icon: 'housechange',
+  //         noCache: true
+  //       }
+  //     }
+  //   ]
+  // },
   // {
   //   // 通知公告
   //   path: '/noticeManage',

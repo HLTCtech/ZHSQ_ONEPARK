@@ -69,7 +69,7 @@
       v-loading="listLoading"
       :data="tableData"
       style="width: 100%"
-      height="1000"
+      height="700px"
       border
       stripe
       highlight-current-row

@@ -1,5 +1,5 @@
 <template>
-  <!-- 操作记录--平账记录 -->
+  <!-- 操作记录 > 平账记录 -->
   <div class="flat-account">
     <!-- 顶部搜索区域 -->
     <div class="top-handle">
@@ -18,7 +18,12 @@
       <el-button type="primary" @click="handleSearch">搜索</el-button>
     </div>
     <!-- 表格区域 -->
-    <el-table :data="tableData" :border="true" style="width:100%">
+    <el-table
+      :data="tableData"
+      :border="true"
+      style="width:100%"
+      v-loading="tableLoading"
+    >
       <el-table-column label="序号" type="index" width="60"> </el-table-column>
       <el-table-column label="业主姓名" prop="openName"> </el-table-column>
       <el-table-column label="开户人电话" prop="openPhone"> </el-table-column>
@@ -55,7 +60,8 @@ export default {
         userName: '' //业主姓名
       },
       tableData: [],
-      total: 0 //总数据量
+      total: 0, //总数据量
+      tableLoading: false
     }
   },
   mounted() {
@@ -69,21 +75,25 @@ export default {
     },
     /* 获取页面数据 */
     getList() {
+      this.tableLoading = true
       this.$set(this.searchForm, 'limit', 20)
       getListOpen(this.searchForm)
         .then(res => {
           console.log(res)
           if (res.code === 200) {
             this.tableData = res.data.items
-            this.total - res.data.total
+            this.total = res.total
+            this.tableLoading = false
           }
         })
         .catch(err => {
           console.log(err)
+          this.tableLoading = false
         })
     },
     /* 点击搜索按钮 */
     handleSearch() {
+      this.tableLoading = true
       if (this.searchForm.houseId === '' && this.searchForm.userName === '') {
         this.getList()
       } else {
@@ -93,10 +103,12 @@ export default {
             console.log(res)
             if (res.code === 200) {
               this.tableData = res.data.items
+              this.tableLoading = false
             }
           })
           .catch(err => {
             console.log(err)
+            this.tableLoading = false
           })
       }
     }

@@ -1,4 +1,5 @@
 <template>
+<!-- 基础信息 > 新增杂费类型 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input
