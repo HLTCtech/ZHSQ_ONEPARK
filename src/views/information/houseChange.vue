@@ -613,7 +613,6 @@ export default {
             '地上房号',
             '开始日期',
             '截止日期',
-            '往来科目代码'
           ]
         } else {
           tHeader = [

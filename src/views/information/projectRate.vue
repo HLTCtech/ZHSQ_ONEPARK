@@ -1,5 +1,5 @@
 <template>
-<!-- 基础信息 > 新增杂费类型 -->
+  <!-- 基础信息 > 新增杂费类型 -->
   <div class="app-container">
     <div class="filter-container">
       <el-input
@@ -11,7 +11,6 @@
         clearable
       />
       <el-button
-        v-waves
         class="filter-item"
         type="primary"
         icon="el-icon-search"
@@ -50,7 +49,9 @@
             placeholder="请输入费用类别"
           />
         </el-form-item>
-
+        <el-form-item label="费率" label-width="100px">
+          <el-input v-model="formSundriesAdd.price" placeholder="请输入费率" />
+        </el-form-item>
         <el-form-item>
           <el-button type="success" @click="handleAdd">提交</el-button>
           <el-button @click="dialogSundriesAdd = false">取消</el-button>
@@ -70,6 +71,7 @@
       <el-table-column label="ID" prop="id" align="center" />
       <el-table-column label="费用类型" prop="sundriesitem" align="center" />
       <el-table-column label="费用类别" prop="status" align="center" />
+      <el-table-column label="费率" prop="price" align="center" />
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
           <el-button type="danger" size="mini" @click="handleDel(row.id)"
@@ -92,7 +94,7 @@ export default {
   data() {
     return {
       dialogSundriesAdd: false,
-      formSundriesAdd: { sundries: null, status: null },
+      formSundriesAdd: { sundries: null, status: null, price: null },
       tableData: [],
       listQuery_search: { sundries: '' },
       tableLoading: false,
@@ -146,7 +148,8 @@ export default {
               this.getSundriesList()
               this.dialogSundriesAdd = false
               this.formSundriesAdd.sundries = null
-              this.formSundriesAdd.status = '是'
+              this.formSundriesAdd.status = null
+              this.formSundriesAdd.price = null
             }
           })
         } else {

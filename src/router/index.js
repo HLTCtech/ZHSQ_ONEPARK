@@ -631,14 +631,14 @@ export const asyncRoutes = [
           title: '平账记录'
         }
       },
-      {
-        path: 'electricRecord',
-        component: () => import('@/views/operationLog/electricRecord'),
-        name: 'ElectricRecord',
-        meta: {
-          title: '抄表记录'
-        }
-      }
+      // {
+      //   path: 'electricRecord',
+      //   component: () => import('@/views/operationLog/electricRecord'),
+      //   name: 'ElectricRecord',
+      //   meta: {
+      //     title: '抄表记录'
+      //   }
+      // }
     ]
   },
   {
