@@ -44,16 +44,18 @@
           type="primary"
           icon="el-icon-document"
           @click="handleDownload"
-          >导出Excel</el-button
         >
+          导出Excel
+        </el-button>
         <el-button
           :loading="downloadLoading"
           style="margin:0 0 20px 20px;"
           type="primary"
           icon="el-icon-document"
           @click="handleDownload('muban')"
-          >导出模板</el-button
         >
+          导出模板
+        </el-button>
       </div>
     </div>
     <div v-else>
@@ -68,17 +70,17 @@
           type="month"
           placeholder="选择月"
           value-format="yyyy-MM"
-        >
-        </el-date-picker>
+        ></el-date-picker>
         <el-button
           @click="searchElectricMonth"
           type="primary"
           icon="el-icon-search"
-          >搜索</el-button
         >
-        <el-button @click="HandleAddMonthElectric" type="success"
+          搜索
+        </el-button>
+        <!-- <el-button @click="HandleAddMonthElectric" type="success"
           >新增</el-button
-        >
+        > -->
       </div>
       <!-- 电费欠费搜索条件 -->
       <div v-else-if="searchType === 'owe'" style="margin-bottom:10px">
@@ -98,8 +100,9 @@
           type="primary"
           icon="el-icon-search"
           @click="searchElectricBlance"
-          >搜索</el-button
         >
+          搜索
+        </el-button>
       </div>
       <div class="download-file">
         <FilenameOption v-model="filename" />
@@ -109,8 +112,9 @@
           type="primary"
           icon="el-icon-document"
           @click="handleDownload"
-          >导出Excel</el-button
         >
+          导出Excel
+        </el-button>
       </div>
     </div>
     <!-- 电费统计数据表格 -->
@@ -195,8 +199,9 @@
           <el-tag
             :type="scope.row.electricStatus == '欠费' ? 'warning' : 'danger'"
             disable-transitions
-            >{{ scope.row.electricStatus }}</el-tag
           >
+            {{ scope.row.electricStatus }}
+          </el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -276,7 +281,10 @@
       :page.sync="listQuery_search.page"
       @pagination="getList"
     /> -->
-    <add-month-electric @getList="getList" ref="addMonthElectric"></add-month-electric>
+    <add-month-electric
+      @getList="getList"
+      ref="addMonthElectric"
+    ></add-month-electric>
   </div>
 </template>
 
