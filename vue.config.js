@@ -47,7 +47,7 @@ module.exports = {
       //   }
       // }
       [process.env.VUE_APP_BASE_API]: {
-        // target: "http://192.168.1.46:8080/hlOneParkProertyManage",
+        // target: "http://192.168.0.195:8080/hlOneParkProertyManage",
         // target: 'http://39.106.28.159:8080/hlOneParkProertyManage',
         target: 'http://121.41.28.29:80/hlOneParkProertyManage',
         // target: 'http://192.168.0.115:8080/hlOneParkProertyManage',

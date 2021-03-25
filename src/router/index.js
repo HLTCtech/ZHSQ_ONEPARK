@@ -106,7 +106,7 @@ export const constantRoutes = [
     path: '/chargingVoucher',
     component: Layout,
     meta: {
-      title: '凭证打印',
+      title: '收据打印',
       icon: 'printer',
       roles: 'admin'
     },
@@ -116,7 +116,7 @@ export const constantRoutes = [
         component: () => import('@/views/chargingVoucher/voucherManage'),
         name: 'voucherManage',
         meta: {
-          title: '凭证打印'
+          title: '收据打印'
         }
       },
       {
@@ -124,7 +124,7 @@ export const constantRoutes = [
         component: () => import('@/views/chargingVoucher/rePrintVoucher'),
         name: 'rePrintVoucher',
         meta: {
-          title: '已打印凭证'
+          title: '已打印收据'
         }
       }
       // {

@@ -260,10 +260,10 @@
         prop="watchStartTime"
         align="center"
       />
-      <el-table-column label="上月用电量" prop="thisMonth" align="center" />
+      <el-table-column label="上月读数" prop="thisMonth" align="center" />
       <el-table-column label="本月抄表日期" prop="endTime" align="center" />
-      <el-table-column label="本月用电量" prop="lastMonth" align="center" />
-      <el-table-column label="差值" prop="difference" align="center" />
+      <el-table-column label="本月读数" prop="lastMonth" align="center" />
+      <el-table-column label="用电量" prop="difference" align="center" />
       <el-table-column label="用电次数" prop="electricNum" align="center" />
       <el-table-column label="总用电金额" prop="electricMoney" align="center" />
       <el-table-column
@@ -515,10 +515,10 @@ export default {
             '月份',
             '首次购电日期',
             '上月抄表日期',
-            '上月用电量',
+            '上月读数',
             '本月抄表日期',
-            '本月用电量',
-            '差值',
+            '本月读数',
+            '用电量',
             '用电次数',
             '总用电金额',
             '剩余金额',

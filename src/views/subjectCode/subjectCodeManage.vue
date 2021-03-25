@@ -51,8 +51,8 @@
       >
         <el-table-column label="ID" prop="id" align="center" />
         <el-table-column label="制单日期" prop="billsMadeDate" align="center" />
-        <el-table-column label="凭证类别" prop="voucherType" align="center" />
-        <el-table-column label="凭证编号" prop="voucherId" align="center" />
+        <el-table-column label="收据类别" prop="voucherType" align="center" />
+        <el-table-column label="收据编号" prop="voucherId" align="center" />
         <el-table-column label="摘要" prop="abstract" align="center" />
         <el-table-column label="科目编码" prop="subjectCode" align="center" />
         <el-table-column label="币种" prop="moneyType" align="center" />
@@ -123,8 +123,8 @@ export default {
         const tHeader = [
           'Id',
           '制单日期',
-          '凭证类别',
-          '凭证编号',
+          '收据类别',
+          '收据编号',
           '摘要',
           '科目编码',
           '币种',
