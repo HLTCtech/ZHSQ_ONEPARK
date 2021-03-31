@@ -1,3 +1,11 @@
+/*
+ * @Author: 贺永胜
+ * @email: 1378431028@qq.com
+ * @Date: 2021-03-25 16:27:08
+ * @LastEditors: 贺永胜
+ * @LastEditTime: 2021-03-31 11:41:27
+ * @Description: file content
+ */
 import request from '@/utils/request'
 
 // 搜索指定房间的所有费用信息
@@ -15,6 +23,16 @@ export function fetchBillAllList(listQuery) {
     url: '/onepark/pay/bill/all',
     method: 'post',
     data: { listQuery }
+  })
+}
+
+// 根据房号查询优惠券
+
+export function getCoupons(houseId) {
+  return request({
+    url: '/onepark/pay/bill/getCoupons',
+    method: 'get',
+    params: { houseId }
   })
 }
 
