@@ -1178,7 +1178,7 @@ export default {
       this.couponText = `使用代金券支付${shoudPay}元`
       console.log(shoudPay)
       this.ItemsPay.couponsId = data.id
-      this.ItemsPay.itemName = '壹号院'
+      this.ItemsPay.itemName = '壹號院'
     },
     /**
      * @description: 取消使用代金券
