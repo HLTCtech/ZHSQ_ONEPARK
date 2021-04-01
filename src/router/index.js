@@ -747,7 +747,29 @@ export const asyncRoutes = [
         meta: {
           title: '房源信息'
         }
+      },
+      {
+        path: '/coupon',
+        // redirect: "/excel/export-excel",
+        component: () => import('@/views/coupon/coupon'),
+        name: 'coupon',
+        meta: {
+          title: '优惠券',
+          // icon: 'star'
+        }
+      },
+      {
+        path: '/couponRecord',
+        // redirect: "/excel/export-excel",
+        component: () => import('@/views/coupon/couponRecord'),
+        name: 'couponRecord',
+        meta: {
+          title: '优惠券使用记录',
+          // icon: 'skill'
+        }
+
       }
+
     ]
   },
   // {

@@ -47,9 +47,9 @@ module.exports = {
       //   }
       // }
       [process.env.VUE_APP_BASE_API]: {
-        // target: "http://192.168.0.195:8080/hlOneParkProertyManage",
+        target: "http://192.168.0.196:8088/hlOneParkProertyManage",
         // target: 'http://39.106.28.159:8080/hlOneParkProertyManage',
-        target: 'http://121.41.28.29:80/hlOneParkProertyManage',
+        // target: 'http://121.41.28.29:80/hlOneParkProertyManage',
         // target: 'http://192.168.0.115:8080/hlOneParkProertyManage',
         // target: 'https://result.eolinker.com/bhVWEUucb91e3f878ddddb0ecaf93092fa4732e8a4eb2e4?uri=',
         changeOrigin: true,
