@@ -2,7 +2,7 @@
  * @Author: 周鹏飞
  * @Date: 2021-03-31 15:05:51
  * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-01 17:57:33
+ * @LastEditTime: 2021-04-02 09:33:35
  * @Description: file content
 -->
 <template>
@@ -12,14 +12,14 @@
 			<el-input
 				class="search-input"
 				placeholder="请输入领取人"
-				v-model="formList.receiveName"
+				v-model.trim="formList.receiveName"
 				clearable
 			>
 			</el-input>
 			<el-input
 				class="search-input"
 				placeholder="请输入房源"
-				v-model="formList.houseId"
+				v-model.trim="formList.houseId"
 				clearable
 			>
 			</el-input>
@@ -299,19 +299,19 @@
 						label="楼层"
 						prop="building"
 					>
-						<el-input type="number" v-model="editFormLabelAlign.building"></el-input>
+						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')" v-model="editFormLabelAlign.building"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="单元"
 						prop="unit"
 					>
-						<el-input type="number"  v-model="editFormLabelAlign.unit"></el-input>
+						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')"  v-model="editFormLabelAlign.unit"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="房间号"
 						prop="houseNum"
 					>
-						<el-input type="number"  v-model="editFormLabelAlign.houseNum"></el-input>
+						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')"  v-model="editFormLabelAlign.houseNum"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="业主姓名"
@@ -437,7 +437,7 @@
 							message: "请输入置业顾问",
 							trigger: "blur",
 						},
-						{ validator: validateHZ, trigger: 'blur' }
+						{ validator: validateHZ, trigger: 'blur'}
 					],
 					item: [
 						{
@@ -472,9 +472,10 @@
 					houseName: [
 						{
 							required: true,
-							message: "请输入业务姓名",
+							message: "请输入业主姓名",
 							trigger: "blur",
 						},
+						{ validator: validateHZ, trigger: 'blur' }
 					],
 					total_amount: [
 						{

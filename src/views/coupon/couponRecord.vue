@@ -2,7 +2,7 @@
  * @Author: 周鹏飞
  * @Date: 2021-03-31 15:05:51
  * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-01 17:25:04
+ * @LastEditTime: 2021-04-01 18:35:14
  * @Description: file content
 -->
 <template>
@@ -22,7 +22,7 @@
 			</el-select>
 			<el-input
 				placeholder="请输入房源"
-				v-model="formList.houseId"
+				v-model.trim="formList.houseId"
 				clearable
 			>
 			</el-input>
