@@ -2,7 +2,7 @@
  * @Author: 周鹏飞
  * @Date: 2021-03-31 15:05:51
  * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-02 09:33:35
+ * @LastEditTime: 2021-04-02 11:27:10
  * @Description: file content
 -->
 <template>
@@ -299,19 +299,19 @@
 						label="楼层"
 						prop="building"
 					>
-						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')" v-model="editFormLabelAlign.building"></el-input>
+						<el-input type="number"  v-model.number="editFormLabelAlign.building"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="单元"
 						prop="unit"
 					>
-						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')"  v-model="editFormLabelAlign.unit"></el-input>
+						<el-input type="number"  v-model.number="editFormLabelAlign.unit"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="房间号"
 						prop="houseNum"
 					>
-						<el-input type="number" oninput="value=value.replace(/[^0-9.]/g,'')"  v-model="editFormLabelAlign.houseNum"></el-input>
+						<el-input type="number"  v-model.number="editFormLabelAlign.houseNum"></el-input>
 					</el-form-item>
 					<el-form-item
 						label="业主姓名"
@@ -324,7 +324,7 @@
 						prop="total_amount"
 						
 					>
-						<el-input type="number" v-model.number="editFormLabelAlign.surplus_amount" oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+						<el-input type="number" v-model.number="editFormLabelAlign.surplus_amount" ></el-input>
 					</el-form-item>
 					<el-form-item
 						label="已使用金额"
@@ -332,7 +332,7 @@
 						
 					>
 						<el-input type="number" v-model.number="editFormLabelAlign.use_amount"
-						oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+						></el-input>
 					</el-form-item>
 					<el-form-item
 						label="总金额"
@@ -452,6 +452,7 @@
 							message: "请输入楼层(数字)",
 							trigger: "blur",
 						},
+					 { type: 'number',  message: '楼层必须为数字值',trigger:['blur','change']}
 					],
 					unit: [
 						{
@@ -459,6 +460,7 @@
 							message: "请输入单元(数字)",
 							trigger: "blur",
 						},
+						{ type: 'number',  message: '单元必须为数字值',trigger:['blur','change']}
 
 					],
 					houseNum: [
@@ -468,6 +470,7 @@
 							message: "请输入房间号(数字)",
 							trigger: "blur",
 						},
+							{ type: 'number',  message: '房间号必须为数字值',trigger:['blur','change']}
 					],
 					houseName: [
 						{
@@ -483,14 +486,15 @@
 							message: "请输入总金额",
 							trigger: "blur",
 						},
+						{ type: 'number',  message: '金额必须为数字值',trigger:['blur','change']}
 					],
 					surplus_amount: [
 						{
 							required: true,
-							message: "请输入剩余金额",
+							message: "请输入剩余金额", 
 							trigger: "blur",
 						},
-						{ type: 'number', message: '金额必须为数字值'}
+						{ type: 'number',  message: '金额必须为数字值',trigger:['blur','change']}
 					],
 					use_amount: [
 						{
@@ -498,7 +502,7 @@
 							message: "请输入已使用金额",
 							trigger: "blur",
 						},
-						{ type: 'number', message: '金额必须为数字值'}
+							{ type: 'number',  message: '金额必须为数字值',trigger:['blur','change']}
 					],
 				},
 			};

@@ -35,6 +35,7 @@ export default {
   mounted() {
     this.initChart()
   },
+  //销毁图片
   beforeDestroy() {
     if (!this.chart) {
       return

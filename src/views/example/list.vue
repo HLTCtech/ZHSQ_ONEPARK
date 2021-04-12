@@ -75,9 +75,13 @@ export default {
   },
   data() {
     return {
+      // 文件内容
       list: null,
+      // 总数量
       total: 0,
+      // 加载动画
       listLoading: true,
+      // 页码传参
       listQuery: {
         page: 1,
         limit: 20
@@ -85,6 +89,7 @@ export default {
     }
   },
   created() {
+    // 初始化数据
     this.getList()
   },
   methods: {

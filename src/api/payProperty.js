@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 住宅相关api-------------------------------------
-// 查询所有的住宅物业费信息
+// 查询所有的住宅物业费信息.
 export function fetchHouseListAll(query) {
   return request({
     url: '/onepark/pay/property/house/all',
@@ -10,7 +10,7 @@ export function fetchHouseListAll(query) {
   })
 }
 
-// 根据选定字段查询指定的住宅信息
+// 根据选定字段查询指定的住宅信息.
 export function fetchHouseSearch(query) {
   return request({
     url: '/onepark/pay/property/house/search',
@@ -20,7 +20,7 @@ export function fetchHouseSearch(query) {
 }
 
 // 商铺相关api-------------------------------------
-// 查询所有的商铺物业费信息
+// 查询所有的商铺物业费信息.
 export function fetchShopListAll(query) {
   return request({
     url: '/onepark/pay/property/shop/all',
@@ -29,7 +29,7 @@ export function fetchShopListAll(query) {
   })
 }
 
-// 根据选定字段查询指定的住宅信息
+// 根据选定字段查询指定的住宅信息.
 export function fetchShopSearch(query) {
   return request({
     url: '/onepark/pay/property/shop/search',
@@ -38,7 +38,7 @@ export function fetchShopSearch(query) {
   })
 }
 
-// 收费页面上方显示指定房间费用信息
+// 收费页面上方显示指定房间费用信息.
 export function fetchPreViewAll(houseId) {
   return request({
     url: '/onepark/pay/property/pv/all',
@@ -47,7 +47,7 @@ export function fetchPreViewAll(houseId) {
   })
 }
 
-// 单一收费详情表单
+// 单一收费详情表单.
 export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/onepark/pay/property/singleMoneyPost',
@@ -56,7 +56,7 @@ export function singleMoneyPost(singleFormPost) {
   })
 }
 
-// 复合收费详情表单
+// 复合收费详情表单.
 export function mixMoneyPost(mixFormPost) {
   return request({
     url: '/onepark/pay/property/mixMoneyPost',
@@ -65,7 +65,7 @@ export function mixMoneyPost(mixFormPost) {
   })
 }
 
-// 当缴费方式为“特批”，调取sms
+// 当缴费方式为“特批”，调取sms.
 export function getPropertySMS(singleSMSPost) {
   return request({
     url: '/onepark/pay/property/getSMS',
@@ -74,7 +74,7 @@ export function getPropertySMS(singleSMSPost) {
   })
 }
 
-// 缴费成功后查询指定id的操作记录
+// 缴费成功后查询指定id的操作记录.
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/onepark/pay/property/searchById',
@@ -83,7 +83,7 @@ export function fetchSearchByHouseId(houseId) {
   })
 }
 
-// 监听前端物业费周期并返回对应金额
+// 监听前端物业费周期并返回对应金额.
 export function getRealtimeProperty(query) {
   return request({
     url: '/onepark/pay/property/getRealtimeProperty',
@@ -92,7 +92,7 @@ export function getRealtimeProperty(query) {
   })
 }
 
-// 指定物业费开始时间周期
+// 指定物业费开始时间周期.
 export function postDaterangeStart(query) {
   return request({
     url: '/onepark/pay/property/postDaterangeStart',
@@ -100,7 +100,7 @@ export function postDaterangeStart(query) {
     data: { query }
   })
 }
-//根据房号搜索物业费号
+//根据房号搜索物业费号.
 export function searchProperty(data) {
   return request({
     url: '/onepark/pay/property/searchProperty',
@@ -108,7 +108,7 @@ export function searchProperty(data) {
     data
   })
 }
-//根据房号搜索电费号
+//根据房号搜索电费号.
 export function electricCleanPaySearchElectricId(data) {
   return request({
     url: '/onepark/pay/electric/searchElectricId',
@@ -117,7 +117,7 @@ export function electricCleanPaySearchElectricId(data) {
   })
 }
 
-//台账导出--物业费列表(无分页)
+//台账导出--物业费列表(无分页).
 export function allNotPage(data) {
   return request({
     url: '/onepark/pay/property/house/allNotPage',
@@ -125,7 +125,7 @@ export function allNotPage(data) {
     data
   })
 }
-//台账导出--物业费搜索(无分页)
+//台账导出--物业费搜索(无分页).
 export function searchNoPage(query) {
   return request({
     url: '/onepark/pay/property/house/search',

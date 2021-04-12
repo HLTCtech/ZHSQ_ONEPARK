@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询所有房间具体信息
+// 查询所有房间具体信息.
 export function fetchHouseInfoAll(query) {
   return request({
     url: '/onepark/info/houseChange/all',
@@ -9,7 +9,7 @@ export function fetchHouseInfoAll(query) {
   })
 }
 
-// 查询所有房间具体信息
+// 查询所有房间具体信息.
 export function fetchHouseInfoSearch(query) {
   return request({
     url: '/onepark/info/houseChange/search',
@@ -18,7 +18,7 @@ export function fetchHouseInfoSearch(query) {
   })
 }
 
-// 向后台提交表单（房屋面积变更）
+// 向后台提交表单（房屋面积变更）.
 export function postHouseInfoArea(formPost) {
   return request({
     url: '/onepark/info/houseChange/areaChangePost',
@@ -27,7 +27,7 @@ export function postHouseInfoArea(formPost) {
   })
 }
 
-// 向后台提交表单（业主信息变更）
+// 向后台提交表单（业主信息变更）.
 export function postHouseInfoUser(formPost) {
   return request({
     url: '/onepark/info/houseChange/userChangePost',
@@ -36,7 +36,7 @@ export function postHouseInfoUser(formPost) {
   })
 }
 
-// 向后台提交表单（房间状态变更）
+// 向后台提交表单（房间状态变更）.
 export function postHouseInfoStatus(formPost) {
   return request({
     url: '/onepark/info/houseChange/statusChangePost',
@@ -45,7 +45,7 @@ export function postHouseInfoStatus(formPost) {
   })
 }
 
-// 向后台提交表单（房间费率变更）
+// 向后台提交表单（房间费率变更）.
 export function postHouseInfoRate(formPost) {
   return request({
     url: '/onepark/info/houseChange/rateChangePost',
@@ -54,7 +54,7 @@ export function postHouseInfoRate(formPost) {
   })
 }
 
-// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
+// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息.
 export function fetchHouseInfoByHouseId(houseId) {
   return request({
     url: '/onepark/info/houseChange/searchById',
@@ -63,7 +63,7 @@ export function fetchHouseInfoByHouseId(houseId) {
   })
 }
 
-// 向后台提交表单（新增信息）
+// 向后台提交表单（新增信息）.
 export function postNewHouseInfo(newInfoFormPost) {
   return request({
     url: '/onepark/info/houseChange/infoPost/new',
@@ -83,7 +83,7 @@ export function upload(data) {
     }
   })
 }
-//台账导出--房源信息(无分页)
+//台账导出--房源信息(无分页).
 export function allNotPage(query) {
   return request({
     url: '/onepark/info/houseChange/allNotPage',
@@ -91,7 +91,7 @@ export function allNotPage(query) {
     data: { query }
   })
 }
-//台账导出--房源信息搜索(无分页)
+//台账导出--房源信息搜索(无分页).
 export function searchNoPage(query) {
   return request({
     url: '/onepark/info/houseChange/searchNoPage ',

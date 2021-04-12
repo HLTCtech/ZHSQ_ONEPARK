@@ -60,6 +60,7 @@ export default {
     }
   },
   methods: {
+    // 清除所有
     clearAll() {
       this.dialogTableVisible = false
       this.$store.dispatch('errorLog/clearErrorLog')
