@@ -1,3 +1,10 @@
+/*
+ * @Author: 周鹏飞
+ * @Date: 2021-03-15 11:44:47
+ * @LastEditors: 周鹏飞
+ * @LastEditTime: 2021-04-13 14:14:15
+ * @Description: file content
+ */
 import store from '@/store'
 
 const { body } = document
@@ -14,6 +21,7 @@ export default {
   beforeMount() {
     window.addEventListener('resize', this.$_resizeHandler)
   },
+  // 销毁
   beforeDestroy() {
     window.removeEventListener('resize', this.$_resizeHandler)
   },

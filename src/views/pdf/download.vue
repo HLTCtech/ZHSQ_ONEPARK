@@ -22,9 +22,11 @@ export default {
     }
   },
   mounted() {
+    // 初始化数据
     this.fetchData()
   },
   methods: {
+    // 初始化数据
     fetchData() {
       import('./content.js').then(data => {
         const { title } = data.default
