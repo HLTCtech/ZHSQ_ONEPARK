@@ -1,10 +1,3 @@
-<!--
- * @Author: 周鹏飞
- * @Date: 2021-03-15 11:44:47
- * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-12 17:59:25
- * @Description: file content
--->
 <template>
   <div class="app-container">
     <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
@@ -22,7 +15,6 @@ export default {
   components: { UploadExcelComponent },
   data() {
     return {
-      // 表格内容
       tableData: [],
       tableHeader: []
     }
@@ -43,7 +35,6 @@ export default {
       })
       return false
     },
-    // 成功回调
     handleSuccess({ results, header }) {
       this.tableData = results
       this.tableHeader = header

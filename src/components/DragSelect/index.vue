@@ -1,10 +1,3 @@
-<!--
- * @Author: 周鹏飞
- * @Date: 2021-03-15 11:44:47
- * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-13 11:04:31
- * @Description: file content
--->
 <template>
   <el-select ref="dragSelect" v-model="selectVal" v-bind="$attrs" class="drag-select" multiple v-on="$listeners">
     <slot />
@@ -33,11 +26,9 @@ export default {
     }
   },
   mounted() {
-    // 初始化数据
     this.setSort()
   },
   methods: {
-    // 初始化数据
     setSort() {
       const el = this.$refs.dragSelect.$el.querySelectorAll('.el-select__tags > span')[0]
       this.sortable = Sortable.create(el, {

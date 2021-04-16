@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 所有记录的list.
+// 所有记录的list
 export function fetchMoneyRateList(listQuery_all) {
   return request({
     url: '/onepark/moneyRateChange/all',
@@ -9,7 +9,7 @@ export function fetchMoneyRateList(listQuery_all) {
   })
 }
 
-// 所有记录的search.
+// 所有记录的search
 export function fetchMoneyRateSearch(listQuery_search) {
   return request({
     url: '/onepark/moneyRateChange/search',
@@ -18,7 +18,7 @@ export function fetchMoneyRateSearch(listQuery_search) {
   })
 }
 
-// 指定房间费率变更表单.
+// 指定房间费率变更表单
 export function rateChangePost(rateChangeForm) {
   return request({
     url: '/onepark/moneyRateChange/rateChangePost',
@@ -27,7 +27,7 @@ export function rateChangePost(rateChangeForm) {
   })
 }
 
-// 洋房费率变更表单.
+// 洋房费率变更表单
 export function foreignRateChangePost(foreignRateChangeForm) {
   return request({
     url: '/onepark/moneyRateChange/rateChangePost/foreign',
@@ -36,7 +36,7 @@ export function foreignRateChangePost(foreignRateChangeForm) {
   })
 }
 
-// 合院费率变更表单.
+// 合院费率变更表单
 export function quintaRateChangePost(quintaRateChangeForm) {
   return request({
     url: '/onepark/moneyRateChange/rateChangePost/quinta',

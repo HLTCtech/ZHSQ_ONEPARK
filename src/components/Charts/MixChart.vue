@@ -43,7 +43,6 @@ export default {
     this.chart = null
   },
   methods: {
-    // 渲染图片
     initChart() {
       getEchartMoneyGotMonthly().then(response => {
         this.chart.hideLoading()

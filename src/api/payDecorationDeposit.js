@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 向后台提交表单（费用收缴）.
+// 向后台提交表单（费用收缴）
 export function postMoney(formPost) {
   return request({
     url: '/onepark/pay/decorationDeposit/moneypost',
@@ -9,7 +9,7 @@ export function postMoney(formPost) {
   })
 }
 
-// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息.
+// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/onepark/pay/decorationDeposit/searchById',
@@ -19,7 +19,7 @@ export function fetchSearchByHouseId(houseId) {
 }
 
 // 住宅接口-----------------------------------------------------------
-// 查询所有的住宅装修保证金信息.
+// 查询所有的住宅装修保证金信息
 export function fetchHouseDecorationDepositListAll(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/all',
@@ -28,7 +28,7 @@ export function fetchHouseDecorationDepositListAll(query) {
   })
 }
 
-// 根据选定字段查询指定的物业收费流水信息.
+// 根据选定字段查询指定的物业收费流水信息
 export function fetchHouseDecorationDepositSearch(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/search',
@@ -38,7 +38,7 @@ export function fetchHouseDecorationDepositSearch(query) {
 }
 
 // 商铺接口-----------------------------------------------------------
-// 查询所有的商铺装修保证金信息.
+// 查询所有的商铺装修保证金信息
 export function fetchShopDecorationDepositListAll(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/shop/all',
@@ -47,7 +47,7 @@ export function fetchShopDecorationDepositListAll(query) {
   })
 }
 
-// 根据选定字段查询指定的物业收费流水信息.
+// 根据选定字段查询指定的物业收费流水信息
 export function fetchShopDecorationDepositSearch(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/shop/search',
@@ -56,7 +56,7 @@ export function fetchShopDecorationDepositSearch(query) {
   })
 }
 
-// 当缴费方式为“特批”，调取sms.
+// 当缴费方式为“特批”，调取sms
 export function getSMS(formPost) {
   return request({
     url: '/onepark/pay/decorationDeposit/getSMS',
@@ -65,7 +65,7 @@ export function getSMS(formPost) {
   })
 }
 
-// 退款.
+// 退款
 export function returnMoney(formReturn) {
   return request({
     url: '/onepark/pay/decorationDeposit/moneyReturn',
@@ -74,7 +74,7 @@ export function returnMoney(formReturn) {
   })
 }
 
-// 申请退款.
+// 申请退款
 export function applyReturnMoney(applyMoneyReturn) {
   return request({
     url: '/onepark/pay/decorationDeposit/applyMoneyReturn',
@@ -83,7 +83,7 @@ export function applyReturnMoney(applyMoneyReturn) {
   })
 }
 
-// 审核通过.
+// 审核通过
 export function verifyReturnMoney(verifyMoneyReturn) {
   return request({
     url: '/onepark/pay/decorationDeposit/verifyMoneyReturn',
@@ -92,7 +92,7 @@ export function verifyReturnMoney(verifyMoneyReturn) {
   })
 }
 
-// 驳回申请.
+// 驳回申请
 export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   return request({
     url: '/onepark/pay/decorationDeposit/refuseVerifyMoneyReturn',
@@ -101,7 +101,7 @@ export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   })
 }
 
-// 获取应缴金额.
+// 获取应缴金额
 export function getHouseNameMoneyShallPay(houseId) {
   return request({
     url: '/onepark/pay/decorationDeposit/getHouseNameMoneyShallPay',
@@ -109,7 +109,7 @@ export function getHouseNameMoneyShallPay(houseId) {
     data: { houseId }
   })
 }
-//退款方式为转存物业费时.
+//退款方式为转存物业费时
 export function getDecorationToProperty(data) {
   return request({
     url: '/onepark/pay/decorationDeposit/getDecorationToProperty',
@@ -117,7 +117,7 @@ export function getDecorationToProperty(data) {
     data
   })
 }
-//根据房号搜索物业费号.
+//根据房号搜索物业费号
 export function searchProperty(data) {
   return request({
     url: '/onepark/pay/property/searchProperty',
@@ -125,7 +125,7 @@ export function searchProperty(data) {
     data
   })
 }
-//根据房号搜索电费号.
+//根据房号搜索电费号
 export function electricCleanPaySearchElectricId(data) {
   return request({
     url: '/onepark/pay/electricCleanPay/searchElectricId',
@@ -133,7 +133,7 @@ export function electricCleanPaySearchElectricId(data) {
     data
   })
 }
-//获取装修保证金列表(无分页).
+//获取装修保证金列表(无分页)
 export function allNoPage(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/allNoPage',
@@ -141,7 +141,7 @@ export function allNoPage(query) {
     data:query
   })
 }
-//获取装修保证金列表(无分页).
+//获取装修保证金列表(无分页)
 export function searchNopage(query) {
   return request({
     url: '/onepark/pay/decorationDeposit/house/searchNopage',

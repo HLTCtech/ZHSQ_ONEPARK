@@ -1,13 +1,6 @@
-/*
- * @Author: 周鹏飞
- * @Date: 2021-03-15 11:44:47
- * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-12 16:26:31
- * @Description: file content
- */
 import request from '@/utils/request'
 
-// 服务评价list.
+// 服务评价list
 export function serviceRateList(listQuery_all) {
   return request({
     url: '/onepark/property/serviceRate/all',
@@ -16,7 +9,7 @@ export function serviceRateList(listQuery_all) {
   })
 }
 
-// 服务评价search.
+// 服务评价search
 export function serviceRateSearch(listQuery_search) {
   return request({
     url: '/onepark/property/serviceRate/search',
@@ -25,7 +18,7 @@ export function serviceRateSearch(listQuery_search) {
   })
 }
 
-// 服务评价获取建议内容.
+// 服务评价获取建议内容
 export function getServiceSuggestDetail(id) {
   return request({
     url: '/onepark/property/serviceRate/serviceSuggestDetail',
@@ -34,7 +27,7 @@ export function getServiceSuggestDetail(id) {
   })
 }
 
-// 管家评价list.
+// 管家评价list
 export function bulterRateList(listQuery_all) {
   return request({
     url: '/onepark/property/bulterRate/all',
@@ -43,7 +36,7 @@ export function bulterRateList(listQuery_all) {
   })
 }
 
-// 管家评价search.
+// 管家评价search
 export function bulterRateSearch(listQuery_search) {
   return request({
     url: '/onepark/property/bulterRate/search',
@@ -52,7 +45,7 @@ export function bulterRateSearch(listQuery_search) {
   })
 }
 
-// 管家评价获取建议内容.
+// 管家评价获取建议内容
 export function getBulterSuggestDetail(id) {
   return request({
     url: '/onepark/property/bulterRate/bulterSuggestDetail',
@@ -61,7 +54,7 @@ export function getBulterSuggestDetail(id) {
   })
 }
 
-// 报修评价list.
+// 报修评价list
 export function repairRateList(listQuery_all) {
   return request({
     url: '/onepark/property/repairRate/all',
@@ -70,7 +63,7 @@ export function repairRateList(listQuery_all) {
   })
 }
 
-// 报修评价search.
+// 报修评价search
 export function repairRateSearch(listQuery_search) {
   return request({
     url: '/onepark/property/repairRate/search',
@@ -79,7 +72,7 @@ export function repairRateSearch(listQuery_search) {
   })
 }
 
-// 报修评价获取建议内容.
+// 报修评价获取建议内容
 export function getRepairSuggestDetail(id) {
   return request({
     url: '/onepark/property/repairRate/repairSuggestDetail',

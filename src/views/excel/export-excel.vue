@@ -76,7 +76,6 @@ export default {
         this.listLoading = false
       })
     },
-    // 导出excel
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 所有记录的list.
+// 所有记录的list
 export function fetchSundriesLogList(listQuery_all) {
   return request({
     url: '/onepark/pay/sundries/log/all',
@@ -9,7 +9,7 @@ export function fetchSundriesLogList(listQuery_all) {
   })
 }
 
-// 搜索记录search.
+// 搜索记录search
 export function fetchSundriesLogSearch(listQuery_search) {
   return request({
     url: '/onepark/pay/sundries/log/search',
@@ -18,7 +18,7 @@ export function fetchSundriesLogSearch(listQuery_search) {
   })
 }
 
-// 缴费成功后查询指定id的操作记录.
+// 缴费成功后查询指定id的操作记录
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/onepark/pay/sundries/log/searchById',
@@ -27,7 +27,7 @@ export function fetchSearchByHouseId(houseId) {
   })
 }
 
-// 单一收费详情表单.
+// 单一收费详情表单
 export function singleMoneyPost(singleFormPost) {
   return request({
     url: '/onepark/pay/sundries/singleMoneyPost',
@@ -36,7 +36,7 @@ export function singleMoneyPost(singleFormPost) {
   })
 }
 
-// 当缴费方式为“特批”，调取sms.
+// 当缴费方式为“特批”，调取sms
 export function getSundriesSMS(singleSMSPost) {
   return request({
     url: '/onepark/pay/sundries/getSMS',

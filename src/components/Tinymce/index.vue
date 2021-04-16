@@ -71,7 +71,6 @@ export default {
     }
   },
   computed: {
-    // 监听盒子宽度
     containerWidth() {
       const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`

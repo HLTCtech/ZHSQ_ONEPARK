@@ -1,11 +1,3 @@
-<!--
- * @Author: 周鹏飞
- * @Date: 2021-03-15 11:44:47
- * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-12 16:46:51
- * @Description: file content
--->
-
 <template>
   <el-dropdown trigger="click" @command="handleSetSize">
     <div>
@@ -38,7 +30,6 @@ export default {
     }
   },
   methods: {
-    // 点击菜单项触发的事件回调
     handleSetSize(size) {
       this.$ELEMENT.size = size
       this.$store.dispatch('app/setSize', size)

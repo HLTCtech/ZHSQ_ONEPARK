@@ -129,7 +129,6 @@ export default {
           this.tableLoading = false
         })
     },
-    // 删除
     handleDel(id) {
       this.$confirm('确定删除该项？', '提示', {
         confirmButtonText: '确定',
@@ -147,7 +146,6 @@ export default {
         })
         .catch(() => {})
     },
-    // 提交
     handleAdd() {
       this.$refs['formSundriesAdd'].validate(valid => {
         if (valid) {

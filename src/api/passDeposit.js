@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 向后台提交表单（费用收缴）.
+// 向后台提交表单（费用收缴）
 export function postMoney(formPost) {
   return request({
     url: '/onepark/pay/passDeposit/moneypost',
@@ -9,7 +9,7 @@ export function postMoney(formPost) {
   })
 }
 
-// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息.
+// 缴费成功后的跳转逻辑，根据指定houseId查询指定的住宅信息
 export function fetchSearchByHouseId(houseId) {
   return request({
     url: '/onepark/pay/passDeposit/searchById',
@@ -19,7 +19,7 @@ export function fetchSearchByHouseId(houseId) {
 }
 
 // 住宅接口-----------------------------------------------------------
-// list.
+// list
 export function fetchPassDepositListAll(query) {
   return request({
     url: '/onepark/pay/passDeposit/house/all',
@@ -28,7 +28,7 @@ export function fetchPassDepositListAll(query) {
   })
 }
 
-// 搜索.
+// 搜索
 export function fetchPassDepositSearch(query) {
   return request({
     url: '/onepark/pay/passDeposit/house/search',
@@ -37,7 +37,7 @@ export function fetchPassDepositSearch(query) {
   })
 }
 
-// 当缴费方式为“特批”，调取sms.
+// 当缴费方式为“特批”，调取sms
 export function getSMS(formPost) {
   return request({
     url: '/onepark/pay/passDeposit/getSMS',
@@ -46,7 +46,7 @@ export function getSMS(formPost) {
   })
 }
 
-// 退款.
+// 退款
 export function returnMoney(formReturn) {
   return request({
     url: '/onepark/pay/passDeposit/moneyReturn',
@@ -55,7 +55,7 @@ export function returnMoney(formReturn) {
   })
 }
 
-// 申请退款.
+// 申请退款
 export function applyReturnMoney(applyMoneyReturn) {
   return request({
     url: '/onepark/pay/passDeposit/applyMoneyReturn',
@@ -64,7 +64,7 @@ export function applyReturnMoney(applyMoneyReturn) {
   })
 }
 
-// 审核通过.
+// 审核通过
 export function verifyReturnMoney(verifyMoneyReturn) {
   return request({
     url: '/onepark/pay/passDeposit/verifyMoneyReturn',
@@ -73,7 +73,7 @@ export function verifyReturnMoney(verifyMoneyReturn) {
   })
 }
 
-// 驳回申请.
+// 驳回申请
 export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   return request({
     url: '/onepark/pay/passDeposit/refuseVerifyMoneyReturn',
@@ -82,7 +82,7 @@ export function refuseVerifyReturnMoney(verifyMoneyReturn) {
   })
 }
 
-// 根据houseId返回业主姓名和应缴金额.
+// 根据houseId返回业主姓名和应缴金额
 export function getHouseNameMoneyShallPay(houseId) {
   return request({
     url: '/onepark/pay/passDeposit/getHouseNameMoneyShallPay',
@@ -90,7 +90,7 @@ export function getHouseNameMoneyShallPay(houseId) {
     data: { houseId }
   })
 }
-// 出入证押金列表(无分页).
+// 出入证押金列表(无分页)
 export function allNoPage(query) {
   return request({
     url: '/onepark/pay/passDeposit/house/allNoPage',
@@ -98,7 +98,7 @@ export function allNoPage(query) {
     data: query
   })
 }
-// 出入证押金搜索(无分页).
+// 出入证押金搜索(无分页)
 export function searchNoPage(query) {
   return request({
     url: '/onepark/pay/passDeposit/house/searchNoPage',

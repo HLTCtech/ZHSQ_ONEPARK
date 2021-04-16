@@ -107,7 +107,6 @@ export default {
     }
   },
   created() {
-    // 搜索，初始化数据
     this.getSundriesList()
   },
   methods: {

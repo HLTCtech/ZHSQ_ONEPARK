@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询当前登录的操作人所有的收费记录(可打印).
+// 查询当前登录的操作人所有的收费记录(可打印)
 export function fetchAllCharging(listQuery) {
   return request({
     url: '/onepark/chargingVoucher/allByAdminId',
@@ -9,7 +9,7 @@ export function fetchAllCharging(listQuery) {
   })
 }
 
-// 查询当前登录的操作人所有的收费记录(已打印).
+// 查询当前登录的操作人所有的收费记录(已打印)
 export function fetchAllPrinted(listQuery) {
   return request({
     url: '/onepark/chargingVoucher/allPrintedByAdminId',
@@ -18,7 +18,7 @@ export function fetchAllPrinted(listQuery) {
   })
 }
 
-// 根据房号和当前操作人id查询所有的缴费记录.
+// 根据房号和当前操作人id查询所有的缴费记录
 export function getVoucherByHouseId(query) {
   return request({
     url: '/onepark/chargingVoucher/getVoucherByHouseId',
@@ -27,7 +27,7 @@ export function getVoucherByHouseId(query) {
   })
 }
 
-// 单一项目打印后提交项目id.
+// 单一项目打印后提交项目id
 export function singleVoucherIdPost(voucherId) {
   return request({
     url: '/onepark/chargingVoucher/singlePrintVoucherIds',
@@ -36,7 +36,7 @@ export function singleVoucherIdPost(voucherId) {
   })
 }
 
-// 申请重新打印获取验证码.
+// 申请重新打印获取验证码
 export function getReprintSMS(reprintForm) {
   return request({
     url: '/onepark/chargingVoucher/getReprintSMS',
@@ -45,7 +45,7 @@ export function getReprintSMS(reprintForm) {
   })
 }
 
-// 提交重新打印表单.
+// 提交重新打印表单
 export function receiptReprintPost(reprintForm) {
   return request({
     url: '/onepark/chargingVoucher/receiptReprintPost',
@@ -54,7 +54,7 @@ export function receiptReprintPost(reprintForm) {
   })
 }
 
-// 指定收据号表单提交.
+// 指定收据号表单提交
 export function assignReceiptPost(assignReceiptNumQuery) {
   return request({
     url: '/onepark/chargingVoucher/assignReceiptNum',

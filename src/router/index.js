@@ -630,7 +630,7 @@ export const asyncRoutes = [
         meta: {
           title: '平账记录'
         }
-      },
+      }
       // {
       //   path: 'electricRecord',
       //   component: () => import('@/views/operationLog/electricRecord'),
@@ -641,60 +641,7 @@ export const asyncRoutes = [
       // }
     ]
   },
-  {
-    // 台账导出
-    path: '/parameterExport',
-    component: Layout,
-    // redirect: '/bill_all/electric',
-    name: 'ParameterExport',
-    alwaysShow: true,
-    meta: {
-      title: '台账导出',
-      icon: 'standingbook'
-    },
-    children: [
-      {
-        path: 'houseChange',
-        component: () => import('@/views/parameterExport/houseChange'),
-        name: 'HouseChange',
-        meta: {
-          title: '房源信息'
-        }
-      },
-      {
-        path: 'property',
-        component: () => import('@/views/parameterExport/property'),
-        name: 'Property',
-        meta: {
-          title: '物业费'
-        }
-      },
-      {
-        path: 'parking',
-        component: () => import('@/views/parameterExport/parking'),
-        name: 'Parking',
-        meta: {
-          title: '停车场维护费'
-        }
-      },
-      {
-        path: 'passDeposit',
-        component: () => import('@/views/parameterExport/passDeposit'),
-        name: 'PassDeposit',
-        meta: {
-          title: '出入证押金'
-        }
-      },
-      {
-        path: 'decorationDeposit',
-        component: () => import('@/views/parameterExport/decorationDeposit'),
-        name: 'DecorationDeposit',
-        meta: {
-          title: '装修保证金'
-        }
-      }
-    ]
-  },
+
   {
     // 基础信息
     path: '/information',
@@ -754,22 +701,76 @@ export const asyncRoutes = [
         component: () => import('@/views/coupon/coupon'),
         name: 'coupon',
         meta: {
-          title: '优惠券',
+          title: '优惠券'
           // icon: 'star'
+        }
+      }
+      // {
+      //   path: '/couponRecord',
+      //   // redirect: "/excel/export-excel",
+      //   component: () => import('@/views/coupon/couponRecord'),
+      //   name: 'couponRecord',
+      //   meta: {
+      //     title: '优惠券使用记录',
+      //     // icon: 'skill'
+      //   }
+
+      // }
+
+    ]
+  },
+  {
+    // 台账导出
+    path: '/parameterExport',
+    component: Layout,
+    // redirect: '/bill_all/electric',
+    name: 'ParameterExport',
+    alwaysShow: true,
+    meta: {
+      title: '台账导出',
+      icon: 'standingbook'
+    },
+    children: [
+      {
+        path: 'houseChange',
+        component: () => import('@/views/parameterExport/houseChange'),
+        name: 'HouseChange',
+        meta: {
+          title: '房源信息'
         }
       },
       {
-        path: '/couponRecord',
-        // redirect: "/excel/export-excel",
-        component: () => import('@/views/coupon/couponRecord'),
-        name: 'couponRecord',
+        path: 'property',
+        component: () => import('@/views/parameterExport/property'),
+        name: 'Property',
         meta: {
-          title: '优惠券使用记录',
-          // icon: 'skill'
+          title: '物业费'
         }
-
+      },
+      {
+        path: 'parking',
+        component: () => import('@/views/parameterExport/parking'),
+        name: 'Parking',
+        meta: {
+          title: '停车场维护费'
+        }
+      },
+      {
+        path: 'passDeposit',
+        component: () => import('@/views/parameterExport/passDeposit'),
+        name: 'PassDeposit',
+        meta: {
+          title: '出入证押金'
+        }
+      },
+      {
+        path: 'decorationDeposit',
+        component: () => import('@/views/parameterExport/decorationDeposit'),
+        name: 'DecorationDeposit',
+        meta: {
+          title: '装修保证金'
+        }
       }
-
     ]
   },
   // {

@@ -1,10 +1,3 @@
-<!--
- * @Author: 周鹏飞
- * @Date: 2021-03-15 11:44:47
- * @LastEditors: 周鹏飞
- * @LastEditTime: 2021-04-12 16:30:48
- * @Description: file content
--->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
@@ -35,7 +28,6 @@ export default {
     }
   },
   created() {
-    // 初始化数据
     this.getBreadcrumb()
   },
   methods: {

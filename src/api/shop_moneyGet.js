@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 通过id（房间号）来查找具体信息.
+// 通过id（房间号）来查找具体信息
 export function fetchShopList(query) {
   return request({
     url: '/onepark/shop/list',
@@ -9,7 +9,7 @@ export function fetchShopList(query) {
   })
 }
 
-// 下面为article.js中代码，暂未针对具体业务进行修改.
+// 下面为article.js中代码，暂未针对具体业务进行修改
 export function fetchArticle(id) {
   return request({
     url: '/onepark/shop/detail',
@@ -18,7 +18,7 @@ export function fetchArticle(id) {
   })
 }
 
-// 具体费用详情的弹出模态框.
+// 具体费用详情的弹出模态框
 export function fetchPreViewMoney(pv) {
   return request({
     url: '/onepark/shop/pv',

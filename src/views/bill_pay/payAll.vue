@@ -192,60 +192,76 @@
           clearable
         /> -->
         <div class="coupon-wrap">
-          <el-popover
-            placement="top"
-            width="700"
-            trigger="click"
-          >
+          <el-popover placement="top" width="500" trigger="click">
             <div class="check-coupon">
-              <el-input v-model="searchCouponText" placeholder="请输入领取代金券的房号" style="width:290px;margin-right:10px" />
-              <el-button type="primary" @click="searchCouponHandle">查询</el-button>
-              <el-table
-                :data="couponData"
+              <!-- <el-input
+                v-model="searchCouponText"
+                placeholder="请输入领取代金券的房号"
+                style="width:290px;margin-right:10px"
+              /> -->
+
+              <el-select
+                v-model="searchCouponText"
+                filterable
+                remote
+                reserve-keyword
+                clearable
+                style="width:260px"
+                placeholder="请输入关键词搜索优惠券"
+                :remote-method="remoteMethod"
+                :loading="couponloading"
               >
-                <el-table-column
-                  prop="houseName"
-                  label="房主"
-                  width="80px"
-                  align="center"
-                />
-                <el-table-column
-                  prop="receive_date"
-                  align="center"
-                  label="领取时间"
-                />
-                <el-table-column
-                  prop="total_amount"
-                  label="总金额"
-                  align="center"
-                  width="90px"
-                />
-                <el-table-column
-                  prop="use_amount"
-                  label="已用金额"
-                  align="center"
-                  width="90px"
-                />
-                <el-table-column
-                  prop="surplus_amount"
-                  label="余额"
-                  align="center"
-                  width="90px"
-                />
-                <el-table-column
-                  label="操作"
-                  align="center"
-                  width="90px"
+                <el-option
+                  v-for="item in couponsOption"
+                  :key="item.value"
+                  :label="`${item.consultant_name}-${item.item}-${item.houseId}(${item.houseName})`"
+                  :value="item.id"
                 >
+                  <span style="float: left">{{ `${item.consultant_name}-${item.item}-${item.houseId}` }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.houseName }}</span>
+                </el-option>
+              </el-select>
+
+              <el-button
+                type="primary"
+                :disabled="!searchCouponText"
+                @click="searchCouponHandle"
+              >查询</el-button>
+              <el-button
+                type="success"
+                @click="useCouponHandle"
+              >使用</el-button>
+              <el-table ref="itsmDataTable" :data="couponData">
+                <el-table-column type="selection" width="55" />
+                <el-table-column
+                  prop="face_value"
+                  align="center"
+                  label="编号"
+                />
+                <el-table-column prop="face_key" label="面值" align="center" />
+                <!-- <el-table-column label="操作" align="center" width="90px">
                   <template slot-scope="scope">
-                    <el-button size="mini" type="success" @click="useCouponHandle(scope.row)">使用</el-button>
+                    <el-button
+                      size="mini"
+                      type="success"
+                      @click="useCouponHandle(scope.row)"
+                    >使用</el-button>
                   </template>
-                </el-table-column>
+                </el-table-column> -->
               </el-table>
             </div>
-            <el-button slot="reference" type="warning" plain size="small">{{ couponText }}</el-button>
+            <el-button slot="reference" type="warning" plain size="small">{{
+              couponText
+            }}</el-button>
           </el-popover>
-          <el-button v-show="this.ItemsPay.propertyVoucherNum>0" size="mini" type="danger" icon="el-icon-delete" circle @click="cancleUseCoupon" />
+          <el-button
+            v-show="this.ItemsPay.propertyVoucherNum > 0"
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="cancleUseCoupon"
+          />
         </div>
 
         <el-tag
@@ -855,7 +871,9 @@ import {
   getRealtimeParking,
   getRealtimeElectric,
   getSMS,
-  getCoupons
+  getPropertyTime,
+  getCoupons,
+  getFaceValue
 } from '@/api/payAll'
 import { sundriesList } from '@/api/information'
 import waves from '@/directive/waves' // waves directive
@@ -869,6 +887,8 @@ export default {
   // components: { Pagination },
   data() {
     return {
+      couponsOption: [], // 根据房号查出来的优惠券
+      couponloading: false,
       smsSeconds: 0,
       smsVisible: false, // 特批验证码对话框
       show: true,
@@ -1159,26 +1179,82 @@ export default {
   },
   methods: {
     /**
-     * @description: 使用代金券
-     * @param {*} data 要使用的代金券数据
+     * @description: 使用代金券时，输入关键字查询拥有的所有代金券
+     * @param {*} keyword
      * @return {*}
      */
-    useCouponHandle(data) {
-      console.log(data)
-      if (!this.propertyShallPay) {
-        this.$message.error('应缴费用为0或不存在')
+    remoteMethod(keyword) {
+      if (keyword !== '') {
+        this.loading = true
+        getCoupons({ houseId: keyword }).then((res) => {
+          this.loading = false
+          this.couponsOption = res.data || []
+        })
+      } else {
+        this.options = []
+      }
+    },
+    /**
+     * @description: 根据房号查询代金券
+     * @param {*}
+     * @return {*}
+     */
+    searchCouponHandle() {
+      if (!this.searchCouponText) {
+        this.$message.error('请先输入关键词')
         return
       }
-      // 计算应缴金额-付款金额 = 还需用代金券支付多少
-      const shoudPayuseCoupon = Number(this.propertyShallPay) - Number(this.ItemsPay.propertyMoneyNum)
-      // 判断代金券剩余金额和需用代金券支付金额谁小，谁小用谁
-      const shoudPay = shoudPayuseCoupon > Number(data.surplus_amount) ? Number(data.surplus_amount) : shoudPayuseCoupon
+      getFaceValue({ couponsId: this.searchCouponText }).then((res) => {
+        console.log(res)
+        if (res.data && res.data[0]) {
+          this.couponData = res.data
+        } else {
+          this.couponData = []
+        }
+      })
+    },
+    /**
+     * @description: 使用代金券
+     * @param {*}
+     * @return {*}
+     */
+    useCouponHandle() {
+      console.log(this.$refs.itsmDataTable.selection.length)
+      // if (!this.propertyShallPay) {
+      //   this.$message.error('应缴费用为0或不存在')
+      //   return
+      // }
+      const selectCoupon = this.$refs.itsmDataTable.selection
+      if (selectCoupon.length === 0) {
+        // 如果选择为空，则清空已选择代金券
+        this.cancleUseCoupon()
+        // this.$message.error('请先选择代金券')
+        return
+      }
 
+      const couponIds = selectCoupon
+        .map((item) => {
+          return item.id
+        })
+        .join(',')
+
+      getPropertyTime({
+        ids: couponIds,
+        houseId: this.listQuery.houseId
+      }).then((res) => {
+        this.ItemsPay.propertyDateRange = [res.startTime, res.endTime]
+      })
+      this.ItemsPay.faceValueId = couponIds
+      // 计算选择的代金券金额
+      let shoudPay = 0
+      selectCoupon.map((item) => {
+        shoudPay += +item.face_key
+      })
+
+      console.log(shoudPay)
       this.ItemsPay.propertyVoucherNum = shoudPay
       this.couponText = `使用代金券支付${shoudPay}元`
-      console.log(shoudPay)
-      this.ItemsPay.couponsId = data.id
-      this.ItemsPay.itemName = '壹號院'
+      this.ItemsPay.itemName = '尚郡'
     },
     /**
      * @description: 取消使用代金券
@@ -1186,43 +1262,25 @@ export default {
      * @return {*}
      */
     cancleUseCoupon() {
+      this.ItemsPay.faceValueId = ''
       this.ItemsPay.propertyVoucherNum = 0
       this.couponText = '点击使用代金券'
     },
 
     /**
-     * @description: 根绝房号查询代金券
-     * @param {*}
-     * @return {*}
-     */
-    searchCouponHandle() {
-      if (!this.searchCouponText) {
-        this.$message.error('请输入房号')
-        return
-      }
-      getCoupons(this.searchCouponText).then(res => {
-        console.log(res)
-        if (res.data && res.data.id) {
-          this.couponData = [res.data]
-        } else {
-          this.couponData = []
-        }
-      })
-    },
-    /**
      * @description: 物业费缴纳使用代金券状态变化
      * @param {Boolean} useStatus 是否使用代金券
      * @return {*}
      */
-    changeCoupon(useStatus) {
-      if (useStatus) {
-        this.couponText = '代金券支付200元'
-        this.ItemsPay.propertyVoucherNum = 200
-      } else {
-        this.couponText = '代金券剩余1000元'
-        this.ItemsPay.propertyVoucherNum = 0
-      }
-    },
+    // changeCoupon(useStatus) {
+    //   if (useStatus) {
+    //     this.couponText = '代金券支付200元'
+    //     this.ItemsPay.propertyVoucherNum = 200
+    //   } else {
+    //     this.couponText = '代金券剩余1000元'
+    //     this.ItemsPay.propertyVoucherNum = 0
+    //   }
+    // },
     // 获取所有杂费项
     getSundriesList() {
       sundriesList()

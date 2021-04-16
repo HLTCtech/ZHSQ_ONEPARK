@@ -42,7 +42,6 @@ export default {
     this.chart = null
   },
   methods: {
-    // 渲染图片
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
 

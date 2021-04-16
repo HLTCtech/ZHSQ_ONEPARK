@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询所有的流水.
+// 查询所有的流水
 export function fetchExportList() {
   return request({
     url: '/onepark/waterBillManage/all',
@@ -8,7 +8,7 @@ export function fetchExportList() {
   })
 }
 
-// 查询流水信息.
+// 查询流水信息
 export function fetchExportSearch(query) {
   return request({
     url: '/onepark/waterBillManage/search',

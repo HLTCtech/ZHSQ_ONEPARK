@@ -448,11 +448,8 @@ export default {
   directives: { waves },
   data() {
     return {
-      // 文件内容
       filename: '',
-      // 文件列表
       listLoading: true,
-      // 文件总数
       total: 0,
       // 定义搜索按钮的query字段
       listQuery_search: {
